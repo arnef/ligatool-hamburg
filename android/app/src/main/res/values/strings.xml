@@ -1,0 +1,6 @@
+<resources>
+
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">ryk6GGbrYshiu8gQRRqVFL1gTe9BNJC9aQ5sb</string>
+
+    <string name="app_name">Liga-Tool</string>
+</resources>

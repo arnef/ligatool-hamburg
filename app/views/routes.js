@@ -1,0 +1,10 @@
+export const OVERVIEW = 'ROUTE.OVERVIEW';
+export const MATCH = 'ROUTE.MATCH';
+export const LIVE_MATCH = 'ROUTE.LIVE_MATCH';
+export const MY_TEAM = 'ROUTE.MY_TEAM';
+export const SETTINGS = 'ROUTE.SETTINGS';
+export const SETTINGS_NOTIFICATION = 'ROUTE.SETTINGS.NOTIFICATION';
+export const RANKING = 'ROUTE.RANKING';
+export const TEAM = 'ROUTE.TEAM';
+export const PREVIEW = 'ROUTE.PREVIEW';
+export const LEAGUES = 'ROUTE.LEAGUES';

@@ -1,0 +1,22 @@
+import React, { Component } from 'react';
+import { View } from 'react-native';
+
+class Column extends Component {
+
+    render() {
+        const style = { flex: 1, flexDirection: 'column' };
+        if (this.props.center) {
+            style.alignItems = 'center';
+        }
+        if (this.props.width) {
+            style.flex = this.props.width / 10;
+        }
+        return (
+            <View style={[style, this.props.style]}>
+                { this.props.children}
+            </View>
+        );
+    }
+}
+
+export default Column;

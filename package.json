@@ -1,0 +1,52 @@
+{
+  "name": "arnefeilligatool",
+  "version": "0.5.1",
+  "private": true,
+  "scripts": {
+    "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "apisauce": "^0.10.0",
+    "react": "15.4.2",
+    "react-native": "^0.41.2",
+    "react-native-code-push": "^1.17.0-beta",
+    "react-native-fcm": "^6.0.3",
+    "react-native-scrollable-tab-view": "^0.7.2",
+    "react-native-vector-icons": "^4.0.0",
+    "react-redux": "^5.0.2",
+    "reactotron-apisauce": "^1.7.0",
+    "reactotron-react-native": "^1.6.0",
+    "reactotron-redux": "^1.6.1",
+    "redux": "^3.6.0",
+    "redux-action-buffer": "^1.0.1",
+    "redux-logger": "^2.8.1",
+    "redux-promise-middleware": "^4.2.0",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.15.0",
+    "eslint-plugin-react": "^6.9.0",
+    "reactotron-react-native": "^1.7.0",
+    "reactotron-redux": "^1.7.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "plugins": [
+      "react"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 6,
+      "ecmaFeatures": {
+        "impliedStrict": true,
+        "experimentalObjectRestSpread": true,
+        "jsx": true
+      }
+    }
+  }
+}

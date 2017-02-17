@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "613643338072",
+    "firebase_url": "https://ligatool-44145.firebaseio.com",
+    "project_id": "ligatool-44145",
+    "storage_bucket": "ligatool-44145.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613643338072:android:5e798b9020542906",
+        "android_client_info": {
+          "package_name": "com.arnefeilligatool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613643338072-3mc395kh42nv5d6h0k7poefm3sgbuugj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTdhRDCErV8S81Fu4fYLg-DMBqVqpsLoU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
