@@ -22,6 +22,7 @@ class LeaguesView extends Component {
 				onRefresh={this.props.getRankings.bind(this)}>
 				<ListItemGroup>
 				{ this.props.leagues.data.map( league => {
+					if (!league.cup)
 					return (
 						<View key={league.id}>
 							<ListItem
