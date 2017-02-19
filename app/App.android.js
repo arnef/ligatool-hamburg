@@ -4,6 +4,7 @@ import LoginModal from './modals/LoginModal';
 import { Toolbar } from './components';
 import * as Views from './views';
 import * as Route from './views/routes';
+import Navigation from './Navigation';
 
 const windowWidth = Math.floor(Dimensions.get('window').width * 0.8);
 const drawerWidth = windowWidth < 300 ? windowWidth : 300;
@@ -96,17 +97,20 @@ class App extends Component {
 				onDrawerClose={() => { this.drawer.isOpen = false; }}
 				renderNavigationView={ () => navigation} >
 				<LoginModal { ...this.props } />
-					<Navigator
+					<Navigation initialRoute={{ state: Route.OVERVIEW }} 
+						ref={(navigation) => this.navigator = navigation} />
+			</DrawerLayoutAndroid>
+		);
+	}
+}
+
+{/*<Navigator
 							style={{flexDirection:'column-reverse'}}
 							configureScene={(route, stack) => Navigator.SceneConfigs.FadeAndroid}
 							initialRoute={{state: Route.OVERVIEW, isRoot: true, title: 'Übersicht'}}
 							navigationBar={<Toolbar {...this.props} withBorder openDrawer={this.openDrawer}  />}
 							ref={(navigator) => {this.navigator = navigator;}}
 							renderScene={this._renderScene.bind(this)} />
-			
-			</DrawerLayoutAndroid>
-		);
-	}
-}
+			*/}
 
 export default App;
