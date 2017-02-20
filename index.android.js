@@ -6,6 +6,7 @@ import AppContainer from './app/AppContainer';
 
 import store from './app/store';
 
+
 class androidapp extends Component {
 
 	render() {

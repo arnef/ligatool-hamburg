@@ -42,47 +42,43 @@ class App extends Component {
 	}
 
 	_onNavigate(action) {
-		if (this.getDrawer()) {
-			this.getDrawer().closeDrawer();
+		if (this.drawer) {
+			this.drawer.closeDrawer();
 			this.navigator.resetTo(action);
         }
 	}
 
 	_openDrawer() {
-		if (this.getDrawer()) {
-			this.getDrawer().openDrawer();
+		if (this.drawer) {
+			this.drawer.openDrawer();
 		}
 	}
 
 
 	componentDidMount() {				
-		
-		if (this.navigator && this.getDrawer()) {
+		if (this.navigator && this.drawer) {
 			BackAndroid.addEventListener('hardwareBackPress', () => {
 				const stack = this.navigator.getCurrentRoutes();
 				if (this.isOpen) {
-					this.getDrawer().closeDrawer();
+					this.drawer.closeDrawer();
 					return true;
 				}
 				else if (stack.length > 1) {
 					this.navigator.pop();
 					return true;
 				}
-				// else if (stack[0].state !== 'LiveTicker') {
-				// 	this.navigator.resetTo({ state: 'LiveTicker', title: 'Übersicht' });
-				// 	return true;
-				// }
-				return false;
+				else if (stack[0].state !== Route.OVERVIEW) {
+					this.navigator.resetTo({ state: Route.OVERVIEW, title: 'Übersicht' });
+					return true;
+				}
+				BackAndroid.exitApp();
+				return true;
 			});
 		}
 	}
 
 	componentWillUnmount() {
 		BackAndroid.removeEventListener('hardwareBackPress');
-	}
-
-	getDrawer() {
-		return this.drawer;
 	}
 
 	render() {

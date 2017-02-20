@@ -96,7 +96,7 @@ const saveState = (state) => {
         team: state.team
     };
     try {
-        AsyncStorage.setItem('settings', JSON.stringify(value));
+        AsyncStorage.setItem('SETTINGS_V09', JSON.stringify(value));
     } catch (ex) {
         console.tron.warn('Error store settings');
     }

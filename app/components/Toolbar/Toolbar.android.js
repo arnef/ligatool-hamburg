@@ -4,14 +4,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 
 const oldAndroid = Platform.Version < 21;
-StatusBar.setTranslucent(!oldAndroid);
-StatusBar.setBackgroundColor(oldAndroid ? 'rgb(0,0,0)' : 'rgba(0,0,0,.3)');
 
 class Toolbar extends Component {
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    StatusBar.setTranslucent(!oldAndroid);
+    StatusBar.setBackgroundColor(oldAndroid ? 'rgb(0,0,0)' : 'rgba(0,0,0,.3)');
+  }
 
   _onIconClicked() {
     const stack = this.props.navState.routeStack;
@@ -24,12 +26,12 @@ class Toolbar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.navState) {
-      const nextRoute = nextProps.navState.routeStack[nextProps.navState.routeStack.length-1];
-      const route = this.props.navState.routeStack[this.props.navState.routeStack.length-1];
+      const nextRoute = nextProps.navState.routeStack[nextProps.navState.routeStack.length - 1];
+      const route = this.props.navState.routeStack[this.props.navState.routeStack.length - 1];
       if (nextRoute.state !== route.state || (nextRoute.leagueID !== route.leagueID)) {
         if (nextRoute.state === 'LiveTicker') {
           this.props.setTitle('Übersicht');
-        } 
+        }
         else if (nextRoute.state === 'LiveMatch') {
           this.props.setTitle('Begegnung');
         }
@@ -46,26 +48,26 @@ class Toolbar extends Component {
   }
 
   render() {
-    const route = !!this.props.navState ? this.props.navState.routeStack[this.props.navState.routeStack.length-1] : null;
+    const route = !!this.props.navState ? this.props.navState.routeStack[this.props.navState.routeStack.length - 1] : null;
     const color = this.props.settings.color;
 
-    const border = !oldAndroid && this.props.withBorder ?  { borderTopWidth: 24, borderColor: color } : { borderTopWidth: 0 };
+    const border = !oldAndroid && this.props.withBorder ? { borderTopWidth: 24, borderColor: color } : { borderTopWidth: 0 };
     let toolbar;
     if (this.props.onIconClicked && this.props.navIconName && this.props.title) {
       toolbar = (<Icon.ToolbarAndroid
-        style={[style.toolbar, { backgroundColor: color}, border]}
+        style={[style.toolbar, { backgroundColor: color }, border]}
         onIconClicked={this.props.onIconClicked}
         titleColor='#ffffff'
         navIconName={`md-${this.props.navIconName}`}
         title={this.props.title}
       />);
     } else {
-      
+
       let title = route.title || '';
       const icon = this.props.navState.routeStack.length === 1 ? 'md-menu' : 'md-arrow-back';
       toolbar = (
         <Icon.ToolbarAndroid
-          style={[style.toolbar, { backgroundColor: color}, border]}
+          style={[style.toolbar, { backgroundColor: color }, border]}
           onIconClicked={this._onIconClicked.bind(this)}
           titleColor='#ffffff'
           navIconName={icon}
@@ -74,17 +76,17 @@ class Toolbar extends Component {
     }
     return (
       <View>
-      <View style={[border]} />{ toolbar }</View>
+        <View style={[border]} />{toolbar}</View>
     )
   }
 }
 
 const style = StyleSheet.create({
   toolbar: {
-		backgroundColor: '#ef473a',
-		height: 56,
+    backgroundColor: '#ef473a',
+    height: 56,
     borderTopWidth: 25
-	}
+  }
 });
 
 function mapStateToProps(state) {

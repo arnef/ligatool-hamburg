@@ -93,7 +93,7 @@ android {
         applicationId "com.arnefeilligatool"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 170215
+        versionCode 170220
         versionName "0.9"
         ndk {
             abiFilters "armeabi-v7a", "x86"

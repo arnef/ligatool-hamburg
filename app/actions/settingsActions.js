@@ -9,7 +9,7 @@ import {
 } from './types';
 import { AsyncStorage } from 'react-native';
 import api from '../api';
-const STORAGE_KEY = 'settings';
+const STORAGE_KEY = 'SETTINGS_V09';
 import store from '../store';
 
 export const setSettings = (settings) => {
