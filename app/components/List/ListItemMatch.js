@@ -60,7 +60,7 @@ class ListItemMatch extends Component {
 
             <Row>
                 <Column>
-                    {  match.venue && (
+                    {  match.venue && match.venue.id && (
                     <Text style={style.metaVenue}>
                         <Icon name='pin' /> {match.venue.name}
                     </Text>
