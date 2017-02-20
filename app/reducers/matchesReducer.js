@@ -84,14 +84,15 @@ const reorderMatches = (matches) => {
     
     const now = new Date().getTime();
     matches.map((match) => {
-        
-        if (match.live || compareDays(match.datetime, now) === 0) {
+        const diff = compareDays(match.datetime, now);
+        if (match.live || diff === 0) {
+            console.tron.log(`time diff ${diff}`);
             today.push(match);
-        } else if (compareDays(match.datetime, now) < 0) {
+        } else if (diff < 0) {
             if (match.set_points) {
                 played.push(match);
             }
-        } else if (compareDays(match.datetime, now) > 0) {
+        } else if (diff > 0) {
             next.push(match);
         }
         

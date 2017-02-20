@@ -4,6 +4,7 @@ import store from './store';
 const weekdays = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
 
 
+
 /**
  * Compare date day of two date.
  * 0 = same day
@@ -14,8 +15,13 @@ const weekdays = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
  * @return {number}
  */
 export const compareDays = (date1, date2) => {
+    date1 = new Date(date1);
+    date2 = new Date(date2); 
+    const day1 = parseInt(date1.getFullYear() + ('0' + date1.getMonth()).slice(-2) + ('0' + date1.getDate()).slice(-2), 10); 
+    const day2 = parseInt(date2.getFullYear() + ('0' + date2.getMonth()).slice(-2) + ('0' + date2.getDate()).slice(-2), 10); 
+    const diff = day1 - day2; 
     
-    return moment(date1).diff(moment(date2), 'days');
+    return diff;
 };
 
 
@@ -25,12 +31,14 @@ export const compareDays = (date1, date2) => {
  * @return {boolean}
  */
 export const isAdminForMatch = (match) => {
-    const date = moment(match.datetime).diff(moment(), 'minutes') < 16
+    const date = moment(match.datetime).diff(moment(), 'minutes') 
+    // const date = dateDiffInMinutes(match.datetime);
+    // alert(date);
     const user = store.getState().auth;
     return (user.team && user.team.ids && match && match.id
         && !(user.team.ids.indexOf(match.team_home.id) === -1
             && user.team.ids.indexOf(match.team_away.id) === -1)
-            && date
+        && (date < 16)
         && (!match.set_points || match.score_unconfirmed)
     ) ? true : false;
 };
