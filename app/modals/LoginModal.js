@@ -75,11 +75,11 @@ class LoginModal extends Component {
                     this._onRequestClose();
                 }}
                 visible={this.props.dialog.login.visible}>
-                {/*<Toolbar 
+                <Toolbar 
                     navIconName='close'
                     title={title}
                     onIconClicked={ () => { this._onRequestClose() }}
-                />*/}
+                />
                 <Container error={error}>
                     { !this.props.settings.team && this.renderLeagues() }
                     { !!this.props.settings.team &&  this.renderLogin() }

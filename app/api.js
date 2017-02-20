@@ -1,15 +1,15 @@
 import { create } from 'apisauce';
-export const baseUrl = 'https://kickern-hamburg.de/de/competitions';
+export const baseUrl = (__DEV__ ? 'https://dev.kickern-hh.de/' : 'https://kickern-hamburg.de/') + 'de/competitions';
+
 
 const api = create({
-    // baseURL: `${baseUrl}/api`
-    baseURL: 'http://localhost:3000/liga-tool/index.php?option=com_sportsmanagerapi&q='
-    // baseURL: 'http://192.168.0.199/liga-tool/index.php?option=com_smapi&q='
-    // baseURL: 'http://192.168.0.184/liga-tool/api'
+    baseURL: `${baseUrl}/index.php?option=com_sportsmanagerapi&q=`
 });
 
-api.addMonitor(response => {
-    console.tron.apisauce(response);
-});
+if (__DEV__) {
+    api.addMonitor(response => {
+        console.tron.apisauce(response);
+    });
+}
 
 export default api;

@@ -1,27 +1,31 @@
 import React, { Component } from 'react';
 import { ListItemMatch } from '../components/List';
-import { Container } from '../components';
+import { Container, Text } from '../components';
 
 class MatchListView extends Component {
 
-    _renderMatch(match) {
-       return (
-        <ListItemMatch 
-            key={match.id}
-            data={match} navigator={this.props.navigator} />
+    constructor(props) {
+        super(props);
+        this._renderMatch.bind(this);
+    }
+
+    _renderMatch(match, sec, idx) {
+        return (
+            <ListItemMatch
+                key={idx}
+                data={match} navigator={this.props.navigator} />
         );
     }
 
     render() {
         return (
-            <Container 
+            <Container
                 error={this.props.error}
                 refreshing={this.props.refreshing}
-                onRefresh={this.props.onRefresh}>
-                    { this.props.matches.map(match => {
-                        return this._renderMatch(match);
-                    }) }
-            </Container>
+                onRefresh={this.props.onRefresh}
+                dataSource={this.props.matches}
+                renderRow={this._renderMatch.bind(this)}
+             />
         );
     }
 }

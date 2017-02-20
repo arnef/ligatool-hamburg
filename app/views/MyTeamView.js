@@ -16,7 +16,8 @@ class MyTeam extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.auth.team && nextProps.auth.team && !nextProps.teamMatches.fetched) {
-            this.props.queryTeamMatches();            
+            this.props.queryTeamMatches();      
+            this.props.setTitle('Mein Team');     
         }
     }
 

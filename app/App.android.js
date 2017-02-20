@@ -43,47 +43,43 @@ class App extends Component {
 	}
 
 	_onNavigate(action) {
-		if (this.getDrawer()) {
-			this.getDrawer().closeDrawer();
+		if (this.drawer) {
+			this.drawer.closeDrawer();
 			this.navigator.resetTo(action);
         }
 	}
 
 	_openDrawer() {
-		if (this.getDrawer()) {
-			this.getDrawer().openDrawer();
+		if (this.drawer) {
+			this.drawer.openDrawer();
 		}
 	}
 
 
 	componentDidMount() {				
-		
-		if (this.navigator && this.getDrawer()) {
+		if (this.navigator && this.drawer) {
 			BackAndroid.addEventListener('hardwareBackPress', () => {
 				const stack = this.navigator.getCurrentRoutes();
-				if (this.getDrawer().isOpen) {
-					this.getDrawer().closeDrawer();
+				if (this.isOpen) {
+					this.drawer.closeDrawer();
 					return true;
 				}
 				else if (stack.length > 1) {
 					this.navigator.pop();
 					return true;
 				}
-				else if (stack[0].state !== 'LiveTicker') {
-					this.navigator.resetTo({ state: 'LiveTicker', title: 'Übersicht' });
+				else if (stack[0].state !== Route.OVERVIEW) {
+					this.navigator.resetTo({ state: Route.OVERVIEW, title: 'Übersicht' });
 					return true;
 				}
-				return false;
+				BackAndroid.exitApp();
+				return true;
 			});
 		}
 	}
 
 	componentWillUnmount() {
 		BackAndroid.removeEventListener('hardwareBackPress');
-	}
-
-	getDrawer() {
-		return this.drawer;
 	}
 
 	render() {
@@ -93,8 +89,8 @@ class App extends Component {
 				drawerWidth={drawerWidth}
 				drawerPosition={DrawerLayoutAndroid.positions.Left}
 				ref={(drawer) => { this.drawer = drawer; }}
-				onDrawerOpen={() => { this.drawer.isOpen = true; }}
-				onDrawerClose={() => { this.drawer.isOpen = false; }}
+				onDrawerOpen={() => { this.isOpen = true; }}
+				onDrawerClose={() => { this.isOpen = false; }}
 				renderNavigationView={ () => navigation} >
 				<LoginModal { ...this.props } />
 					<Navigation initialRoute={{ state: Route.OVERVIEW }} 
@@ -107,7 +103,7 @@ class App extends Component {
 {/*<Navigator
 							style={{flexDirection:'column-reverse'}}
 							configureScene={(route, stack) => Navigator.SceneConfigs.FadeAndroid}
-							initialRoute={{state: Route.OVERVIEW, isRoot: true, title: 'Übersicht'}}
+							initialRoute={{state: Route.OVERVIEW, title: 'Übersicht'}}
 							navigationBar={<Toolbar {...this.props} withBorder openDrawer={this.openDrawer}  />}
 							ref={(navigator) => {this.navigator = navigator;}}
 							renderScene={this._renderScene.bind(this)} />
