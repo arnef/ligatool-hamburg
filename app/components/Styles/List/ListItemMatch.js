@@ -12,12 +12,12 @@ export default StyleSheet.create({
     },
     metaVenue: {
         flex: 1,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: 'right'
     },
     metaTime: {
         flex: 1,
-        fontWeight: 'bold',
-        textAlign: 'right'
+        fontWeight: 'bold'
     },
     detailsRow: {
         flex: 1,

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { ListItemMatch } from '../components/List';
-import { Container } from '../components';
+import { Container, Text } from '../components';
 
 class MatchListView extends Component {
 
-    _renderMatch(match) {
+    _renderMatch(match, idx) {
        return (
         <ListItemMatch 
-            key={match.id}
+            key={idx}
             data={match} navigator={this.props.navigator} />
         );
+        // return (<Text>{ JSON.stringify(match)}</Text>);
     }
 
     render() {
@@ -18,8 +19,8 @@ class MatchListView extends Component {
                 error={this.props.error}
                 refreshing={this.props.refreshing}
                 onRefresh={this.props.onRefresh}>
-                    { this.props.matches.map(match => {
-                        return this._renderMatch(match);
+                    { this.props.matches.map((match, idx) => {
+                        return this._renderMatch(match, idx);
                     }) }
             </Container>
         );

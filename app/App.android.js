@@ -60,7 +60,7 @@ class App extends Component {
 		if (this.navigator && this.getDrawer()) {
 			BackAndroid.addEventListener('hardwareBackPress', () => {
 				const stack = this.navigator.getCurrentRoutes();
-				if (this.getDrawer().isOpen) {
+				if (this.isOpen) {
 					this.getDrawer().closeDrawer();
 					return true;
 				}
@@ -68,10 +68,10 @@ class App extends Component {
 					this.navigator.pop();
 					return true;
 				}
-				else if (stack[0].state !== 'LiveTicker') {
-					this.navigator.resetTo({ state: 'LiveTicker', title: 'Übersicht' });
-					return true;
-				}
+				// else if (stack[0].state !== 'LiveTicker') {
+				// 	this.navigator.resetTo({ state: 'LiveTicker', title: 'Übersicht' });
+				// 	return true;
+				// }
 				return false;
 			});
 		}
@@ -92,14 +92,14 @@ class App extends Component {
 				drawerWidth={drawerWidth}
 				drawerPosition={DrawerLayoutAndroid.positions.Left}
 				ref={(drawer) => { this.drawer = drawer; }}
-				onDrawerOpen={() => { this.drawer.isOpen = true; }}
-				onDrawerClose={() => { this.drawer.isOpen = false; }}
+				onDrawerOpen={() => { this.isOpen = true; }}
+				onDrawerClose={() => { this.isOpen = false; }}
 				renderNavigationView={ () => navigation} >
 				<LoginModal { ...this.props } />
 					<Navigator
 							style={{flexDirection:'column-reverse'}}
 							configureScene={(route, stack) => Navigator.SceneConfigs.FadeAndroid}
-							initialRoute={{state: Route.OVERVIEW, isRoot: true, title: 'Übersicht'}}
+							initialRoute={{state: Route.OVERVIEW, title: 'Übersicht'}}
 							navigationBar={<Toolbar {...this.props} withBorder openDrawer={this.openDrawer}  />}
 							ref={(navigator) => {this.navigator = navigator;}}
 							renderScene={this._renderScene.bind(this)} />

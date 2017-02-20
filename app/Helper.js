@@ -21,7 +21,7 @@ export const compareDays = (date1, date2) => {
 
     const diff = day1 - day2;
 
-  return diff;
+    return diff;
 };
 
 
@@ -33,9 +33,9 @@ export const compareDays = (date1, date2) => {
 export const isAdminForMatch = (match) => {
     const user = store.getState().auth;
     return (user.team && user.team.ids && match && match.id
-        && !(user.team.ids.indexOf(match.team_home.id) === -1 
-        && user.team.ids.indexOf(match.team_away.id) === -1)
-        && match.date_confirmed
+        && !(user.team.ids.indexOf(match.team_home.id) === -1
+            && user.team.ids.indexOf(match.team_away.id) === -1)
+        // && match.date_confirmed
         && (!match.set_points || match.score_unconfirmed)
     ) ? true : false;
 };
@@ -49,7 +49,7 @@ export const isAdminForMatch = (match) => {
 export const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     const day = `0${date.getDate()}`.slice(-2);
-    const month = `0${date.getMonth()+1}`.slice(-2);
+    const month = `0${date.getMonth() + 1}`.slice(-2);
 
     return `${weekdays[date.getDay()]} ${day}.${month}.${date.getFullYear()}`;
 };

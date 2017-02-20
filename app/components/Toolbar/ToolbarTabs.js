@@ -12,7 +12,7 @@ class ToolbarTabs extends Component {
         const tabUnderlineStyle = {
             position: 'absolute',
             width: containerWidth / numberOfTabs,
-            height: 4,
+            height: 3,
             backgroundColor: '#fff',
             bottom: 0            
         };
@@ -38,7 +38,7 @@ class ToolbarTabs extends Component {
             <Touchable key={name} 
                 style={styles.tab}
                 onPress={() => onPressHandler(page)}>
-                <Text bold={isActive} color='#fff'>{name}</Text>  
+                <Text bold color={ isActive ? '#fff' : 'rgba(255, 255, 255, 0.7)'}>{name}</Text>  
             </Touchable>
         );
     }

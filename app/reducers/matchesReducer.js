@@ -1,5 +1,5 @@
 import {QUERY_MATCHES, FULFILLED, REJECTED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, TOGGLE_D5 } from '../actions/types';
-import {compareDays, getMatchKey} from '../Helper';
+import {compareDays} from '../Helper';
 
 export default (state = {
     today: [],
@@ -14,17 +14,13 @@ export default (state = {
             state = {...state, fetching: true, error: null };
             break;
         case QUERY_MATCHES + FULFILLED:
-            state = { ...state };
+            state = { ...state, fetching: false };
             if (action.payload.ok) {
                 const newState = reorderMatches(action.payload.data);
                 state.today = newState.today;
                 state.next = newState.next;
                 state.played = newState.played;
-                state.fetching = false;
-                state.error = null;
             } else {
-                console.tron.warn(action.payload.problem);
-                state.fetching = false;
                 state.error = action.payload.problem;
             }
             break;
@@ -82,21 +78,25 @@ export default (state = {
 };
 
 const reorderMatches = (matches) => {
-    const today = [];
+    let today = [];
     const next = [];
     const played = [];
     
-    const now = __DEV__ ? new Date(2016, 10, 4).getTime() : new Date().getTime();
+    const now = new Date().getTime();
     matches.map((match) => {
+        
         if (match.live || compareDays(match.datetime, now) === 0) {
             today.push(match);
         } else if (compareDays(match.datetime, now) < 0) {
-            played.push(match);
+            if (match.set_points) {
+                played.push(match);
+            }
         } else if (compareDays(match.datetime, now) > 0) {
             next.push(match);
         }
+        
     });
-
+    
     return {
         today,
         next,
