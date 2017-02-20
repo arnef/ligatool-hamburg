@@ -47,7 +47,7 @@ class Toolbar extends Component {
 
   render() {
     const route = !!this.props.navState ? this.props.navState.routeStack[this.props.navState.routeStack.length-1] : null;
-    const color = !!route && !!route.team && !!route.team.color ? route.team.color : this.props.settings.color;
+    const color = this.props.settings.color;
 
     const border = !oldAndroid && this.props.withBorder ?  { borderTopWidth: 24, borderColor: color } : { borderTopWidth: 0 };
     let toolbar;

@@ -60,18 +60,17 @@ class ListItemMatch extends Component {
 
             <Row>
                 <Column>
-                    <Text style={style.metaTime}>
-                        { formatDate(match.datetime) + ' '}
-                        <Icon name='time' /> { formatTime(match.datetime) }
-                    </Text>
-                </Column>
-                
-                <Column>
                     {  match.venue && (
                     <Text style={style.metaVenue}>
                         <Icon name='pin' /> {match.venue.name}
                     </Text>
                     ) }
+                </Column>
+                <Column>
+                    <Text style={style.metaTime}>
+                        { formatDate(match.datetime) + ' '}
+                        <Icon name='time' /> { formatTime(match.datetime) }
+                    </Text>
                 </Column>
             </Row>
 

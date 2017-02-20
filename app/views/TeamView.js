@@ -85,6 +85,7 @@ class TeamView extends Component {
                             <Text bold>Heimspielort</Text>
                         </Column>
                         <Column>
+                            <Text>{ team.venue.name }</Text>
                             <Text>{ team.venue.street }</Text>
                             <Text>{ team.venue.zip_code } { team.venue.city }</Text>
                             <Button icon='map' onPress={() => { this.openMaps(team.venue)}}>Karte</Button>
