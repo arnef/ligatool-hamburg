@@ -10,42 +10,42 @@ const windowWidth = Math.floor(Dimensions.get('window').width * 0.8);
 const drawerWidth = windowWidth < 300 ? windowWidth : 300;
 
 class App extends Component {
-	constructor(props) {
-		super(props);
-		this._onNavigate = this._onNavigate.bind(this);
-		this.openDrawer = this._openDrawer.bind(this);
-	}
 
 
-	_renderScene(route, navigator) {
-		switch (route.state) {
-			case Route.OVERVIEW:
-				return (<Views.Overview {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
-      case Route.LIVE_MATCH:
-        return (<Views.LiveMatch {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
-			case Route.MY_TEAM:
-				return (<Views.MyTeam {...this.props} navigator={navigator} />);
-      case Route.LEAGUES:
-        return (<Views.Leagues { ...this.props} navigator={navigator} />)
-			case Route.MATCH:
-				return (<Views.Match {...this.props} navigator={navigator} id={route.id} vid={route.vid	} />);
-			case Route.RANKING:
-				return (<Views.Table {...this.props} navigator={navigator} leagueID={route.leagueID} />);
-			case Route.TEAM:
-				return (<Views.Team {...this.props} navigator={navigator} team={route.team} />);
-			case Route.PREVIEW:
-				return (<Views.PreviewMatch { ...this.props} navigator={navigator} home={route.home} away={route.away} />);
-			case Route.SETTINGS:
-				return (<Views.Settings.SettingsView {...this.props} navigator={navigator} />);
-			case Route.SETTINGS_NOTIFICATION:
-				return (<Views.Settings.SettingsNotificationView { ...this.props } navigator={navigator} />);
-		}
-	}
+	// _renderScene(route, navigator) {
+	// 	switch (route.state) {
+	// 		case Route.OVERVIEW:
+	// 			return (<Views.Overview {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
+    //   case Route.LIVE_MATCH:
+    //     return (<Views.LiveMatch {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
+	// 		case Route.MY_TEAM:
+	// 			return (<Views.MyTeam {...this.props} navigator={navigator} />);
+    //   case Route.LEAGUES:
+    //     return (<Views.Leagues { ...this.props} navigator={navigator} />)
+	// 		case Route.MATCH:
+	// 			return (<Views.Match {...this.props} navigator={navigator} id={route.id} vid={route.vid	} />);
+	// 		case Route.RANKING:
+	// 			return (<Views.Table {...this.props} navigator={navigator} leagueID={route.leagueID} />);
+	// 		case Route.TEAM:
+	// 			return (<Views.Team {...this.props} navigator={navigator} team={route.team} />);
+	// 		case Route.PREVIEW:
+	// 			return (<Views.PreviewMatch { ...this.props} navigator={navigator} home={route.home} away={route.away} />);
+	// 		case Route.SETTINGS:
+	// 			return (<Views.Settings.SettingsView {...this.props} navigator={navigator} />);
+	// 		case Route.SETTINGS_NOTIFICATION:
+	// 			return (<Views.Settings.SettingsNotificationView { ...this.props } navigator={navigator} />);
+	// 	}
+	// }
 
 	_onNavigate(action) {
+		console.tron.log('_onNavigate');
 		if (this.drawer) {
 			this.drawer.closeDrawer();
-			this.navigator.resetTo(action);
+			if (this.nav) {
+				alert(this.nav.resetTo);
+			}
+			
+			// this.navigator.resetTo(action);
         }
 	}
 
@@ -83,7 +83,7 @@ class App extends Component {
 	}
 
 	render() {
-	 	const navigation = (<Views.Navigation {...this.props} onNavigate={this._onNavigate} width={drawerWidth} />);
+	 	// const navigation = ();
 		return (
 			<DrawerLayoutAndroid
 				drawerWidth={drawerWidth}
@@ -91,10 +91,13 @@ class App extends Component {
 				ref={(drawer) => { this.drawer = drawer; }}
 				onDrawerOpen={() => { this.isOpen = true; }}
 				onDrawerClose={() => { this.isOpen = false; }}
-				renderNavigationView={ () => navigation} >
+				renderNavigationView={() => (<Views.Navigation {...this.props} onNavigate={this._onNavigate} width={drawerWidth} />)} >
 				<LoginModal { ...this.props } />
-					<Navigation initialRoute={{ state: Route.OVERVIEW }} 
-						ref={(navigation) => this.navigator = navigation} />
+					<Navigation initialRoute={{ state: Route.OVERVIEW }}
+						ref={ (element) => {
+							this.nav = element;
+						}}
+						drawer={this.drawer} />
 			</DrawerLayoutAndroid>
 		);
 	}

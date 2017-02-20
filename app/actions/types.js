@@ -66,4 +66,6 @@ export const SCORE_CONFIRMED = 'SCORE_CONFIRMED';
 
 export const UPDATE_FCM_TOKEN = 'UPDATE_FCM_TOKEN';
 
+// navigation
+export const RESET_TO_ROUTE = 'RESET_TO_ROUTE';
 export const SET_TOOLBAR_TITLE = 'SET_TOOLBAR_TITLE';

@@ -9,7 +9,7 @@ class Overview extends Component {
   componentDidMount() {
     const matches = this.props.matches;
     if (matches.today.length === 0 && matches.next.length === 0 && matches.played.length === 0) {
-      this.props.queryMatches();
+      // this.props.queryMatches();
     }
   }
 
@@ -17,7 +17,7 @@ class Overview extends Component {
     const props = {
       error: this.props.matches.error,
       refreshing: this.props.matches.fetching,
-      onRefresh: this.props.queryMatches.bind(this)
+      // onRefresh: this.props.queryMatches
     };
 
     return (

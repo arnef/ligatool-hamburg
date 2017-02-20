@@ -1,5 +1,6 @@
 import { SET_TOOLBAR_TITLE, SCORE_CONFIRMED, NOTIFICATION } from '../actions/types';
 
+
 export default (state={ title: 'Übersicht' }, action) => {
     switch (action.type) {
         case SET_TOOLBAR_TITLE:

@@ -12,7 +12,6 @@ class NavigationView extends Component {
 
     _handleRowPress(state) {
         if (this.props.onNavigate) {
-            console.tron.log(state);
             this.props.onNavigate(state);
         }
     }

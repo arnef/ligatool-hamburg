@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Navigator } from 'react-native';
+import { Navigator, Platform } from 'react-native';
+import { connect } from 'react-redux';
 import * as View from './views';
 import * as Route from './views/routes';
 import { Row, Text, Icon } from './components';
@@ -7,17 +8,11 @@ import Touchable from './components/Touchable';
 
 class Navigation extends Component {
 
-
-    push(route) {
-        // if (!route.title) {
-        //     route.title = titles[route.state];
-        // }
-        this.navigator.push(route);
+    constructor(props) {
+        super(props);
+        this.resetTo.bind(this);
     }
 
-    pop() {
-        this.navigator.pop();
-    }
 
     render() {
         return (
@@ -32,52 +27,79 @@ class Navigation extends Component {
                         RightButton: () => {},
                         Title: this.renderTitle.bind(this)
                     }}
-                    style={{ position: 'relative', backgroundColor: 'blue' }} />
+                    style={{ position: 'relative', backgroundColor: this.props.color }} />
                 }
             />
         );
     }
 
+
+    resetTo(route) {        
+        this.navigator.resetTo(route);
+    }
+
+
+    push(route) {
+        this.navigator.push(route);
+    }
+
+
+    pop() {
+        this.navigator.pop();
+    }
+
+
     renderLeftButton(route, navigator, index, navState) {
         if (index > 0) {
             return (
-                <Touchable style={{padding: 10}} onPress={this.pop.bind(this)}>
+                <Touchable style={{padding: 16}} onPress={this.pop.bind(this)}>
                     <Icon size={24} color='#fff' name='arrow-back' />
                 </Touchable>
-            )
+            );
+        } else if (this.props.drawer) {
+            return (
+                <Touchable style={{padding: 16}} onPress={() => { 
+                    this.props.drawer.openDrawer();
+                }}>
+                    <Icon size={24} color='#fff' name='menu' />
+                </Touchable>
+            );
         }
     }
 
     renderTitle(route, navigator, index, navState) {
         return (
-            <Row style={{padding: 10}}>
+            <Row style={{paddingVertical: 16}}>
                 <Text color='#fff' bold size={18}>{route.title}</Text>
             </Row>
         );
     }
 
     renderScene(route, navigator) {
+         if (!route.title) {
+            route.title = titles[route.state];
+        }
         switch (route.state) {
             case Route.OVERVIEW:
-                return (<View.Overview {...this.props} navigator={navigator} id={route.id} vid={route.vid} />);
+                return (<View.Overview {...this.props} navigator={this} id={route.id} vid={route.vid} />);
             case Route.LIVE_MATCH:
-                return (<View.LiveMatch {...this.props} navigator={navigator} id={route.id} vid={route.vid} />);
+                return (<View.LiveMatch {...this.props} navigator={this} id={route.id} vid={route.vid} />);
             case Route.MY_TEAM:
-                return (<View.MyTeam {...this.props} navigator={navigator} />);
+                return (<View.MyTeam {...this.props} navigator={this} />);
             case Route.LEAGUES:
-                return (<View.Leagues { ...this.props} navigator={navigator} />)
+                return (<View.Leagues { ...this.props} navigator={this} />)
             case Route.MATCH:
-                return (<View.Match {...this.props} navigator={navigator} id={route.id} vid={route.vid} />);
+                return (<View.Match {...this.props} navigator={this} id={route.id} vid={route.vid} />);
             case Route.RANKING:
-                return (<View.Table {...this.props} navigator={navigator} leagueID={route.leagueID} />);
+                return (<View.Table {...this.props} navigator={this} leagueID={route.leagueID} />);
             case Route.TEAM:
-                return (<View.Team {...this.props} navigator={navigator} team={route.team} />);
+                return (<View.Team {...this.props} navigator={this} team={route.team} />);
             case Route.PREVIEW:
-                return (<View.PreviewMatch { ...this.props} navigator={navigator} home={route.home} away={route.away} />);
+                return (<View.PreviewMatch { ...this.props} navigator={this} home={route.home} away={route.away} />);
             case Route.SETTINGS:
-                return (<View.Settings.SettingsView {...this.props} navigator={navigator} />);
+                return (<View.Settings.SettingsView {...this.props} navigator={this} />);
             case Route.SETTINGS_NOTIFICATION:
-                return (<View.Settings.SettingsNotificationView { ...this.props } navigator={navigator} />);
+                return (<View.Settings.SettingsNotificationView { ...this.props } navigator={this} />);
         }
     }
 
@@ -98,4 +120,6 @@ Navigation.propTypes = {
 }
 
 
-export default Navigation;
+export default connect(state => ({
+    color: state.settings.color
+}))(Navigation);
