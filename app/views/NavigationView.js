@@ -70,7 +70,6 @@ class NavigationView extends Component {
                     {
                         !this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (
                             <View style={{ padding: 16, alignItems: 'center' }}>
-                                <Text>{ this.props.leagues.error }</Text>
                                 <Button
                                     centered
                                     style={{backgroundColor: '#ddd', margin: 8 }}

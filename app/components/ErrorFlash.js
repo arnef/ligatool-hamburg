@@ -26,13 +26,13 @@ class ErrorFlash extends Component {
         };
         switch (this.props.error) {
             case CLIENT_ERROR:
-                error.message = 'Fehler vom Client.'
+                error.message = 'Verbindungsfehler'
                 break;
             case SERVER_ERROR:
-                error.message = 'Fehler beim Server';
+                error.message = 'Serverprobleme';
                 break;
             case NETWORK_ERROR:
-                error.message = 'Keine Verbindung zum Server';
+                error.message = 'Keine Internetverbindung';
                 error.color = 'orange'
                 break;
         }
