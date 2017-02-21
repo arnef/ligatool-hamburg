@@ -6,6 +6,7 @@ import MatchListView from './MatchListView';
 
 class Overview extends Component {
 
+
   componentDidMount() {
     const matches = this.props.matches;
     if (matches.today.length === 0 && matches.next.length === 0 && matches.played.length === 0) {
@@ -13,12 +14,14 @@ class Overview extends Component {
     }
   }
 
+
   render() {
     const props = {
       error: this.props.matches.error,
       refreshing: this.props.matches.fetching,
       onRefresh: this.props.queryMatches.bind(this)
     };
+
 
     return (
       <ScrollableTabView

@@ -6,7 +6,7 @@ import ErrorFlash from './ErrorFlash';
 
 
 class Container extends Component {
-    
+
 
     constructor(props) {
         super(props);
@@ -21,33 +21,34 @@ class Container extends Component {
                 refreshing={this.props.refreshing || false}
                 onRefresh={this.props.onRefresh} />
         );
-        const style = {flex: 1, backgroundColor: '#eee'};
+        const style = { flex: 1, backgroundColor: '#eee' };
         if (this.props.renderRow) {
-        return (
-            <View style={style}>
-                <ErrorFlash error={this.props.error}/>
-                <ListView
-                    refreshControl={!!this.props.onRefresh ? refreshControl:null}
-                    style={{ flex: 1 }}
-                    renderRow={this.props.renderRow}
-                    initialListSize={3}
-                    pageSize={4}
-                    enableEmptySections={true}
-                    dataSource={this.state.data.cloneWithRows(this.props.dataSource)}
-                />
-            </View>
-        );
+            return (
+                <View style={style}>
+                    <ErrorFlash error={this.props.error} />
+                    <ListView
+                        scrollEventThrottle={200}
+                        refreshControl={!!this.props.onRefresh ? refreshControl : null}
+                        style={{ flex: 1 }}
+                        renderRow={this.props.renderRow}
+                        initialListSize={3}
+                        pageSize={4}
+                        enableEmptySections={true}
+                        dataSource={this.state.data.cloneWithRows(this.props.dataSource)}
+                    />
+                </View>
+            );
         } else {
-        return (
-            <View style={style}>
-                <ErrorFlash error={this.props.error} />
-                <ScrollView 
-                    refreshControl={!!this.props.onRefresh ? refreshControl:null}
-                    style={{flex: 1}}>
-                    { this.props.children }
-                </ScrollView>
-            </View>
-        )
+            return (
+                <View style={style}>
+                    <ErrorFlash error={this.props.error} />
+                    <ScrollView
+                        refreshControl={!!this.props.onRefresh ? refreshControl : null}
+                        style={{ flex: 1 }}>
+                        {this.props.children}
+                    </ScrollView>
+                </View>
+            );
         }
     }
 }
