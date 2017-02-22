@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     leftButton: {
-        margin: 10,
+        padding: 10,
     },
     title: {
         marginTop: 10,

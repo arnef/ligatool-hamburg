@@ -15,6 +15,7 @@ class Navigation extends Component {
             title: null
         };
         if (this.props.getNav) {
+            // ref fix for android
             this.props.getNav(this);
 			console.tron.log('ref is in props');
 		}
@@ -97,7 +98,7 @@ class Navigation extends Component {
     renderTitle(route, navigator, index, navState) {
         return (
             <Row style={style.title}>
-                <Text color='#fff' bold size={Platform.OS === 'ios' ? 19 : 24} >{ this.state.title !== null ? this.state.title : route.title }</Text>
+                <Text color='#fff' bold size={Platform.OS === 'ios' ? 19 : 22} >{ this.state.title !== null ? this.state.title : route.title }</Text>
             </Row>
         );
     }
@@ -148,7 +149,7 @@ Navigation.propTypes = {
     topBorder: React.PropTypes.bool,
     drawer: React.PropTypes.object,
     bottomTabBar: React.PropTypes.bool,
-    settings: React.PropTypes.object  
+    settings: React.PropTypes.object
 };
 
 

@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     leftButton: {
-        margin: 16,
+        padding: 16,
     },
     title: {
-        marginTop: 14,
+        marginTop: 15,
     },
     toolbar: {
         height: 56
