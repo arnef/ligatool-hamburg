@@ -7,14 +7,14 @@ import { Toolbar } from '../components';
 class PreviewMatch extends Component {
 
   componentDidMount() {
-    this.props.setTitle(this.props.home.name);
+    this.props.navigator.setTitle(this.props.home.name);
   }
 
   onChangeTab(keys) {
     if (keys.i === 0) {
-      this.props.setTitle(this.props.home.name);
+      this.props.navigator.setTitle(this.props.home.name);
     } else {
-      this.props.setTitle(this.props.away.name);
+      this.props.navigator.setTitle(this.props.away.name);
     }
   }
 

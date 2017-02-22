@@ -12,7 +12,9 @@ class TeamView extends Component {
     }
 
     componentDidMount() {
-        this.props.setTitle(this.props.team.name);
+        if (this.props.navigator) {
+            this.props.navigator.setTitle(this.props.team.name);
+        }
         if (!this.getTeam()) {
             this.loadTeam();
             console.tron.log('get team');

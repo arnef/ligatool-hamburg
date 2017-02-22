@@ -10,6 +10,7 @@ import LoginModal from './modals/LoginModal';
 import * as Route from './views/routes';
 import { Text } from './components';
 import Touchable from './components/Touchable';
+import Navigation from './Navigation';
 
 
 class App extends Component {
@@ -27,33 +28,41 @@ class App extends Component {
     });
   }
 
-  _renderScene(route, navigator) {
-    switch (route.state) {
-			case Route.OVERVIEW:
-				return (<Views.Overview {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
-      case Route.LIVE_MATCH:
-        return (<Views.LiveMatch {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
-			case Route.MY_TEAM:
-				return (<Views.MyTeam {...this.props} navigator={navigator} />);
-      case Route.LEAGUES:
-        return (<Views.Leagues { ...this.props} navigator={navigator} />)
-			case Route.MATCH:
-				return (<Views.Match {...this.props} navigator={navigator} id={route.id} vid={route.vid	} />);
-			case Route.RANKING:
-				return (<Views.Table {...this.props} navigator={navigator} leagueID={route.leagueID} />);
-			case Route.TEAM:
-				return (<Views.Team {...this.props} navigator={navigator} team={route.team} />);
-			case Route.PREVIEW:
-				return (<Views.PreviewMatch { ...this.props} navigator={navigator} home={route.home} away={route.away} />);
-			case Route.SETTINGS:
-				return (<Views.Settings.SettingsView {...this.props} navigator={navigator} />);
-			case Route.SETTINGS_NOTIFICATION:
-				return (<Views.Settings.SettingsNotificationView { ...this.props } navigator={navigator} />);
-		}
-	}
-
+  // _renderScene(route, navigator) {
+  //   switch (route.state) {
+	// 		case Route.OVERVIEW:
+	// 			return (<Views.Overview {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
+  //     case Route.LIVE_MATCH:
+  //       return (<Views.LiveMatch {...this.props} navigator={navigator} id={route.id} vid={route.vid}/>);
+	// 		case Route.MY_TEAM:
+	// 			return (<Views.MyTeam {...this.props} navigator={navigator} />);
+  //     case Route.LEAGUES:
+  //       return (<Views.Leagues { ...this.props} navigator={navigator} />)
+	// 		case Route.MATCH:
+	// 			return (<Views.Match {...this.props} navigator={navigator} id={route.id} vid={route.vid	} />);
+	// 		case Route.RANKING:
+	// 			return (<Views.Table {...this.props} navigator={navigator} leagueID={route.leagueID} />);
+	// 		case Route.TEAM:
+	// 			return (<Views.Team {...this.props} navigator={navigator} team={route.team} />);
+	// 		case Route.PREVIEW:
+	// 			return (<Views.PreviewMatch { ...this.props} navigator={navigator} home={route.home} away={route.away} />);
+	// 		case Route.SETTINGS:
+	// 			return (<Views.Settings.SettingsView {...this.props} navigator={navigator} />);
+	// 		case Route.SETTINGS_NOTIFICATION:
+	// 			return (<Views.Settings.SettingsNotificationView { ...this.props } navigator={navigator} />);
+	// 	}
+	// }
 
   _renderTab(name, title) {
+    return (<Navigation
+      { ...this.props }
+      bottomTabBar
+      initialRoute={{ state: name, title: title}}
+      ref={ (navigator) => { this.navigator = navigator }}
+     />)
+  }
+
+  /*_renderTab(name, title) {
     return (
       <Navigator
         style={{flexDirection: 'column-reverse', paddingBottom: 50}}
@@ -89,7 +98,7 @@ class App extends Component {
       />
       
     );
-  }
+  }*/
   
   render() {
     return (

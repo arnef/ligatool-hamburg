@@ -12,6 +12,7 @@ class Icon extends Component {
             <IonIcon name={icon}
                      size={this.props.size}
                      style={style}
+                     onPress={this.props.onPress ? this.props.onPress : null}
                      color={color} />
         );
     }

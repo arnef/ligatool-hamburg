@@ -93,10 +93,10 @@ class App extends Component {
 				onDrawerClose={() => { this.isOpen = false; }}
 				renderNavigationView={() => (<Views.Navigation {...this.props} onNavigate={this._onNavigate} width={drawerWidth} />)} >
 				<LoginModal { ...this.props } />
-					<Navigation initialRoute={{ state: Route.OVERVIEW }}
-						ref={ (element) => {
-							this.nav = element;
-						}}
+					<Navigation 
+						{ ...this.props }
+						initialRoute={{ state: Route.OVERVIEW }}
+						ref={ (navigator) => { this.navigator = navigator }}
 						drawer={this.drawer} />
 			</DrawerLayoutAndroid>
 		);
