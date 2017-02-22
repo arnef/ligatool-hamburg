@@ -1,13 +1,6 @@
-import { SET_TEAMS, GET_TEAM, QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types';
+import { GET_TEAM, QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types';
 import store from '../store';
 import api from '../api';
-
-export const setTeams = (teams) => {
-	return {
-		type: SET_TEAMS,
-		payload: teams
-	};
-};
 
 
 export const queryTeamMatches = () => {

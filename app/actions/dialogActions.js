@@ -26,17 +26,3 @@ export const hidePlayerDialog = () => {
 		payload: false
 	};
 };
-
-// export const showSubmitDialog = () => {
-// 	return {
-// 		type: DIALOG_SUBMIT,
-// 		payload: true
-// 	};
-// };
-
-// export const hideSubmitDialog = () => {
-// 	return {
-// 		type: DIALOG_SUBMIT,
-// 		payload: false
-// 	};
-// };

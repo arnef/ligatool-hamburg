@@ -1,17 +1,6 @@
-import {
-    SET_SETTINGS,
-    SET_UI_COLOR,
-    SET_NOTIFICATION,
-    SET_GROUP_NOTIFICATION,
-    SET_DEVICE_TOKEN,
-    SET_USER_TEAM,
-    PUT_NOTIFICATION,
-    LOGOUT,
-    TOKEN,
-    LOAD_TOKEN,
-    LOAD_SETTINGS,
-    FULFILLED,
-    UPDATE_FCM_TOKEN
+import { SET_SETTINGS, SET_NOTIFICATION, SET_GROUP_NOTIFICATION, 
+         SET_DEVICE_TOKEN, SET_USER_TEAM, PUT_NOTIFICATION, LOGOUT, TOKEN,
+         LOAD_TOKEN, LOAD_SETTINGS, FULFILLED, UPDATE_FCM_TOKEN
 } from '../actions/types';
 
 const defaultColor = '#ef473a';
@@ -83,9 +72,9 @@ export default (state = {
         //     }
         //     break;
     }
-    // if (__DEV__) {
-    //     state.color = 'orange';
-    // }
+    if (__DEV__) {
+        state.color = 'orange';
+    }
     return state;
 };
 

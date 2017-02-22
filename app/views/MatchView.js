@@ -112,7 +112,7 @@ class MatchView extends Component {
         const match = this.props.match.data;
         const showButton =  this.showButton();
         return (
-            <View style={{ flex: 1}}>
+            <View style={{ flex: 1, backgroundColor: '#eee'}}>
                 <SelectPlayerModal
                     { ...this.props }
                     ref={(dialog) => { this.SelectPlayerModal = dialog; }}
