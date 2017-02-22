@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { DrawerLayoutAndroid, BackAndroid, Dimensions, Platform, StatusBar } from 'react-native';
 import LoginModal from './modals/LoginModal';
-import { Toolbar } from './components';
 import * as Views from './views';
 import * as Route from './views/routes';
 import Navigation from './Navigation';

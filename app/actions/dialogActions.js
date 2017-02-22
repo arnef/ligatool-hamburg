@@ -1,10 +1,4 @@
-import {
-	DIALOG_SCORE,
-	DIALOG_PLAYER,
-	DIALOG_SUBMIT,
-	DIALOG_UPDATE
-} from './types';
-
+import { DIALOG_SCORE, DIALOG_PLAYER, DIALOG_SUBMIT } from './types';
 
 export const showScoreDialog = () => {
 	return {
@@ -12,13 +6,13 @@ export const showScoreDialog = () => {
 		payload: true
 	};
 };
+
 export const hideScoreDialog = () => {
 	return {
 		type: DIALOG_SCORE,
 		payload: false
 	};
 };
-
 
 export const showPlayerDialog = () => {
 	return {
@@ -33,30 +27,16 @@ export const hidePlayerDialog = () => {
 	};
 };
 
-
-export const showSubmitDialog = () => {
-	return {
-		type: DIALOG_SUBMIT,
-		payload: true
-	};
-};
-
-export const hideSubmitDialog = () => {
-	return {
-		type: DIALOG_SUBMIT,
-		payload: false
-	};
-};
-
-// export const showUpdateDialog = () => {
+// export const showSubmitDialog = () => {
 // 	return {
-// 		type: DIALOG_UPDATE,
+// 		type: DIALOG_SUBMIT,
 // 		payload: true
 // 	};
 // };
-// export const hideUpdateDialog = () => {
+
+// export const hideSubmitDialog = () => {
 // 	return {
-// 		type: DIALOG_UPDATE,
+// 		type: DIALOG_SUBMIT,
 // 		payload: false
 // 	};
 // };

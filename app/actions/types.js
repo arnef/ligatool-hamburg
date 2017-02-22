@@ -2,25 +2,17 @@
 export const QUERY_MATCHES = 'QUERY_MATCHES';
 export const GET_MATCH = 'GET_MATCH';
 export const QUERY_TEAM_MATCHES = 'QUERY_TEAM_MATCHES';
-// live
-export const LIVE_MATCHES = 'LIVE_MATCHES';
-export const LIVE_MATCH = 'LIVE_MATCH';
 
 // match
-export const SET_MATCHES = 'SET_MATCHES';
-export const SET_MATCH = 'SET_MATCH';
 export const TOGGLE_D5 = 'TOGGLE_D5';
 export const SET_PLAYER = 'SET_PLAYER';
-export const SET_SCORE = 'SET_SCORE';
 export const CONFIRM_RESULT = 'CONFIRM_RESULT';
 export const PUT_SETS = 'PUT_SETS';
 
 // dialogs
 export const DIALOG_SCORE = 'DIALOG_SCORE';
 export const DIALOG_PLAYER = 'DIALOG_PLAYER';
-export const DIALOG_CONFIRM = 'DIALOG_CONFIRM';
 export const DIALOG_SUBMIT = 'DIALOG_SUBMIT';
-export const DIALOG_UPDATE = 'DIALOG_UPDATE';
 
 // login
 export const SHOW_LOGIN = 'SHOW_LOGIN';
@@ -56,7 +48,6 @@ export const INIT_APP = 'INIT_APP';
 
 export const PENDING = '_PENDING';
 export const FULFILLED = '_FULFILLED';
-export const REJECTED = '_REJECTED';
 export const NOTIFICATION = '_NOTIFICATION';
 
 // notification 

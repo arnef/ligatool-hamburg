@@ -6,6 +6,7 @@ import Icon from '../components/Icon';
 import Toolbar from '../components/Toolbar';
 import Container from '../components/Container';
 import { ListItemGroup } from '../components/List';
+import Navigator from '../Navigation';
 
 
 class SelectPlayerModal extends Component {
@@ -87,9 +88,17 @@ class SelectPlayerModal extends Component {
     }
 
     renderItems() {
-        return this.state.items.map( (item, idx) => {
-            return this.renderItem(item, idx);
-        })
+        return (
+            <Container>
+                <ListItemGroup>
+                    { this.state.items.map( (item, idx) => {
+                        return this.renderItem(item, idx);
+                        })
+                    }
+                </ListItemGroup>
+            </Container>
+        );
+        
     }
 
     render() {
@@ -98,16 +107,11 @@ class SelectPlayerModal extends Component {
                 visible={this.props.dialog.player}
                 animationType='slide'
                 onRequestClose={() => { this.props.hidePlayerDialog(); }}>
-                <Toolbar 
-                    navIconName='close' 
-                    title={this.state.title}
-                    onIconClicked={() => { this.props.hidePlayerDialog(); }} />
-                    <Container>
-                        <ListItemGroup>
-                            { this.renderItems() }
-                        </ListItemGroup>
-                    </Container>
-                
+                <Navigator 
+                    closeModal={this.props.hidePlayerDialog.bind(this)}
+                    renderScene={this.renderItems.bind(this)}
+                    initialRoute={{ title: this.state.title }}
+                    />                
             </Modal>
         )
     }

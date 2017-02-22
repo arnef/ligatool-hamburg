@@ -1,6 +1,6 @@
-import { SET_TEAMS, GET_TEAM, QUERY_TEAM_MATCHES, REJECTED, SHOW_LOGIN, GET_TEAM_LOGO_COLOR } from './types';
+import { SET_TEAMS, GET_TEAM, QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types';
 import store from '../store';
-import api, { baseUrl } from '../api';
+import api from '../api';
 
 export const setTeams = (teams) => {
 	return {

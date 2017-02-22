@@ -1,4 +1,6 @@
-import { QUERY_MATCHES, GET_MATCH, SET_PLAYER, PUT_SETS, TOGGLE_D5 } from './types';
+import { QUERY_MATCHES, GET_MATCH, SET_PLAYER, PUT_SETS, 
+         TOGGLE_D5 
+} from './types';
 import api from '../api';
 
 
@@ -9,7 +11,7 @@ export const queryMatches = () => {
 	};
 };
 
-export const getMatch = (id, include_player) => {
+export const getMatch = (id) => {
 	return {
 		type: GET_MATCH,
 		payload: {

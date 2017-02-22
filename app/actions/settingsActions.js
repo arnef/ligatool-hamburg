@@ -1,11 +1,5 @@
-import {
-    SET_SETTINGS,
-    LOAD_SETTINGS,
-    SET_UI_COLOR,
-    SET_NOTIFICATION,
-    SET_GROUP_NOTIFICATION,
-    PUT_NOTIFICATION,
-    SET_DEVICE_TOKEN
+import { SET_SETTINGS, LOAD_SETTINGS, SET_NOTIFICATION, SET_GROUP_NOTIFICATION,
+         PUT_NOTIFICATION, SET_DEVICE_TOKEN
 } from './types';
 import { AsyncStorage } from 'react-native';
 import api from '../api';
@@ -45,7 +39,7 @@ export const saveNotifications = () => {
 };
 
 
-export function setDeviceToken(token) {
+export const setDeviceToken = (token) => {
     return {
         type: SET_DEVICE_TOKEN,
         payload: token

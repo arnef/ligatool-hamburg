@@ -11,6 +11,9 @@ class NavigationView extends Component {
     }
 
     _handleRowPress(state) {
+        if (state.title === 'Login') {
+            state.title = null;
+        }
         if (this.props.onNavigate) {
             this.props.onNavigate(state);
         }

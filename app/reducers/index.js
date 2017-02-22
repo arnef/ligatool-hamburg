@@ -8,7 +8,6 @@ import match from './matchReducer';
 import dialog from './dialogReducer';
 import teamMatches from './teamMatchesReducer';
 import matches from './matchesReducer';
-import navi from './navigatorReducer';
 import teams from './teamReducer';
 import league from './leagueReducer';
 
@@ -22,6 +21,5 @@ export default combineReducers({
 	league,
 	match,
 	dialog,
-	navi,
 	teams
 });
