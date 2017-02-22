@@ -45,5 +45,5 @@ android/keystores/debug.keystore
 
 # Keys
 ligatool-release.keystore
-google-service.json
+google-services.json
 GoogleService-Info.plist
