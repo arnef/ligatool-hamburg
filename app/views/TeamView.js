@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItemGroup } from '../components/List';
 import { Container, Image, Button, Row, Column, Text } from '../components';
@@ -145,17 +145,23 @@ class TeamView extends Component {
     }
 
     openMail(email) {
-        Linking.openURL('mailto:' + email);
+        Linking.openURL('mailto:' + email).catch(ex => {
+            Alert.alert('Keine Mail-App', email);
+        });
     }
 
     openTel(number) {
-        Linking.openURL('tel:' + number);
+        Linking.openURL('tel:' + number).catch(ex => {
+            Alert.alert('Keine Telefon-App', number);
+        });
     }
 
     openMaps(venue) {
         
         const address = `${venue.street} ${venue.zip_code} ${venue.city}`;
-        Linking.openURL('geo:53.5586526,9.6476386?q=' + encodeURI(address));
+        Linking.openURL('geo:53.5586526,9.6476386?q=' + encodeURI(address)).catch(ex => {
+            Alert.alert('Keine Karten-App');
+        });
 
     }
 }

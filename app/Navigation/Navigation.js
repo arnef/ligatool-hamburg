@@ -3,13 +3,9 @@ import { Navigator, Platform, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import * as View from '../views';
 import * as Route from '../views/routes';
-import { Row, Text, Icon } from '../components';
+import { Row, Column, Text, Icon } from '../components';
 import Touchable from '../components/Touchable/Touchable.ios';
 import style from './style';
-
-
-const oldAndroid = Platform.Version < 21
-
 
 class Navigation extends Component {
 
@@ -18,34 +14,39 @@ class Navigation extends Component {
         this.state = {
             title: null
         };
-    }
-
-    componentDidMount() {
-        // if (Platform.OS === 'android' && !oldAndroid) {
-        //     StatusBar.setTranslucent(true);
-        //     StatusBar.setBackgroundColor('rgba(0,0,0,.3)');
-        // }
+        if (this.props.getNav) {
+            this.props.getNav(this);
+			console.tron.log('ref is in props');
+		}
     }
 
     render() {
+        
         return (
+            <Column style={this.props.topBorder ? { borderTopWidth: 25, borderTopColor: this.props.settings.color } : {}}>
             <Navigator
                 style={{flexDirection: 'column-reverse', paddingBottom: this.props.bottomTabBar ? 50 : 0}}
                 ref={(navigator) => { this.navigator = navigator }}
                 initialRoute={this.props.initialRoute}
-                renderScene={this.renderScene.bind(this)}
+                renderScene={this.props.renderScene ? this.renderSceneProps.bind(this) : this.renderScene.bind(this)}
                 navigationBar={
                     <Navigator.NavigationBar routeMapper={{
                         LeftButton: this.renderLeftButton.bind(this),
                         RightButton: () => {},
                         Title: this.renderTitle.bind(this)
                     }}
-                    style={[style.toolbar, { position: 'relative', backgroundColor: 'green'}]} />
+                    style={[style.toolbar, { 
+                        position: 'relative', 
+                        backgroundColor: this.props.settings.color }]} />
                 }
             />
+            </Column>
         );
     }
 
+    renderSceneProps(route) {
+        return this.props.renderScene(route, this);
+    }
 
     resetTo(route) {
         this.setState({ title: null }); 
@@ -76,7 +77,7 @@ class Navigation extends Component {
                     <Icon size={24} color='#fff' name='arrow-back' />
                 </Touchable>
             );
-        } else if (this.props.drawer) {
+        } else if (index === 0 && this.props.drawer) {
             return (
                 <Touchable style={style.leftButton} onPress={() => { 
                     this.props.drawer.openDrawer();
@@ -84,13 +85,19 @@ class Navigation extends Component {
                     <Icon size={24} color='#fff' name='menu' />
                 </Touchable>
             );
+        } else if (index === 0 && this.props.closeModal) {
+            return (
+                <Touchable style={style.leftButton} onPress={this.props.closeModal}>
+                    <Icon size={24} color='#fff' name='close' />
+                </Touchable>
+            )
         }
     }
 
     renderTitle(route, navigator, index, navState) {
         return (
             <Row style={style.title}>
-                <Text color='#fff' size={22} style={{fontWeight: 'bold'}}>{ this.state.title !== null ? this.state.title : route.title }</Text>
+                <Text color='#fff' bold size={Platform.OS === 'ios' ? 19 : 24} >{ this.state.title !== null ? this.state.title : route.title }</Text>
             </Row>
         );
     }
@@ -137,8 +144,12 @@ titles[Route.SETTINGS] = 'Einstellungen';
 titles[Route.SETTINGS_NOTIFICATION] = 'Gruppen wählen';
 
 Navigation.propTypes = {
-    initialRoute: React.PropTypes.object
-}
+    initialRoute: React.PropTypes.object,
+    topBorder: React.PropTypes.bool,
+    drawer: React.PropTypes.object,
+    bottomTabBar: React.PropTypes.bool,
+    settings: React.PropTypes.object  
+};
 
 
 export default connect(state => ({

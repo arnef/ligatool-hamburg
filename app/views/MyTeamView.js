@@ -15,7 +15,7 @@ class MyTeam extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.auth.team && nextProps.auth.team && !nextProps.teamMatches.fetched) {
+        if (!this.props.settings.team && nextProps.settings.team && !nextProps.teamMatches.fetched) {
             this.props.queryTeamMatches();      
             this.props.setTitle('Mein Team');     
         }
@@ -51,5 +51,6 @@ MyTeam.propTypes = {
 
 export default connect(state => ({
     auth: state.auth,
+    settings: state.settings,
     teamMatches: state.teamMatches
 }))(MyTeam);

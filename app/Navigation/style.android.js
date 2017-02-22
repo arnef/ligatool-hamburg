@@ -1,16 +1,13 @@
-import { StyleSheet, Platform } from 'react-native';
-
-const oldAndroid = true; //Platform.Version < 21;
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     leftButton: {
-        padding: 10,
-        // marginTop: oldAndroid ? 0 : 3
+        margin: 16,
     },
     title: {
-        marginTop: 16
+        marginTop: 14,
     },
     toolbar: {
-        height: oldAndroid ? 48 : 73
+        height: 56
     }
 })

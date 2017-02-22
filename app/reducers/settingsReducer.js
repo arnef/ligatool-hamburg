@@ -83,9 +83,9 @@ export default (state = {
         //     }
         //     break;
     }
-    if (__DEV__) {
-        state.color = 'orange';
-    }
+    // if (__DEV__) {
+    //     state.color = 'orange';
+    // }
     return state;
 };
 
