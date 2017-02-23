@@ -62,9 +62,12 @@ class Navigation extends Component {
 
 
     pop() {
-        
         this.navigator.pop();
         this.setState({ title: null });
+    }
+
+    getCurrentRoutes() {
+        return this.navigator.getCurrentRoutes();
     }
 
     setTitle(title) {

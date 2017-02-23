@@ -97,10 +97,26 @@ const reorderMatches = (matches) => {
         }
         
     });
-    
+    today.sort(sortMatches);
+    next.sort(sortMatches);
+    played.sort((a, b) => {
+        let order = b.datetime-a.datetime;
+    if (order === 0) {
+        order = a.league.name < b.league.name ? -1 : 1;
+    } 
+    return order;
+    });
     return {
         today,
         next,
         played
     };
+};
+
+const sortMatches = (a, b) => {
+    let order = a.datetime-b.datetime;
+    if (order === 0) {
+        order = a.league.name < b.league.name ? -1 : 1;
+    } 
+    return order;
 };
