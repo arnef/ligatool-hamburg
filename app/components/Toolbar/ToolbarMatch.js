@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import { connect } from 'react-redux';
-
+import Touchable from '../Touchable';
+import { TEAM } from '../../views/routes';
 
 class MatchHeader extends Component {
 
@@ -19,16 +20,18 @@ class MatchHeader extends Component {
 
 		return (
 			<View style={[style.header, { backgroundColor: this.props.color}]}>
-				<View style={style.teamContainer}>
+				<Touchable style={style.teamContainer}
+					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_home, title: match.team_home.name })}}>
 					<Text style={style.team}>{home}</Text>
-				</View>
+				</Touchable>
 				<View style={style.score}>
 					<Text style={style.points}>{score}</Text>
 					<Text style={style.goals}>({goals})</Text>
 				</View>
-				<View style={style.teamContainer}>
+				<Touchable style={style.teamContainer}
+					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_away, title: match.team_away.name })}}>
 					<Text style={style.team}>{away}</Text>
-				</View>
+				</Touchable>
 			</View>
 		);
 	}
@@ -52,7 +55,8 @@ const style = StyleSheet.create({
 	},
 	team: {
 		textAlign: 'center',
-		color: '#FFF'
+		color: '#FFF',
+		marginHorizontal: 4
 	},
 	points: {
 		fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',

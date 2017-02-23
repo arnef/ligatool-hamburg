@@ -124,7 +124,7 @@ class MatchView extends Component {
                     refreshing={this.props.dialog.score.loading }
                     onRequestClose={ () => { this.props.hideScoreDialog() }}
                 />
-                <Toolbar.Match data={match} />
+                <Toolbar.Match data={match} navigator={this.props.navigator} />
                 <Container error={this.props.match.error}
                     refreshing={this.props.match.loading}
                     onRefresh={this.getMatch.bind(this)}>
