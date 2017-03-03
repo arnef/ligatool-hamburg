@@ -55,6 +55,10 @@ class App extends Component {
 					this.navigator.resetTo({ state: Route.OVERVIEW, title: 'Übersicht' });
 					return true;
 				}
+				else if (stack[0].state === Route.OVERVIEW && !stack[0].firstTab) {
+					this.navigator.resetTo({ state: Route.OVERVIEW, title: 'Übersicht', firstTab: true });
+					return true;
+				}
 				BackAndroid.exitApp();
 				return true;
 			});
