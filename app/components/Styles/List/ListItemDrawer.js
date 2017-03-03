@@ -2,8 +2,9 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	item: {
-		height: 56,
-		paddingVertical: 16,
+		height: 48,
+		paddingVertical: 8,
+		marginVertical: 4,
 		paddingHorizontal: 16,
 		flex: 1,
 		flexDirection: 'row',
@@ -13,8 +14,8 @@ export default StyleSheet.create({
 		marginRight: 32
 	},
 	separator: {
-		borderBottomWidth: 1,
-		borderBottomColor: '#eee'
+		height: 1,
+		backgroundColor: '#eee'
 	},
 	text: {
 		fontWeight: 'bold'
