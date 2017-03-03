@@ -171,7 +171,7 @@ const weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Fr
 
 
 TeamView.propTypes = {
-    setTitle: React.PropTypes.func,
+    navigator: React.PropTypes.object,
     team: React.PropTypes.object,
     teams: React.PropTypes.object,
     getTeam: React.PropTypes.func

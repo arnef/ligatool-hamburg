@@ -1,4 +1,6 @@
-import {QUERY_MATCHES, FULFILLED, REJECTED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, TOGGLE_D5 } from '../actions/types';
+import { QUERY_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, 
+         SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH
+} from '../actions/types';
 import {compareDays} from '../Helper';
 
 export default (state = {
@@ -13,6 +15,7 @@ export default (state = {
         case QUERY_MATCHES + PENDING:
             state = {...state, fetching: true, error: null };
             break;
+
         case QUERY_MATCHES + FULFILLED:
             state = { ...state, fetching: false };
             if (action.payload.ok) {
@@ -36,6 +39,21 @@ export default (state = {
                 }
             }
             break;
+        
+        case GET_MATCH + FULFILLED:
+            state = { ...state };
+            if (action.payload.ok && action.payload.data.live) {
+                for (let i = 0; i < state.today.length; i++) {
+                    if (state.today[i].id === action.payload.data.id) {
+                        state.today[i].set_points = action.payload.data.set_points;
+                        state.today[i].set_points_home = action.payload.data.set_points_home;
+                        state.today[i].set_points_away = action.payload.data.set_points_away;
+                        break;
+                    }
+                }
+            }
+            break;
+        
         case SCORE + NOTIFICATION:
         case SUGGEST_SCORE + NOTIFICATION:
             matchId = parseInt(action.payload.id, 10);
@@ -50,6 +68,7 @@ export default (state = {
                 }
             }
             break;
+        
         case SCORE_CONFIRMED + NOTIFICATION:
             matchId = parseInt(action.payload.id, 10);
             state = { ... state };

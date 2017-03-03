@@ -82,7 +82,6 @@ class Match extends Component {
                 if (match.sets[setIdx]) {
                     data.sets.push(match.sets[setIdx]);
                 } else if (editMatch) {
-                    console.tron.log(`show extra ${data.extra && match.set_points_home >= 16 && match.set_points_away >= 16}`)
                     if (!data.extra || (data.extra && match.set_points_home >= 16 && match.set_points_away >= 16)) {
                         data.sets.push({});
                     }
