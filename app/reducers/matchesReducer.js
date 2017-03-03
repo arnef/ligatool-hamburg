@@ -105,14 +105,17 @@ const reorderMatches = (matches) => {
     matches.map((match) => {
         const diff = compareDays(match.datetime, now);
         if (match.live || diff === 0) {
-            console.tron.log(`time diff ${diff}`);
             today.push(match);
         } else if (diff < 0) {
             if (match.set_points) {
                 played.push(match);
             }
         } else if (diff > 0) {
-            next.push(match);
+            if (match.set_points) {
+                played.push(match);
+            } else {
+                next.push(match);
+            }
         }
         
     });
@@ -133,7 +136,10 @@ const reorderMatches = (matches) => {
 };
 
 const sortMatches = (a, b) => {
-    let order = a.datetime-b.datetime;
+    let order = (b.live ? 1 : 0) - (a.live ? 1 : 0);
+    if (order === 0) {
+        order = a.datetime-b.datetime;
+    }
     if (order === 0) {
         order = a.league.name < b.league.name ? -1 : 1;
     } 
