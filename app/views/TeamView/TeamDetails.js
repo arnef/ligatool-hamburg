@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Linking, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItemGroup } from '../components/List';
-import { Container, Image, Button, Row, Column, Text } from '../components';
+import { ListItemGroup } from '../../components/List';
+import { Container, Image, Button, Row, Column, Text } from '../../components';
 
 
 class TeamView extends Component {
@@ -135,8 +135,8 @@ class TeamView extends Component {
     }
 
     getTeam() {
-        const teamID = this.props.team.id
-        return this.props.teams.id[`${teamID}`];
+        const teamID = `${this.props.team.id}`;
+        return this.props.teams.id[teamID] ? this.props.teams.id[teamID].details : null;
     }
 
     loadTeam() {

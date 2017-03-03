@@ -1,4 +1,4 @@
-import { GET_TEAM, QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types';
+import { GET_TEAM, GET_TEAM_MATCHES , QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types';
 import store from '../store';
 import api from '../api';
 
@@ -24,5 +24,15 @@ export const getTeam = (teamID) => {
     return {
         type: GET_TEAM,
         payload: api.get('/teams/' + teamID)
+    };
+};
+
+export const getTeamMatches = (teamID) => {
+    return {
+        type: GET_TEAM_MATCHES,
+        payload: {
+            data: teamID,
+            promise: api.get('/teams/' + teamID + '/matches')
+        }
     };
 };

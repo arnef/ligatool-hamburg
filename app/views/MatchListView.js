@@ -17,6 +17,12 @@ class MatchListView extends Component {
         );
     }
 
+    componentDidMount() {
+        if (this.props.matches.length === 0 && this.props.refreshOnMount) {
+            this.props.onRefresh();
+        }
+    }
+
     render() {
         if (this.props.error) {
             return (

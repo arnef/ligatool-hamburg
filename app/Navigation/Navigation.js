@@ -125,7 +125,7 @@ class Navigation extends Component {
             case Route.RANKING:
                 return (<View.Table {...this.props} navigator={this} leagueID={route.leagueID} />);
             case Route.TEAM:
-                return (<View.Team {...this.props} navigator={this} team={route.team} />);
+                return (<View.TeamOverview {...this.props} navigator={this} team={route.team} />);
             case Route.PREVIEW:
                 return (<View.PreviewMatch { ...this.props} navigator={this} home={route.home} away={route.away} />);
             case Route.SETTINGS:

@@ -5,7 +5,7 @@ import style from '../style';
 import Touchable from '../components/Touchable';
 import { ListItem, ListItemGroup } from '../components/List';
 import { Container, Image, Icon, Text } from '../components';
-import { TEAM } from '../views/routes';
+import { TEAM_DETAILS, TEAM } from '../views/routes';
 
 class TableView extends Component {
 

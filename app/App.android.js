@@ -16,13 +16,9 @@ class App extends Component {
 	}
 
 	_onNavigate(action) {
-		console.tron.log('_onNavigate');
 		if (this.drawer) {
-			console.tron.log('yup drawer');
 			this.drawer.closeDrawer();
 			if (this.navigator) {
-				console.tron.log('yuo navigator');
-				// alert(this.navigator.resetTo);
 				this.navigator.resetTo(action);
 			}
         }
@@ -53,10 +49,6 @@ class App extends Component {
 				}
 				else if (stack[0].state !== Route.OVERVIEW) {
 					this.navigator.resetTo({ state: Route.OVERVIEW, title: 'Übersicht' });
-					return true;
-				}
-				else if (stack[0].state === Route.OVERVIEW && !stack[0].firstTab) {
-					this.navigator.resetTo({ state: Route.OVERVIEW, title: 'Übersicht', firstTab: true });
 					return true;
 				}
 				BackAndroid.exitApp();

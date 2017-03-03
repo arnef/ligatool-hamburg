@@ -24,6 +24,7 @@ export const LOGOUT = 'LOGOUT';
 
 // team
 export const GET_TEAM = 'GET_TEAM';
+export const GET_TEAM_MATCHES = 'GET_TEAM_MATCHES';
 
 // settings
 export const LOAD_SETTINGS = 'LOAD_SETTINGS';

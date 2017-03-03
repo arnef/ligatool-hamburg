@@ -7,6 +7,7 @@ import Overview from './Overview';
 import PreviewMatch from './PreviewMatch';
 import Table from './TableView';
 import Team from './TeamView';
+import TeamOverview from './TeamView/Team';
 import * as Settings from './Settings';
 import Leagues from './LeaguesView';
 
@@ -20,6 +21,7 @@ export {
     PreviewMatch,
     Table,
     Team,
+    TeamOverview,
     Leagues,
     Settings
 };
