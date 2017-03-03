@@ -7,9 +7,10 @@ import Touchable from '../Touchable';
 class ListItemDrawer extends Component {
 
 	render() {
+		const active = this.props.active ? { backgroundColor: '#eeee'} : null;
 		return (
 			<Touchable onPress={this.props.onPress.bind(this)}>
-				<View style={style.item}>
+				<View style={[style.item, active]}>
 					{ this.props.icon && (<Icon name={this.props.icon} size={24} style={style.icon} />) }
 					<Text style={style.text}>{ this.props.children }</Text>
 				</View>

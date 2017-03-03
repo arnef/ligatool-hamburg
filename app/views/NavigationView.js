@@ -6,6 +6,14 @@ import { RANKING, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes';
 
 class NavigationView extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            activePage: OVERVIEW,
+            activeLeague: -1
+        };
+    }
+
     componentDidMount() {
         this.props.getRankings();
     }
@@ -17,11 +25,16 @@ class NavigationView extends Component {
         if (this.props.onNavigate) {
             this.props.onNavigate(state);
         }
+        this.setState({
+            activePage: state.state,
+            activeLeague: state.leagueID ? state.leagueID : -1
+        });
     }
 
     _renderItem(state, text, icon) {
         return (
             <ListItemDrawer 
+                active={this.state.activePage === state}
                 onPress={() => { this._handleRowPress({ state: state, title: text} ); }}
                 icon={icon}>
                 { text }
@@ -34,6 +47,7 @@ class NavigationView extends Component {
             if (!league.cup) {
                 return (
                     <ListItemDrawer key={league.id}
+                        active={league.id === this.state.activeLeague}
                         onPress={ () => {
                             this._handleRowPress({state: RANKING, leagueID: league.id, title: league.name})
                         }}>

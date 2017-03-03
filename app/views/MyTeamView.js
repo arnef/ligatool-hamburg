@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import { View } from 'react-native';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MatchListView from '../views/MatchListView';
@@ -15,10 +14,10 @@ class MyTeam extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.settings.team && nextProps.settings.team 
+        if (!this.props.settings.team && nextProps.settings.team
             && !nextProps.teamMatches.fetched) {
-                console.tron.log('logged in query matches');
-            this.props.queryTeamMatches();      
+            console.tron.log('logged in query matches');
+            this.props.queryTeamMatches();
             this.props.navigator.setTitle('Mein Team');
         }
     }
@@ -29,7 +28,7 @@ class MyTeam extends Component {
             error: this.props.teamMatches.error,
             onRefresh: this.props.queryTeamMatches.bind(this)
         }
-        
+
         return (
             <ScrollableTabView
                 style={this.props.style}
@@ -46,6 +45,8 @@ class MyTeam extends Component {
 
 MyTeam.propTypes = {
     style: React.PropTypes.object,
+    settings: React.PropTypes.object,
+    navigator: React.PropTypes.object,
     teamMatches: React.PropTypes.object,
     auth: React.PropTypes.object,
     queryTeamMatches: React.PropTypes.func
