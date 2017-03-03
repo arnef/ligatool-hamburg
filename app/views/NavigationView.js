@@ -67,7 +67,7 @@ class NavigationView extends Component {
                 </View>
                 <ScrollView style={{flex: 1}}>
                     { this._renderItem(OVERVIEW, 'Übersicht', 'football') }
-                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Login', team ? 'shirt': 'log-in')}
+                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in')}
                     <ListItemDrawer.Separator />
                     {
                         !this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (

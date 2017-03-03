@@ -15,10 +15,12 @@ class MyTeam extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // if (!this.props.settings.team && nextProps.settings.team && !nextProps.teamMatches.fetched) {
-        //     this.props.queryTeamMatches();      
-        //     this.props.setTitle('Mein Team');     
-        // }
+        if (!this.props.settings.team && nextProps.settings.team 
+            && !nextProps.teamMatches.fetched) {
+                console.tron.log('logged in query matches');
+            this.props.queryTeamMatches();      
+            this.props.navigator.setTitle('Mein Team');
+        }
     }
 
     render() {

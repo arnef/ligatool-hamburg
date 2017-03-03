@@ -101,7 +101,7 @@ class SettingsView extends Component {
 				{ !team && (
 					<ListItem onPress={this._login.bind(this)}
 						icon='log-in'>
-						Login
+						Team wählen
 					</ListItem>
 				)}
 				</ListItemGroup>
