@@ -48,6 +48,7 @@ class AppContainer extends Component {
 			}
 		});
 		this.notificationListener = FCM.on(FCMEvent.Notification, (notif) => {
+			console.tron.log(notif);
 			this.props.receiveNotification(notif);
 			
 		});	
