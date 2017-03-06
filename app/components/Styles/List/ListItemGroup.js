@@ -8,6 +8,8 @@ export default StyleSheet.create({
         borderBottomColor: '#ddd',
     },
     margin: {
+        borderTopWidth: 8,
+        borderTopColor: '#eee',
         borderBottomWidth: 8,
         borderBottomColor: '#eee'
     },

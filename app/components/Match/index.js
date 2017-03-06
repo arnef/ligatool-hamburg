@@ -10,8 +10,7 @@ class Match extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: 'default',
-            editable: true
+            type: 'default'
         };
     }
 
@@ -23,7 +22,6 @@ class Match extends Component {
 
     componentWillReceiveProps(nextProps) {
         const cup = nextProps.match.data.league && nextProps.match.data.league.name.indexOf('pokal') !== -1;
-        console.tron.log(`is match cup ? ${!!cup}`);
         let type = 'default';
         if (!!cup) {
             type = 'cup';
@@ -51,7 +49,6 @@ class Match extends Component {
                 { !!data.toggle && this.props.editable && (
                     <ListItemSwitch 
                         onValueChange={() => {
-                            
                             this.props.toggleMatchType(data.setsIdx);
                             this.setState({ type: data.toggle.type })
                         }}
@@ -59,8 +56,8 @@ class Match extends Component {
                 ) }
                 <ListItemSet 
                     onPress={this.props.onPress ? () => { this.props.onPress(data)} : null}
-                    onLongPress={this.props.onLongPress ? () => { this.props.onLongPress(data)} : null}
-                    editable={this.state.editable}
+                    editable={this.props.editable}
+                    onSelect={this.props.onSelect}
                     data={data} />
             </View>
         );
@@ -107,7 +104,8 @@ class Match extends Component {
 }
 
 Match.propTypes = {
-    type: React.PropTypes.string
+    type: React.PropTypes.string,
+    onSelect: React.PropTypes.func
 };
 
 Match.Score = ScoreDialog;

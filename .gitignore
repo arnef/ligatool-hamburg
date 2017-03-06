@@ -41,7 +41,7 @@ android/app/libs
 android/keystores/debug.keystore
 
 # Visual Studio Code
-.vscode
+.vscode/
 
 # Keys
 ligatool-release.keystore

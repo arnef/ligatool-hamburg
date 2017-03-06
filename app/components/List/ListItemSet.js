@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import Menu, {
+    MenuOptions, MenuOption, MenuTrigger
+} from 'react-native-menu';
 import ListItemGroup from './ListItemGroup';
 import { Row, Column, Text } from '../Styles';
 import Image from '../Image';
+import Icon from '../Icon';
 import Score from '../Score';
 
 class ListItemSet extends Component {
@@ -10,25 +14,41 @@ class ListItemSet extends Component {
     render() {
         const data = this.props.data;
         
+        const dropdown = this.props.editable ? (
+            <Menu onSelect={this.props.editable && !!this.props.onSelect ? (value) => { this.props.onSelect(data, value) } : () => { alert('no select')}}>
+                        <MenuTrigger>
+                            <Icon name='arrow-dropdown'  size={24} style={{margin: 4}} />
+                        </MenuTrigger>
+                        <MenuOptions>
+                            <MenuOption value={1}>
+                                <Text>Spieler wählen</Text>
+                            </MenuOption>
+                            <MenuOption value={2}>
+                                <Text>Ergebnis eintragen</Text>
+                            </MenuOption>
+                        </MenuOptions>
+                    </Menu>
+        ) : null;
         return (
-            <ListItemGroup 
+            <ListItemGroup
                 center
-                onPress={this.props.editable && !!this.props.onPress ? () => { this.props.onPress(data)} : null}
-                onLongPress={this.props.editable && !!this.props.onLongPress ? () => { this.props.onLongPress(data)} : null}
-                name={data.name} padding>
+                onPress={this.props.editable && !!this.props.onPress ? () => { this.props.onPress(data) } : null}
+                name={this.props.data.name} 
+                dropdown={dropdown}
+                padding>
                 <Row>
                     <Column center>
-                        { this.getPlayerHome(data.sets[0], 1) }
-                        { data.type === 2 && this.getPlayerHome(data.sets[0], 2) }
+                        {this.getPlayerHome(data.sets[0], 1)}
+                        {data.type === 2 && this.getPlayerHome(data.sets[0], 2)}
                     </Column>
-                    <Column center style={{flex: 0.5}}>
-                        { data.sets.map( (set, idx) => {
+                    <Column center style={{ flex: 0.5 }}>
+                        {data.sets.map((set, idx) => {
                             return (<Score key={idx} goals={set} />);
                         })}
                     </Column>
                     <Column center>
-                        { this.getPlayerAway(data.sets[0], 1) }
-                        { data.type === 2 && this.getPlayerAway(data.sets[0], 2) }
+                        {this.getPlayerAway(data.sets[0], 1)}
+                        {data.type === 2 && this.getPlayerAway(data.sets[0], 2)}
                     </Column>
                 </Row>
             </ListItemGroup>
@@ -44,10 +64,10 @@ class ListItemSet extends Component {
         return (
             <Row center>
                 <Column center>
-                    <Text center>{ this.getName(player) }</Text>
+                    <Text center>{this.getName(player)}</Text>
                 </Column>
-                <Column style={{flex: 0,width: imageSize }}>
-                    { !!player && !!player.image && (<Image url={player.image} size={imageSize} /> ) }
+                <Column style={{ flex: 0, width: imageSize }}>
+                    {!!player && !!player.image && (<Image url={player.image} size={imageSize} />)}
                 </Column>
             </Row>
         );
@@ -57,11 +77,11 @@ class ListItemSet extends Component {
         const player = data[`player_${nr}_away`];
         return (
             <Row center>
-                <Column style={{flex: 0, width: imageSize}}>
-                    { !!player && !!player.image && (<Image url={player.image} size={imageSize} />) }
+                <Column style={{ flex: 0, width: imageSize }}>
+                    {!!player && !!player.image && (<Image url={player.image} size={imageSize} />)}
                 </Column>
                 <Column center>
-                    <Text center>{ this.getName(player) }</Text>
+                    <Text center>{this.getName(player)}</Text>
                 </Column>
             </Row>
         )

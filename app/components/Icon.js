@@ -5,7 +5,13 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 class Icon extends Component {
 
     render() {
-        const icon = Platform.OS === 'ios' ? `ios-${this.props.name}-outline` : `md-${this.props.name}`;
+        let icon = `md-${this.props.name}`;
+        if (Platform.OS === 'ios') {
+            icon = `ios-${this.props.name}`;
+            if (icon.indexOf('outline') === -1) {
+                icon += '-outline';
+            }
+        }
         const color = this.props.color || '#aaa';
         const style = this.props.style || {};
         return (

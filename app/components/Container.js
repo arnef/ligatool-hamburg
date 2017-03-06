@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, RefreshControl, ListView } from 'react-native';
+import { MenuContext } from 'react-native-menu';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
 

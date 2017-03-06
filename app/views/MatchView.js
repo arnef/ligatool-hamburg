@@ -48,8 +48,20 @@ class MatchView extends Component {
         }
     }
 
-    onLongPress(data) {
-        this.showPlayerDialog('home', data);
+    // onLongPress(data) {
+    //     this.showPlayerDialog('home', data);
+    // }
+
+    onSelect(data, value) {
+        console.tron.log(data);
+        if (value == 1) {
+            this.showPlayerDialog('home', data);
+        }
+        if (value == 2) {
+            if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
+                this.showScoreDialog(data);
+            }
+        }
     }
 
 
@@ -128,11 +140,13 @@ class MatchView extends Component {
                 <Container error={this.props.match.error}
                     refreshing={this.props.match.loading}
                     onRefresh={this.getMatch.bind(this)}>
+
                     <Match editable={this.state.editable}
-                            toggleMatchType={this.props.toggleMatchType.bind(this)}
-                           onPress={this.onPress.bind(this) }
-                           onLongPress={this.onLongPress.bind(this)}
+                           toggleMatchType={this.props.toggleMatchType.bind(this)}
+                           onPress={this.onPress.bind(this)}
+                           onSelect={this.onSelect.bind(this)}
                     />
+
                 </Container>
                 { showButton && (
                     <Button block 

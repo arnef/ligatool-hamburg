@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { MenuContext } from 'react-native-menu';
 import { ActionCreators } from './actions';
 import LoadingScreen from './components/LoadingScreen';
 import FCM, { FCMEvent } from 'react-native-fcm';
@@ -61,7 +62,7 @@ class AppContainer extends Component {
 	render() {
 		const initApp = this.props.initApp;
 		if (initApp.tasksDone.length === initApp.tasks) {
-			return (<App {...this.props} />);
+			return (<MenuContext style={{flex: 1}}><App {...this.props} /></MenuContext>);
 		} else {
 			return (<LoadingScreen spinner />);
 		}
