@@ -5,7 +5,6 @@ export const baseUrl = __DEV__ ?
     // 'http://localhost:3000/liga-tool' :
     'https://kickern-hamburg.de/de/competitions';
 
-// 
 
 const api = create({
     baseURL: `${baseUrl}/index.php?option=com_sportsmanagerapi&q=`

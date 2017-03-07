@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Linking, Alert } from 'react-native';
+import { View, Linking, Alert, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItemGroup } from '../../components/List';
 import { Container, Image, Button, Row, Column, Text } from '../../components';
@@ -157,9 +157,9 @@ class TeamView extends Component {
     }
 
     openMaps(venue) {
-        
         const address = `${venue.street} ${venue.zip_code} ${venue.city}`;
-        Linking.openURL('geo:53.5586526,9.6476386?q=' + encodeURI(address)).catch(ex => {
+        const prefix = Platform.OS === 'ios' ? 'http://maps.apple.com/?address=' : 'geo:53.5586526,9.6476386?q=';
+        Linking.openURL(prefix + encodeURI(address)).catch(ex => {
             Alert.alert('Keine Karten-App');
         });
 

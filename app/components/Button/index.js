@@ -1,13 +1,41 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import Touchable from './Touchable';
-import Icon from './Icon'
-import { Text, Row } from './Styles';
+import Touchable from '../Touchable';
+import Icon from '../Icon'
+import { Text, Row } from '../Styles';
+import style from './style';
 
 class Button extends Component {
 
 	render() {
+		const s = {
+			opacity: 1,
+			borderColor: this.props.color,
+			flex: this.props.block ? 1 : 0
+		};
+		const textColor = this.props.primary ? '#fff' : this.props.color;
+		if (this.props.primary) {
+			s.backgroundColor = this.props.color;
+		}
+		if (this.props.disabled) {
+			s.opacity = this.props.primary ? .8 : .15;
+		}
+		return (
+			<Row style={{flex: 0}}>
+				<Touchable 
+					style={[style.button, s]}
+					onPress={!this.props.disabled ? this.props.onPress : null}>
+					{ !!this.props.icon && (<Icon name={this.props.icon} color={textColor} size={20} style={styles.icon} />) }
+					<Text color={textColor} style={style.buttonText}>
+						{ Platform.OS === 'android' ? this.props.children.toUpperCase() : this.props.children }
+					</Text>
+				</Touchable>
+			</Row>
+		);
+	}
+
+	renderOld() {
 		let style = {
 			margin: 4,
 			marginLeft: 0,
