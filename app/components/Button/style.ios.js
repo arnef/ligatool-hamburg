@@ -12,7 +12,8 @@ export default StyleSheet.create({
         marginVertical: 4,
         flexDirection: 'row'
     },
-    buttonText: {
+    buttonText: { 
+        textAlign: 'center',
         lineHeight: 27,
         fontSize: 14
     }

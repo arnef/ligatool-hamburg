@@ -11,9 +11,12 @@ class Column extends Component {
         if (this.props.width) {
             style.flex = this.props.width / 10;
         }
+        if (this.props.fluid) {
+            style.flex = 0;
+        }
         return (
             <View style={[style, this.props.style]}>
-                { this.props.children}
+                { this.props.children }
             </View>
         );
     }

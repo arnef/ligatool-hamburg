@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, TouchableWithoutFeedback } from 'react-native';
 import Menu, {
     MenuContext, MenuOptions, MenuOption, MenuTrigger
 } from 'react-native-menu';
@@ -24,7 +24,7 @@ class ListItemGroup extends Component {
     render() {
         return (
             <View style={style.margin}>
-                <View style={style.group}>
+                <Touchable style={style.group} onPress={this.props.onPress}>
                     {!!this.props.name && (
                         <Row>
                         <Text
@@ -35,13 +35,10 @@ class ListItemGroup extends Component {
                             { !!this.props.dropdown && this.props.dropdown }
                         </Row>
                     )}
-                    <Touchable 
-                        onPress={this.props.onPress}
-                        onLongPress={this.props.onLongPress}
-                        style={this.padding}>
+                    <View style={this.padding}>
                         {this.props.children}
-                    </Touchable>
-                </View>
+                        </View>
+                </Touchable>
             </View>);
     }
 }

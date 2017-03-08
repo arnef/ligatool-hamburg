@@ -59,14 +59,15 @@ class ListItemMatch extends Component {
             onPress={() => {this.onPress(match)}}>
 
             <Row>
-                <Column>
+                <Column fluid>
                     {  match.venue && match.venue.id && (
                     <Text style={style.metaVenue}>
                         <Icon name='pin' /> {match.venue.name}
                     </Text>
                     ) }
                 </Column>
-                <Column>
+                <Column />
+                <Column fluid>
                     <Text style={style.metaTime}>
                         { formatDate(match.datetime) + ' '}
                         <Icon name='time' /> { formatTime(match.datetime) }

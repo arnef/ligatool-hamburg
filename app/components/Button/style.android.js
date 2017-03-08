@@ -12,11 +12,11 @@ export default StyleSheet.create({
         marginRight: 8,
         marginVertical: 4,
         flexDirection: 'row',
-        borderColor: 'rgba(0,0,0,0.12)'
     },
     buttonText: {
-        lineHeight: 36,
+        // lineHeight: 34,
         fontSize: 14,
+        textAlign: 'center',
         fontWeight: 'bold'
     }
 });

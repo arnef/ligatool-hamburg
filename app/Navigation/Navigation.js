@@ -26,14 +26,14 @@ class Navigation extends Component {
         return (
             <Column style={this.props.topBorder ? { borderTopWidth: 25, borderTopColor: this.props.settings.color } : {}}>
             <Navigator
-                style={{flexDirection: 'column-reverse', paddingBottom: this.props.bottomTabBar ? 50 : 0}}
+                style={{flexDirection: 'column-reverse'}}
                 ref={(navigator) => { this.navigator = navigator }}
                 initialRoute={this.props.initialRoute}
                 renderScene={this.props.renderScene ? this.renderSceneProps.bind(this) : this.renderScene.bind(this)}
                 navigationBar={
                     <Navigator.NavigationBar routeMapper={{
                         LeftButton: this.renderLeftButton.bind(this),
-                        RightButton: () => {},
+                        RightButton: () => { return (<Text color='#fff'>{ __DEV__ ? 'DEV':''}</Text>)},
                         Title: this.renderTitle.bind(this)
                     }}
                     style={[style.toolbar, { 

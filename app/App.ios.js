@@ -40,12 +40,10 @@ class App extends Component {
       <View style={{flex: 1, backgroundColor: '#eee'}}>
       <LoginModal { ...this.props } />
       <TabBarIOS
-        tintColor='#fff'
-        translucent={false}
-        
-        barTintColor={this.props.settings.color}>
+        tintColor={this.props.settings.color}
+        translucent={true}>
         <Icon.TabBarItemIOS
-  
+          title='Übersicht'
           iconName='ios-football'
           selected={ this.state.selectedTab === Route.OVERVIEW }
           onPress={() => { this._setTab(Route.OVERVIEW); }}>
@@ -53,7 +51,7 @@ class App extends Component {
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
-  
+          title='Mein Team'
           iconName='ios-shirt'
           selected={ this.state.selectedTab === Route.MY_TEAM }
           onPress={ () => { this._setTab(Route.MY_TEAM); }}>
@@ -61,6 +59,7 @@ class App extends Component {
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
+          title='Gruppen'
           iconName='ios-trophy'
           selected={this.state.selectedTab === Route.LEAGUES}
           onPress={ () => { this._setTab(Route.LEAGUES); }}>
@@ -68,7 +67,7 @@ class App extends Component {
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
-          
+          title='Einstellungen'
           iconName='ios-settings'
           selected={this.state.selectedTab === Route.SETTINGS}
           onPress={ () => { this._setTab(Route.SETTINGS); }}>

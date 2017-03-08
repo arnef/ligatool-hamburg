@@ -4,7 +4,8 @@ import Menu, {
     MenuOptions, MenuOption, MenuTrigger
 } from 'react-native-menu';
 import ListItemGroup from './ListItemGroup';
-import { Row, Column, Text } from '../Styles';
+import { Row, Column, Text, Button } from '../../components';
+import Touchable from '../Touchable';
 import Image from '../Image';
 import Icon from '../Icon';
 import Score from '../Score';
@@ -17,7 +18,9 @@ class ListItemSet extends Component {
         const dropdown = this.props.editable ? (
             <Menu onSelect={this.props.editable && !!this.props.onSelect ? (value) => { this.props.onSelect(data, value) } : () => { alert('no select')}}>
                         <MenuTrigger>
-                            <Icon name='arrow-dropdown'  size={24} style={{margin: 4}} />
+                            <Touchable style={{paddingVertical: 8, paddingHorizontal: 16}}>
+                                <Icon name='more' size={20} />
+                            </Touchable>
                         </MenuTrigger>
                         <MenuOptions>
                             <MenuOption value={1}>

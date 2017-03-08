@@ -113,14 +113,14 @@ class ScoreDialog extends Component {
                     </View>
                 </View>
                 <ButtonBar>
-                    <Button onPress={this.onPress.bind(this)} secondary>
+                    <Button onPress={this.onPress.bind(this)} basic>
                         Speichern
                     </Button>
-                    <Button onPress={this.props.onRequestClose.bind(this)} secondary>
+                    <Button onPress={this.props.onRequestClose.bind(this)} basic>
                         Abbrechen
                     </Button>
                     { this.state.set > 0 && (
-                        <Button onPress={this.goBack.bind(this)} secondary>
+                        <Button onPress={this.goBack.bind(this)} basic>
                             { `${this.state.set}. Satz` }
                         </Button>
                     )}
