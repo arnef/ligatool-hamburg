@@ -17,23 +17,27 @@ class LeaguesView extends Component {
 
 	render() {
 		return (
-			<Container error={this.props.leagues.error}	
+			<Container 
+				{ ...this.props }
+				error={this.props.leagues.error}	
 				refreshing={this.props.leagues.loading}
 				onRefresh={this.props.getRankings.bind(this)}>
+				{ this.props.leagues.data.length > 0 && (
 				<ListItemGroup>
-				{ this.props.leagues.data.map( league => {
+				{ this.props.leagues.data.map( (league, idx) => {
 					if (!league.cup)
 					return (
 						<View key={league.id}>
 							<ListItem
+								last={idx === this.props.leagues.data.length-2}
 								onPress={() => this.onPress(league)}>
 								{ league.name }
 							</ListItem>
-							<ListItem.Separator />
 						</View>
 					)
 				})}	
 				</ListItemGroup>
+				)}
 			</Container>
 		);
 	}

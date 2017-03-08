@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     button: {
         borderWidth: 1,
-        borderRadius: 2,
+        borderRadius: 3,
         minHeight: 36,
         minWidth: 64,
         paddingVertical: 0,

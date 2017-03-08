@@ -29,7 +29,7 @@ class App extends Component {
   _renderTab(name, title) {
     return (<Navigation
       { ...this.props }
-      bottomTabBar
+      hasTabbar
       initialRoute={{ state: name, title: title}}
       ref={ (navigator) => { this.navigator = navigator }}
      />)

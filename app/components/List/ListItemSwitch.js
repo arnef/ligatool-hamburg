@@ -8,6 +8,7 @@ class ListItemSwitch extends Component {
 	
 	render() {
 		return (
+			<View>
 			<Touchable
 				disabled={this.props.disabled}
 				style={style.item}
@@ -21,6 +22,8 @@ class ListItemSwitch extends Component {
 				onValueChange={this.props.onValueChange.bind(this)}
 				value={this.props.value} />
 			</Touchable>
+			{ !this.props.last && (<View style={style.separator} />)}
+			</View>
 		);
 	}
 }

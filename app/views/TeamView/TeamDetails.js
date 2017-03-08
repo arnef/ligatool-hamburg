@@ -26,7 +26,9 @@ class TeamView extends Component {
         const team = this.getTeam() || this.props.team;
 
         return (
-            <Container error={this.props.teams.error}
+            <Container 
+                { ...this.props }
+                error={this.props.teams.error}
                 refreshing={this.props.teams.loading}
                 onRefresh={this.loadTeam.bind(this)} >
                 { this.renderTeamDetails(team) }
@@ -36,7 +38,7 @@ class TeamView extends Component {
     }
 
     renderTeamDetails(team) {
-        const leftWidth = 4;
+        const leftWidth = 5;
         return (
             <ListItemGroup padding name='Details'>
                 { !!team.image && (

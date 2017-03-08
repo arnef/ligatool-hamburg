@@ -24,7 +24,9 @@ class LiveMatchView extends Component {
 		return (
 			<View style={{flex: 1}}>
 				<Toolbar.Match data={this.props.match.data} navigator={this.props.navigator}  />
-				<Container error={this.props.match.error}
+				<Container 
+					{ ...this.props }
+					error={this.props.match.error}
 					refreshing={this.props.match.loading}
 					onRefresh={this._fetchLiveMatch.bind(this)}>
 					<Match />

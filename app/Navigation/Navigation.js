@@ -101,7 +101,7 @@ class Navigation extends Component {
     renderTitle(route, navigator, index, navState) {
         return (
             <Row style={style.title}>
-                <Text color='#fff' bold size={Platform.OS === 'ios' ? 19 : 22} >{ this.state.title !== null ? this.state.title : route.title }</Text>
+                <Text color='#fff' bold size={Platform.OS === 'ios' ? 17 : 20} numberOfLines={1} ellipsizeMode='tail'>{ this.state.title !== null ? this.state.title : route.title }</Text>
             </Row>
         );
     }

@@ -2,10 +2,11 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     group: {
-        // marginBottom: 8,
         backgroundColor: '#fff',
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
         borderBottomColor: '#ddd',
+        borderTopColor: '#ddd',
     },
     margin: {
         borderTopWidth: 8,
@@ -16,7 +17,7 @@ export default StyleSheet.create({
     header: {
         fontWeight: 'bold',
         fontSize: 15,
-        marginVertical: 8,
-        marginHorizontal: 16
+        paddingVertical: 8,
+        paddingHorizontal: 16
     }
 });

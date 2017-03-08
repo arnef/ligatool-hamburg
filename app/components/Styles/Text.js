@@ -4,7 +4,9 @@ import { Text as RNText } from 'react-native';
 class Text extends Component {
 
     render() { 
-         const style = {};
+         const style = {
+             fontSize: this.props.size
+         };
         if (this.props.center) {
             style.textAlign = 'center';
         }
@@ -14,13 +16,18 @@ class Text extends Component {
         if (this.props.color) {
             style.color = this.props.color;
         }
-        if (this.props.size) {
-            style.fontSize = this.props.size;
-        }
         return (
-            <RNText style={[style, this.props.style]}>{this.props.children}</RNText>
+            <RNText numberOfLines={2} ellipsizeMode='tail' { ...this.props} style={[style, this.props.style]}>{this.props.children}</RNText>
         );
     }
 }
+
+Text.defaultProps = {
+    size: 14
+};
+
+Text.propTypes = {
+    size: React.PropTypes.number
+};
 
 export default Text;

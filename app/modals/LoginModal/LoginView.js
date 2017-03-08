@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, TextInput, ActivityIndicator } from 'react-native';
 import { Container, Row, Column, Text, Button } from '../../components';
 import { ListItemGroup } from '../../components/List';
-
+import style from '../../style';
 
 class LoginView extends Component {
 
@@ -32,19 +32,19 @@ class LoginView extends Component {
         return (
             <Container>
             <ListItemGroup>
-                <Row style={{padding: 8}}>
+                <Row style={{paddingHorizontal: 16, paddingVertical: 8}}>
                     <Column>
                         <Text>Zugangsdaten für das Liga-Tool.</Text>
                         <Text>Wenn diese nicht eingetragen werden, können keine Spiele eingetragen werden.</Text>
                     </Column>
                 </Row>
-                <Row style={{padding: 8}}>
+                <Row>
                     <Column>
+                        <Row style={style.form} />
                         <TextInput placeholder='Username'
                             ref='UserInput'
                             autoFocus
-                            
-                            style={{height: 40, marginVertical: 8}}
+                            style={style.input}
                             editable={!this.props.auth.loading}
                             blurOnSubmit={false}                        
                             autoCorrect={false}
@@ -55,18 +55,20 @@ class LoginView extends Component {
                                 this.refs.PassInput.focus()
                             }}
                             returnKeyLabel='next' />
+                        <Row style={style.formSeparator} />
                         <TextInput placeholder='Passwort'
                             ref='PassInput'      
-                            style={{height: 40, marginVertical: 8}}                      
+                            style={style.input}                      
                             editable={!this.props.auth.loading}
                             secureTextEntry={true}
                             onChangeText={(text) => {
                                 this.setState({ pass: text })
                             }}
                             returnKeyType='send' />
+                        <Row style={style.form} />
                     </Column>
                 </Row>
-                <Row style={{ padding: 4}}>
+                <Row style={{paddingHorizontal: 16, paddingVertical: 8}}>
                     <Column>
                         <Button block 
                             onPress={this.closeModal.bind(this)}>

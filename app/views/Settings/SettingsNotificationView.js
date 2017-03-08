@@ -16,29 +16,29 @@ class SettingsNotificationView extends Component {
     render() {
         const leagues = this.props.leagues.data;
         return (
-            <Container>
+            <Container {...this.props}>
                 <ListItemGroup>
-                { leagues.map( league => {
-                    return this.renderRow(league);
+                { leagues.map( (league, idx) => {
+                    return this.renderRow(league, idx);
                 })}
                 </ListItemGroup>
             </Container>
         );
     }
 
-    renderRow(data) {
+    renderRow(data, idx) {
         const groups = this.props.settings.notification.leagues || {};
         const checked = groups[data.id];
         return (
             <View key={data.id}>
-            <ListItemSwitch                
+            <ListItemSwitch
+                last={idx === this.props.leagues.data.length -1}         
                 value={checked}
                 onValueChange={(newValue) => { 
                     this.props.setGroupNotification(data.id, newValue)
                 }}>
                 { data.name }
             </ListItemSwitch>
-            <ListItemSwitch.Separator />
             </View>
         );
     }

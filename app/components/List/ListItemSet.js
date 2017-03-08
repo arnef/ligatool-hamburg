@@ -33,23 +33,27 @@ class ListItemSet extends Component {
         ) : null;
         return (
             <ListItemGroup
-                center
                 onPress={this.props.editable && !!this.props.onPress ? () => { this.props.onPress(data) } : null}
                 name={this.props.data.name} 
                 dropdown={dropdown}
+                center
                 padding>
                 <Row>
-                    <Column center>
+                    <Column>
                         {this.getPlayerHome(data.sets[0], 1)}
+                        { data.type === 2 && (<Row style={{height: 4}} />)}
                         {data.type === 2 && this.getPlayerHome(data.sets[0], 2)}
                     </Column>
-                    <Column center style={{ flex: 0.5 }}>
+                    <Column style={{ flex: 0.5 }} center>
                         {data.sets.map((set, idx) => {
-                            return (<Score key={idx} goals={set} />);
+                            return (
+                                <Score key={idx} style={{marginTop: idx > 0 ? 9 : 5}} goals={set} />
+                            );
                         })}
                     </Column>
-                    <Column center>
+                    <Column>
                         {this.getPlayerAway(data.sets[0], 1)}
+                        { data.type === 2 && (<Row style={{height: 4}} />)}
                         {data.type === 2 && this.getPlayerAway(data.sets[0], 2)}
                     </Column>
                 </Row>
@@ -65,7 +69,7 @@ class ListItemSet extends Component {
         const player = data[`player_${nr}_home`];
         return (
             <Row center>
-                <Column center>
+                <Column>
                     <Text center>{this.getName(player)}</Text>
                 </Column>
                 <Column style={{ flex: 0, width: imageSize }}>
@@ -82,7 +86,7 @@ class ListItemSet extends Component {
                 <Column style={{ flex: 0, width: imageSize }}>
                     {!!player && !!player.image && (<Image url={player.image} size={imageSize} />)}
                 </Column>
-                <Column center>
+                <Column>
                     <Text center>{this.getName(player)}</Text>
                 </Column>
             </Row>

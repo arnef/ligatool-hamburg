@@ -68,14 +68,11 @@ class SettingsView extends Component {
 		return (
 		<ListItemGroup name='Benachrichtigungen'>	
 			{ this._renderCheckbox('Benachrichtigungen', notification.on, 'on') }
-			<ListItem.Separator />	
 			{ this._renderCheckbox('Live-Zwischenergebnis', notification.live, 'live', !notification.on) }
-			<ListItem.Separator />
 			{ this._renderCheckbox('Endstand', notification.ended, 'ended', !notification.on) }
-			<ListItem.Separator />
-			<ListItem
+			<ListItem last
 				disabled={!notification.on || this.props.leagues.data.length === 0}
-				onPress={this._toggleGroups.bind(this)}>
+				onPress={this._toggleGroups.bind(this)} more>
 				Gruppen wählen
 			</ListItem>
 		</ListItemGroup>);
@@ -84,7 +81,7 @@ class SettingsView extends Component {
 	render() {
 		const team = this.props.settings.team;
 		return (
-			<Container>		
+			<Container {...this.props}>		
 				<ListItemGroup name='Benutzerdaten'>
 				{ team && (
 					<View>
@@ -92,15 +89,14 @@ class SettingsView extends Component {
 							<Text>{ team.name }</Text>
 						</ListItem>
 						
-						<ListItem.Separator icon />
 						<ListItem onPress={this._logout.bind(this)}
-							icon='log-out'><Text>Logout</Text>
+							icon='log-out' last><Text>Logout</Text>
 						</ListItem>
 					</View>
 				)}
 				{ !team && (
 					<ListItem onPress={this._login.bind(this)}
-						icon='log-in'>
+						icon='log-in' last>
 						Team wählen
 					</ListItem>
 				)}
@@ -109,7 +105,7 @@ class SettingsView extends Component {
 				{ this._renderSectionNotification() }
 
 				<ListItemGroup name='Informationen'>				
-					<ListItem icon='information-circle' onPress={this._checkForUpdate.bind(this)}>
+					<ListItem last icon='information-circle' onPress={this._checkForUpdate.bind(this)}>
 						<Text>App-Version { !!this.state.pkg ? `${this.state.pkg.appVersion} (${this.state.pkg.label})`: '0.9' }</Text>
 					</ListItem>
 				</ListItemGroup>

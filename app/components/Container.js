@@ -48,7 +48,7 @@ class Container extends Component {
                         refreshControl={!!this.props.onRefresh ? refreshControl : null}
                         style={{ flex: 1 }}>
                         {this.props.children}
-                        { Platform.OS === 'ios' && (<View style={{height: 50}} />)}
+                        { this.props.hasTabbar && (<View style={{height: 50}} />)}
                     </ScrollView>
                 </View>
             );
@@ -56,7 +56,7 @@ class Container extends Component {
     }
 
     renderFooter() {
-        return (<View style={{height: Platform.OS === 'ios' ? 50 : 0 }} />);
+        return (<View style={{height: this.props.hasTabbar ? 50 : 0 }} />);
     }
 }
 

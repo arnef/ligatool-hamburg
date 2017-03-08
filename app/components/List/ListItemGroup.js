@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
-import Menu, {
-    MenuContext, MenuOptions, MenuOption, MenuTrigger
-} from 'react-native-menu';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
-import style from '../Styles/List/ListItemGroup';
+import styles from '../Styles/List/ListItemGroup';
 import Touchable from '../Touchable';
 import { Text } from '../Styles'
-import { Row, Column } from '../../components';
+import { Row } from '../../components';
 
 class ListItemGroup extends Component {
 
@@ -23,13 +20,13 @@ class ListItemGroup extends Component {
 
     render() {
         return (
-            <View style={style.margin}>
-                <Touchable style={style.group} onPress={this.props.onPress}>
+            <View style={[styles.margin, this.props.style]}>
+                <Touchable style={styles.group} onPress={this.props.onPress}>
                     {!!this.props.name && (
                         <Row>
                         <Text
                             center={this.props.center}
-                            style={[style.header, { color: this.props.color, flex: 1, paddingLeft: this.props.dropdown ? 32 : 0}]}>
+                            style={[styles.header, { color: this.props.color, flex: 1, marginLeft: this.props.dropdown ? 52 : 0 }]}>
                             {this.props.name}
                         </Text>
                             { !!this.props.dropdown && this.props.dropdown }

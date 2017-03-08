@@ -22,7 +22,7 @@ class MatchHeader extends Component {
 			<View style={[style.header, { backgroundColor: this.props.color}]}>
 				<Touchable style={style.teamContainer}
 					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_home, title: match.team_home.name })}}>
-					<Text style={style.team}>{home}</Text>
+					<Text style={style.team} numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
 				</Touchable>
 				<View style={style.score}>
 					<Text style={style.points}>{score}</Text>
@@ -30,7 +30,7 @@ class MatchHeader extends Component {
 				</View>
 				<Touchable style={style.teamContainer}
 					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_away, title: match.team_away.name })}}>
-					<Text style={style.team}>{away}</Text>
+					<Text style={style.team} numberOfLines={2} ellipsizeMode='tail'>{away}</Text>
 				</Touchable>
 			</View>
 		);

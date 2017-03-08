@@ -10,8 +10,7 @@ class Touchable extends Component {
 
 	render() {
 		const onPress = this.props.onPress || function () {};
-		const longPress = this.props.onLongPress || function () {};
-		if (this.props.disabled || (!this.props.onPress && !this.props.onLongPress)) {
+		if (this.props.disabled || !this.props.onPress) {
 			return (
 				<View style={this.props.style}>
 					{ this.props.children}
@@ -19,11 +18,14 @@ class Touchable extends Component {
 			);
 		} else {
 			return (
-				<TouchableOpacity onPress={onPress.bind(this)}
-					delayPressIn={0} style={this.props.style}
-					onLongPress={longPress.bind(this)}>
+				<View style={{backgroundColor: this.props.style.backgroundColor, flex: 1}}>
+				<TouchableOpacity 
+					style={this.props.style}
+					onPress={onPress.bind(this)}
+					delayPressIn={0}>
 						{ this.props.children}
 				</TouchableOpacity>
+				</View>
 			);
 		}
 	}

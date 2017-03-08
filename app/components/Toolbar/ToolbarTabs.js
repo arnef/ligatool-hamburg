@@ -38,7 +38,7 @@ class ToolbarTabs extends Component {
             <Touchable key={name} 
                 style={styles.tab}
                 onPress={() => onPressHandler(page)}>
-                <Text bold color={ isActive ? '#fff' : 'rgba(255, 255, 255, 0.7)'}>{name}</Text>  
+                <Text bold size={13} color={ isActive ? '#fff' : 'rgba(255, 255, 255, 0.7)'}>{name}</Text>  
             </Touchable>
         );
     }

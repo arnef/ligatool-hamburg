@@ -3,9 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import style from '../style';
 import Touchable from '../components/Touchable';
-import { ListItem, ListItemGroup } from '../components/List';
-import { Container, Image, Icon, Text } from '../components';
-import { TEAM_DETAILS, TEAM } from '../views/routes';
+import { ListItemGroup } from '../components/List';
+import { Container, Row, Column, Image, Icon, Text } from '../components';
+import styles from '../components/Styles/List/ListItem';
+import { TEAM } from '../views/routes';
 
 class TableView extends Component {
 
@@ -15,38 +16,44 @@ class TableView extends Component {
     }
   }
 
-  _renderTeam(data, idx) {
-    let imgSize = 40;
-    let textSize={};
-    const color = idx === -1 ? { color: this.props.color, fontWeight: 'bold'} : {};
+  _renderTeam(data, idx, last) {
+    let imgSize = 24;
+    let textSize = {};
+    const color = idx === -1 ? { color: this.props.color, fontWeight: 'normal' } : {};
 
-    const childs = (<View style={[style.row, s.teamRow, idx === -1 ? {height: 28, backgroundColor: '#fff'}: {} ]}>
-          <Text style={[style.textBold, textSize, {paddingLeft: 16, paddingRight: 8, width: 40}]}>{data.position} </Text>
-        <View style={s.column}>
-        { data.image && (<Image url={data.image} size={imgSize} />)}
-        { !data.image && idx !== -1 && (<Icon name='shirt' size={imgSize+8} style={{height: imgSize}} />)}
+    const childs = (
+      <Row style={[s.teamRow, idx === -1 ? { height: 28, backgroundColor: '#fff' } : {}]}>
+        <View style={[s.column, {minWidth: 0, marginLeft: 4}]}>
+          <Text style={[style.textBold, textSize]}>{data.position}</Text>
         </View>
-        <View style={[s.column, {flex: 3.5, alignItems: 'flex-start'}]}>
-        <Text style={[textSize, color]}>{data.name}</Text>
+        <View style={s.column}>
+          {data.image && (<Image url={data.image} size={imgSize} />)}
+          {!data.image && idx !== -1 && (<Icon name='shirt' size={imgSize + 8} style={{ height: imgSize }} />)}
         </View>
-        <View style={[s.column, {minWidth: 30}]}>
-        <Text style={[textSize, color]}>{data.matches}</Text></View>
+        <View style={[s.column, { flex: 3.5, alignItems: 'flex-start' }]}>
+          <Text style={[textSize, color]} numberOfLines={1} ellipsizeMode='tail'>{data.name}</Text>
+        </View>
+        <View style={[s.column, { minWidth: 30 }]}>
+          <Text style={[textSize, color]}>{data.matches}</Text></View>
         <View style={s.column}>
-        <Text style={[textSize, color]}>{data.set_points_diff}</Text></View>
+          <Text style={[textSize, color]}>{data.set_points_diff}</Text></View>
         <View style={s.column}>
-        <Text style={[textSize, color]}>{data.goals_diff}</Text></View>
+          <Text style={[textSize, color]}>{data.goals_diff}</Text></View>
         <View style={s.column}>
-        <Text style={[textSize, color, style.textBold]}>{data.points}</Text></View>
-      </View>);
+          <Text style={[textSize, color]} bold>{data.points}</Text></View>
+      </Row>
+    );
     if (idx > -1) {
-      return (<View key={idx}>
-        <Touchable  onPress={() => {
-          this._onPress(data);
-        }}>{ childs }</Touchable>
-        <ListItem.Separator /></View>
+      return (
+        <View key={idx}>
+          <Touchable  onPress={() => {
+            this._onPress(data);
+          }}>{childs}</Touchable>
+          { !last && (<View style={styles.separator} />) }
+        </View>
       );
     } else {
-      return (<View key={idx}>{childs}<ListItem.Separator /></View>);
+      return (<View key={idx}>{childs}<View style={styles.separator} /></View>);
     }
   }
 
@@ -58,31 +65,31 @@ class TableView extends Component {
     });
   }
 
-    _getLeagues() {
+  _getLeagues() {
     this.props.getLeague(this.props.leagueID);
   }
 
   render() {
     const table = !!this.props.league.id[this.props.leagueID] ? this.props.league.id[this.props.leagueID].table : [];
     return (
-      
-      <View style={s.container}>
-      { table.length > 0 && !this.props.league.error && this._renderTeam(
-        { position: '', team: '', matches: 'Sp.',
-          set_points_diff: 'Sätze', goals_diff: 'Tore', points: 'Pkt.'}, -1
-      )}
-      <Container error={this.props.league.error}
+        <Container 
+          { ...this.props }
+          error={this.props.league.error}
           refreshing={this.props.league.loading}
           onRefresh={this._getLeagues.bind(this)}>
+          { table.length > 0 && (
           <ListItemGroup>
-            { table.map((team, idx) => {
-              return this._renderTeam(team, idx);
-            }) }
-        </ListItemGroup>
-
-      </Container>
-        
-      </View>
+            { !this.props.league.error && this._renderTeam(
+            {
+              position: '', team: '', matches: 'Sp.',
+              set_points_diff: 'Sätze', goals_diff: 'Tore', points: 'Pkt.'
+            }, -1
+            )}
+            {table.map((team, idx) => {
+              return this._renderTeam(team, idx, idx === table.length-1);
+            })}
+          </ListItemGroup>) }
+        </Container>
     );
   }
 }
@@ -92,16 +99,14 @@ const s = StyleSheet.create({
     backgroundColor: '#eee'
   },
   teamRow: {
-    height: 56,
+    height: 44,
     alignItems: 'center'
   },
   column: {
-    minWidth: 46,
+    minWidth: 36,
     alignItems: 'center',
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 8,
-    paddingBottom: 8
+    paddingHorizontal: 4,
+    paddingVertical: 8
   }
 });
 

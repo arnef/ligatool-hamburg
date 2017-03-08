@@ -5,7 +5,7 @@ export default StyleSheet.create({
         padding: 10,
     },
     title: {
-        marginTop: 10,
+        marginTop: 12,
     },
     toolbar: {
         

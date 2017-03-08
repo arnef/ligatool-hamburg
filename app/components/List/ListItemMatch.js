@@ -13,18 +13,17 @@ class ListItemMatch extends Component {
 
     renderTeam(team) {
         return (
-            <View style={style.detailsTeam}>
-                { this.renderTeamImage(team) }
-                <Text style={style.detailsTeamName}>{ team.name }</Text>
-            </View>
+            <Row center>
+                
+            </Row>
         );
     }
 
     renderTeamImage(team) {
         if (team.image) {
-            return (<Image url={team.image} size={40} />)
+            return (<Image url={team.image} size={32} style={{margin: 4}} />)
         } else {
-            return (<Icon name='shirt' size={46} style={{height: 40}} />)
+            return (<Icon name='shirt' size={36} style={{height: 32, margin: 4}} />)
         }
     }
 
@@ -57,35 +56,34 @@ class ListItemMatch extends Component {
             padding
             name={`${match.live ? 'LIVE - ':''}${match.league.name} (${match.match_day})`}
             onPress={() => {this.onPress(match)}}>
-
             <Row>
-                <Column fluid>
+            <Column>
                     {  match.venue && match.venue.id && (
-                    <Text style={style.metaVenue}>
+                    <Text size={12} numberOfLines={1}>
                         <Icon name='pin' /> {match.venue.name}
                     </Text>
                     ) }
-                </Column>
-                <Column />
-                <Column fluid>
-                    <Text style={style.metaTime}>
-                        { formatDate(match.datetime) + ' '}
-                        <Icon name='time' /> { formatTime(match.datetime) }
+            </Column>
+            <Column>
+                    <Text size={12} style={{flex: 1, textAlign: 'right'}}>
+                        <Icon name='time' />&nbsp;
+                        { formatDate(match.datetime) } &nbsp;
+                         { formatTime(match.datetime) }
                     </Text>
                 </Column>
             </Row>
-
-            <Row center style={{marginTop: 8}}>
+            
+            <Row style={{marginTop: 8}}>
                 <Column center>
-                    { this.renderTeam(match.team_home) }
+                    { this.renderTeamImage(match.team_home) }
+                    <Text center>{ match.team_home.name }</Text>
+                </Column>
+                <Column fluid>
+                    <Score setPoints={match} style={{marginTop: 10}}/>
                 </Column>
                 <Column center>
-                    <View style={{marginTop: -20}}>
-                        <Score setPoints={match} />
-                    </View>
-                </Column>
-                <Column center>
-                    { this.renderTeam(match.team_away) }
+                    { this.renderTeamImage(match.team_away) }
+                    <Text center>{ match.team_away.name }</Text>
                 </Column>
             </Row>
 

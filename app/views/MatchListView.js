@@ -27,9 +27,7 @@ class MatchListView extends Component {
         if (this.props.error) {
             return (
                 <Container
-                    error={this.props.error}
-                    refreshing={this.props.refreshing}
-                    onRefresh={this.props.onRefresh}>
+                    { ...this.props }>
                     <Row style={{marginTop: 16}}>
                         <Column center>
                             <Button onPress={this.props.onRefresh}>Erneut Laden</Button>
@@ -40,6 +38,7 @@ class MatchListView extends Component {
         }
         return (
             <Container
+                { ...this.props }
                 error={this.props.error}
                 refreshing={this.props.refreshing}
                 onRefresh={this.props.onRefresh}
