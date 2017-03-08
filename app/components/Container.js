@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl, ListView } from 'react-native';
+import { View, ScrollView, RefreshControl, ListView, Platform } from 'react-native';
 import { MenuContext } from 'react-native-menu';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
@@ -35,6 +35,7 @@ class Container extends Component {
                         initialListSize={3}
                         pageSize={4}
                         enableEmptySections={true}
+                        renderFooter={this.renderFooter.bind(this)}
                         dataSource={this.state.data.cloneWithRows(this.props.dataSource)}
                     />
                 </View>
@@ -47,10 +48,15 @@ class Container extends Component {
                         refreshControl={!!this.props.onRefresh ? refreshControl : null}
                         style={{ flex: 1 }}>
                         {this.props.children}
+                        { Platform.OS === 'ios' && (<View style={{height: 50}} />)}
                     </ScrollView>
                 </View>
             );
         }
+    }
+
+    renderFooter() {
+        return (<View style={{height: Platform.OS === 'ios' ? 50 : 0 }} />);
     }
 }
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import Menu, {
     MenuOptions, MenuOption, MenuTrigger
 } from 'react-native-menu';
@@ -24,10 +23,10 @@ class ListItemSet extends Component {
                         </MenuTrigger>
                         <MenuOptions>
                             <MenuOption value={1}>
-                                <Text>Spieler wählen</Text>
+                                <Text style={{padding: 8}}>Spieler wählen</Text>
                             </MenuOption>
                             <MenuOption value={2}>
-                                <Text>Ergebnis eintragen</Text>
+                                <Text style={{padding: 8}}>Ergebnis eintragen</Text>
                             </MenuOption>
                         </MenuOptions>
                     </Menu>
@@ -90,7 +89,12 @@ class ListItemSet extends Component {
         )
     }
 }
-
 const imageSize = 32;
+
+ListItemSet.propTypes = {
+    editable: React.PropTypes.bool,
+    data: React.PropTypes.object,
+    onPress: React.PropTypes.func
+};
 
 export default ListItemSet;

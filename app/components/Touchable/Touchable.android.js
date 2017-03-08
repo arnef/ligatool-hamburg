@@ -9,9 +9,7 @@ import {
 class Touchable extends Component {
 
 	render() {
-		const onPress = this.props.onPress || function () {};
-		const longPress = this.props.onLongPress || function () {};
-		if (this.props.disabled || (!this.props.onPress && !this.props.onLongPress)) {
+		if (this.props.disabled || !this.props.onPress) {
 			return (
 				<View style={this.props.style}>
 					{ this.props.children }
@@ -19,9 +17,9 @@ class Touchable extends Component {
 			);
 		} else {
 			return (
-				<TouchableNativeFeedback onPress={onPress.bind(this)}
-					delayPressIn={75}
-					onLongPress={longPress.bind(this)}>
+				<TouchableNativeFeedback onPress={this.props.onPress}
+					useForeground
+					delayPressIn={75}>
 					<View style={this.props.style}>
 						{ this.props.children }
 					</View>
@@ -30,5 +28,14 @@ class Touchable extends Component {
 		}
 	}
 }
+
+Touchable.propTypes = {
+	onPress: React.PropTypes.func,
+	disabled: React.PropTypes.bool,
+	children: React.PropTypes.oneOfType([
+		React.PropTypes.object, 
+		React.PropTypes.array
+	])
+};
 
 export default Touchable;
