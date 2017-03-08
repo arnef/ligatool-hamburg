@@ -20,7 +20,7 @@ class ListItemGroup extends Component {
 
     render() {
         return (
-            <View style={[styles.margin, this.props.style]}>
+            <View style={[styles.margin, { backgroundColor: '#fff'}, this.props.style]}>
                 <Touchable style={styles.group} onPress={this.props.onPress}>
                     {!!this.props.name && (
                         <Row>

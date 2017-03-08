@@ -18,14 +18,12 @@ class Touchable extends Component {
 			);
 		} else {
 			return (
-				<View style={{backgroundColor: this.props.style.backgroundColor, flex: 1}}>
 				<TouchableOpacity 
 					style={this.props.style}
 					onPress={onPress.bind(this)}
 					delayPressIn={0}>
 						{ this.props.children}
 				</TouchableOpacity>
-				</View>
 			);
 		}
 	}
