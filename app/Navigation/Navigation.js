@@ -11,9 +11,6 @@ class Navigation extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            title: null
-        };
         if (this.props.getNav) {
             // ref fix for android
             this.props.getNav(this);
@@ -56,14 +53,15 @@ class Navigation extends Component {
 
 
     push(route) {
-        this.setState({ title: null });
+        if (!route.title) {
+            route.title = titles[route.state];
+        }
         this.navigator.push(route);
     }
 
 
     pop() {
         this.navigator.pop();
-        this.setState({ title: null });
     }
 
     getCurrentRoutes() {
@@ -71,7 +69,13 @@ class Navigation extends Component {
     }
 
     setTitle(title) {
-        this.setState({ title });
+        if (this.navigator && this.navigator.getCurrentRoutes) {
+            const stack = this.navigator.getCurrentRoutes();
+            if (stack.length > 0) {
+                stack[stack.length - 1].title = title;
+                this.forceUpdate();
+            }
+        }
     }
 
     renderLeftButton(route, navigator, index, navState) {
@@ -101,16 +105,12 @@ class Navigation extends Component {
     renderTitle(route, navigator, index, navState) {
         return (
             <Row style={style.title}>
-                <Text color='#fff' bold size={Platform.OS === 'ios' ? 17 : 20} numberOfLines={1} ellipsizeMode='tail'>{ this.state.title !== null ? this.state.title : route.title }</Text>
+                <Text color='#fff' bold size={Platform.OS === 'ios' ? 17 : 20} numberOfLines={1} ellipsizeMode='tail'>{ route.title }</Text>
             </Row>
         );
     }
 
     renderScene(route, navigator) {
-        if (!route.title) {
-            route.title = titles[route.state];
-        }
-        
         switch (route.state) {
             case Route.OVERVIEW:
                 return (<View.Overview {...this.props} navigator={this} id={route.id} vid={route.vid} />);

@@ -6,7 +6,7 @@ import Icon from '../Icon';
 import Image from '../Image';
 import style from '../Styles/List/ListItem';
 
-
+const iconSize = Platform.OS === 'ios' ? 29 : 24;
 
 class ListItem extends Component {
 
@@ -22,8 +22,9 @@ class ListItem extends Component {
 						{ this.props.children }
 					</Text>
 					{ Platform.OS === 'ios' && this.props.more && (<Icon name='arrow-forward' size={24} />)}
+					
 				</Touchable>
-				{ !this.props.last && (<View style={[style.separator, (this.props.icon || this.props.image) ? style.seperatorIcon : {}]} />) }
+				{ !this.props.last && (<View style={[style.separator, (!!this.props.icon || !!this.props.image) ? style.separatorIcon : {}]} />) }
 			</View>
 		);
 	}
@@ -38,7 +39,7 @@ class ListItem extends Component {
 		return (
 			<Icon style={style.icon} 
 						color={this.props.color}
-						name={this.props.icon} size={40} />
+						name={this.props.icon} size={iconSize} />
 		)
 	}
 }

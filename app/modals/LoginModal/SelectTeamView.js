@@ -16,25 +16,32 @@ class SelectTeamView extends Component {
 
     render() {
         const teams = this.props.league.id[this.props.id] ? 
-            this.props.league.id[this.props.id].table : [];
+            JSON.parse(JSON.stringify(this.props.league.id[this.props.id].table)) : [];
+        // sort teams alphabetically
+        
+        teams.sort((a, b) => {
+            return a.name < b.name ? -1 : 1;
+        });
         return (
             <Container
                 error={this.props.league.error}
                 refreshing={this.props.league.loading}
                 onRefresh={this.getTeams.bind(this)}>
-                <ListItemGroup>
-                    { teams.map( team => {
-                        return (
-                            <ListItem 
-                                onPress={() => { this.onPress(team); }}
-                                key={team.id}
-                                image={team.image} 
-                                icon={!team.image ? 'shirt' : null}>
-                                { team.name }
-                            </ListItem>
-                        );
-                    })}
-                </ListItemGroup>
+                { teams.length > 0 && (
+                    <ListItemGroup>
+                        { teams.map( team => {
+                            return (
+                                <ListItem 
+                                    onPress={() => { this.onPress(team); }}
+                                    key={team.id}
+                                    image={team.image} 
+                                    icon={!team.image ? 'shirt' : null}>
+                                    { team.name }
+                                </ListItem>
+                            );
+                        })}
+                    </ListItemGroup>
+                )}
             </Container>
         );
     }
@@ -50,6 +57,14 @@ class SelectTeamView extends Component {
     }
 
 }
+
+SelectTeamView.propTypes = {
+    league: React.PropTypes.object,
+    id: React.PropTypes.number,
+    getLeague: React.PropTypes.func,
+    setUserTeam: React.PropTypes.func,
+    navigator: React.PropTypes.object
+};
 
 export default connect(state => ({
     ...state

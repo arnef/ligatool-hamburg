@@ -5,18 +5,22 @@ export default StyleSheet.create({
 		paddingVertical: 12,
 		paddingHorizontal: 16,
 		flex: 1,
-		height: 62,
+		height: 48,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	icon: {
 		marginRight: 16,
-		height: 40,
-		width: 40
+		height: 24,
+		width: 24
 	},
 	separator: {
-		height: 1.3,
+		height: 1,
+		marginLeft: 0,
 		backgroundColor: '#eee'
+	},
+	separatorIcon: {
+		marginLeft: 52,
 	},
 	textDisabled: {
 		color: '#aaa'

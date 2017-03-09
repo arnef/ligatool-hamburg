@@ -28,6 +28,7 @@ export const renewToken = (apiKey) => {
 };
 
 export const logout = () => {
+    api.delete('/user/auth');
     return {
         type: LOGOUT,
         payload: {}

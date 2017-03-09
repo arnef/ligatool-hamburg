@@ -11,8 +11,8 @@ export default StyleSheet.create({
 	},
 	icon: {
 		marginRight: 16,
-		height: 40,
-		width: 40
+		height: 29,
+		width: 29
 	},
 	separator: {
 		height: 1,
@@ -20,7 +20,7 @@ export default StyleSheet.create({
 		backgroundColor: '#eee'
 	},
 	separatorIcon: {
-		marginLeft: 72
+		marginLeft: 61
 	},
 	textDisabled: {
 		color: '#aaa'

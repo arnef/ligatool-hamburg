@@ -78,7 +78,7 @@ class App extends Component {
 					<Navigation 
 						{ ...this.props }
 						topBorder={ Platform.Version > 20 }
-						initialRoute={{ state: Route.OVERVIEW }}
+						initialRoute={{ state: Route.OVERVIEW, title: 'Übersicht' }}
 						getNav={navigator => { this.navigator = navigator }}
 						drawer={this.drawer} />
 			</DrawerLayoutAndroid>

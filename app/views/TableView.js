@@ -22,25 +22,29 @@ class TableView extends Component {
     const color = idx === -1 ? { color: this.props.color, fontWeight: 'normal' } : {};
 
     const childs = (
-      <Row style={[s.teamRow, idx === -1 ? { height: 28, backgroundColor: '#fff' } : {}]}>
-        <View style={[s.column, {minWidth: 0, marginLeft: 4}]}>
+      <Row style={[styles.item, idx === -1 ? { height: 28, padding: 0 } : {}]}>
+        <Column style={{minWidth: 0, marginLeft: 4}}>
           <Text style={[style.textBold, textSize]}>{data.position}</Text>
-        </View>
-        <View style={s.column}>
+        </Column>
+        <Column>
           {data.image && (<Image url={data.image} size={imgSize} />)}
           {!data.image && idx !== -1 && (<Icon name='shirt' size={imgSize + 8} style={{ height: imgSize }} />)}
-        </View>
-        <View style={[s.column, { flex: 3.5, alignItems: 'flex-start' }]}>
+        </Column>
+        <Column style={{ flex: 3.5, alignItems: 'flex-start' }}>
           <Text style={[textSize, color]} numberOfLines={1} ellipsizeMode='tail'>{data.name}</Text>
-        </View>
-        <View style={[s.column, { minWidth: 30 }]}>
-          <Text style={[textSize, color]}>{data.matches}</Text></View>
-        <View style={s.column}>
-          <Text style={[textSize, color]}>{data.set_points_diff}</Text></View>
-        <View style={s.column}>
-          <Text style={[textSize, color]}>{data.goals_diff}</Text></View>
-        <View style={s.column}>
-          <Text style={[textSize, color]} bold>{data.points}</Text></View>
+        </Column>
+        <Column center fluid style={{ minWidth: 30 }}>
+          <Text style={[textSize, color]}>{data.matches}</Text>
+        </Column>
+        <Column center fluid style={{ minWidth: 30 }}>
+          <Text style={[textSize, color]}>{data.set_points_diff}</Text>
+        </Column>
+        <Column center fluid style={{ minWidth: 30 }}>
+          <Text style={[textSize, color]}>{data.goals_diff}</Text>
+        </Column>
+        <Column center fluid style={{ minWidth: 30 }}>
+          <Text style={[textSize, color]} bold>{data.points}</Text>
+        </Column>
       </Row>
     );
     if (idx > -1) {
@@ -93,22 +97,6 @@ class TableView extends Component {
     );
   }
 }
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#eee'
-  },
-  teamRow: {
-    height: 44,
-    alignItems: 'center'
-  },
-  column: {
-    minWidth: 36,
-    alignItems: 'center',
-    paddingHorizontal: 4,
-    paddingVertical: 8
-  }
-});
 
 TableView.propTypes = {
   league: React.PropTypes.object,

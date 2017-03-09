@@ -43,6 +43,7 @@ class ListItemMatch extends Component {
         } else {
             this.props.navigator.push({
                 state: PREVIEW,
+                title: match.team_home.name,
                 home: match.team_home,
                 away: match.team_away
             });

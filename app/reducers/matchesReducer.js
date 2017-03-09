@@ -103,18 +103,20 @@ const reorderMatches = (matches) => {
     
     const now = new Date().getTime();
     matches.map((match) => {
-        const diff = compareDays(match.datetime, now);
-        if (match.live || diff === 0) {
-            today.push(match);
-        } else if (diff < 0) {
-            if (match.set_points) {
-                played.push(match);
-            }
-        } else if (diff > 0) {
-            if (match.set_points) {
-                played.push(match);
-            } else {
-                next.push(match);
+        if (match.date_confirmed) {
+            const diff = compareDays(match.datetime, now);
+            if (match.live || diff === 0) {
+                today.push(match);
+            } else if (diff < 0) {
+                if (match.set_points) {
+                    played.push(match);
+                }
+            } else if (diff > 0) {
+                if (match.set_points) {
+                    played.push(match);
+                } else {
+                    next.push(match);
+                }
             }
         }
         
