@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { MenuContext } from 'react-native-menu';
-import { ActionCreators } from './actions';
+import { ActionCreators } from './store/actions';
 import LoadingScreen from './components/LoadingScreen';
-import FCM, { FCMEvent } from 'react-native-fcm';
+import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm';
 import App from './App';
 
 class AppContainer extends Component {
@@ -49,12 +50,29 @@ class AppContainer extends Component {
 			}
 		});
 		this.notificationListener = FCM.on(FCMEvent.Notification, (notif) => {
+		
+			if (Platform.OS === 'ios') {
+				switch (notif._notificationType) {
+					case NotificationType.Remote:
+						notif.finish(RemoteNotificationResult.NewData);
+						break;
+					case NotificationType.NotificationResponse:
+						notif.finish();
+						break;
+					case NotificationType.WillPresent:
+						notif.finish(WillPresentNotificationResult.All);
+						break;
+				}
+			}
+
 			console.tron.log(notif);
 			this.props.receiveNotification(notif);
 			
 		});	
 		this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
-			//TODO check get token wasn't succesfully
+			if (!!token) {
+				this.props.updateFCMToken(token);
+			}
 		});
 	}
 
@@ -78,6 +96,7 @@ function mapStateToProps(state) {
 }
 
 AppContainer.propTypes = {
+	auth: React.PropTypes.object,
 	loadAccessKey: React.PropTypes.func,
 	loadToken: React.PropTypes.func,
 	loadSettings: React.PropTypes.func,

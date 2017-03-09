@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl, ListView, Platform } from 'react-native';
-import { MenuContext } from 'react-native-menu';
+import { View, ScrollView, RefreshControl, ListView } from 'react-native';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
 
 
 
 class Container extends Component {
-
-
+    
     constructor(props) {
         super(props);
         this.state = {

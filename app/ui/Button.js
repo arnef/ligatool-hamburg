@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { connect } from 'react-redux';
-import Touchable from '../Touchable';
-import { Text, Row } from '../Styles';
-import style from './style';
-
+import Touchable from '../components/Touchable';
+import { Text } from '../components/Styles';
+import style from './styles/button';
+import { Row } from '../ui';
 class Button extends Component {
 
 	render() {

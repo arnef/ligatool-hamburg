@@ -1,6 +1,6 @@
 import { GET_TEAM, GET_TEAM_MATCHES , QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types';
-import store from '../store';
-import api from '../api';
+import store from '../index';
+import api from '../../api';
 
 
 export const queryTeamMatches = () => {

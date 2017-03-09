@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import style from '../style';
 import Touchable from '../components/Touchable';
 import { ListItemGroup } from '../components/List';
-import { Container, Row, Column, Image, Icon, Text } from '../components';
+import { Container, Image, Icon, Text } from '../components';
 import styles from '../components/Styles/List/ListItem';
 import { TEAM } from '../views/routes';
+import { Row, Column } from '../ui';
 
 class TableView extends Component {
 

@@ -1,6 +1,6 @@
 import { API_KEY, TOKEN, FULFILLED, LOGOUT, LOAD_ACCESS_KEY, PENDING, LOAD_TOKEN } from '../actions/types';
 import { AsyncStorage } from 'react-native';
-import api from '../api';
+import api from '../../api';
 import { DEFAULT_HEADERS } from 'apisauce';
 
 export default (state={

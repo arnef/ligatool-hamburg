@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, ActivityIndicator } from 'react-native';
 import { ListItemDrawer } from '../components/List';
-import { Button, Image } from '../components';
+import { Image } from '../components';
+import { Button } from '../ui';
 import { RANKING, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes';
 
 class NavigationView extends Component {

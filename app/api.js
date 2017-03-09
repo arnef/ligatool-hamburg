@@ -1,8 +1,8 @@
 import { create } from 'apisauce';
 
 export const baseUrl = __DEV__ ? 
-    // 'https://dev.kickern-hh.de/de/competitions' :
-    'http://192.168.1.4/liga-tool' :
+    'https://dev.kickern-hh.de/de/competitions' :
+    // 'http://192.168.1.4/liga-tool' :
     'https://kickern-hamburg.de/de/competitions';
 
 

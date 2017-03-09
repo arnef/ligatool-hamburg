@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from '../Styles/List/ListItemGroup';
 import Touchable from '../Touchable';
 import { Text } from '../Styles'
-import { Row } from '../../components';
+import { Row } from '../../ui';
 
 class ListItemGroup extends Component {
 

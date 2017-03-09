@@ -3,11 +3,13 @@ import Menu, {
     MenuOptions, MenuOption, MenuTrigger
 } from 'react-native-menu';
 import ListItemGroup from './ListItemGroup';
-import { Row, Column, Text, Button } from '../../components';
+import { Text } from '../../components';
 import Touchable from '../Touchable';
 import Image from '../Image';
 import Icon from '../Icon';
 import Score from '../Score';
+
+import { Row, Column } from '../../ui';
 
 class ListItemSet extends Component {
 

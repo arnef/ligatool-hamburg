@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View, Linking, Alert, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItemGroup } from '../../components/List';
-import { Container, Image, Button, Row, Column, Text } from '../../components';
-
+import { Container, Image, Text } from '../../components';
+import { Row, Column, Button } from '../../ui';
 
 class TeamView extends Component {
 

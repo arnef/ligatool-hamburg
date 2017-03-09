@@ -3,7 +3,8 @@ import { Navigator, Platform, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import * as View from '../views';
 import * as Route from '../views/routes';
-import { Row, Column, Text, Icon } from '../components';
+import { Text, Icon } from '../components';
+import { Row, Column } from '../ui';
 import Touchable from '../components/Touchable/Touchable.ios';
 import style from './style';
 

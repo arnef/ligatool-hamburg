@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, TextInput, ActivityIndicator } from 'react-native';
-import { Container, Row, Column, Text, Button } from '../../components';
+import { Container, Text } from '../../components';
+import { Row, Column, Button } from '../../ui';
 import { ListItemGroup } from '../../components/List';
 import style from '../../style';
 

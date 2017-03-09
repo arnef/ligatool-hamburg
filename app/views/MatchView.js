@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux'
-import { Container, Toolbar, Button, Match } from '../components';
+import { Container, Toolbar, Match } from '../components';
 import SelectPlayerModal from '../modals/SelectPlayerModal';
-
+import { Button } from '../ui';
 
 class MatchView extends Component {
 

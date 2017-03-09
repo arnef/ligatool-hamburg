@@ -271,6 +271,7 @@
 		141768861E57066E00DFF4BA /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		145910251E54ACEF0085CAE2 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		148CD4051E7197F9001F54A7 /* arnefeilligatool.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = arnefeilligatool.entitlements; path = arnefeilligatool/arnefeilligatool.entitlements; sourceTree = "<group>"; };
 		14E4099C1E54B7DB00C2FAA3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		27836BC261E429614E961F1D /* Pods_arnefeilligatool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_arnefeilligatool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28461EFFC95443A7B3F2164D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -412,6 +413,7 @@
 		13B07FAE1A68108700A75B9A /* arnefeilligatool */ = {
 			isa = PBXGroup;
 			children = (
+				148CD4051E7197F9001F54A7 /* arnefeilligatool.entitlements */,
 				14E4099C1E54B7DB00C2FAA3 /* GoogleService-Info.plist */,
 				145910251E54ACEF0085CAE2 /* Firebase.h */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -629,21 +631,27 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = Q9N4HB4B7S;
+						DevelopmentTeam = N72Q2QBAAY;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = Q9N4HB4B7S;
+						DevelopmentTeam = N72Q2QBAAY;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "arnefeilligatool" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Liga Tool Hamburg" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1102,7 +1110,7 @@
 			baseConfigurationReference = 7435BDFDFB14ED3080544E20 /* Pods-arnefeilligatoolTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = Q9N4HB4B7S;
+				DEVELOPMENT_TEAM = N72Q2QBAAY;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1125,7 +1133,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = Q9N4HB4B7S;
+				DEVELOPMENT_TEAM = N72Q2QBAAY;
 				INFOPLIST_FILE = arnefeilligatoolTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1143,9 +1151,10 @@
 			baseConfigurationReference = CDBA9E71F13DB3A6567E8C8F /* Pods-arnefeilligatool.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = arnefeilligatool/arnefeilligatool.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = Q9N4HB4B7S;
+				DEVELOPMENT_TEAM = N72Q2QBAAY;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1161,7 +1170,7 @@
 					"$(inherited)",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.arnefeilligatool;
+				PRODUCT_BUNDLE_IDENTIFIER = de.arnefeil.ligatoolhamburg;
 				PRODUCT_NAME = arnefeilligatool;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1172,8 +1181,9 @@
 			baseConfigurationReference = 0D05F9931CA789182589D89F /* Pods-arnefeilligatool.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = arnefeilligatool/arnefeilligatool.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Q9N4HB4B7S;
+				DEVELOPMENT_TEAM = N72Q2QBAAY;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -1189,7 +1199,7 @@
 					"$(inherited)",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.arnefeilligatool;
+				PRODUCT_BUNDLE_IDENTIFIER = de.arnefeil.ligatoolhamburg;
 				PRODUCT_NAME = arnefeilligatool;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1310,7 +1320,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "arnefeilligatool" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Liga Tool Hamburg" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

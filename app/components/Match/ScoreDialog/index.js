@@ -6,7 +6,7 @@ import {
     Text
 } from 'react-native';
 import Dialog from './Dialog';
-import Button from '../../Button';
+import { Button } from '../../../ui';
 import ButtonBar from './ButtonBar';
 
 class ScoreDialog extends Component {

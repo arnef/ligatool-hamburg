@@ -1,5 +1,5 @@
 import { QUERY_RANKINGS, GET_LEAGUE } from './types';
-import api from '../api';
+import api from '../../api';
 
 export function getRankings() {
 	return {

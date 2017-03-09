@@ -22,4 +22,20 @@ class Column extends Component {
     }
 }
 
+Column.defaultProps = {
+    center: false,
+    width: 10,
+    fluid: false,
+    style: {},
+    children: []
+};
+
+Column.propTypes = {
+    center: React.PropTypes.bool,
+    width: React.PropTypes.number,
+    fluid: React.PropTypes.bool,
+    style: React.PropTypes.object,
+    children: React.PropTypes.any
+};
+
 export default Column;

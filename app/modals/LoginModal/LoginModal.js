@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import { Modal, TextInput, ActivityIndicator, Dimensions, View } from 'react-native';
-import Button from '../../components/Button';
-import { ListItem, ListItemGroup } from '../../components/List';
-import Toolbar from '../../components/Toolbar';
-import Container from '../../components/Container';
-import { Row, Column, Text } from '../../components/Styles';
+import { Modal } from 'react-native';
 import Navigator from '../../Navigation';
-
 import SelectGroupView from './SelectGroupView';
 import SelectTeamView from './SelectTeamView';
 import LoginView from './LoginView';

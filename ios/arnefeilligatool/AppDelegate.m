@@ -28,10 +28,6 @@
   jsCodeLocation = [CodePush bundleURL];
 #endif
   
-  
-  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
-  [FIRApp configure];
-  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"arnefeilligatool"
                                                initialProperties:nil
@@ -43,6 +39,11 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  
+  [FIRApp configure];
+  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+
   
   return YES;
 }

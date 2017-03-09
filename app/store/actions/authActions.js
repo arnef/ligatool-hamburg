@@ -1,8 +1,8 @@
 import { API_KEY, TOKEN, LOAD_ACCESS_KEY, LOAD_TOKEN, LOGOUT, 
          SET_USER_TEAM 
 } from './types';
-import api from '../api';
-import store from '../store';
+import api from '../../api';
+import store from '../index';
 import { AsyncStorage } from 'react-native';
 
 

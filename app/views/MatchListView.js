@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ListItemMatch } from '../components/List';
-import { Container, Button, Row, Column } from '../components';
+import { Container } from '../components';
+import { Row, Column, Button } from '../ui';
 
 class MatchListView extends Component {
 

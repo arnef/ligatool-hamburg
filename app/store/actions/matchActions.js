@@ -1,7 +1,7 @@
 import { QUERY_MATCHES, GET_MATCH, SET_PLAYER, PUT_SETS, 
          TOGGLE_D5 
 } from './types';
-import api from '../api';
+import api from '../../api';
 
 
 export const queryMatches = () => {

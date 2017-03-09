@@ -1,8 +1,8 @@
 import { UPDATE_FCM_TOKEN, SCORE, SUGGEST_SCORE, NOTIFICATION } from './types';
-import api from '../api';
+import api from '../../api';
 import { getMatch } from './matchActions';
-import { isAdminForMatch } from '../Helper';
-import store from '../store';
+import { isAdminForMatch } from '../../Helper';
+import store from '../index';
 
 export const updateFCMToken = (token) => {
     return {

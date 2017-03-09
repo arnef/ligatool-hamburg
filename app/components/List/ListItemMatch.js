@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import ListItemGroup from './ListItemGroup';
-import style from '../Styles/List/ListItemMatch';
 import { formatDate, formatTime, isAdminForMatch } from '../../Helper';
 import Icon from '../Icon';
 import Image from '../Image';
 import Score from '../Score';
-import { Row, Column, Text } from '../Styles';
+import { Text } from '../Styles';
+import { Row, Column } from '../../ui';
 import { MATCH, PREVIEW, LIVE_MATCH } from '../../views/routes'
 
 class ListItemMatch extends Component {

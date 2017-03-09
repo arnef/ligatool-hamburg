@@ -1,7 +1,7 @@
 import { QUERY_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, 
          SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH
 } from '../actions/types';
-import {compareDays} from '../Helper';
+import {compareDays} from '../../Helper';
 
 export default (state = {
     today: [],

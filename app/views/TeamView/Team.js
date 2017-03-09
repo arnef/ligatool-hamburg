@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MatchListView from '../MatchListView';
 import TeamDetails from './TeamDetails';
