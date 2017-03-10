@@ -1,8 +1,10 @@
-import { GET_LEAGUE, PENDING, FULFILLED} from '../actions/types';
+import { GET_LEAGUE, GET_LEAGUE_MATCHES, PENDING, FULFILLED} from '../actions/types';
 
 export default (state={
     error: null,
     id: {},
+    matches: {},
+    fetchingID: -1,
     loading: false
 }, action) => {
     switch (action.type) {
@@ -18,6 +20,19 @@ export default (state={
                 state.error = action.payload.problem;
             }
         break;
+        case GET_LEAGUE_MATCHES + PENDING:
+            state = { ... state, error: null, loading: true };
+            state.fetchingID = action.payload;
+            break;
+        case GET_LEAGUE_MATCHES + FULFILLED:
+            state = { ...state, loading: false };
+            if (action.payload.ok) {
+                state.matches[state.fetchingID] = action.payload.data;
+            } else {
+                state.error = action.payload.problem;
+            }
+            state.fetchingID = -1;
+            break;
     }
 
     return state;

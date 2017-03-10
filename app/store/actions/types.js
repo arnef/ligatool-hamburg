@@ -36,6 +36,7 @@ export const PUT_NOTIFICATION = 'PUT_NOTIFICATION';
 
 // leagues
 export const GET_LEAGUE = 'GET_LEAGUE';
+export const GET_LEAGUE_MATCHES = 'GET_LEAGUE_MATCHES';
 
 // global app states
 export const QUERY_RANKINGS = 'QUERY_RANKINGS';

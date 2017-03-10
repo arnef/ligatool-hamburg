@@ -16,6 +16,7 @@ class SettingsView extends Component {
 		};
 	}
 
+
 	_logout() {
 		this.props.logout();
 	}
@@ -28,6 +29,9 @@ class SettingsView extends Component {
 		codePush.getUpdateMetadata().then(pkg => {
 			this.setState({ pkg: pkg });
 		});
+		if (this.props.leagues.data.length === 0) {
+			this.props.getRankings();
+		}
 	}
 
 	componentWillUnmount() {
@@ -81,7 +85,7 @@ class SettingsView extends Component {
 	render() {
 		const team = this.props.settings.team;
 		return (
-			<Container {...this.props}>		
+			<Container {...this.props}>	
 				<ListItemGroup name='Benutzerdaten'>
 				{ team && (
 					<View>
@@ -109,7 +113,6 @@ class SettingsView extends Component {
 						<Text>App-Version { !!this.state.pkg ? `${this.state.pkg.appVersion} (${this.state.pkg.label})`: '0.9' }</Text>
 					</ListItem>
 				</ListItemGroup>
-			
 			</Container>
 		);
 	}

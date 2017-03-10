@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, Platform } from 'react-native';
 import Touchable from '../Touchable';
 import style from '../Styles/List/ListItem';
 
@@ -12,9 +12,9 @@ class ListItemSwitch extends Component {
 			<Touchable
 				disabled={this.props.disabled}
 				style={style.item}
-				onPress={() => {
+				onPress={Platform.OS === 'android' ? () => {
 					this.props.onValueChange(!this.props.value);
-				}}>
+				} : null}>
 				<Text style={this.props.disabled ? style.textDisabled : {}}>{ this.props.children }</Text>
 				<View style={{flex:1}} />
 			<Switch 

@@ -10,7 +10,7 @@ import Team from './TeamView';
 import TeamOverview from './TeamView/Team';
 import * as Settings from './Settings';
 import Leagues from './LeaguesView';
-
+import LeagueView from './LeagueView';
 export {
     LiveMatch,
     MatchList,
@@ -23,5 +23,6 @@ export {
     Team,
     TeamOverview,
     Leagues,
-    Settings
+    Settings,
+    LeagueView
 };

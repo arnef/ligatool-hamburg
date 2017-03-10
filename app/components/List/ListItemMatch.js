@@ -76,14 +76,14 @@ class ListItemMatch extends Component {
             <Row style={{marginTop: 8}}>
                 <Column center>
                     { this.renderTeamImage(match.team_home) }
-                    <Text center>{ match.team_home.name }</Text>
+                    <Text center style={{paddingHorizontal: 4}}>{ match.team_home.name }</Text>
                 </Column>
                 <Column fluid>
                     <Score setPoints={match} style={{marginTop: 10}}/>
                 </Column>
                 <Column center>
                     { this.renderTeamImage(match.team_away) }
-                    <Text center>{ match.team_away.name }</Text>
+                    <Text center style={{paddingHorizontal: 4}}>{ match.team_away.name }</Text>
                 </Column>
             </Row>
 

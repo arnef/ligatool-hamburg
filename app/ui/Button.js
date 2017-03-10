@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Button as RNButton } from 'react-native';
 import { connect } from 'react-redux';
 import Touchable from '../components/Touchable';
 import { Text } from '../components/Styles';
@@ -8,6 +8,15 @@ import { Row } from '../ui';
 class Button extends Component {
 
 	render() {
+		return (
+			<RNButton 
+				onPress={this.props.onPress}
+				disabled={this.props.disabled}
+				color={this.props.color} title={this.props.children} />
+		);
+	}
+
+	renderOld() {
 		const s = {
 			opacity: 1,
 			borderColor: this.props.color,

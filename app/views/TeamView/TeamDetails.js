@@ -64,7 +64,7 @@ class TeamView extends Component {
                             { team.contact.map( contact => {
                                 return (<View key={contact.id}>
                                     <Text>{ `${contact.name} ${contact.surname}` }</Text>
-                                    <Row>
+                                    <Row center style={{justifyContent: 'space-between'}}>
                                     <Button icon='call' onPress={() => { this.openTel(contact.phone_number) }}>Anrufen</Button>
                                     <Button icon='mail' onPress={() => { this.openMail(contact.email) }}>E-Mail</Button>
                                     </Row>

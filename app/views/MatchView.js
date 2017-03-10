@@ -139,6 +139,7 @@ class MatchView extends Component {
                 <Toolbar.Match data={match} navigator={this.props.navigator} />
                 <Container 
                     { ...this.props }
+                    hasTabbar={this.props.hasTabbar && !showButton}
                     error={this.props.match.error}
                     refreshing={this.props.match.loading}
                     onRefresh={this.getMatch.bind(this)}>
@@ -148,16 +149,17 @@ class MatchView extends Component {
                            onPress={this.onPress.bind(this)}
                            onSelect={this.onSelect.bind(this)}
                     />
-
                 </Container>
                 { showButton && (
+                    <View style={{paddingBottom: this.props.hasTabbar ? 54:0}}>
                     <Button block 
                         primary={this.state.btnIdx !== 1}
                         disabled={this.state.btnIdx === 1}
                         color={this.props.settings.color } 
-                        onPress={this.state.btnIdx !== 1 ? this.confirmScore.bind(this) : null}>
+                        onPress={this.confirmScore.bind(this)}>
                         { `${btnText[this.state.btnIdx]}` }
                     </Button>
+                    </View>
                 )}
             </View>
         );
