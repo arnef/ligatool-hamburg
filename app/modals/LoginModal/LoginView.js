@@ -76,6 +76,7 @@ class LoginView extends Component {
                             Überspringen
                         </Button>
                     </Column>
+                    <Column fluid style={{width: 8}} />
                     <Column>
                         <Button primary block 
                             disabled={!this.state.user && !this.state.pass}

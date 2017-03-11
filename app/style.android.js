@@ -20,7 +20,7 @@ const style = StyleSheet.create({
     },
     scoreText: {
         color: '#FFF',
-        fontFamily: 'Courier New',
+        fontFamily: 'monospace',
         fontWeight: 'bold',
         textAlign: 'center'
     }
