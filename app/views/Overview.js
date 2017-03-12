@@ -19,6 +19,7 @@ class Overview extends Component {
     const props = {
       error: this.props.matches.error,
       refreshing: this.props.matches.fetching,
+      fetched: this.props.matches.fetched,
       onRefresh: this.props.queryMatches.bind(this)
     };
 

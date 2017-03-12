@@ -23,7 +23,8 @@ class Text extends Component {
 }
 
 Text.defaultProps = {
-    size: 14
+    size: 14,
+    color: '#1e1e1e'
 };
 
 Text.propTypes = {

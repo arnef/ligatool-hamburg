@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
-import { ListItemSet, ListItemSwitch } from '../List';
+// import { ListItemSet, ListItemSwitch } from '../List';
 import ScoreDialog from './ScoreDialog';
+import Set from './Set';
 
 class Match extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            type: 'default'
+            type: 'default',
         };
     }
 
@@ -46,22 +47,27 @@ class Match extends Component {
     renderRow(data, idx) {
         return (
             <View key={idx}>
-                { !!data.toggle && this.props.editable && (
+                {/* !!data.toggle && this.props.editable && (
                     <ListItemSwitch 
                         onValueChange={() => {
                             this.props.toggleMatchType(data.setsIdx);
                             this.setState({ type: data.toggle.type })
                         }}
                         value={this.state.type === 'd5'}>{ data.toggle.title }</ListItemSwitch>
-                ) }
-                <ListItemSet 
-                    onPress={this.props.onPress ? () => { this.props.onPress(data)} : null}
+                ) */}
+                <Set
+                    onPress={this.props.onPress ? () => { this.props.onPress(data, idx)} : null}
                     editable={this.props.editable}
+                    toggleMenu={this.props.editable ? () => { this.props.toggleMenu(idx)} : null}
+                    menuOpen={this.props.menuOpen === idx}
                     onSelect={this.props.onSelect}
+                    onSave={this.props.onSave}
+                    scoreInput={this.props.scoreInput === idx}
                     data={data} />
             </View>
         );
     }
+
 
     getName(data, key) {
         return data[key] ? `${data[key].name} ${data[key].surname}` : this.props.editable ? 'Bitte wählen' : '';

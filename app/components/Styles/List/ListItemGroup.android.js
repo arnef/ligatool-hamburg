@@ -4,7 +4,9 @@ export default StyleSheet.create({
     group: {
         backgroundColor: '#fff',
         borderBottomWidth: 2,
-        borderBottomColor: '#ddd',
+        borderTopWidth: 1,
+        borderTopColor: '#ddd',
+        borderBottomColor: '#ccc',
     },
     margin: {
         borderTopWidth: 8,

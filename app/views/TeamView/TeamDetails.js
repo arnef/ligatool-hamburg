@@ -64,9 +64,14 @@ class TeamView extends Component {
                             { team.contact.map( contact => {
                                 return (<View key={contact.id}>
                                     <Text>{ `${contact.name} ${contact.surname}` }</Text>
-                                    <Row center style={{justifyContent: 'space-between'}}>
-                                    <Button icon='call' onPress={() => { this.openTel(contact.phone_number) }}>Anrufen</Button>
-                                    <Button icon='mail' onPress={() => { this.openMail(contact.email) }}>E-Mail</Button>
+                                    <Row center style={{marginVertical: 8}}>
+                                        <View style={{flex: 1}}>
+                                            <Button icon='call' onPress={() => { this.openTel(contact.phone_number) }}>Anrufen</Button>
+                                        </View>
+                                        <Column fluid style={{width: 8}} />
+                                        <View style={{flex: 1}}>
+                                            <Button icon='mail' onPress={() => { this.openMail(contact.email) }}>E-Mail</Button>
+                                        </View>
                                     </Row>
                                 </View>)
                             })}
@@ -92,7 +97,9 @@ class TeamView extends Component {
                             <Text>{ team.venue.name }</Text>
                             <Text>{ team.venue.street }</Text>
                             <Text>{ team.venue.zip_code } { team.venue.city }</Text>
-                            <Button icon='map' onPress={() => { this.openMaps(team.venue)}}>Karte</Button>
+                            <View style={{marginVertical: 8}}>
+                                <Button icon='map' onPress={() => { this.openMaps(team.venue)}}>Karte</Button>
+                            </View>
                         </Column>
                     </Row>
                 )}

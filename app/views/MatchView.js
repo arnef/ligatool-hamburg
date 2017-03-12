@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Container, Toolbar, Match } from '../components';
 import SelectPlayerModal from '../modals/SelectPlayerModal';
 import { Button } from '../ui';
+import * as theme from '../ui/theme';
 
 class MatchView extends Component {
 
@@ -11,7 +12,9 @@ class MatchView extends Component {
         super(props);
         this.state = {
             btnIdx: 0,
-            editable: true
+            editable: true,
+            menuOpen: -1,
+            scoreInput: -1
         };
     }
 
@@ -33,34 +36,46 @@ class MatchView extends Component {
         this.setState({ 
             btnIdx: idx,
             editable: editable
-        });
+        });   
+    }
+
+
+    toggleMenu(idx) {
+        if (this.state.menuOpen === idx) {
+            this.setState({ menuOpen: -1, scoreInput: -1 });
+        }
+        else if (this.state.scoreInput === idx) {
+            this.setState({ menuOpen: -1, scoreInput: -1 });
+        }
+        else {
+            this.setState({ menuOpen: idx, scoreInput: -1 });
+        }
     }
 
     getMatch() {
         this.props.getMatch(this.props.id, true);
     }
 
-    onPress(data) {
+    onPress(data, idx) {
         if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
-            this.showScoreDialog(data);
+            // this.showScoreDialog(data);
+            this.toggleScoreInput(idx)
         } else {
             this.showPlayerDialog(data.sets[0].player_1_home ? 'away' : 'home', data)
         }
     }
 
-    // onLongPress(data) {
-    //     this.showPlayerDialog('home', data);
-    // }
 
     onSelect(data, value) {
-        console.tron.log(data);
-        if (value == 1) {
+        this.toggleMenu(-1);
+        if (value === 0) {
             this.showPlayerDialog('home', data);
         }
-        if (value == 2) {
-            if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
-                this.showScoreDialog(data);
-            }
+        if (value === 1) {
+            this.setState({ scoreInput: this.state.menuOpen });
+            // if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
+            //     this.showScoreDialog(data);
+            // }
         }
     }
 
@@ -81,6 +96,18 @@ class MatchView extends Component {
             }
 
         }
+    }
+
+    onSave(data, score) {
+        const sets = { ...this.props.match.data.sets };
+        const idx = data.setsIdx[score.set];
+        const set = { ...data.sets[score.set] };
+        set.number = idx;
+        set.goals_home = score.goals_home;
+        set.goals_away = score.goals_away;
+        sets[idx] = set;
+        this.props.updateSets(this.props.match.data.id, sets);
+        this.setState({ scoreInput: -1 });
     }
 
     showPlayerDialog(team, data) {
@@ -120,11 +147,19 @@ class MatchView extends Component {
         }
     }
 
+    toggleScoreInput(idx) {
+        if (this.state.scoreInput === idx) {
+            this.setState({ scoreInput: -1, menuOpen: -1 });
+        } else {
+            this.setState({ scoreInput: idx, menuOpen: -1 });
+        }
+    }
+
     render() {
         const match = this.props.match.data;
         const showButton =  this.showButton();
         return (
-            <View style={{ flex: 1, backgroundColor: '#eee'}}>
+            <View style={{ flex: 1, backgroundColor: theme.backgroundColor}}>
                 <SelectPlayerModal
                     { ...this.props }
                     ref={(dialog) => { this.SelectPlayerModal = dialog; }}
@@ -147,11 +182,15 @@ class MatchView extends Component {
                     <Match editable={this.state.editable}
                            toggleMatchType={this.props.toggleMatchType.bind(this)}
                            onPress={this.onPress.bind(this)}
+                           scoreInput={this.state.scoreInput}
+                           toggleMenu={this.toggleMenu.bind(this)}
+                           menuOpen={this.state.menuOpen}
+                           onSave={this.onSave.bind(this)}
                            onSelect={this.onSelect.bind(this)}
                     />
                 </Container>
                 { showButton && (
-                    <View style={{paddingBottom: this.props.hasTabbar ? 54:0}}>
+                    <View style={{margin: 8, paddingBottom: this.props.hasTabbar ? 54:0}}>
                     <Button block 
                         primary={this.state.btnIdx !== 1}
                         disabled={this.state.btnIdx === 1}

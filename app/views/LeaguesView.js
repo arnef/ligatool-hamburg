@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Container } from '../components';
-import { ListItemGroup, ListItem } from '../components/List/';
+import { ListItemGroup } from '../components/List/';
 import { connect } from 'react-redux';
 import { RANKING } from './routes';
-
+import { ListItem, Text } from '../ui';
 
 class LeaguesView extends Component {
 
@@ -29,9 +29,9 @@ class LeaguesView extends Component {
 					return (
 						<View key={league.id}>
 							<ListItem
-								last={idx === this.props.leagues.data.length-2}
+								last={idx > this.props.leagues.data.length-2}
 								onPress={() => this.onPress(league)}>
-								{ league.name }
+								<Text>{ league.name }</Text>
 							</ListItem>
 						</View>
 					)

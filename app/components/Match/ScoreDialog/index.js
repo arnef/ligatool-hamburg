@@ -41,7 +41,6 @@ class ScoreDialog extends Component {
 
     onPress() {
         if (this.result) {
-            // this.dialog.setRefreshing(true);
             this.result({
                 set: this.state.set,
                 goals_home: parseInt(this.state.goals_home, 10),

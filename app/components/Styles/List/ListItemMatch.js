@@ -12,11 +12,9 @@ export default StyleSheet.create({
     },
     metaVenue: {
         flex: 1,
-        // fontWeight: 'bold'
     },
     metaTime: {
         flex: 1,
-        // fontWeight: 'bold',
         textAlign: 'right'
     },
     detailsRow: {

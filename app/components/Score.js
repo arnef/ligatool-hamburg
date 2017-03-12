@@ -14,10 +14,10 @@ class Score extends Component {
 	render() {
 		if (this.props.setPoints) {
 			return (
-				<View style={[style.score, { width: 58 }, this.props.style]}>
+				<View style={style.score}>
 					<Text style={style.scoreText}>
 						{ this.renderScore() }
-					</Text>
+					</Text>	
 				</View>
 			);
 		}

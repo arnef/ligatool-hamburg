@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import MatchListView from './MatchListView';
 import { ListItem, ListItemGroup, ListItemMatch } from '../components/List';
 import { Container } from '../components';
 
@@ -39,7 +37,7 @@ class SelectableMatchListView extends Component {
         const matches = this.props.league.matches[`${this.props.leagueID}`] || [];
         const matchDays = this.state.matchDays;
         return (
-            <Container { ...this.props} { ...props }>
+            <Container { ...this.props} { ...props } getRef={container => { this.container = container }}>
                 { matches.length > 0 && (
                     <ListItemGroup name='Spieltag wählen'>
                         { !this.state.showDropdown && (<ListItem last onPress={this.onPress.bind(this)}>{ this.state.selectedMatchDay}</ListItem>) }
@@ -58,7 +56,6 @@ class SelectableMatchListView extends Component {
                         return (<ListItemMatch key={match.id} navigator={this.props.navigator} data={match} />);
                     }
                 })}
-                
             </Container>
         );
     }
@@ -81,10 +78,22 @@ class SelectableMatchListView extends Component {
 
     onSelectMatchDay(matchDay) {
         this.setState({ showDropdown: false, selectedMatchDay: matchDay });
+        if (this.container && this.container.scrollTo) {
+            this.container.scrollTo({ x: 0 , y: 0, animated: true });
+        }
     }
+    
     onPress() {
         this.setState({ showDropdown: true });
     }
 }
+
+
+SelectableMatchListView.propTypes = {
+    league: React.PropTypes.object,
+    leagueID: React.PropTypes.number,
+    navigator: React.PropTypes.object,
+    getLeagueMatches: React.PropTypes.func
+};
 
 export default SelectableMatchListView;

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Switch, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItemSwitch, ListItemGroup } from '../../components/List';
+import { ListItemGroup } from '../../components/List';
 import { Container } from '../../components';
+import { ListItem, Text } from '../../ui';
 
 class SettingsNotificationView extends Component {
 
@@ -30,16 +31,17 @@ class SettingsNotificationView extends Component {
         const groups = this.props.settings.notification.leagues || {};
         const checked = groups[data.id];
         return (
-            <View key={data.id}>
-            <ListItemSwitch
+            <ListItem key={data.id}
                 last={idx === this.props.leagues.data.length -1}         
-                value={checked}
-                onValueChange={(newValue) => { 
+                onPress={Platform.OS === 'android' ? (newValue) => { 
                     this.props.setGroupNotification(data.id, newValue)
-                }}>
-                { data.name }
-            </ListItemSwitch>
-            </View>
+                } : null}>
+                <Text>{ data.name }</Text>
+                <View style={{ flex: 1 }} />
+                <Switch value={checked} onValueChange={(newValue) => {
+                    this.props.setGroupNotification(data.id, newValue)
+                }} />
+            </ListItem>
         );
     }
 }

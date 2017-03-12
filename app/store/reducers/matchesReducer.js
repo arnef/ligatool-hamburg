@@ -8,7 +8,8 @@ export default (state = {
     next: [],
     played: [],
     error: null,
-    fetching: false
+    fetching: false,
+    fetched: false
 }, action) => {
     let matchId;
     switch (action.type) {
@@ -23,6 +24,7 @@ export default (state = {
                 state.today = newState.today;
                 state.next = newState.next;
                 state.played = newState.played;
+                state.fetched = true;
             } else {
                 state.error = action.payload.problem;
             }

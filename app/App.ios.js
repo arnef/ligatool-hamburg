@@ -37,7 +37,7 @@ class App extends Component {
   
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#eee'}}>
+      <View style={{flex: 1}}>
       <LoginModal { ...this.props } />
       <TabBarIOS
         tintColor={this.props.settings.color}

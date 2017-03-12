@@ -80,9 +80,9 @@ class AppContainer extends Component {
 	render() {
 		const initApp = this.props.initApp;
 		if (initApp.tasksDone.length === initApp.tasks) {
-			return (<MenuContext style={{flex: 1}}><App {...this.props} /></MenuContext>);
+			return <App {...this.props} />;
 		} else {
-			return (<LoadingScreen spinner />);
+			return <LoadingScreen spinner />;
 		}
 	}
 }

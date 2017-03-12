@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ListItemMatch } from '../components/List';
-import { Container } from '../components';
+import { Container, Text } from '../components';
 import { Row, Column, Button } from '../ui';
 
 class MatchListView extends Component {
@@ -37,6 +37,17 @@ class MatchListView extends Component {
                 </Container>
             )
         }
+        if (this.props.fetched && this.props.matches.length === 0) {
+            return (
+                <Container 
+                    { ...this.props }
+                    error={this.props.error}
+                    refreshing={this.props.refreshing}
+                    onRefresh={this.props.onRefresh}>
+                    <Text center style={{padding: 16}}>Keine Begegnungen</Text>
+                </Container>  
+            )
+        }
         return (
             <Container
                 { ...this.props }
@@ -52,6 +63,7 @@ class MatchListView extends Component {
 
 MatchListView.propTypes = {
     onRefresh: React.PropTypes.func,
+    fetched: React.PropTypes.bool,
     matches: React.PropTypes.array,
     navigator: React.PropTypes.object,
     error: React.PropTypes.string,

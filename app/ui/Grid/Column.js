@@ -4,7 +4,7 @@ import { View } from 'react-native';
 class Column extends Component {
 
     render() {
-        const style = { flex: 1, flexDirection: 'column', borderWidth: 0};
+        const style = { flex: 1, flexDirection: 'column'};
         if (this.props.center) {
             style.alignItems = 'center';
         }

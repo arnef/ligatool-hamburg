@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {
-	View,
+	View, Switch, Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 import codePush from 'react-native-code-push';
-import { ListItemGroup, ListItem, ListItemSwitch } from '../../components/List';
-import { Container, Text } from '../../components';
+import { ListItemGroup, ListItemSwitch } from '../../components/List';
+import { ListItem, Text } from '../../ui';
+import { Container } from '../../components';
 import { SETTINGS_NOTIFICATION } from '../routes';
 class SettingsView extends Component {
 
@@ -48,13 +49,15 @@ class SettingsView extends Component {
 
 	_renderCheckbox(text, value, key, disabled) {
 			return (
-				<ListItemSwitch disabled={disabled}
-						value={value}			
-						onValueChange={(newValue) => {
-								this._toggleNotification(key, newValue);
-							}} >
-					{ text }
-				</ListItemSwitch>);
+				<ListItem 
+					disabled={disabled}		
+					onPress={Platform.OS === 'android' ? () => {
+						this._toggleNotification(key, !value);
+					} : null} >
+					<Text>{ text }</Text>
+					<View style={{flex: 1}} />
+					<Switch value={value} onValueChange={(newValue) => this._toggleNotification(key, newValue)} />
+				</ListItem>);
 	}
 
 	_toggleGroups() {
@@ -70,49 +73,58 @@ class SettingsView extends Component {
 	_renderSectionNotification() {
 		const notification = this.props.settings.notification;
 		return (
-		<ListItemGroup name='Benachrichtigungen'>	
+		<ListItem.Group>
+			<ListItem.Header title='Benachrichtigungen' />	
 			{ this._renderCheckbox('Benachrichtigungen', notification.on, 'on') }
 			{ this._renderCheckbox('Live-Zwischenergebnis', notification.live, 'live', !notification.on) }
 			{ this._renderCheckbox('Endstand', notification.ended, 'ended', !notification.on) }
 			<ListItem last
 				disabled={!notification.on || this.props.leagues.data.length === 0}
-				onPress={this._toggleGroups.bind(this)} more>
-				Gruppen wählen
+				onPress={this._toggleGroups.bind(this)}>
+				<Text>Gruppen wählen</Text>
+				<View style={{flex:1}} />
+				{ Platform.OS === 'ios' && (<ListItem.Icon name='caret-forward' right />) }
 			</ListItem>
-		</ListItemGroup>);
+		</ListItem.Group>);
 	}
 
 	render() {
 		const team = this.props.settings.team;
 		return (
 			<Container {...this.props}>	
-				<ListItemGroup name='Benutzerdaten'>
+				<ListItem.Group>
+					<ListItem.Header title='Benutzerdaten' />
 				{ team && (
 					<View>
-						<ListItem image={ team.image } icon={team.image ? null: 'shirt'}>
+						<ListItem icon>
+							{ !!team.image && (<ListItem.Image url={team.image} />)}
+							{ !team.image && (<ListItem.Icon name='shirt' color={this.props.settings.color} />)}
 							<Text>{ team.name }</Text>
 						</ListItem>
 						
-						<ListItem onPress={this._logout.bind(this)}
-							icon='log-out' last><Text>Logout</Text>
+						<ListItem last onPress={this._logout.bind(this)}>
+							<ListItem.Icon name='log-out' color={this.props.settings.color} />
+							<Text>Logout</Text>
 						</ListItem>
 					</View>
 				)}
 				{ !team && (
-					<ListItem onPress={this._login.bind(this)}
-						icon='log-in' last>
-						Team wählen
+					<ListItem last onPress={this._login.bind(this)}>
+						<ListItem.Icon name='log-in' color={this.props.settings.color} />
+						<Text>Team wählen</Text>
 					</ListItem>
 				)}
-				</ListItemGroup>
+				</ListItem.Group>
 				
 				{ this._renderSectionNotification() }
 
-				<ListItemGroup name='Informationen'>				
-					<ListItem last icon='information-circle' onPress={this._checkForUpdate.bind(this)}>
+				<ListItem.Group>				
+					<ListItem.Header title='Informationen' />
+					<ListItem last onPress={this._checkForUpdate.bind(this)}>
+						<ListItem.Icon name='information-circle' color={this.props.settings.color} />
 						<Text>App-Version { !!this.state.pkg ? `${this.state.pkg.appVersion} (${this.state.pkg.label})`: '0.9' }</Text>
 					</ListItem>
-				</ListItemGroup>
+				</ListItem.Group>
 			</Container>
 		);
 	}

@@ -6,11 +6,14 @@ import ErrorFlash from './ErrorFlash';
 
 
 class Container extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
             data: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+        }
+        if (this.props.getRef) {
+            this.props.getRef(this);
         }
     }
 
@@ -20,13 +23,12 @@ class Container extends Component {
                 refreshing={this.props.refreshing || false}
                 onRefresh={this.props.onRefresh} />
         );
-        const style = { flex: 1, backgroundColor: '#eee' };
+        const style = { flex: 1, backgroundColor: '#dddfe2' };
         if (this.props.renderRow) {
             return (
                 <View style={style}>
                     <ErrorFlash error={this.props.error} />
                     <ListView
-                        scrollEventThrottle={200}
                         refreshControl={!!this.props.onRefresh ? refreshControl : null}
                         style={{ flex: 1 }}
                         renderRow={this.props.renderRow}
@@ -44,12 +46,23 @@ class Container extends Component {
                     <ErrorFlash error={this.props.error} />
                     <ScrollView
                         refreshControl={!!this.props.onRefresh ? refreshControl : null}
+                        ref={scrollview => { this.scrollView = scrollview }}
                         style={{ flex: 1 }}>
-                        {this.props.children}
+                        <View>
+                        { this.props.children }
+                        </View>
                         { this.props.hasTabbar && (<View style={{height: 50}} />)}
                     </ScrollView>
                 </View>
             );
+        }
+    }
+
+    scrollTo(params) {
+        if (this.scrollView) {
+            setTimeout(() => {
+                this.scrollView.scrollTo(params);
+            }, 100);
         }
     }
 

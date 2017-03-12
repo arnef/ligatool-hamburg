@@ -12,6 +12,9 @@ class Icon extends Component {
                 icon += '-outline';
             }
         }
+        if (this.props.name === 'arrow-down' || this.props.name === 'arrow-up') {
+            icon = 'ios-' + this.props.name + '-outline';
+        }
         const color = this.props.color || '#aaa';
         const style = this.props.style || {};
         return (
