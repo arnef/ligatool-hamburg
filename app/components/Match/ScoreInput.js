@@ -42,20 +42,7 @@ class ScoreInput extends Component {
                         { player_2_home && '\n-\n'+this.getName(player_2_home)}
                     </Text>
                     <Column style={styles.score}>
-                        <TextInput 
-                            keyboardType='numeric'
-                            value={this.state.goals_home}
-                            onChangeText={value => {
-                                this.setState({ goals_home: value });
-                                const goals = parseInt(value, 10);
-                                if (!this.state.goals_away && goals < 6) {
-                                    this.setState({
-                                        goals_away: goals === 5 ? '5' : '6'
-                                    });
-                                    setTimeout(this.onSave.bind(this), 50);
-                                }
-                            }}
-                            style={styles.input} />
+                        { this.renderInputField('goals_home') }
                     </Column>
                 </Column>
                 <Column center>
@@ -64,10 +51,7 @@ class ScoreInput extends Component {
                         { player_2_away && '\n-\n'+this.getName(player_2_away)}
                     </Text>
                     <Column style={styles.score}>
-                        <TextInput 
-                            keyboardType='numeric'
-                            value={this.state.goals_away}
-                            style={styles.input} />
+                        { this.renderInputField('goals_away') }
                     </Column>
                 </Column>
             </Row>
@@ -91,6 +75,45 @@ class ScoreInput extends Component {
             </Row>
             </View>
         )
+    }
+
+    renderInputField(key) {
+        let otherKey = 'goals_away'
+        if (key === 'goals_away') {
+            otherKey = 'goals_home';
+        }
+        return (
+            <TextInput 
+                keyboardType='numeric'
+                value={this.state[key]}
+                maxLength={1}
+                ref={input => { this.inputField = input }}
+                keyboardAppearance='dark'
+                selectionColor='#fff'
+                onFocus={this.onFocus.bind(this)}
+                onChangeText={value => {
+                    const newState={};
+                    newState[key] = value;
+                    this.setState(newState);
+                    const goals = parseInt(value, 10);
+                    if (!this.state[otherKey] && goals < 6) {
+                        newState[otherKey] = goals === 5 ? '5' : '6';
+                        this.setState(newState);
+                        setTimeout(this.onSave.bind(this), 50);
+                    }
+                }}
+                style={styles.input} />
+        )
+    }
+
+    onFocus() {
+        const input = this.inputField;
+        // console.tron.log(JSON.stringify(Object.keys(input)));
+        input.measure((fx, fy, width, height, px, py) => {
+            console.tron.log(`position: ${py}`);
+            this.props.adjustPosition(py);
+        })
+        // console.tron.log(input.measureLayout)
     }
 
     onSave() {

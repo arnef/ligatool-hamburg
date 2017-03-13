@@ -8,6 +8,7 @@ class Item extends Component {
     render() {
         const Container = this.props.onPress && !this.props.disabled ? Touchable : View;
         const separatorStyle = [styles.separator];
+        const itemStyle = [styles.item];
         if (this.props.icon) {
             separatorStyle.push({ marginLeft: Platform.OS === 'ios' ? 61 : 52 })
         }
@@ -15,10 +16,14 @@ class Item extends Component {
         if (this.props.disabled) {
             styleItem.push(styles.disabled);
         }
+        
+        if (this.props.maxHeight) {
+            itemStyle.push({ height: this.props.maxHeight, paddingVertical: 8});
+        }
         return (
-            <View>
+            <View style={ this.props.active ? {backgroundColor: '#eee'} : {}}>
                 <Container onPress={this.props.onPress}>
-                    <View style={styles.item}>
+                    <View style={itemStyle}>
                         <View style={styleItem}>
                             { this.props.children }
                         </View>
@@ -33,7 +38,9 @@ class Item extends Component {
 Item.defaultProps = {
     last: false,
     icon: false,
-    disabled: false
+    disabled: false,
+    maxHeight: 0,
+    active: false
 };
 
 Item.propTypes = {
@@ -41,6 +48,8 @@ Item.propTypes = {
     last: React.PropTypes.bool,
     icon: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
+    maxHeight: React.PropTypes.number,
+    active: React.PropTypes.bool,
     children: React.PropTypes.oneOfType([
         React.PropTypes.array, React.PropTypes.object
     ])
@@ -52,19 +61,28 @@ const styles = StyleSheet.create({
    },
    content: {
        flexDirection: 'row',
-       alignItems: 'center',   
+       alignItems: 'center',
+       borderWidth: 0
    },
    disabled: {
        opacity: .5
    },
-   item: {
-       paddingVertical: 12,
-       paddingHorizontal: 16,
-       height: Platform.select({
-           ios: 44,
-           android: 48
-       })
-    },
+   item: Platform.select({
+       ios: {
+           paddingVertical: 12,
+           paddingHorizontal: 16,
+           height: 44,
+           flexDirection: 'row',
+           alignItems: 'center'
+       },
+       android: {
+           paddingVertical: 12,
+           paddingHorizontal: 16,
+           height: 48,
+           flexDirection: 'row',
+           alignItems: 'center'
+       }
+   }),
     separator: Platform.select({
         ios: {
             height: 1,
@@ -72,7 +90,7 @@ const styles = StyleSheet.create({
             backgroundColor: theme.backgroundColor
         },
         android: {
-            height: 0,
+            height: 1,
             marginLeft: 0,
             backgroundColor: theme.backgroundColor
         }

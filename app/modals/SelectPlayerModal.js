@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, Modal } from 'react-native';
-import Touchable from '../components/Touchable';
-import Image from '../components/Image';
-import Icon from '../components/Icon';
-import Toolbar from '../components/Toolbar';
+import { ListItem } from '../ui';
 import Container from '../components/Container';
-import { ListItemGroup } from '../components/List';
 import Navigator from '../Navigation';
 
 
@@ -74,28 +70,24 @@ class SelectPlayerModal extends Component {
         const color = this.state.selected[idx] ?
             this.props.settings.color : '#666';
         return (
-            <Touchable key={data.id} onPress={() => { this.onPress(data, idx); }}>
-                <View style={style.listItem}>
-                    <Image url={data.image} height={40} width={40} />
+                <ListItem key={data.id} last={idx === this.state.items.length-1} icon onPress={() => { this.onPress(data, idx); }}>
+                    <ListItem.Image url={data.image} />
                     <Text>{ `${data.name} ${data.surname}` }</Text>
                     <View style={{flex:1}} />
-                    <Icon name={this.state.selected[idx] ? 'checkbox' : 'square-outline'}
-                          color={color}
-                          size={24}  />
-                </View>
-            </Touchable>
+                    <ListItem.Icon right name={this.state.selected[idx] ? 'checkbox' : 'square-outline'} />
+                </ListItem>
         );
     }
 
     renderItems() {
         return (
             <Container>
-                <ListItemGroup>
+                <ListItem.Group>
                     { this.state.items.map( (item, idx) => {
                         return this.renderItem(item, idx);
                         })
                     }
-                </ListItemGroup>
+                </ListItem.Group>
             </Container>
         );
         

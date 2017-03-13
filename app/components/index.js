@@ -1,17 +1,15 @@
 import Match from './Match';
-import { Text } from './Styles';
-import Toolbar from './Toolbar';
 import Container from './Container';
-import Icon from './Icon';
-import Image from './Image'
 import LoadingScreen from './LoadingScreen';
+import MatchItem from './MatchItem';
+import TabBar from './TabBar';
+import TeamLogo from './TeamLogo';
 
 export {
     Match,
-    Text,
-    Toolbar,
     Container,
-    Icon,
-    Image,
-    LoadingScreen
+    LoadingScreen,
+    MatchItem,
+    TeamLogo,
+    TabBar
 };

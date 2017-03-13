@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Container } from '../../components';
 import { connect } from 'react-redux';
-import { ListItemGroup, ListItem } from '../../components/List';
+// import { ListItemGroup, ListItem } from '../../components/List';
+import { ListItem, Text } from '../../ui';
 import { ROUTE_LOGIN } from './LoginModal';
 
 
@@ -28,19 +29,21 @@ class SelectTeamView extends Component {
                 refreshing={this.props.league.loading}
                 onRefresh={this.getTeams.bind(this)}>
                 { teams.length > 0 && (
-                    <ListItemGroup>
-                        { teams.map( team => {
+                    <ListItem.Group>
+                        { teams.map( (team, idx) => {
                             return (
                                 <ListItem 
                                     onPress={() => { this.onPress(team); }}
                                     key={team.id}
-                                    image={team.image} 
-                                    icon={!team.image ? 'shirt' : null}>
-                                    { team.name }
+                                    last={idx === teams.length-1}
+                                    icon={true}>
+                                    { team.image && <ListItem.Image url={team.image} />}
+                                    { !team.image && <ListItem.Icon name='shirt' />}
+                                    <Text>{ team.name }</Text>
                                 </ListItem>
                             );
                         })}
-                    </ListItemGroup>
+                    </ListItem.Group>
                 )}
             </Container>
         );

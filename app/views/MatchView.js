@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Keyboard, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux'
-import { Container, Toolbar, Match } from '../components';
+import { Container, Match } from '../components';
 import SelectPlayerModal from '../modals/SelectPlayerModal';
 import { Button } from '../ui';
 import * as theme from '../ui/theme';
+
+const height = Dimensions.get('window').height;
 
 class MatchView extends Component {
 
@@ -14,12 +16,36 @@ class MatchView extends Component {
             btnIdx: 0,
             editable: true,
             menuOpen: -1,
-            scoreInput: -1
+            scoreInput: -1,
+            keyboardSpace: 0,
+            py: 0,
+            offsetY: 0
         };
     }
 
     componentDidMount() {
         this.getMatch();
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this));
+        this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this));
+    }
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardWillHideListener.remove();
+    }
+
+    keyboardDidShow(frames) {
+        if (!frames.endCoordinates) return;
+        this.setState({keyboardSpace: frames.endCoordinates.height});
+        const visibleHeight = height - this.state.keyboardSpace - 90;
+        const keyboardDistance =  this.state.py - visibleHeight;
+        if (keyboardDistance > 0) {
+            this.scrollView.scrollTo({ y: this.state.offsetY + keyboardDistance, x: 0, animated: true});
+            this.setState({ py: this.state.py - keyboardDistance });
+        }
+    }
+
+    keyboardWillHide() {
+        this.setState({ keyboardSpace: 0 });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -118,7 +144,6 @@ class MatchView extends Component {
             this.SelectPlayerModal.setSelection(data.type);
             this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`);
             this.SelectPlayerModal.setItems(match[team_key].player);
-
             this.SelectPlayerModal.result = (result) => {
                 this.props.setPlayer(team, result, data.setsIdx);
                 if (team === 'home') {
@@ -155,6 +180,15 @@ class MatchView extends Component {
         }
     }
 
+    onScroll(event) {
+        const offsetY = event.nativeEvent.contentOffset.y;
+        this.setState({ offsetY });
+    }
+    adjustPosition(py) {
+        this.setState({ py });
+        console.tron.log('input position ' + py);
+    }
+
     render() {
         const match = this.props.match.data;
         const showButton =  this.showButton();
@@ -165,20 +199,15 @@ class MatchView extends Component {
                     ref={(dialog) => { this.SelectPlayerModal = dialog; }}
                     visible={this.props.dialog.player }
                 />
-                <Match.Score
-                    ref={(dialog) => { this.scoreDialog = dialog; }}
-                    visible={this.props.dialog.score.visible }
-                    refreshing={this.props.dialog.score.loading }
-                    onRequestClose={ () => { this.props.hideScoreDialog() }}
-                />
-                <Toolbar.Match data={match} navigator={this.props.navigator} />
+                <Match.Header data={match} navigator={this.props.navigator} />
                 <Container 
                     { ...this.props }
                     hasTabbar={this.props.hasTabbar && !showButton}
+                    getRef={scrollView => { this.scrollView = scrollView}}
+                    onScroll={this.onScroll.bind(this)}
                     error={this.props.match.error}
                     refreshing={this.props.match.loading}
                     onRefresh={this.getMatch.bind(this)}>
-
                     <Match editable={this.state.editable}
                            toggleMatchType={this.props.toggleMatchType.bind(this)}
                            onPress={this.onPress.bind(this)}
@@ -186,22 +215,37 @@ class MatchView extends Component {
                            toggleMenu={this.toggleMenu.bind(this)}
                            menuOpen={this.state.menuOpen}
                            onSave={this.onSave.bind(this)}
+                           adjustPosition={this.adjustPosition.bind(this)}
                            onSelect={this.onSelect.bind(this)}
-                    />
+                    />         
+                    <View style={{height:this.state.keyboardSpace}} />           
                 </Container>
-                { showButton && (
-                    <View style={{margin: 8, paddingBottom: this.props.hasTabbar ? 54:0}}>
-                    <Button block 
-                        primary={this.state.btnIdx !== 1}
-                        disabled={this.state.btnIdx === 1}
-                        color={this.props.settings.color } 
+
+                { showButton && this.renderSubmitButton() }
+            </View>
+        );
+    }
+
+    renderSubmitButton() {
+        if (Platform.OS === 'ios') {
+            return (
+                <View style={{backgroundColor: '#f3f3f4', borderTopWidth: 1, borderTopColor: '#bbbec0', marginBottom: 50}}>
+                    <Button disabled={this.state.btnIdx === 1}
+                        onPress={this.confirmScore.bind(this)}>
+                        { `${btnText[this.state.btnIdx]}` }
+                        </Button>
+                </View>
+            );
+        } else {
+            return (
+                <View style={{ backgroundColor: theme.backgroundColor, padding: 10 }}>
+                    <Button disabled={this.state.btnIdx === 1}
                         onPress={this.confirmScore.bind(this)}>
                         { `${btnText[this.state.btnIdx]}` }
                     </Button>
-                    </View>
-                )}
-            </View>
-        );
+                </View>
+            )
+        }
     }
 }
 

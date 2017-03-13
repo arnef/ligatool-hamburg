@@ -45,6 +45,9 @@ class Container extends Component {
                 <View style={style}>
                     <ErrorFlash error={this.props.error} />
                     <ScrollView
+                        automaticallyAdjustContentInsets={false}
+                        onScroll={this.props.onScroll}
+                        scrollEventThrottle={200}
                         refreshControl={!!this.props.onRefresh ? refreshControl : null}
                         ref={scrollview => { this.scrollView = scrollview }}
                         style={{ flex: 1 }}>

@@ -5,7 +5,7 @@ import ListItem from  './ListItem';
 import Text from './Text';
 import Image from './Image';
 import Touchable from './Touchable';
-
+import Icon from './Icon';
 
 export {
     Button,
@@ -14,5 +14,6 @@ export {
     Column,
     ListItem,
     Text,
-    Touchable
+    Touchable,
+    Icon
 };

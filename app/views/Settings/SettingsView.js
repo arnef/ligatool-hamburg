@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import codePush from 'react-native-code-push';
-import { ListItemGroup, ListItemSwitch } from '../../components/List';
 import { ListItem, Text } from '../../ui';
 import { Container } from '../../components';
 import { SETTINGS_NOTIFICATION } from '../routes';
@@ -120,7 +119,7 @@ class SettingsView extends Component {
 
 				<ListItem.Group>				
 					<ListItem.Header title='Informationen' />
-					<ListItem last onPress={this._checkForUpdate.bind(this)}>
+					<ListItem last onPress={Platform.OS === 'android' ? this._checkForUpdate.bind(this) : null}>
 						<ListItem.Icon name='information-circle' color={this.props.settings.color} />
 						<Text>App-Version { !!this.state.pkg ? `${this.state.pkg.appVersion} (${this.state.pkg.label})`: '0.9' }</Text>
 					</ListItem>

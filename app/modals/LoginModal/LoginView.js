@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Dimensions, TextInput, ActivityIndicator } from 'react-native';
-import { Container, Text } from '../../components';
-import { Row, Column, Button } from '../../ui';
-import { ListItemGroup } from '../../components/List';
+import { TextInput, ActivityIndicator } from 'react-native';
+import { Container } from '../../components';
+import { ListItem, Row, Column, Button, Text } from '../../ui';
 import style from '../../style';
 
 class LoginView extends Component {
@@ -15,24 +14,17 @@ class LoginView extends Component {
         };
     }
 
+
     componentWillReceiveProps(nextProps) {
         this.apiKeyFullfilled(nextProps);
         this.loginFullfiled(nextProps);
     }
 
     render() {
-        if (this.props.auth.loading) {
-            return (
-                <Row center style={{height: Dimensions.get('window').height - 120}}>
-                    <Column center>
-                        <ActivityIndicator color={this.props.settings.color} size='large' />
-                    </Column>
-                </Row>
-            )
-        }
+        const loading = this.props.dialog.login.loading;
         return (
             <Container>
-            <ListItemGroup>
+            <ListItem.Group>
                 <Row style={{paddingHorizontal: 16, paddingVertical: 8}}>
                     <Column>
                         <Text>Zugangsdaten für das Liga-Tool.</Text>
@@ -62,6 +54,7 @@ class LoginView extends Component {
                             style={style.input}                      
                             editable={!this.props.auth.loading}
                             secureTextEntry={true}
+                            keyboardAppearance='dark'
                             onChangeText={(text) => {
                                 this.setState({ pass: text })
                             }}
@@ -69,27 +62,30 @@ class LoginView extends Component {
                         <Row style={style.form} />
                     </Column>
                 </Row>
-                <Row style={{paddingHorizontal: 16, paddingVertical: 8}}>
+                <Row style={{paddingHorizontal: 16, paddingVertical: 8}} center>
                     <Column>
-                        <Button block 
+                        <Button
+                            disabled={loading}
                             onPress={this.closeModal.bind(this)}>
                             Überspringen
                         </Button>
                     </Column>
                     <Column fluid style={{width: 8}} />
                     <Column>
-                        <Button primary block 
+                        { !loading && (
+                        <Button
                             disabled={!this.state.user && !this.state.pass}
                             onPress={this.login.bind(this)}>
-                            Login
+                            Anmelden
                         </Button>
+                        )}
+                        { loading && (<ActivityIndicator  color={this.props.settings.color} />)}
                     </Column>
                 </Row>
-            </ListItemGroup>
+            </ListItem.Group>
             </Container>
         );
     }   
-
 
     closeModal() {
         this.props.showLogin(false);
@@ -102,6 +98,7 @@ class LoginView extends Component {
                 password: this.state.pass
             };
             this.props.requestAPIKey(loginUser);
+            setTimeout(() => { this.pulsingImage();}, 50);
         }
     }
 

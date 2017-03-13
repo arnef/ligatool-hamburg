@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Switch, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItemGroup } from '../../components/List';
 import { Container } from '../../components';
 import { ListItem, Text } from '../../ui';
 
@@ -18,11 +17,11 @@ class SettingsNotificationView extends Component {
         const leagues = this.props.leagues.data;
         return (
             <Container {...this.props}>
-                <ListItemGroup>
+                <ListItem.Group>
                 { leagues.map( (league, idx) => {
                     return this.renderRow(league, idx);
                 })}
-                </ListItemGroup>
+                </ListItem.Group>
             </Container>
         );
     }
@@ -33,8 +32,8 @@ class SettingsNotificationView extends Component {
         return (
             <ListItem key={data.id}
                 last={idx === this.props.leagues.data.length -1}         
-                onPress={Platform.OS === 'android' ? (newValue) => { 
-                    this.props.setGroupNotification(data.id, newValue)
+                onPress={Platform.OS === 'android' ? () => { 
+                    this.props.setGroupNotification(data.id, !checked)
                 } : null}>
                 <Text>{ data.name }</Text>
                 <View style={{ flex: 1 }} />

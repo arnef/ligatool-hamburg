@@ -11,6 +11,8 @@ import TeamOverview from './TeamView/Team';
 import * as Settings from './Settings';
 import Leagues from './LeaguesView';
 import LeagueView from './LeagueView';
+import LeagueMatchesView from './SelectableMatchListView';
+
 export {
     LiveMatch,
     MatchList,
@@ -24,5 +26,6 @@ export {
     TeamOverview,
     Leagues,
     Settings,
-    LeagueView
+    LeagueView,
+    LeagueMatchesView
 };

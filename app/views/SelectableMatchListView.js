@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { ListItem, ListItemGroup, ListItemMatch } from '../components/List';
-import { Container } from '../components';
+import { connect } from 'react-redux';
+import { ListItem, Text } from '../ui';
+import { Container, MatchItem } from '../components';
 
 class SelectableMatchListView extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedMatchDay: '',
+            selectedMatchDay: null,
             showDropdown: false,
             matchDays: []
         };
@@ -16,6 +17,8 @@ class SelectableMatchListView extends Component {
     componentDidMount() {
         if (!this.props.league.matches[`${this.props.leagueID}`]) {
             this.props.getLeagueMatches(this.props.leagueID);
+        } else {
+            this.getMatchDays();
         }
     }
 
@@ -39,21 +42,25 @@ class SelectableMatchListView extends Component {
         return (
             <Container { ...this.props} { ...props } getRef={container => { this.container = container }}>
                 { matches.length > 0 && (
-                    <ListItemGroup name='Spieltag wählen'>
-                        { !this.state.showDropdown && (<ListItem last onPress={this.onPress.bind(this)}>{ this.state.selectedMatchDay}</ListItem>) }
+                    <ListItem.Group>
+                        <ListItem.Header 
+                            menuOpen={this.state.showDropdown}
+                            title={'Spieltag wählen'} toggleMenu={this.onPress.bind(this)}>
+                                { this.state.selectedMatchDay }
+                            </ListItem.Header>
                         { this.state.showDropdown && matchDays.map((matchDay, idx) => {
                             return (
                                 <ListItem key={idx} 
                                     onPress={() => { this.onSelectMatchDay(matchDay) }}
-                                    last={idx === matchDay.length -1}>{ matchDay }
+                                    last={idx === matchDay.length -1}><Text>{ matchDay }</Text>
                                 </ListItem>);
                         })
                         }
-                    </ListItemGroup>                    
+                    </ListItem.Group>                    
                 )}
                 { !this.state.showDropdown && matches.map((match) => {
                     if (match.match_day === this.state.selectedMatchDay) {
-                        return (<ListItemMatch key={match.id} navigator={this.props.navigator} data={match} />);
+                        return (<MatchItem key={match.id} navigator={this.props.navigator} data={match} />);
                     }
                 })}
             </Container>
@@ -72,7 +79,9 @@ class SelectableMatchListView extends Component {
                 selectedMatchDay = match.match_day;
             } 
         }
-        
+        if (!selectedMatchDay) {
+            selectedMatchDay = matchDays[matchDays.length-1];
+        }
         this.setState({ selectedMatchDay, matchDays });
     }
 
@@ -84,7 +93,7 @@ class SelectableMatchListView extends Component {
     }
     
     onPress() {
-        this.setState({ showDropdown: true });
+        this.setState({ showDropdown: !this.state.showDropdown });
     }
 }
 
@@ -96,4 +105,4 @@ SelectableMatchListView.propTypes = {
     getLeagueMatches: React.PropTypes.func
 };
 
-export default SelectableMatchListView;
+export default connect(state => ({ ...state }))(SelectableMatchListView);

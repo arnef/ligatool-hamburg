@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { StyleSheet, View, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import Touchable from '../Touchable';
+import { Touchable, Text } from '../../ui';
 import { TEAM } from '../../views/routes';
 
 class MatchHeader extends Component {
@@ -20,17 +20,17 @@ class MatchHeader extends Component {
 
 		return (
 			<View style={[style.header, { backgroundColor: this.props.color}]}>
-				<Touchable style={style.teamContainer}
+				<Touchable color='#fff' style={style.teamContainer}
 					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_home, title: match.team_home.name })}}>
-					<Text style={style.team} numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
+					<Text center bold  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
 				</Touchable>
 				<View style={style.score}>
 					<Text style={style.points}>{score}</Text>
-					<Text style={style.goals}>({goals})</Text>
+					<Text style={style.points} size={12}>({goals})</Text>
 				</View>
-				<Touchable style={style.teamContainer}
+				<Touchable color='#fff' style={style.teamContainer}
 					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_away, title: match.team_away.name })}}>
-					<Text style={style.team} numberOfLines={2} ellipsizeMode='tail'>{away}</Text>
+					<Text center bold  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{away}</Text>
 				</Touchable>
 			</View>
 		);
@@ -39,40 +39,39 @@ class MatchHeader extends Component {
 
 const style = StyleSheet.create({
 	header: {
-		flexDirection: 'row',
-		alignItems: 'center',
 		height: 46,
 		maxHeight: 46,
-		backgroundColor: '#666'
+		flexDirection: 'row',		
+		justifyContent: 'space-around'
 	},
 	score: {
         alignItems: 'center',
-		flex: 1
+		justifyContent: 'center',
+		flex: 0
 	},
 	teamContainer: {
-		padding: 8,
-		flex: 2
-	},
-	team: {
-		textAlign: 'center',
-		color: '#FFF',
-		marginHorizontal: 4
+		flex: 1,
+		paddingHorizontal: 4,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	points: {
-		fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+		fontFamily: Platform.select({
+			ios: 'Courier New',
+			android: 'monospace'
+		}),
 		color: '#FFF',
 		fontWeight: 'bold',
 		textAlign: 'center',
         alignItems: 'center'
-	},
-	goals: {
-		fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
-		color: '#FFF',
-		textAlign: 'center',
-        alignItems: 'center',
-		fontSize: 12
 	}
 });
+
+MatchHeader.propTypes = {
+	data: PropTypes.object,
+	color: PropTypes.string,
+	navigator: PropTypes.object
+};
 
 export default connect( state => ({
 	color: state.settings.color

@@ -20,8 +20,7 @@ class LoginModal extends Component {
             <Modal
                 animationType='slide'
                 onRequestClose={this._onRequestClose.bind(this)}
-                visible={this.props.dialog.login.visible}
-                >
+                visible={this.props.dialog.login.visible}>
                 <Navigator
                     { ...this.props }
                     closeModal={this._onRequestClose.bind(this)}

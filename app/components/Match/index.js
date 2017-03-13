@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
-// import { ListItemSet, ListItemSwitch } from '../List';
-import ScoreDialog from './ScoreDialog';
 import Set from './Set';
+import Header from './Header';
 
 class Match extends Component {
 
@@ -62,6 +61,7 @@ class Match extends Component {
                     menuOpen={this.props.menuOpen === idx}
                     onSelect={this.props.onSelect}
                     onSave={this.props.onSave}
+                    adjustPosition={this.props.adjustPosition}
                     scoreInput={this.props.scoreInput === idx}
                     data={data} />
             </View>
@@ -114,7 +114,7 @@ Match.propTypes = {
     onSelect: React.PropTypes.func
 };
 
-Match.Score = ScoreDialog;
+Match.Header = Header;
 
 export default connect( (state) => ({
     match: state.match

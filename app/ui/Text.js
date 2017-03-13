@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text as RNText, StyleSheet } from 'react-native';
+import { View, Text as RNText, StyleSheet } from 'react-native';
 import * as theme from './theme';
 
 class Text extends Component {
@@ -18,13 +18,13 @@ class Text extends Component {
             textStyle.push({ fontSize: this.props.size });
         }
         if (this.props.center) {
-            textStyle.push({ textAlign: 'center'});
+            textStyle.push({ textAlign: 'center' });
         }
         if (this.props.style) {
             textStyle.push(this.props.style);
         }
         return(
-            <RNText style={textStyle}>
+            <RNText { ...this.props} style={textStyle}>
                 { this.props.upperCase ? this.props.children.toUpperCase() : this.props.children }
             </RNText>
         )
@@ -41,7 +41,7 @@ Text.propTypes = {
 
 const styles = StyleSheet.create({
     text: {
-        color: theme.primaryTextColor
+        color: theme.primaryTextColor,
     }
 })
 

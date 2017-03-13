@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MatchListView from '../MatchListView';
 import TeamDetails from './TeamDetails';
-import { Toolbar } from '../../components';
+import { TabBar } from '../../components';
 
 
 class TeamView extends Component {
@@ -18,7 +18,7 @@ class TeamView extends Component {
         return (
             <ScrollableTabView
                 style={this.props.style}
-                renderTabBar={ () => (<Toolbar.Tabs />)}>
+                renderTabBar={ () => (<TabBar />)}>
                 <TeamDetails tabLabel='TEAM' { ...this.props } />
                 <MatchListView tabLabel='BEGEGNUNGEN' { ...this.props } { ...props } refreshOnMount matches={matches} />
             </ScrollableTabView>

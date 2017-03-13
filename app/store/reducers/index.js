@@ -10,6 +10,7 @@ import teamMatches from './teamMatchesReducer';
 import matches from './matchesReducer';
 import teams from './teamReducer';
 import league from './leagueReducer';
+import loading from './loadingReducer';
 
 export default combineReducers({
 	initApp,
@@ -21,5 +22,6 @@ export default combineReducers({
 	league,
 	match,
 	dialog,
-	teams
+	teams,
+	loading
 });

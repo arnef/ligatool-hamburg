@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Toolbar, Match } from '../components';
+import { Container, Match } from '../components';
 
 
 class LiveMatchView extends Component {
@@ -23,7 +23,7 @@ class LiveMatchView extends Component {
 	render() {
 		return (
 			<View style={{flex: 1}}>
-				<Toolbar.Match data={this.props.match.data} navigator={this.props.navigator}  />
+				<Match.Header data={this.props.match.data} navigator={this.props.navigator}  />
 				<Container 
 					{ ...this.props }
 					error={this.props.match.error}

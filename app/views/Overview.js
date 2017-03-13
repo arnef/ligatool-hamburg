@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { Toolbar } from '../components';
+import { TabBar } from '../components';
 import { connect } from 'react-redux';
 import MatchListView from './MatchListView';
 
@@ -28,7 +28,7 @@ class Overview extends Component {
       <ScrollableTabView
         prerenderingSiblingsNumber={2}
         renderTabBar={() => (
-          <Toolbar.Tabs />)}>
+          <TabBar />)}>
         <MatchListView {...this.props} { ...props } tabLabel='HEUTE' matches={this.props.matches.today} />
         <MatchListView {...this.props} { ...props } tabLabel='KOMMENDE' matches={this.props.matches.next} />
         <MatchListView {...this.props} { ...props } tabLabel='VERGANGENE' matches={this.props.matches.played} />

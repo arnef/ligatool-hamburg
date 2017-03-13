@@ -8,7 +8,8 @@ class Icon extends Component {
 
     render() {
         let iconName = Platform.OS === 'android' ? 
-            `md-${this.props.name}` : `ios-${this.props.name}-outline`;
+            `md-${this.props.name}` : this.props.name.indexOf('outline') === -1 ?
+            `ios-${this.props.name}-outline` : `ios-${this.props.name}`;
         
         if (this.props.name === 'caret-down') {
             iconName = 'ios-arrow-down-outline';
@@ -35,16 +36,16 @@ class Icon extends Component {
     }
 }
 
-Icon.defaultProps = {
-    color: theme.primaryTextColor
-};
+// Icon.defaultProps = {
+//     color: theme.primaryTextColor
+// };
 
 Icon.propTypes = {
     name: React.PropTypes.string.isRequired,
     size: React.PropTypes.number,
     color: React.PropTypes.string,
     style: React.PropTypes.oneOfType([
-        React.PropTypes.array, React.PropTypes.object
+        React.PropTypes.array, React.PropTypes.object, React.PropTypes.number
     ])
 };
 

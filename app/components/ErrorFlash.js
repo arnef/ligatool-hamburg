@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from './Styles';
-import { Column } from '../ui';
+import { Column, Text } from '../ui';
 import { CLIENT_ERROR, NETWORK_ERROR, SERVER_ERROR} from 'apisauce';
 
 

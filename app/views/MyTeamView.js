@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MatchListView from '../views/MatchListView';
-import { Toolbar } from '../components';
+import { TabBar } from '../components';
 
 
 class MyTeam extends Component {
@@ -33,7 +33,7 @@ class MyTeam extends Component {
             <ScrollableTabView
                 style={this.props.style}
                 prerenderingSiblingsNumber={1}
-                renderTabBar={() => (<Toolbar.Tabs />)}>
+                renderTabBar={() => (<TabBar />)}>
                 <MatchListView tabLabel="KOMMENDE" {...this.props} {...props} matches={this.props.teamMatches.next} />
                 <MatchListView tabLabel="VERGANGENE" {...this.props} { ...props} matches={this.props.teamMatches.played} />
             </ScrollableTabView>

@@ -10,6 +10,9 @@ class Image extends Component {
         if (this.props.size) {
             imageStyle.push({ height: this.props.size, width: this.props.size });
         }
+        if (this.props.width && this.props.height) {
+            imageStyle.push({ height: this.props.height, width: this.props.width });
+        }
         if (this.props.style) {
             imageStyle.push(this.props.style);
         }
@@ -21,8 +24,11 @@ class Image extends Component {
 
 Image.propTypes = {
     url: React.PropTypes.string,
-    source: React.PropTypes.object,
-    size: React.PropTypes.number
+    source: React.PropTypes.number,
+    size: React.PropTypes.number,
+    style: React.PropTypes.object,
+    width: React.PropTypes.number,
+    height: React.PropTypes.number
 };
 
 const styles = StyleSheet.create({

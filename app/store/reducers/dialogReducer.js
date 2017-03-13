@@ -6,7 +6,6 @@ import {
 	DIALOG_PLAYER,
 	DIALOG_SUBMIT,
 	CONFIRM_RESULT,
-	LOGIN_USER,
 	API_KEY,
 	TOKEN,
 	QUERY_RANKINGS,
@@ -14,6 +13,7 @@ import {
 } from '../actions/types';
 
 export default (state={
+
 	score: {
 		visible: false,
 		loading: false
@@ -70,6 +70,7 @@ export default (state={
 			break;
         case API_KEY + PENDING:
             state = { ...state };
+			// state.login.visible = false;
             state.login.loading = true;
             break;
 		case API_KEY + FULFILLED: {
@@ -82,7 +83,7 @@ export default (state={
             if (action.payload.ok) {
                 state = { ...state, login: { visible: false, loading: false}};
             } else {
-                state = { ...state, login: { visible: action.payload.status === 401, loading: false }};
+                state = { ...state, login: { visible: action.payload.status !== 200, loading: false }};
             }
 
             break;

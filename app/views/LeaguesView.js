@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Container } from '../components';
-import { ListItemGroup } from '../components/List/';
 import { connect } from 'react-redux';
-import { RANKING } from './routes';
+import { RANKING, LEAGUE_MATCHES } from './routes';
 import { ListItem, Text } from '../ui';
 
 class LeaguesView extends Component {
@@ -23,31 +22,38 @@ class LeaguesView extends Component {
 				refreshing={this.props.leagues.loading}
 				onRefresh={this.props.getRankings.bind(this)}>
 				{ this.props.leagues.data.length > 0 && (
-				<ListItemGroup>
+				<ListItem.Group>
 				{ this.props.leagues.data.map( (league, idx) => {
-					if (!league.cup)
 					return (
 						<View key={league.id}>
 							<ListItem
-								last={idx > this.props.leagues.data.length-2}
+								last={idx === this.props.leagues.data.length-1}
 								onPress={() => this.onPress(league)}>
 								<Text>{ league.name }</Text>
 							</ListItem>
 						</View>
 					)
 				})}	
-				</ListItemGroup>
+				</ListItem.Group>
 				)}
 			</Container>
 		);
 	}
 
 	onPress(league) {
-		this.props.navigator.push({
-			state: RANKING,
-			leagueID: league.id,
-			title: league.name
-		});
+		if (league.cup) {
+			this.props.navigator.push({
+				state: LEAGUE_MATCHES,
+				leagueID: league.id,
+				title: league.name
+			})
+		} else {
+			this.props.navigator.push({
+				state: RANKING,
+				leagueID: league.id,
+				title: league.name
+			});
+		}
 	}
 }
 

@@ -4,18 +4,25 @@ import { View } from 'react-native';
 class Column extends Component {
 
     render() {
-        const style = { flex: 1, flexDirection: 'column'};
+        const style = [{ flex: 1, flexDirection: 'column'}];
         if (this.props.center) {
-            style.alignItems = 'center';
+            style.push({ alignItems: 'center' });
         }
         if (this.props.width) {
-            style.flex = this.props.width / 10;
+            style.push({ flex: this.props.width / 10 })
         }
         if (this.props.fluid) {
-            style.flex = 0;
+            style.push({ flex: 0 });
+        }
+        if (typeof this.props.style === 'array') {
+            for (let s of this.props.style) {
+                style.push(s);
+            }
+        } else {
+            style.push(this.props.style);
         }
         return (
-            <View style={[style, this.props.style]}>
+            <View style={style}>
                 { this.props.children }
             </View>
         );

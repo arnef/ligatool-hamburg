@@ -42,7 +42,6 @@ const style = StyleSheet.create({
         textAlign: 'center'
     },
     scoreLive: {
-        color: 'red',
         fontSize: 12,
         fontWeight: 'bold',
         textAlign: 'center',

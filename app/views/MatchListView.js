@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
-import { ListItemMatch } from '../components/List';
-import { Container, Text } from '../components';
-import { Row, Column, Button } from '../ui';
+import { Container, MatchItem  } from '../components';
+import { Row, Column, Button, Text } from '../ui';
 
 class MatchListView extends Component {
 
     constructor(props) {
         super(props);
         this._renderMatch.bind(this);
+        this.state={
+            openMenu: -1
+        }
     }
 
     _renderMatch(match, sec, idx) {
         return (
-            <ListItemMatch
+            <MatchItem
                 key={idx}
+                menuOpen={this.state.openMenu === idx}
+                toggleMenu={() => {this.toggleMenu(idx) }}
                 data={match} navigator={this.props.navigator} />
         );
     }
@@ -22,6 +26,13 @@ class MatchListView extends Component {
         if (this.props.matches.length === 0 && this.props.refreshOnMount) {
             this.props.onRefresh();
         }
+        
+    }
+
+    toggleMenu(idx) {
+        console.tron.log('open ' + idx);
+        const openMenu = this.state.openMenu === idx ? -1 : idx;
+        this.setState({ openMenu });
     }
 
     render() {
@@ -44,7 +55,7 @@ class MatchListView extends Component {
                     error={this.props.error}
                     refreshing={this.props.refreshing}
                     onRefresh={this.props.onRefresh}>
-                    <Text center style={{padding: 16}}>Keine Begegnungen</Text>
+                    <Text center secondary style={{padding: 16}}>Keine Begegnungen</Text>
                 </Container>  
             )
         }

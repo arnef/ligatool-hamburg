@@ -10,12 +10,13 @@ class ListItemHeader extends Component {
 
     render() {
         const Container = this.props.toggleMenu ? Touchable : View;
+        const headerTextStyle = [styles.headerText];
         return (
             <View style={styles.separator}>
                 <Container onPress={this.props.toggleMenu}>
                     <View style={styles.header}>
                     <Text bold size={14} 
-                        style={styles.text}
+                        style={headerTextStyle}
                         color={this.props.color}>{ this.props.title }</Text>
                         <View style={{flex: 1}} />
                     { this.props.toggleMenu && (
@@ -24,6 +25,10 @@ class ListItemHeader extends Component {
                             color={theme.secondaryTextColor} />
                     )}
                     </View>
+                    
+                    { this.props.children && (<Text secondary size={12}
+                    style={styles.subHeaderText}>{this.props.children}</Text>)}
+                    
                 </Container>
             </View>
         )
@@ -39,12 +44,16 @@ const styles = StyleSheet.create({
     separator: {
         borderBottomWidth: 1,
         borderBottomColor: theme.backgroundColor,
-        
     },
-    text: {
+    headerText: {
         marginHorizontal: 10,
         marginTop: 10,
         marginBottom: 9
+    },
+    subHeaderText: {
+        marginHorizontal: 10,
+        marginBottom: 10,
+        marginTop: -8
     },
     header: {
         flexDirection: 'row',

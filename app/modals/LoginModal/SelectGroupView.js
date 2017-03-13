@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from '../../components';
-import { ListItemGroup, ListItem } from '../../components/List';
+// import { ListItemGroup, ListItem } from '../../components/List';
+import { ListItem, Text } from '../../ui';
 import { ROUTE_SELECT_TEAM } from './LoginModal'
 
 class SelectGroupView extends Component {
@@ -19,18 +20,19 @@ class SelectGroupView extends Component {
                 refreshing={this.props.leagues.loading}
                 onRefresh={this.props.getRankings.bind(this)}>
                 { this.props.leagues.data.length > 0 && (
-                    <ListItemGroup>
-                        { this.props.leagues.data.map(league => {
+                    <ListItem.Group>
+                        { this.props.leagues.data.map((league,idx) => {
                             if (!league.cup) {
                                 return (
                                     <ListItem key={league.id}
+                                        last={idx >= this.props.leagues.data.length -2}
                                         onPress={() => { this.props.navigator.push({ state: ROUTE_SELECT_TEAM, title: 'Team wählen', id: league.id })}}>
-                                        { league.name }
+                                        <Text>{ league.name }</Text>
                                     </ListItem>
                                 );
                             }
                         })}
-                    </ListItemGroup>
+                    </ListItem.Group>
                 )}
             </Container>
         );

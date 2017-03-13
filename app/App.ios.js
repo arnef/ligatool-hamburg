@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { View, TabBarIOS, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LoginModal from './modals/LoginModal';
+import LoadingModal from './modals/LoadingModal';
 import * as Route from './views/routes';
 import Navigation from './Navigation';
-
+import * as theme from './ui/theme';
 
 class App extends Component {
 
@@ -37,8 +38,10 @@ class App extends Component {
   
   render() {
     return (
-      <View style={{flex: 1}}>
-      <LoginModal { ...this.props } />
+      <View style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+        <LoadingModal />
+        <LoginModal { ...this.props } />
+      
       <TabBarIOS
         tintColor={this.props.settings.color}
         translucent={true}>

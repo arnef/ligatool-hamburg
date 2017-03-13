@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TeamView from './TeamView';
-import { Toolbar } from '../components';
+import { TabBar } from '../components';
 
 
 class PreviewMatch extends Component {
@@ -23,7 +23,7 @@ class PreviewMatch extends Component {
       <ScrollableTabView
         onChangeTab={this.onChangeTab.bind(this)}
         prerenderingSiblingsNumber={0}
-        renderTabBar={() => (<Toolbar.Tabs />)}>
+        renderTabBar={() => (<TabBar />)}>
         <TeamView {...this.props} team={this.props.home} tabLabel='HEIM' />
         <TeamView {...this.props} team={this.props.away} tabLabel='GAST' />
       </ScrollableTabView>

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, ActivityIndicator } from 'react-native';
-import { ListItemDrawer } from '../components/List';
-import { Image } from '../components';
-import { Button } from '../ui';
-import { RANKING, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes';
+import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { Button, Image, ListItem, Text } from '../ui';
+import * as theme from '../ui/theme';
+import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes';
 
 class NavigationView extends Component {
 
@@ -33,29 +32,36 @@ class NavigationView extends Component {
     }
 
     _renderItem(state, text, icon) {
+        const active = this.state.activePage === state;
+        const color = this.props.settings.color;
         return (
-            <ListItemDrawer 
-                active={this.state.activePage === state}
+            <ListItem 
+                active={active}
                 onPress={() => { this._handleRowPress({ state: state, title: text} ); }}
-                icon={icon}>
-                { text }
-            </ListItemDrawer>
+                last>
+                <ListItem.Icon color={active ? color : theme.secondaryTextColor} name={icon} />
+                <Text bold color={active ? color : null}>{ text }</Text>
+            </ListItem>
         );
     }
 
     renderLeagues() {
+        
+        const color = this.props.settings.color;
         return this.props.leagues.data.map( (league) => {
-            if (!league.cup) {
+                const active = league.id === this.state.activeLeague;
                 return (
-                    <ListItemDrawer key={league.id}
-                        active={league.id === this.state.activeLeague}
+                    <ListItem key={league.id}
+                        last
+                        active={active}
                         onPress={ () => {
-                            this._handleRowPress({state: RANKING, leagueID: league.id, title: league.name})
+                            this._handleRowPress({state: league.cup ? LEAGUE_MATCHES : RANKING, leagueID: league.id, title: league.name})
                         }}>
+                        <Text bold color={active ? color : null}>
                         { league.name }
-                    </ListItemDrawer>
+                        </Text>
+                    </ListItem>
                 );
-            }
         });
     }
 
@@ -74,7 +80,7 @@ class NavigationView extends Component {
                         { team.image && (
                             <Image url={team.image}  style={{ width: 60, height: 60, marginLeft: 8}} />
                         )}
-                        <Text style={{color: '#ffffff', fontSize: 24, marginLeft: 16, flex: 1 }}>
+                        <Text color='#fff' size={24} style={{marginLeft: 16, flex: 1 }}>
                             { team.name }
                         </Text>
                     </View>
@@ -83,7 +89,7 @@ class NavigationView extends Component {
                 <ScrollView style={{flex: 1}}>
                     { this._renderItem(OVERVIEW, 'Übersicht', 'football') }
                     { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in')}
-                    <ListItemDrawer.Separator />
+                    { this.renderSeparator() }
                     {
                         !this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (
                             <View style={{ padding: 16, alignItems: 'center' }}>
@@ -101,11 +107,15 @@ class NavigationView extends Component {
                                 </View>)
                     }
                     { !this.props.leagues.loading && !this.props.leagues.error && this.renderLeagues() }
-                    <ListItemDrawer.Separator />
+                    { this.renderSeparator() }
                     { this._renderItem(SETTINGS, 'Einstellungen', 'settings') }
                 </ScrollView>
             </View>
             );
+    }
+
+    renderSeparator() {
+        return (<View style={{flex: 1, height: 1, backgroundColor: '#eee', marginVertical: 4}} />)
     }
 }
 

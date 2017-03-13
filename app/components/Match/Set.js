@@ -24,6 +24,7 @@ class ListItemSet extends Component {
                 { this.props.menuOpen && this.renderOptions() }
                 { this.props.scoreInput && (
                     <ScoreInput data={data} 
+                        adjustPosition={this.props.adjustPosition}
                         onSave={this.props.onSave}
                         toggleMenu={this.props.toggleMenu} />
                 )}

@@ -27,7 +27,16 @@ export default (state={
         case GET_LEAGUE_MATCHES + FULFILLED:
             state = { ...state, loading: false };
             if (action.payload.ok) {
-                state.matches[state.fetchingID] = action.payload.data;
+                const matches = action.payload.data;
+                matches.sort((a, b) => {
+                    let sort = (b.set_points ? 1 : 0) - (a.set_points ? 1 : 0);
+                    if (sort === 0) {
+                        sort = a.datetime - b.datetime;
+                    }
+                    
+                    return sort;
+                })
+                state.matches[state.fetchingID] = matches;
             } else {
                 state.error = action.payload.problem;
             }

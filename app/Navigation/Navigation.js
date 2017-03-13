@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Navigator, Platform, StatusBar } from 'react-native';
+import { Navigator, Platform, View as V } from 'react-native';
 import { connect } from 'react-redux';
 import * as View from '../views';
 import * as Route from '../views/routes';
-import { Text, Icon } from '../components';
-import { Row, Column } from '../ui';
-import Touchable from '../components/Touchable/Touchable.ios';
+import { Row, Column, Text, Icon, Touchable } from '../ui';
 import style from './style';
 
 class Navigation extends Component {
@@ -82,22 +80,28 @@ class Navigation extends Component {
     renderLeftButton(route, navigator, index, navState) {
         if (index > 0) {
             return (
-                <Touchable style={style.leftButton} onPress={this.pop.bind(this)}>
+                <Touchable color='#fff' borderless onPress={this.pop.bind(this)}>
+                    <V style={style.leftButton}>
                     <Icon size={24} color='#fff' name='arrow-back' />
+                    </V>
                 </Touchable>
             );
         } else if (index === 0 && this.props.drawer) {
             return (
-                <Touchable style={style.leftButton} onPress={() => { 
+                <Touchable color='#fff' borderless onPress={() => { 
                     this.props.drawer.openDrawer();
                 }}>
+                <V style={style.leftButton}>
                     <Icon size={24} color='#fff' name='menu' />
+                    </V>
                 </Touchable>
             );
         } else if (index === 0 && this.props.closeModal) {
             return (
-                <Touchable style={style.leftButton} onPress={this.props.closeModal}>
+                <Touchable color='#fff' borderless onPress={this.props.closeModal}>
+                    <V style={style.leftButton}>
                     <Icon size={24} color='#fff' name='close' />
+                    </V>
                 </Touchable>
             )
         }
@@ -125,6 +129,8 @@ class Navigation extends Component {
                 return (<View.Match {...this.props} navigator={this} id={route.id} vid={route.vid} />);
             case Route.RANKING:
                 return (<View.LeagueView {...this.props} navigator={this} leagueID={route.leagueID} />);
+            case Route.LEAGUE_MATCHES:
+                return (<View.LeagueMatchesView { ...this.props} navigator={this} leagueID={route.leagueID} />);
             case Route.TEAM:
                 return (<View.TeamOverview {...this.props} navigator={this} team={route.team} />);
             case Route.PREVIEW:

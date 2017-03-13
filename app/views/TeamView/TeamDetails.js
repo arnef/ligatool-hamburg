@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View, Linking, Alert, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItemGroup } from '../../components/List';
-import { Container, Image, Text } from '../../components';
-import { Row, Column, Button } from '../../ui';
+import { Container } from '../../components';
+import { Row, Column, Button, ListItem, Image, Text } from '../../ui';
 
 class TeamView extends Component {
 
@@ -40,25 +39,26 @@ class TeamView extends Component {
     renderTeamDetails(team) {
         const leftWidth = 5;
         return (
-            <ListItemGroup padding name='Details'>
+            <ListItem.Group >
+                <ListItem.Header title='Details' />
                 { !!team.image && (
-                    <View style={{alignItems: 'center', marginBottom: 16}}>
+                    <View style={{alignItems: 'center', margin: 10}}>
                         <Image url={team.image} size={240} />
                     </View>
                 )}
                 { !!team.club && !!team.club.id && (
-                    <Row>
+                    <Row style={{marginHorizontal:10}} >
                         <Column width={leftWidth}><Text bold>Verein</Text></Column>
                         <Column><Text>{ team.club.name }</Text></Column>
                     </Row>)}
                 { !!team.table && (
-                    <Row>
+                    <Row style={{marginHorizontal:10}} >
                         <Column width={leftWidth}><Text bold>Heimtisch</Text></Column>
                         <Column><Text>{ team.table }</Text></Column>
                     </Row>
                 )}
                 { !!team.contact && (
-                    <Row>
+                    <Row style={{marginHorizontal:10}} >
                         <Column width={leftWidth}><Text bold>Kontakt</Text></Column>
                         <Column>
                             { team.contact.map( contact => {
@@ -79,7 +79,7 @@ class TeamView extends Component {
                     </Row>
                 ) }
                 { !isNaN(parseInt(team.home_match_day, 10)) && (
-                    <Row>
+                    <Row style={{marginHorizontal:10}} >
                         <Column width={leftWidth}><Text bold>Heimspielzeit</Text></Column>
                         <Column>
                             <Text>{ weekdays[team.home_match_day] }
@@ -89,7 +89,7 @@ class TeamView extends Component {
                     </Row>
                 )}
                 { !!team.venue && !!team.venue.id && (
-                    <Row>
+                    <Row style={{marginHorizontal:10}} >
                         <Column width={leftWidth}>
                             <Text bold>Heimspielort</Text>
                         </Column>
@@ -103,7 +103,7 @@ class TeamView extends Component {
                         </Column>
                     </Row>
                 )}
-            </ListItemGroup>
+            </ListItem.Group>
         );
     }
 
@@ -118,7 +118,9 @@ class TeamView extends Component {
             rows.push(row);
         }
         return (
-            <ListItemGroup padding name='Spieler'>
+            <ListItem.Group>
+                <ListItem.Header title='Spieler' />
+                <View style={{margin: 10}}>
                 { rows.map( (row, idx) => {
                     return (
                         <Row key={idx} style={{paddingVertical: 8}}>
@@ -127,7 +129,8 @@ class TeamView extends Component {
                         </Row>
                     );
                 }) }
-            </ListItemGroup>
+                </View>
+            </ListItem.Group>
         );
     }
 
