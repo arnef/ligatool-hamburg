@@ -100,10 +100,15 @@ class SettingsView extends Component {
 							{ !team.image && (<ListItem.Icon name='shirt' color={this.props.settings.color} />)}
 							<Text>{ team.name }</Text>
 						</ListItem>
-						
+						{ !this.props.auth.api_key && (
+							<ListItem icon onPress={this._login.bind(this)}>
+								<ListItem.Icon name='key' color={this.props.settings.color} />
+									<Text>Zugangsdaten eingeben</Text>
+							</ListItem>
+						)}
 						<ListItem last onPress={this._logout.bind(this)}>
 							<ListItem.Icon name='log-out' color={this.props.settings.color} />
-							<Text>Logout</Text>
+							<Text>Abmelden</Text>
 						</ListItem>
 					</View>
 				)}

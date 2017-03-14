@@ -16,6 +16,10 @@ class LoginModal extends Component {
     }
 
     render() {
+        let initState = { state: ROUTE_SELECT_GROUP, title: 'Gruppe wählen'};
+        if (this.props.settings.team) {
+            initState = { state: ROUTE_LOGIN, title: 'Login', init: true };
+        }
         return (
             <Modal
                 animationType='slide'
@@ -24,7 +28,7 @@ class LoginModal extends Component {
                 <Navigator
                     { ...this.props }
                     closeModal={this._onRequestClose.bind(this)}
-                    initialRoute={{ state: ROUTE_SELECT_GROUP, title: 'Gruppe wählen'}}
+                    initialRoute={initState}
                     renderScene={this.renderScene.bind(this)}
                     />
             </Modal>
@@ -40,7 +44,7 @@ class LoginModal extends Component {
             case ROUTE_SELECT_TEAM:
                 return (<SelectTeamView { ...this.props } navigator={navigator} id={route.id} />);
             case ROUTE_LOGIN:
-                return (<LoginView { ...this.props } navigator={navigator} />);
+                return (<LoginView { ...this.props } navigator={navigator} init={route.init} />);
         }
     }
 }

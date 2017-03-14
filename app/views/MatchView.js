@@ -26,16 +26,14 @@ class MatchView extends Component {
     componentDidMount() {
         this.getMatch();
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this));
-        this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this));
+        // this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this));
     }
     componentWillUnmount() {
         this.keyboardDidShowListener.remove();
-        this.keyboardWillHideListener.remove();
+        // this.keyboardWillHideListener.remove();
     }
 
-    keyboardDidShow(frames) {
-        if (!frames.endCoordinates) return;
-        this.setState({keyboardSpace: frames.endCoordinates.height});
+    scrollToInput() {
         const visibleHeight = height - this.state.keyboardSpace - 90;
         const keyboardDistance =  this.state.py - visibleHeight;
         if (keyboardDistance > 0) {
@@ -44,8 +42,17 @@ class MatchView extends Component {
         }
     }
 
+    keyboardDidShow(frames) {
+        if (!frames.endCoordinates) return;
+        if (this.state.keyboardSpace === 0) {
+            this.setState({keyboardSpace: frames.endCoordinates.height});
+            this.scrollToInput();
+        }
+        
+    }
+
     keyboardWillHide() {
-        this.setState({ keyboardSpace: 0 });
+        // this.setState({ keyboardSpace: 0 });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -186,7 +193,9 @@ class MatchView extends Component {
     }
     adjustPosition(py) {
         this.setState({ py });
-        console.tron.log('input position ' + py);
+        if (this.state.keyboardSpace > 0) {
+            this.scrollToInput();
+        }
     }
 
     render() {
@@ -218,7 +227,6 @@ class MatchView extends Component {
                            adjustPosition={this.adjustPosition.bind(this)}
                            onSelect={this.onSelect.bind(this)}
                     />         
-                    <View style={{height:this.state.keyboardSpace}} />           
                 </Container>
 
                 { showButton && this.renderSubmitButton() }

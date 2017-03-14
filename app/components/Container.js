@@ -45,6 +45,7 @@ class Container extends Component {
                 <View style={style}>
                     <ErrorFlash error={this.props.error} />
                     <ScrollView
+                        { ...this.props }
                         automaticallyAdjustContentInsets={false}
                         onScroll={this.props.onScroll}
                         scrollEventThrottle={200}

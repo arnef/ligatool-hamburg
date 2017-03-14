@@ -20,6 +20,8 @@ ListItemGroup.propTypes = {
 
 const styles = StyleSheet.create({
     group: {
+        borderRadius: 4,
+        marginHorizontal: 6,
         marginVertical: 6,
         backgroundColor: '#fff'
     }

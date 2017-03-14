@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
 
 class Column extends Component {
@@ -38,11 +38,13 @@ Column.defaultProps = {
 };
 
 Column.propTypes = {
-    center: React.PropTypes.bool,
-    width: React.PropTypes.number,
-    fluid: React.PropTypes.bool,
-    style: React.PropTypes.object,
-    children: React.PropTypes.any
+    center: PropTypes.bool,
+    width: PropTypes.number,
+    fluid: PropTypes.bool,
+    style: PropTypes.oneOfType([
+        PropTypes.array, PropTypes.object, PropTypes.number
+    ]),
+    children: PropTypes.any
 };
 
 export default Column;

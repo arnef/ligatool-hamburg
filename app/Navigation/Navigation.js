@@ -64,7 +64,11 @@ class Navigation extends Component {
     }
 
     getCurrentRoutes() {
-        return this.navigator.getCurrentRoutes();
+        if (this.navigator) {
+            return this.navigator.getCurrentRoutes();
+        }
+
+        return [];
     }
 
     setTitle(title) {

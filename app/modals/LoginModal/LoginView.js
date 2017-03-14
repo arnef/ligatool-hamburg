@@ -23,7 +23,7 @@ class LoginView extends Component {
     render() {
         const loading = this.props.dialog.login.loading;
         return (
-            <Container>
+            <Container keyboardShouldPersistTaps='handled'>
             <ListItem.Group>
                 <Row style={{paddingHorizontal: 16, paddingVertical: 8}}>
                     <Column>
@@ -36,11 +36,12 @@ class LoginView extends Component {
                         <Row style={style.form} />
                         <TextInput placeholder='Username'
                             ref='UserInput'
-                            autoFocus
+                            autoCapitalize='none'
                             style={style.input}
                             editable={!this.props.auth.loading}
                             blurOnSubmit={false}                        
                             autoCorrect={false}
+                            selectTextOnFocus={true}
                             onChangeText={(text) => {
                                 this.setState({ user: text });
                             }}
@@ -51,13 +52,15 @@ class LoginView extends Component {
                         <Row style={style.formSeparator} />
                         <TextInput placeholder='Passwort'
                             ref='PassInput'      
-                            style={style.input}                      
+                            style={style.input}      
+                            selectTextOnFocus={true}                
                             editable={!this.props.auth.loading}
                             secureTextEntry={true}
                             keyboardAppearance='dark'
                             onChangeText={(text) => {
                                 this.setState({ pass: text })
                             }}
+                            onSubmitEditing={this.login.bind(this)}
                             returnKeyType='send' />
                         <Row style={style.form} />
                     </Column>
@@ -67,14 +70,14 @@ class LoginView extends Component {
                         <Button
                             disabled={loading}
                             onPress={this.closeModal.bind(this)}>
-                            Überspringen
+                            { !!this.props.init ? 'Abbrechen' : 'Überspringen' }
                         </Button>
                     </Column>
                     <Column fluid style={{width: 8}} />
                     <Column>
                         { !loading && (
                         <Button
-                            disabled={!this.state.user && !this.state.pass}
+                            disabled={!this.state.user || !this.state.pass}
                             onPress={this.login.bind(this)}>
                             Anmelden
                         </Button>
@@ -98,7 +101,6 @@ class LoginView extends Component {
                 password: this.state.pass
             };
             this.props.requestAPIKey(loginUser);
-            setTimeout(() => { this.pulsingImage();}, 50);
         }
     }
 
