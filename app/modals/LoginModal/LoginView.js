@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TextInput, ActivityIndicator } from 'react-native';
 import { Container } from '../../components';
-import { ListItem, Row, Column, Button, Text } from '../../ui';
+import { ListItem, Row, Column, Button, Text } from '../../components';
 import style from '../../style';
 
 class LoginView extends Component {
@@ -23,7 +23,7 @@ class LoginView extends Component {
     render() {
         const loading = this.props.dialog.login.loading;
         return (
-            <Container keyboardShouldPersistTaps='handled'>
+            <Container>
             <ListItem.Group>
                 <Row style={{paddingHorizontal: 16, paddingVertical: 8}}>
                     <Column>

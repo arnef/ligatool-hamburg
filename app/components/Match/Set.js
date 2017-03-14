@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import Score from '../Score';
 import ScoreInput from './ScoreInput';
-import { Row, Column, ListItem, Touchable, Text, Image } from '../../ui';
+import { Row, Column, ListItem, Touchable, Text, Image } from '../../components/base';
 
 class ListItemSet extends Component {
 

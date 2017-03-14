@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Platform } from 'react-native';
-import { Row, Column, Touchable, Text } from '../../ui';
-import * as theme from '../../ui/theme';
+import { Row, Column, Touchable, Text } from '../../components/base';
+import * as theme from '../../components/base/theme';
 
 class ScoreInput extends Component {
 

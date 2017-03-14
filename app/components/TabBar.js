@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import { connect } from 'react-redux';
-import { Touchable, Text } from '../ui';
+import { Touchable, Text } from '../components/base';
 
 class TabBar extends Component {
     render() {

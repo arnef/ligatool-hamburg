@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Container } from '../components';
 import { connect } from 'react-redux';
 import { RANKING, LEAGUE_MATCHES } from './routes';
-import { ListItem, Text } from '../ui';
+import { ListItem, Text } from '../components/base';
 
 class LeaguesView extends Component {
 

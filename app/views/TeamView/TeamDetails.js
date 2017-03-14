@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Linking, Alert, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Container } from '../../components';
-import { Row, Column, Button, ListItem, Image, Text } from '../../ui';
+import { Row, Column, Button, ListItem, Image, Text } from '../../components/base';
 
 class TeamView extends Component {
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
-import { Icon, Image } from '../ui';
-import * as theme from '../ui/theme';
+import { Icon, Image } from '../components/base';
+import * as theme from '../components/base/theme';
 
 const iconSize = Platform.OS === 'ios' ? 29 : 24;
 const bigIconSize = 42;

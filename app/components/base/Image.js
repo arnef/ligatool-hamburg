@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image as RNImage, StyleSheet } from 'react-native';
-import { baseUrl } from '../api';
+import { baseUrl } from '../../api';
 
 class Image extends Component {
     render() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Column, Text } from '../ui';
+import { Column, Text } from '../components/base';
 import { CLIENT_ERROR, NETWORK_ERROR, SERVER_ERROR} from 'apisauce';
 
 

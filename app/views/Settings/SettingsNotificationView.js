@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Switch, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Container } from '../../components';
-import { ListItem, Text } from '../../ui';
+import { ListItem, Text } from '../../components/base';
 
 class SettingsNotificationView extends Component {
 

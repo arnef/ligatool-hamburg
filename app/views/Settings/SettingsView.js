@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import codePush from 'react-native-code-push';
-import { ListItem, Text } from '../../ui';
+import { ListItem, Text } from '../../components/base';
 import { Container } from '../../components';
 import { SETTINGS_NOTIFICATION } from '../routes';
 class SettingsView extends Component {

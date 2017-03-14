@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { Touchable, Text } from '../../ui';
+import { Touchable, Text } from '../../components/base';
 import { TEAM } from '../../views/routes';
 
 class MatchHeader extends Component {

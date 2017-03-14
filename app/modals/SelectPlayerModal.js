@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, Modal } from 'react-native';
-import { ListItem } from '../ui';
+import { ListItem } from '../components';
 import Container from '../components/Container';
 import Navigator from '../Navigation';
 

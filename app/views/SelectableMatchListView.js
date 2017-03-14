@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListItem, Text } from '../ui';
+import { ListItem, Text } from '../components/base';
 import { Container, MatchItem } from '../components';
 
 class SelectableMatchListView extends Component {

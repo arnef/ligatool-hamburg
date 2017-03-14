@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Navigator, Platform, View as V } from 'react-native';
+import { Navigator, Platform, StyleSheet, View as V } from 'react-native';
 import { connect } from 'react-redux';
-import * as View from '../views';
-import * as Route from '../views/routes';
-import { Row, Column, Text, Icon, Touchable } from '../ui';
-import style from './style';
+import * as View from './views';
+import * as Route from './views/routes';
+import { Row, Column, Text, Icon, Touchable } from './components/base';
+
 
 class Navigation extends Component {
 
@@ -13,7 +13,6 @@ class Navigation extends Component {
         if (this.props.getNav) {
             // ref fix for android
             this.props.getNav(this);
-			console.tron.log('ref is in props');
 		}
     }
 
@@ -32,7 +31,7 @@ class Navigation extends Component {
                         RightButton: () => { return (<Text color='#fff'>{ __DEV__ ? 'DEV':''}</Text>)},
                         Title: this.renderTitle.bind(this)
                     }}
-                    style={[style.toolbar, { 
+                    style={[styles.toolbar, { 
                         position: 'relative', 
                         backgroundColor: this.props.settings.color }]} />
                 }
@@ -85,7 +84,7 @@ class Navigation extends Component {
         if (index > 0) {
             return (
                 <Touchable color='#fff' borderless onPress={this.pop.bind(this)}>
-                    <V style={style.leftButton}>
+                    <V style={styles.leftButton}>
                     <Icon size={24} color='#fff' name='arrow-back' />
                     </V>
                 </Touchable>
@@ -95,7 +94,7 @@ class Navigation extends Component {
                 <Touchable color='#fff' borderless onPress={() => { 
                     this.props.drawer.openDrawer();
                 }}>
-                <V style={style.leftButton}>
+                <V style={styles.leftButton}>
                     <Icon size={24} color='#fff' name='menu' />
                     </V>
                 </Touchable>
@@ -103,7 +102,7 @@ class Navigation extends Component {
         } else if (index === 0 && this.props.closeModal) {
             return (
                 <Touchable color='#fff' borderless onPress={this.props.closeModal}>
-                    <V style={style.leftButton}>
+                    <V style={styles.leftButton}>
                     <Icon size={24} color='#fff' name='close' />
                     </V>
                 </Touchable>
@@ -113,7 +112,7 @@ class Navigation extends Component {
 
     renderTitle(route, navigator, index, navState) {
         return (
-            <Row style={style.title}>
+            <Row style={styles.title}>
                 <Text color='#fff' bold size={Platform.OS === 'ios' ? 17 : 20} numberOfLines={1} ellipsizeMode='tail'>{ route.title }</Text>
             </Row>
         );
@@ -148,6 +147,20 @@ class Navigation extends Component {
 
 }
 
+const styles = StyleSheet.create({
+    leftButton: Platform.select({
+        ios: { padding: 10 },
+        android: { padding: 16 }
+    }),
+    title: Platform.select({
+        ios: { marginTop: 12 },
+        android: { marginTop: 17 }
+    }),
+    toolbar: Platform.select({
+        ios: {},
+        android: { height: 56 }
+    })
+});
 
 const titles = {};
 titles[Route.OVERVIEW] = 'Übersicht';

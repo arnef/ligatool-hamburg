@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { MenuContext } from 'react-native-menu';
 import { ActionCreators } from './store/actions';
 import LoadingScreen from './components/LoadingScreen';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm';

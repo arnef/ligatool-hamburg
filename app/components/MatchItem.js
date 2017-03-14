@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formatDate, formatTime, isAdminForMatch } from '../Helper';
 import Score from './Score';
-import { Row, Column, ListItem, Touchable, Icon, Text } from '../ui';
+import { Row, Column, ListItem, Touchable, Icon, Text } from '../components/base';
 import { TeamLogo } from '../components';
 import { MATCH, PREVIEW, LIVE_MATCH } from '../views/routes';
 

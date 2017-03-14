@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, ActivityIndicator } from 'react-native';
-import { Button, Image, ListItem, Text } from '../ui';
-import * as theme from '../ui/theme';
+import { Button, Image, ListItem, Text } from '../components/base';
+import * as theme from '../components/base/theme';
 import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes';
 
 class NavigationView extends Component {

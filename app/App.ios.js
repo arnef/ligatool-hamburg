@@ -5,7 +5,7 @@ import LoginModal from './modals/LoginModal';
 import LoadingModal from './modals/LoadingModal';
 import * as Route from './views/routes';
 import Navigation from './Navigation';
-import * as theme from './ui/theme';
+import * as theme from './components/base/theme';
 
 class App extends Component {
 

@@ -29,6 +29,7 @@ class Container extends Component {
                 <View style={style}>
                     <ErrorFlash error={this.props.error} />
                     <ListView
+                        keyboardShouldPersistTaps='handled'
                         refreshControl={!!this.props.onRefresh ? refreshControl : null}
                         style={{ flex: 1 }}
                         renderRow={this.props.renderRow}
@@ -45,7 +46,7 @@ class Container extends Component {
                 <View style={style}>
                     <ErrorFlash error={this.props.error} />
                     <ScrollView
-                        { ...this.props }
+                        keyboardShouldPersistTaps='handled'
                         automaticallyAdjustContentInsets={false}
                         onScroll={this.props.onScroll}
                         scrollEventThrottle={200}

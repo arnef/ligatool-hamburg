@@ -3,8 +3,8 @@ import { View, Keyboard, Dimensions, Platform } from 'react-native';
 import { connect } from 'react-redux'
 import { Container, Match } from '../components';
 import SelectPlayerModal from '../modals/SelectPlayerModal';
-import { Button } from '../ui';
-import * as theme from '../ui/theme';
+import { Button } from '../components/base';
+import * as theme from '../components/base/theme';
 
 const height = Dimensions.get('window').height;
 

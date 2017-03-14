@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, TeamLogo } from '../components';
-import { Text, ListItem, Column } from '../ui';
+import { Text, ListItem, Column } from '../components/base';
 import { TEAM } from '../views/routes';
 
 class TableView extends Component {
