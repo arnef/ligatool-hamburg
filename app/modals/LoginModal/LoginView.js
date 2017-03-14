@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TextInput, ActivityIndicator } from 'react-native';
 import { Container } from '../../components';
-import { ListItem, Row, Column, Button, Text } from '../../components';
+import { ListItem, Row, Column, Button, Text } from '../../components/base';
 import style from '../../style';
 
 class LoginView extends Component {

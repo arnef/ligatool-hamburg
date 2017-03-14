@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from '../../components';
 import { connect } from 'react-redux';
-// import { ListItemGroup, ListItem } from '../../components/List';
-import { ListItem, Text } from '../../components';
+import { ListItem, Text } from '../../components/base';
 import { ROUTE_LOGIN } from './LoginModal';
 
 

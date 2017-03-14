@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from '../../components';
-// import { ListItemGroup, ListItem } from '../../components/List';
-import { ListItem, Text } from '../../components';
+import { ListItem, Text } from '../../components/base';
 import { ROUTE_SELECT_TEAM } from './LoginModal'
 
 class SelectGroupView extends Component {
