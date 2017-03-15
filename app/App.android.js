@@ -34,7 +34,7 @@ class App extends Component {
 	componentDidMount() {	
 		if (Platform.Version > 20) {
             StatusBar.setTranslucent(true);
-            StatusBar.setBackgroundColor('rgba(0,0,0,.3)');
+            StatusBar.setBackgroundColor('rgba(0,0,0,.4)');
         }			
 		if (this.navigator && this.drawer) {
 			BackAndroid.addEventListener('hardwareBackPress', () => {

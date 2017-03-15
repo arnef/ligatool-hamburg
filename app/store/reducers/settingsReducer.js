@@ -1,6 +1,5 @@
-import { SET_SETTINGS, SET_NOTIFICATION, SET_GROUP_NOTIFICATION, 
-         SET_DEVICE_TOKEN, SET_USER_TEAM, PUT_NOTIFICATION, LOGOUT, TOKEN,
-         LOAD_TOKEN, LOAD_SETTINGS, FULFILLED, UPDATE_FCM_TOKEN
+import { SET_NOTIFICATION, SET_GROUP_NOTIFICATION,  SET_USER_TEAM, 
+         PUT_NOTIFICATION, LOGOUT, LOAD_SETTINGS, FULFILLED, UPDATE_FCM_TOKEN
 } from '../actions/types';
 
 const defaultColor = '#ef473a';
@@ -18,7 +17,6 @@ export default (state = {
             if (action.payload.ok) {
                 state = {...state, ...action.payload.data};
             }
-
             break;
         }
         case UPDATE_FCM_TOKEN + FULFILLED:

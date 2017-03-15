@@ -20,7 +20,7 @@ export default (state = {
             state.tasksDone.push(action.type);
             if (action.payload.ok && action.payload.data.expires < (new Date()).getTime()) {
                 state.renewToken = true;
-                state.tasks = 4;
+                state.tasks = state.tasks + 1;
             }
             break;
         case TOKEN + PENDING:

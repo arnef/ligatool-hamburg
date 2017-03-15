@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Switch, Platform
+	View, Switch, Platform, ActionSheetIOS
 } from 'react-native';
 import { connect } from 'react-redux';
 import codePush from 'react-native-code-push';
@@ -124,10 +124,17 @@ class SettingsView extends Component {
 
 				<ListItem.Group>				
 					<ListItem.Header title='Informationen' />
+					{ Platform.OS === 'ios' && (
+						<ListItem icon onPress={() => { ActionSheetIOS.showShareActionSheetWithOptions({ message: this.props.settings.fcm_token || 'Kein Token' }, () => {},() => {})}}>
+							<ListItem.Icon name={this.props.settings.fcm_token ? 'notifications' : 'notifications-off'} />
+							<Text>FCM Token</Text>
+						</ListItem>
+					)}
 					<ListItem last onPress={Platform.OS === 'android' ? this._checkForUpdate.bind(this) : null}>
 						<ListItem.Icon name='information-circle' color={this.props.settings.color} />
 						<Text>App-Version { !!this.state.pkg ? `${this.state.pkg.appVersion} (${this.state.pkg.label})`: '0.9' }</Text>
 					</ListItem>
+					
 				</ListItem.Group>
 			</Container>
 		);

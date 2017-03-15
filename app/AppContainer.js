@@ -65,7 +65,21 @@ class AppContainer extends Component {
 			}
 
 			console.tron.log(notif);
-			this.props.receiveNotification(notif);
+
+			if (!notif.local_notification) {
+				this.props.receiveNotification(notif);
+			}
+			if (Platform.OS === 'android' && notif.fcm && notif.fcm.tag) {
+				const localNotif = { ...notif.fcm };
+				localNotif.vibrate = 0;
+				localNotif.data = { type: notif.type, id: notif.id }
+				localNotif.show_in_foreground = true;
+
+				FCM.presentLocalNotification(localNotif);
+			}
+			if (notif.opened_from_tray) {
+				//TODOalert('open' + notif.data.id);
+			}
 			
 		});	
 		this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {

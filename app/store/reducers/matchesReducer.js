@@ -107,7 +107,7 @@ const reorderMatches = (matches) => {
     matches.map((match) => {
         if (match.date_confirmed) {
             const diff = compareDays(match.datetime, now);
-            if (match.live || diff === 0) {
+            if ((match.live && diff < 2) || diff === 0) {
                 today.push(match);
             } else if (diff < 0) {
                 if (match.set_points) {
