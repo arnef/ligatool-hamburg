@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Text from '../Text';
@@ -12,7 +12,7 @@ class ListItemHeader extends Component {
         const Container = this.props.toggleMenu ? Touchable : View;
         const headerTextStyle = [styles.headerText];
         return (
-            <View style={styles.separator}>
+            <View style={[styles.separator, {borderBottomWidth: this.props.hideSeparator ? 0 : 1}]}>
                 <Container onPress={this.props.toggleMenu}>
                     <View style={styles.header}>
                     <Text bold size={14} 
@@ -36,8 +36,8 @@ class ListItemHeader extends Component {
 }
 
 ListItemHeader.propTypes = {
-    title: React.PropTypes.string.isRequired,
-    color: React.PropTypes.string
+    title: PropTypes.string.isRequired,
+    color: PropTypes.string
 };
 
 const styles = StyleSheet.create({

@@ -41,6 +41,7 @@ Text.propTypes = {
 
 const styles = StyleSheet.create({
     text: {
+        borderWidth: 0,
         color: theme.primaryTextColor,
     }
 })

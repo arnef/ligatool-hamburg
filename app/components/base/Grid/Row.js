@@ -1,35 +1,60 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { View, StyleSheet } from 'react-native';
 
 
 class Row extends Component {
 
     render() {
-        const style = { flex: 1, flexDirection: 'row' };        
-        if (this.props.center) {
-            style.alignItems = 'center';
+        const { center, style, fluid } = this.props;
+
+        const rowStyle = [styles.row];
+        if (center) {
+            rowStyle.push(styles.center);
         }
+
+        if (fluid) {
+            rowStyle.push(styles.fluid);
+        }
+        if (style) {
+            rowStyle.push(style);
+        }
+
         return (
-            <View style={[style, this.props.style]}>
+            <View style={rowStyle}>
                 { this.props.children }
             </View>
         );
     }
 }
 
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        paddingHorizontal: 8,
+        paddingBottom: 8
+    },
+    center: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    fluid: {
+        paddingHorizontal: 0
+    }
+});
+
 Row.defaultProps = {
     center: false,
+    fluid: false,
     style: {},
     children: []
 };
 
 Row.propTypes = {
-    center: React.PropTypes.bool,
-    style: React.PropTypes.oneOfType([
-        React.PropTypes.number, React.PropTypes.object, React.PropTypes.array
-    ]),
-    children: React.PropTypes.oneOfType([
-        React.PropTypes.object, React.PropTypes.array
+    center: PropTypes.bool,
+    fluid: PropTypes.bool,
+    style: PropTypes.oneOfType([ PropTypes.number, PropTypes.object ]),
+    children: PropTypes.oneOfType([
+        PropTypes.object, PropTypes.array
     ])
 };
 

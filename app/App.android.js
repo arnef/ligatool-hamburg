@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { DrawerLayoutAndroid, BackAndroid, Dimensions, Platform, StatusBar } from 'react-native';
 import LoginModal from './modals/LoginModal';
+import LoadingModal from './modals/LoadingModal';
 import * as Views from './views';
 import * as Route from './views/routes';
 import Navigation from './Navigation';
+import * as theme from './components/base/theme';
 
 const windowWidth = Math.floor(Dimensions.get('window').width * 0.8);
 const drawerWidth = windowWidth < 300 ? windowWidth : 300;
@@ -64,6 +66,7 @@ class App extends Component {
 	render() {
 		return (
 			<DrawerLayoutAndroid
+				style={{backgroundColor: theme.backgroundColor}}
 				drawerWidth={drawerWidth}
 				drawerPosition={DrawerLayoutAndroid.positions.Left}
 				ref={drawer => { this.drawer = drawer; }}
@@ -75,6 +78,7 @@ class App extends Component {
 						width={drawerWidth} />)
 				}>
 				<LoginModal { ...this.props } />
+				<LoadingModal />
 					<Navigation 
 						{ ...this.props }
 						topBorder={ Platform.Version > 20 }

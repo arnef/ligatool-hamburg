@@ -44,15 +44,17 @@ class SelectableMatchListView extends Component {
                 { matches.length > 0 && (
                     <ListItem.Group>
                         <ListItem.Header 
+                            hideSeparator={!this.state.showDropdown}
                             menuOpen={this.state.showDropdown}
-                            title={'Spieltag wählen'} toggleMenu={this.onPress.bind(this)}>
+                            title={'Spieltag wählen'} 
+                            toggleMenu={this.onPress.bind(this)}>
                                 { this.state.selectedMatchDay }
                             </ListItem.Header>
                         { this.state.showDropdown && matchDays.map((matchDay, idx) => {
                             return (
                                 <ListItem key={idx} 
                                     onPress={() => { this.onSelectMatchDay(matchDay) }}
-                                    last={idx === matchDay.length -1}><Text>{ matchDay }</Text>
+                                    last={idx === matchDays.length -1}><Text>{ matchDay }</Text>
                                 </ListItem>);
                         })
                         }

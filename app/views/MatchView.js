@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Keyboard, Dimensions, Platform } from 'react-native';
+import { View, Keyboard, Dimensions, Platform, StyleSheet } from 'react-native';
 import { connect } from 'react-redux'
 import { Container, Match } from '../components';
 import SelectPlayerModal from '../modals/SelectPlayerModal';
-import { Button } from '../components/base';
+import { Button, Row, Column, Text } from '../components/base';
 import * as theme from '../components/base/theme';
 
 const height = Dimensions.get('window').height;
@@ -26,15 +26,13 @@ class MatchView extends Component {
     componentDidMount() {
         this.getMatch();
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this));
-        // this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this));
     }
     componentWillUnmount() {
         this.keyboardDidShowListener.remove();
-        // this.keyboardWillHideListener.remove();
     }
 
     scrollToInput() {
-        const visibleHeight = height - this.state.keyboardSpace - 90;
+        const visibleHeight = height - this.state.keyboardSpace - 100;
         const keyboardDistance =  this.state.py - visibleHeight;
         if (keyboardDistance > 0) {
             this.scrollView.scrollTo({ y: this.state.offsetY + keyboardDistance, x: 0, animated: true});
@@ -49,10 +47,6 @@ class MatchView extends Component {
             this.scrollToInput();
         }
         
-    }
-
-    keyboardWillHide() {
-        // this.setState({ keyboardSpace: 0 });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -91,7 +85,6 @@ class MatchView extends Component {
 
     onPress(data, idx) {
         if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
-            // this.showScoreDialog(data);
             this.toggleScoreInput(idx)
         } else {
             this.showPlayerDialog(data.sets[0].player_1_home ? 'away' : 'home', data)
@@ -106,9 +99,6 @@ class MatchView extends Component {
         }
         if (value === 1) {
             this.setState({ scoreInput: this.state.menuOpen });
-            // if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
-            //     this.showScoreDialog(data);
-            // }
         }
     }
 
@@ -235,27 +225,30 @@ class MatchView extends Component {
     }
 
     renderSubmitButton() {
-        if (Platform.OS === 'ios') {
-            return (
-                <View style={{backgroundColor: '#f3f3f4', borderTopWidth: 1, borderTopColor: '#bbbec0', marginBottom: 50}}>
-                    <Button disabled={this.state.btnIdx === 1}
-                        onPress={this.confirmScore.bind(this)}>
-                        { `${btnText[this.state.btnIdx]}` }
-                        </Button>
-                </View>
-            );
-        } else {
-            return (
-                <View style={{ backgroundColor: theme.backgroundColor, padding: 10 }}>
-                    <Button disabled={this.state.btnIdx === 1}
-                        onPress={this.confirmScore.bind(this)}>
-                        { `${btnText[this.state.btnIdx]}` }
-                    </Button>
-                </View>
-            )
-        }
+        return (
+            <View style={styles.submitRow}>
+                <Button disabled={this.state.btnIdx === 1} 
+                    onPress={this.confirmScore.bind(this)}>
+                    { `${btnText[this.state.btnIdx]}` }
+                </Button>
+            </View>
+        );
     }
 }
+
+const styles = StyleSheet.create({
+    submitRow: Platform.select({
+        ios: {
+            marginBottom: 50,
+            paddingHorizontal: 8,
+            minHeight: 52
+        },
+        android: {
+            paddingHorizontal: 8,
+            margin: 0
+        }
+    })
+});
 
 const btnText = [
     'Ergebnis vorschlagen',

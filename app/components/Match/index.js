@@ -27,13 +27,13 @@ class Match extends Component {
             type = 'cup';
         } else {
             type = 'default';
-            const sets = nextProps.match.data.sets || {};
+        }
+        const sets = nextProps.match.data.sets || {};
             if (sets['5'] != null && sets['6'] != null) {
                 if (sets['5'].player_2_home != null && sets['6'].player_2_home) {
-                    type = 'd5';
+                    type += '_d5';
                 }
             }
-        }
         if (this.state.type != type) {
             console.tron.log('change match type to ' + type);
             this.setState({

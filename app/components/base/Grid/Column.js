@@ -1,33 +1,41 @@
 import React, { Component, PropTypes } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 class Column extends Component {
 
     render() {
-        const style = [{ flex: 1, flexDirection: 'column'}];
-        if (this.props.center) {
-            style.push({ alignItems: 'center' });
+        const { center, width, fluid, style, children } = this.props;
+
+        const columnStyle = [styles.item];
+        if (center) {
+            columnStyle.push(styles.center);
         }
-        if (this.props.width) {
-            style.push({ flex: this.props.width / 10 })
+        if (width) {
+            columnStyle.push({ flex: this.props.width / 10 })
         }
-        if (this.props.fluid) {
-            style.push({ flex: 0 });
+        if (fluid) {
+            columnStyle.push({ flex: 0 });
         }
-        if (typeof this.props.style === 'array') {
-            for (let s of this.props.style) {
-                style.push(s);
-            }
-        } else {
-            style.push(this.props.style);
+        if (style) {
+            columnStyle.push(style);
         }
         return (
-            <View style={style}>
-                { this.props.children }
+            <View style={columnStyle}>
+                { children }
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    item: {
+        flex: 1,
+        flexDirection: 'column'
+    },
+    center: {
+        alignItems: 'center'
+    }
+})
 
 Column.defaultProps = {
     center: false,
@@ -42,7 +50,7 @@ Column.propTypes = {
     width: PropTypes.number,
     fluid: PropTypes.bool,
     style: PropTypes.oneOfType([
-        PropTypes.array, PropTypes.object, PropTypes.number
+        PropTypes.object, PropTypes.number
     ]),
     children: PropTypes.any
 };

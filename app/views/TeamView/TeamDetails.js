@@ -42,36 +42,49 @@ class TeamView extends Component {
             <ListItem.Group >
                 <ListItem.Header title='Details' />
                 { !!team.image && (
-                    <View style={{alignItems: 'center', margin: 10}}>
+                    <View style={{alignItems: 'center', marginTop: 10}}>
                         <Image url={team.image} size={240} />
                     </View>
                 )}
+                { !!team.league && (
+                    <Row style={{marginTop: 10}}>
+                        <Column width={leftWidth}>
+                            <Text bold>Gruppe</Text>
+                        </Column>
+                        <Column>
+                            <Text>{ team.league.name }</Text>
+                            { !!team.position && (
+                                <Text>{ team.position }. Platz</Text>
+                            )}
+                        </Column>
+                    </Row>
+                )}
                 { !!team.club && !!team.club.id && (
-                    <Row style={{marginHorizontal:10}} >
+                    <Row>
                         <Column width={leftWidth}><Text bold>Verein</Text></Column>
                         <Column><Text>{ team.club.name }</Text></Column>
                     </Row>)}
                 { !!team.table && (
-                    <Row style={{marginHorizontal:10}} >
+                    <Row>
                         <Column width={leftWidth}><Text bold>Heimtisch</Text></Column>
                         <Column><Text>{ team.table }</Text></Column>
                     </Row>
                 )}
                 { !!team.contact && (
-                    <Row style={{marginHorizontal:10}} >
+                    <Row>
                         <Column width={leftWidth}><Text bold>Kontakt</Text></Column>
                         <Column>
                             { team.contact.map( contact => {
                                 return (<View key={contact.id}>
                                     <Text>{ `${contact.name} ${contact.surname}` }</Text>
-                                    <Row center style={{marginVertical: 8}}>
-                                        <View style={{flex: 1}}>
-                                            <Button icon='call' onPress={() => { this.openTel(contact.phone_number) }}>Anrufen</Button>
-                                        </View>
+                                    <Row style={{paddingHorizontal: 0}}>
+                                        <Column>
+                                            <Button onPress={() => { this.openTel(contact.phone_number) }}>Anrufen</Button>
+                                        </Column>
                                         <Column fluid style={{width: 8}} />
-                                        <View style={{flex: 1}}>
-                                            <Button icon='mail' onPress={() => { this.openMail(contact.email) }}>E-Mail</Button>
-                                        </View>
+                                        <Column>
+                                            <Button onPress={() => { this.openMail(contact.email) }}>E-Mail</Button>
+                                        </Column>
                                     </Row>
                                 </View>)
                             })}
@@ -79,7 +92,7 @@ class TeamView extends Component {
                     </Row>
                 ) }
                 { !isNaN(parseInt(team.home_match_day, 10)) && (
-                    <Row style={{marginHorizontal:10}} >
+                    <Row>
                         <Column width={leftWidth}><Text bold>Heimspielzeit</Text></Column>
                         <Column>
                             <Text>{ weekdays[team.home_match_day] }
@@ -89,7 +102,7 @@ class TeamView extends Component {
                     </Row>
                 )}
                 { !!team.venue && !!team.venue.id && (
-                    <Row style={{marginHorizontal:10}} >
+                    <Row>
                         <Column width={leftWidth}>
                             <Text bold>Heimspielort</Text>
                         </Column>
@@ -97,9 +110,9 @@ class TeamView extends Component {
                             <Text>{ team.venue.name }</Text>
                             <Text>{ team.venue.street }</Text>
                             <Text>{ team.venue.zip_code } { team.venue.city }</Text>
-                            <View style={{marginVertical: 8}}>
-                                <Button icon='map' onPress={() => { this.openMaps(team.venue)}}>Karte</Button>
-                            </View>
+                            
+                            <Button icon='map' onPress={() => { this.openMaps(team.venue)}}>Karte</Button>
+                            
                         </Column>
                     </Row>
                 )}
@@ -141,7 +154,7 @@ class TeamView extends Component {
         return (
             <Column center>
                 <Image url={player.image} height={120} width={90} />
-                <Text>{ `${player.name} ${player.surname}` }</Text>
+                <Text center>{ `${player.name} ${player.surname}` }</Text>
             </Column>
         )
     }

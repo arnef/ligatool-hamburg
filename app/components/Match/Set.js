@@ -14,7 +14,7 @@ class ListItemSet extends Component {
                 <ListItem.Header title={data.name} toggleMenu={this.props.toggleMenu} closeIcon={this.props.scoreInput ? 'close' : 'caret-up'} menuOpen={this.props.menuOpen||this.props.scoreInput} />
                 { !this.props.menuOpen && !this.props.scoreInput && (
                     <Container onPress={this.props.onPress ? () => { this.props.onPress(data); } : null}>
-                        <View style={{margin: 10}}>
+                        <View style={{marginTop: 8}}>
                         { data.sets.map( (set, idx) => {
                             return this.renderRow(set, idx)
                         }) }
@@ -46,7 +46,7 @@ class ListItemSet extends Component {
         const playerHome = set[`player_${idx+1}_home`];
         const playerAway = set[`player_${idx+1}_away`];
         return (
-            <Row center key={idx} style={{marginTop: idx > 0 ? 4 : 0}}>
+            <Row center key={idx}>
                 <Column>
                     <Text center>{this.getName(playerHome)}</Text>
                 </Column>

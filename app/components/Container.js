@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, RefreshControl, ListView } from 'react-native';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
-
+import * as theme from './base/theme';
 
 
 class Container extends Component {
@@ -23,7 +23,7 @@ class Container extends Component {
                 refreshing={this.props.refreshing || false}
                 onRefresh={this.props.onRefresh} />
         );
-        const style = { flex: 1, backgroundColor: '#dddfe2' };
+        const style = { flex: 1, backgroundColor: theme.backgroundColor };
         if (this.props.renderRow) {
             return (
                 <View style={style}>

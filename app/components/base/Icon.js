@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import * as theme from './theme';
-
 
 class Icon extends Component {
 
@@ -23,7 +21,7 @@ class Icon extends Component {
         if (this.props.name === 'close') {
             iconName = 'md-close';
         }
-        const iconStyle = [{ width: this.props.size, height: this.props.size}];
+        const iconStyle = [styles.icon, { width: this.props.size, height: this.props.size}];
         if (this.props.style) {
             iconStyle.push(this.props.style);
         }
@@ -36,9 +34,13 @@ class Icon extends Component {
     }
 }
 
-// Icon.defaultProps = {
-//     color: theme.primaryTextColor
-// };
+const styles = StyleSheet.create({
+    icon: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        borderWidth: 0
+    }
+})
 
 Icon.propTypes = {
     name: React.PropTypes.string.isRequired,

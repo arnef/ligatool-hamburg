@@ -107,7 +107,7 @@ const reorderMatches = (matches) => {
     matches.map((match) => {
         if (match.date_confirmed) {
             const diff = compareDays(match.datetime, now);
-            if ((match.live && diff < 2) || diff === 0) {
+            if ((match.live && diff > -2) || diff === 0) {
                 today.push(match);
             } else if (diff < 0) {
                 if (match.set_points) {
@@ -140,7 +140,7 @@ const reorderMatches = (matches) => {
 };
 
 const sortMatches = (a, b) => {
-    let order = (b.live ? 1 : 0) - (a.live ? 1 : 0);
+    let order = (b.live ? 2 : b.set_points ? 1 : 0) - (a.live ? 2 : a.set_points ? 1 : 0);
     if (order === 0) {
         order = a.datetime-b.datetime;
     }

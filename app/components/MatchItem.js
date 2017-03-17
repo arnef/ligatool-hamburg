@@ -38,14 +38,12 @@ class MatchItem extends Component {
                 <Touchable onPress={() => {this.onPress(match)}}>
 
                 <ListItem.Header title={`${match.league.name} (${match.match_day})`}>
-                    <Icon name='pin' />
-                    &nbsp;
-                    { match.venue.name }
-                    &nbsp;&middot;&nbsp;
+                    { match.venue && (<Icon name='pin' />) }
+                    { match.venue ? ` ${match.venue.name} · ` : '' }
                     { `${formatDate(match.datetime)} ${formatTime(match.datetime)}`}
                 </ListItem.Header>
                 
-                <Row center style={{marginTop: 10, marginBottom: 6, marginHorizontal: 10}}>
+                <Row center style={{marginTop: 8}}>
                     <Column center>
                         <TeamLogo team={match.team_home} big />
                     </Column>
@@ -57,7 +55,7 @@ class MatchItem extends Component {
                     </Column>
                 </Row>
 
-                <Row style={{marginBottom: 10, marginHorizontal: 10}}>
+                <Row>
                     <Column center>
                         <Text center>{ match.team_home.name }</Text>
                     </Column>

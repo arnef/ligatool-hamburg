@@ -34,12 +34,12 @@ class App extends Component {
   }
 
   _renderTab(name, title) {
-    return (<Navigation
-      { ...this.props }
-      hasTabbar
-      initialRoute={{ state: name, title: title}}
-      ref={ (navigator) => { this.navigator = navigator }}
-     />)
+    return (
+      <Navigation
+        { ...this.props }
+        hasTabbar
+        initialRoute={{ state: name, title: title}}
+      />);
   }
   
   onCloseLogin() {
@@ -55,7 +55,6 @@ class App extends Component {
       <View style={{flex: 1, backgroundColor: theme.backgroundColor}}>
         <LoadingModal />
         <LoginModal { ...this.props } onClose={this.onCloseLogin.bind(this)} />
-      
       <TabBarIOS
         tintColor={this.props.settings.color}
         translucent={true}>

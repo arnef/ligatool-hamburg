@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
 import Touchable from '../Touchable';
 import * as theme from '../theme.js';
@@ -6,30 +6,28 @@ import * as theme from '../theme.js';
 class Item extends Component {
 
     render() {
-        const Container = this.props.onPress && !this.props.disabled ? Touchable : View;
+        const { icon, maxHeight, disabled, onPress, active, last } = this.props;
+        const Container = onPress && !disabled ? Touchable : View;
         const separatorStyle = [styles.separator];
         const itemStyle = [styles.item];
-        if (this.props.icon) {
-            separatorStyle.push({ marginLeft: Platform.OS === 'ios' ? 61 : 52 })
-        }
-        const styleItem = [styles.content];
-        if (this.props.disabled) {
-            styleItem.push(styles.disabled);
+        if (icon) {
+            separatorStyle.push({ marginLeft: 64 })
         }
         
-        if (this.props.maxHeight) {
-            itemStyle.push({ height: this.props.maxHeight, paddingVertical: 8});
+        if (maxHeight) {
+            itemStyle.push({ height: maxHeight});
         }
+
+        if (disabled) {
+            itemStyle.push(styles.disabled);
+        }
+
         return (
-            <View style={ this.props.active ? {backgroundColor: '#eee'} : {}}>
-                <Container onPress={this.props.onPress}>
-                    <View style={itemStyle}>
-                        <View style={styleItem}>
-                            { this.props.children }
-                        </View>
-                    </View>
+            <View style={ active ? {backgroundColor: theme.backgroundColor} : {}}>
+                <Container onPress={onPress} style={itemStyle}>
+                    { this.props.children }
                 </Container>
-                { !this.props.last && (<View style={separatorStyle} />)}
+                { !last && (<View style={separatorStyle} />)}
             </View>
         )
     }
@@ -44,14 +42,14 @@ Item.defaultProps = {
 };
 
 Item.propTypes = {
-    onPress: React.PropTypes.func,
-    last: React.PropTypes.bool,
-    icon: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    maxHeight: React.PropTypes.number,
-    active: React.PropTypes.bool,
-    children: React.PropTypes.oneOfType([
-        React.PropTypes.array, React.PropTypes.object
+    onPress: PropTypes.func,
+    last: PropTypes.bool,
+    icon: PropTypes.bool,
+    disabled: PropTypes.bool,
+    maxHeight: PropTypes.number,
+    active: PropTypes.bool,
+    children: PropTypes.oneOfType([
+        PropTypes.array, PropTypes.object
     ])
 }
 
@@ -59,26 +57,21 @@ const styles = StyleSheet.create({
    text: {
        color: theme.primaryTextColor
    },
-   content: {
-       flexDirection: 'row',
-       alignItems: 'center',
-       borderWidth: 0
-   },
    disabled: {
        opacity: .5
    },
    item: Platform.select({
        ios: {
-           paddingVertical: 12,
            paddingHorizontal: 16,
            height: 44,
            flexDirection: 'row',
            alignItems: 'center'
        },
        android: {
-           paddingVertical: 12,
+           borderWidth: 0,
            paddingHorizontal: 16,
            height: 48,
+           flex: 1,
            flexDirection: 'row',
            alignItems: 'center'
        }

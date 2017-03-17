@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {
-	View, Switch, Platform, ActionSheetIOS
+	View, Switch, Platform, ActionSheetIOS, ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
 import codePush from 'react-native-code-push';
 import { ListItem, Text } from '../../components/base';
 import { Container } from '../../components';
 import { SETTINGS_NOTIFICATION } from '../routes';
+import * as theme from '../../components/base/theme';
+
 class SettingsView extends Component {
 
 	constructor(props) {
@@ -56,7 +58,7 @@ class SettingsView extends Component {
 					} : null} >
 					<Text>{ text }</Text>
 					<View style={{flex: 1}} />
-					<Switch value={value} onValueChange={(newValue) => this._toggleNotification(key, newValue)} />
+					<Switch value={value} disabled={disabled} onValueChange={(newValue) => this._toggleNotification(key, newValue)} />
 				</ListItem>);
 	}
 
@@ -84,7 +86,8 @@ class SettingsView extends Component {
 				onPress={this._toggleGroups.bind(this)}>
 				<Text>Gruppen wählen</Text>
 				<View style={{flex:1}} />
-				{ Platform.OS === 'ios' && (<ListItem.Icon name='caret-forward' right />) }
+				{ this.props.leagues.loading && (<ActivityIndicator color={theme.secondaryTextColor} />)}
+				{ !this.props.leagues.loading && (<ListItem.Icon name='caret-forward' right />) }
 			</ListItem>
 		</ListItem.Group>);
 	}

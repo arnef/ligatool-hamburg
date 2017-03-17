@@ -13,7 +13,7 @@ class TeamLogo extends Component {
         if (this.props.team.image) {
             return (<Image url={this.props.team.image} size={this.props.big ? bigIconSize : iconSize} />)
         } else {
-            return (<Icon style={styles.icon} size={this.props.big ? bigIconSize : iconSize} name='shirt' color={theme.secondaryTextColor} />);
+            return (<Icon size={this.props.big ? bigIconSize : iconSize} name='shirt' color={theme.secondaryTextColor} />);
         }
     }
 }

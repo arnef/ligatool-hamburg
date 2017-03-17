@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import { StyleSheet, View, Animated, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Touchable, Text } from '../components/base';
 
@@ -36,7 +36,7 @@ class TabBar extends Component {
         return (
             <Touchable color='#fff' style={styles.tab} key={name} onPress={() => onPressHandler(page)}>
                 <Text
-                    bold size={13} 
+                    bold={Platform.OS === 'android'} size={13} 
                     color={ isActive ? '#fff' : 'rgba(255, 255, 255, 0.7)'}>{name}</Text>  
             </Touchable>
         );

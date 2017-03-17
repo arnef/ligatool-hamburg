@@ -90,6 +90,7 @@ class ScoreInput extends Component {
                 ref={input => { this.inputField = input }}
                 keyboardAppearance='dark'
                 selectionColor='#fff'
+                underlineColorAndroid='#666'
                 onFocus={this.onFocus.bind(this)}
                 onChangeText={value => {
                     const newState={};
@@ -144,14 +145,13 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         marginVertical: 10,
-        // color: '#5e5e5e',
         color: theme.secondaryTextColor,
         fontWeight: 'bold',
         textAlign: 'center'
     },
     buttonRow: {
-        // backgroundColor: '#f3f3f3',
         borderTopWidth: 1,
+        paddingBottom: 0,
         borderTopColor: theme.backgroundColor,
     },
     score: {
@@ -162,18 +162,24 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 0
     },
-    input: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 24,
-        height: 30,
-        margin: 8,
-        fontWeight: 'bold',
-        fontFamily: Platform.select({
-            ios: 'Courier New',
-            android: 'monospace'
-        })
-    }
+    input: Platform.select({
+        ios: {
+            color: '#fff',
+            textAlign: 'center',
+            fontSize: 24,
+            height: 30,
+            margin: 8,
+            fontWeight: 'bold',
+            fontFamily: 'Courier New'
+        },
+        android: {
+            fontSize: 24,
+            padding: 6,
+            color: '#fff',
+            textAlign: 'center',
+            fontFamily: 'monospace'
+        }
+    })
 });
 
 export default ScoreInput;

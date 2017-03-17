@@ -1,3 +1,3 @@
-export const primaryTextColor = '#1e1e1e';
+export const primaryTextColor = '#474747';
 export const secondaryTextColor = '#909090';
-export const backgroundColor = '#eee'; //'#dddfe2';
+export const backgroundColor = '#ddd'; //'#dddfe2';

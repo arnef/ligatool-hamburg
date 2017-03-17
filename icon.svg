@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="/Users/arne/repos/arnef/ligatool-hamburg/android/app/src/main/res/mipmap-hdpi/ic_loading.png"
-   inkscape:export-xdpi="14.4"
-   inkscape:export-ydpi="14.4">
+   inkscape:export-filename="/Users/arne/repos/arnef/ligatool-hamburg/android/app/src/main/res/mipmap-hdpi/ic_launcher.png"
+   inkscape:export-xdpi="8.1000004"
+   inkscape:export-ydpi="8.1000004">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -29,7 +29,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
-     inkscape:cx="221.89816"
+     inkscape:cx="400"
      inkscape:cy="496.96538"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
@@ -92,7 +92,7 @@
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="background-android"
-     style="display:inline">
+     style="display:none">
     <rect
        style="fill:#ffffff"
        id="rect3430"
@@ -101,6 +101,22 @@
        x="40"
        y="40"
        ry="54.900002" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="background-ios">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1"
+       id="rect4151"
+       width="836"
+       height="836"
+       x="-10"
+       y="-8"
+       ry="0"
+       inkscape:export-filename="/Users/arne/Desktop/lt-ios-icons/app_icon20@3x.png"
+       inkscape:export-xdpi="6.46"
+       inkscape:export-ydpi="6.46" />
   </g>
   <g
      inkscape:groupmode="layer"

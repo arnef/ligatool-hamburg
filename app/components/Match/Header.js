@@ -17,12 +17,13 @@ class MatchHeader extends Component {
 		const goals = `${goals_home}:${goals_away}`;
 		const score = `${score_home}:${score_away}`;
 
+		const isAndroid = Platform.OS === 'android';
 
 		return (
 			<View style={[style.header, { backgroundColor: this.props.color}]}>
 				<Touchable color='#fff' style={style.teamContainer}
 					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_home, title: match.team_home.name })}}>
-					<Text center bold  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
+					<Text center bold={isAndroid}  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
 				</Touchable>
 				<View style={style.score}>
 					<Text style={style.points}>{score}</Text>
@@ -30,7 +31,7 @@ class MatchHeader extends Component {
 				</View>
 				<Touchable color='#fff' style={style.teamContainer}
 					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_away, title: match.team_away.name })}}>
-					<Text center bold  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{away}</Text>
+					<Text center bold={isAndroid}  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{away}</Text>
 				</Touchable>
 			</View>
 		);
