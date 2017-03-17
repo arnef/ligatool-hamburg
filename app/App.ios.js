@@ -22,6 +22,12 @@ class App extends Component {
   }
 
   _setTab(name) {
+    if (this.state.selectedTab === Route.SETTINGS && name !== Route.SETTINGS && this.props.settings.changed) {
+      this.props.saveNotifications();
+    }
+    if (name === Route.MY_TEAM && !this.props.settings.team) {
+      this.props.showLogin(true);
+    }
     this.setState({
       selectedTab: name
     });
@@ -36,11 +42,19 @@ class App extends Component {
      />)
   }
   
+  onCloseLogin() {
+    if (!this.props.settings.team && this.state.selectedTab === Route.MY_TEAM) {
+      this.setState({
+        selectedTab: Route.OVERVIEW
+      });
+    }
+  }
+
   render() {
     return (
       <View style={{flex: 1, backgroundColor: theme.backgroundColor}}>
         <LoadingModal />
-        <LoginModal { ...this.props } />
+        <LoginModal { ...this.props } onClose={this.onCloseLogin.bind(this)} />
       
       <TabBarIOS
         tintColor={this.props.settings.color}

@@ -13,6 +13,9 @@ class LoginModal extends Component {
 
     _onRequestClose() {
         this.props.showLogin(false);
+        if (this.props.onClose) {
+            this.props.onClose();
+        }
     }
 
     render() {

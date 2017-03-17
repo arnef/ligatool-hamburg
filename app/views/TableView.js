@@ -20,7 +20,7 @@ class TableView extends Component {
         <Column center fluid style={{width: 24}}> 
           <Text bold>{data.position}</Text>
         </Column>
-        { idx !== -1 && (<TeamLogo url={data.image} /> ) }
+        { idx !== -1 && (<TeamLogo team={data} /> ) }
         <Column style={{paddingLeft: 4}}>
           <Text numberOfLines={1} ellipsizeMode='tail'>{data.name}</Text>
         </Column>

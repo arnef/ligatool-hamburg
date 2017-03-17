@@ -47,13 +47,13 @@ class MatchItem extends Component {
                 
                 <Row center style={{marginTop: 10, marginBottom: 6, marginHorizontal: 10}}>
                     <Column center>
-                        <TeamLogo url={match.team_home.image} big />
+                        <TeamLogo team={match.team_home} big />
                     </Column>
                     <Column fluid center>
                         <Score setPoints={match} />
                     </Column>
                     <Column center>
-                        <TeamLogo url={match.team_away.image} big />
+                        <TeamLogo team={match.team_away} big />
                     </Column>
                 </Row>
 

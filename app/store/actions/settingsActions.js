@@ -31,7 +31,7 @@ export const saveNotifications = () => {
     const settings = store.getState().settings;
     return {
         type: PUT_NOTIFICATION,
-        payload: api.put('/notification', {
+        payload: api.post('/notification', {
             notification: settings.notification,
             fcm_token: settings.fcm_token
         })

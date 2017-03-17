@@ -8,30 +8,12 @@ import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult,
 import App from './App';
 
 class AppContainer extends Component {
-	constructor(props) {
-		super(props);
-	}
-
+	
 	componentDidMount() {
-		this.props.loadAccessKey();
-		this.props.loadToken();
-		this.props.loadSettings();
+		this.mountNotification();
+		this.props.connect();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const renewToken = !!(!this.props.initApp.renewToken && nextProps.initApp.renewToken && nextProps.auth.api_key);
-		if (renewToken) {
-			nextProps.renewToken(nextProps.auth.api_key);
-		}
-		if (nextProps.initApp.tasks === nextProps.initApp.tasksDone.length) {
-			// enable notification when token is loaded 
-			if (!this.refreshTokenListener && !this.notificationListener) {
-				this.mountNotification();
-			}
-		}
-	}
-
-	/* maybe uncomment for newer fcm version */
 	componentWillUnmount() {
 		if (this.refreshTokenListener) {
 			this.refreshTokenListener.remove();
@@ -41,12 +23,23 @@ class AppContainer extends Component {
 		}
 	}
 
+	syncNotifications(token) {
+		if (token) {
+			//TODO sync notification with fcm in one method
+			this.props.updateFCMToken(token);
+			if (this.props.settings.notification.leagues) {
+				console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED');
+				this.props.saveNotifications();
+			}
+			// 
+		}
+		
+	}
+
 	mountNotification() {
 		FCM.requestPermissions();
 		FCM.getFCMToken().then( token => {
-			if (!!token) {
-				this.props.updateFCMToken(token);
-			}
+			this.syncNotifications(token);
 		});
 		this.notificationListener = FCM.on(FCMEvent.Notification, (notif) => {
 		
@@ -83,19 +76,17 @@ class AppContainer extends Component {
 			
 		});	
 		this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
-			if (!!token) {
-				this.props.updateFCMToken(token);
-			}
+			this.syncNotifications(token);
 		});
 	}
 
 
 	render() {
-		const initApp = this.props.initApp;
-		if (initApp.tasksDone.length === initApp.tasks) {
+		// const initApp = this.props.initApp;
+		if (this.props.appConnected) {
 			return <App {...this.props} />;
 		} else {
-			return <LoadingScreen spinner />;
+			return <LoadingScreen />;
 		}
 	}
 }

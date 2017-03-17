@@ -20,6 +20,7 @@ export default (state = {
             break;
         }
         case UPDATE_FCM_TOKEN + FULFILLED:
+            console.tron.log(UPDATE_FCM_TOKEN + ' fired');
             if (action.payload.ok) {
                 state = { ...state, fcm_token: action.payload.data.fcm_token };
             }

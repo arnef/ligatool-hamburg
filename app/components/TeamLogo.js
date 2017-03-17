@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { Icon, Image } from '../components/base';
 import * as theme from '../components/base/theme';
 
@@ -9,37 +9,30 @@ const bigIconSize = 42;
 class TeamLogo extends Component {
 
     render() {
-        const imageContainer = [styles.container];
-        if (this.props.big) {
-            imageContainer.push({
-                width: bigIconSize,
-                height: bigIconSize
-            });
+        
+        if (this.props.team.image) {
+            return (<Image url={this.props.team.image} size={this.props.big ? bigIconSize : iconSize} />)
+        } else {
+            return (<Icon style={styles.icon} size={this.props.big ? bigIconSize : iconSize} name='shirt' color={theme.secondaryTextColor} />);
         }
-
-        return (
-            <View>
-                { this.props.url && (<Image url={this.props.url} size={this.props.big ? bigIconSize : iconSize} />) }
-                { !this.props.url && (<Icon style={styles.icon} size={this.props.big ? bigIconSize : iconSize} name='shirt' color={theme.secondaryTextColor} />) }
-            </View>
-        );
     }
 }
 
 const styles = StyleSheet.create({
     icon: {
-        textAlign: 'center'
+        width: iconSize,
+        height: iconSize
     }
 })
 
 TeamLogo.defaultProps = {
     big: false,
-    url: null
+    url: {}
 };
 
 TeamLogo.propTypes = {
     big: PropTypes.bool,
-    url: PropTypes.any
+    team: PropTypes.object.isRequired
 };
 
 export default TeamLogo;

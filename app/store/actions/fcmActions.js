@@ -1,13 +1,12 @@
-import { UPDATE_FCM_TOKEN, SCORE, SUGGEST_SCORE, NOTIFICATION } from './types';
-import api from '../../api';
+import { UPDATE_FCM_TOKEN, SCORE, FULFILLED, SUGGEST_SCORE, NOTIFICATION } from './types';
 import { getMatch } from './matchActions';
 import { isAdminForMatch } from '../../Helper';
 import store from '../index';
 
 export const updateFCMToken = (token) => {
     return {
-        type: UPDATE_FCM_TOKEN,
-        payload: api.post('/notification', { fcm_token: token})
+        type: UPDATE_FCM_TOKEN + FULFILLED,
+        payload:{ ok: true, data: { fcm_token: token} }
     };
 };
 

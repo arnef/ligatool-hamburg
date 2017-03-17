@@ -77,6 +77,7 @@ export const loadToken = () => {
                 AsyncStorage.getItem(TOKEN).then( serializedToken => {
                     if (serializedToken) {
                         const token = JSON.parse(serializedToken);
+                        console.tron.log(token);
                         resolve({
                             ok: true,
                             data: token

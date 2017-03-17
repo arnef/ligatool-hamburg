@@ -35,6 +35,7 @@ class SettingsView extends Component {
 	}
 
 	componentWillUnmount() {
+		console.tron.log('SETTINGS VIEW WILL UNMOUNT');
         if (this.props.settings.changed) {
             console.tron.log('save group settings');
             this.props.saveNotifications();
@@ -71,14 +72,15 @@ class SettingsView extends Component {
 
 	_renderSectionNotification() {
 		const notification = this.props.settings.notification;
+		const disabled = !notification.on || !this.props.settings.fcm_token;
 		return (
 		<ListItem.Group>
 			<ListItem.Header title='Benachrichtigungen' />	
-			{ this._renderCheckbox('Benachrichtigungen', notification.on, 'on') }
-			{ this._renderCheckbox('Live-Zwischenergebnis', notification.live, 'live', !notification.on) }
-			{ this._renderCheckbox('Endstand', notification.ended, 'ended', !notification.on) }
+			{ this._renderCheckbox('Benachrichtigungen', notification.on, 'on', !this.props.settings.fcm_token) }
+			{ this._renderCheckbox('Live-Zwischenergebnis', notification.live, 'live', disabled) }
+			{ this._renderCheckbox('Endstand', notification.ended, 'ended', disabled) }
 			<ListItem last
-				disabled={!notification.on || this.props.leagues.data.length === 0}
+				disabled={disabled || this.props.leagues.data.length === 0}
 				onPress={this._toggleGroups.bind(this)}>
 				<Text>Gruppen wählen</Text>
 				<View style={{flex:1}} />
