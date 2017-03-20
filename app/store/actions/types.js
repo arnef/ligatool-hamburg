@@ -1,3 +1,10 @@
+// navigation
+export const PUSH_ROUTE = 'PUSH_ROUTE';
+export const POP_ROUTE = 'POP_ROUTE';
+export const RESET_TO_ROUTE = 'RESET_TO_ROUTE';
+export const SET_TAB = 'SET_TAB';
+export const SET_TITLE = 'SET_TITLE'
+
 // matches
 export const QUERY_MATCHES = 'QUERY_MATCHES';
 export const GET_MATCH = 'GET_MATCH';

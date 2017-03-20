@@ -9,26 +9,32 @@ import { MATCH, PREVIEW, LIVE_MATCH } from '../views/routes';
 class MatchItem extends Component {
 
     onPress(match) {
-        if (isAdminForMatch(match)) {
-            this.props.navigator.push({
-                state: MATCH,
-                title: 'Spiel eintragen',
-                id: match.id
-            });
-        } else if (match.set_points) {
-            this.props.navigator.push({
-                state: LIVE_MATCH,
-                title: 'Begegnung',
-                id: match.id
-            });
-        } else {
-            this.props.navigator.push({
-                state: PREVIEW,
-                title: match.team_home.name,
-                home: match.team_home,
-                away: match.team_away
-            });
-        }
+        this.props.onPress(match);
+        // if (isAdminForMatch(match)) {
+        //     // this.props.navigator.push({
+        //     //     state: MATCH,
+        //     //     title: 'Spiel eintragen',
+        //     //     id: match.id
+        //     // });
+        // } else if (match.set_points) {
+        //     this.props.pushRoute({
+        //         key: LIVE_MATCH,
+        //         title: 'Begegnung',
+        //         id: match.id
+        //     })
+        //     // this.props.navigator.push({
+        //     //     state: LIVE_MATCH,
+        //     //     title: 'Begegnung',
+        //     //     id: match.id
+        //     // });
+        // } else {
+        //     // this.props.navigator.push({
+        //     //     state: PREVIEW,
+        //     //     title: match.team_home.name,
+        //     //     home: match.team_home,
+        //     //     away: match.team_away
+        //     // });
+        // }
     }
 
     render() {

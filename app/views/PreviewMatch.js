@@ -7,15 +7,13 @@ import { TabBar } from '../components';
 class PreviewMatch extends Component {
 
   componentDidMount() {
-    this.props.navigator.setTitle(this.props.home.name);
+    this.props.setTitle(this.props.home.name)
+    // this.props.navigator.setTitle(this.props.home.name);
   }
 
   onChangeTab(keys) {
-    if (keys.i === 0) {
-      this.props.navigator.setTitle(this.props.home.name);
-    } else {
-      this.props.navigator.setTitle(this.props.away.name);
-    }
+    const title = keys.i === 0 ? this.props.home.name : this.props.away.name
+    this.props.setTitle(title)
   }
 
   render() {

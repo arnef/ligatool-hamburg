@@ -2,7 +2,7 @@ import LiveMatch from './LiveMatchView';
 import MatchList from './MatchListView';
 import Match from './MatchView';
 import MyTeam from './MyTeamView';
-import Navigation from './NavigationView';
+import Drawer from './DrawerView';
 import Overview from './Overview';
 import PreviewMatch from './PreviewMatch';
 import Table from './TableView';
@@ -18,7 +18,7 @@ export {
     MatchList,
     Match,
     MyTeam,
-    Navigation,
+    Drawer,
     Overview,
     PreviewMatch,
     Table,

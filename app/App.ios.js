@@ -1,40 +1,47 @@
-import React, { Component } from 'react';
-import { View, TabBarIOS, StatusBar } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { View, TabBarIOS, StatusBar, NavigationExperimental } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LoginModal from './modals/LoginModal';
 import LoadingModal from './modals/LoadingModal';
 import * as Route from './views/routes';
 import Navigation from './Navigation';
 import * as theme from './components/base/theme';
+import * as Views from './views'
+import { TAB_OVERVIEW, TAB_MY_TEAM, TAB_LEAGUES, TAB_SETTINGS } from './views/tabs'
+
+const tabs = {
+  OVERVIEW: 0,
+  MY_TEAM: 1,
+  LEAGUES: 2,
+  SETTINGS: 3
+}
 
 class App extends Component {
-
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTab: Route.OVERVIEW
-    };
-  }
 
   componentDidMount() {
     StatusBar.setBarStyle('light-content');
   }
 
-  _setTab(name) {
-    if (this.state.selectedTab === Route.SETTINGS && name !== Route.SETTINGS && this.props.settings.changed) {
-      this.props.saveNotifications();
-    }
-    if (name === Route.MY_TEAM && !this.props.settings.team) {
-      this.props.showLogin(true);
-    }
-    this.setState({
-      selectedTab: name
-    });
+  onPress(tabKey) {
+    // if (this.props.route.tab === TAB_SETTINGS && tabIdx !== TAB_SETTINGS && this.props.settings.changed) {
+    //   this.props.saveNotifications();
+    // } 
+    // if (tabIdx === TAB_MY_TEAM && !this.props.settings.team) {
+    //   this.props.showLogin(true);
+    // }
+
+    this.props.setTab(tabKey);
+  }
+
+  renderScene(sceneProps) {
+    return (<Views.OVERVIEW { ...sceneProps } />)
   }
 
   _renderTab(name, title) {
-    return (
+     /*return (<CardStack navigationState={this.props.route}
+      renderScene={this.renderScene.bind(this)} />)
+      */
+  return (
       <Navigation
         { ...this.props }
         hasTabbar
@@ -50,7 +57,9 @@ class App extends Component {
     }
   }
 
+
   render() {
+    const activeTab = this.props.route.tabs.index;
     return (
       <View style={{flex: 1, backgroundColor: theme.backgroundColor}}>
         <LoadingModal />
@@ -61,32 +70,32 @@ class App extends Component {
         <Icon.TabBarItemIOS
           title='Übersicht'
           iconName='ios-football'
-          selected={ this.state.selectedTab === Route.OVERVIEW }
-          onPress={() => { this._setTab(Route.OVERVIEW); }}>
+          selected={ activeTab === tabs.OVERVIEW }
+          onPress={() => this.onPress(TAB_OVERVIEW) }>
           {this._renderTab(Route.OVERVIEW, 'Übersicht') }
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
           title='Mein Team'
           iconName='ios-shirt'
-          selected={ this.state.selectedTab === Route.MY_TEAM }
-          onPress={ () => { this._setTab(Route.MY_TEAM); }}>
+          selected={ activeTab === tabs.MY_TEAM }
+          onPress={ () => this.onPress(TAB_MY_TEAM) }>
           { this._renderTab(Route.MY_TEAM, 'Mein Team') }
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
           title='Gruppen'
           iconName='ios-trophy'
-          selected={this.state.selectedTab === Route.LEAGUES}
-          onPress={ () => { this._setTab(Route.LEAGUES); }}>
+          selected={ activeTab === tabs.LEAGUES }
+          onPress={ () => this.onPress(TAB_LEAGUES) }>
           { this._renderTab(Route.LEAGUES, 'Gruppen')}
         </Icon.TabBarItemIOS>
 
         <Icon.TabBarItemIOS
           title='Einstellungen'
           iconName='ios-settings'
-          selected={this.state.selectedTab === Route.SETTINGS}
-          onPress={ () => { this._setTab(Route.SETTINGS); }}>
+          selected={ activeTab === tabs.SETTINGS }
+          onPress={ () => this.onPress(TAB_SETTINGS) }>
           { this._renderTab(Route.SETTINGS, 'Einstellungen') }
         </Icon.TabBarItemIOS>
 
@@ -99,7 +108,11 @@ class App extends Component {
 
 
 App.propTypes = {
-  settings: React.PropTypes.object
+  saveNotifications: PropTypes.func,
+  showLogin: PropTypes.func,
+  setTab: PropTypes.func,
+  route: PropTypes.object,
+  settings: PropTypes.object
 };
 
 

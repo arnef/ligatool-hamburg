@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
 import { Container } from '../components';
 import { connect } from 'react-redux';
@@ -42,13 +42,13 @@ class LeaguesView extends Component {
 
 	onPress(league) {
 		if (league.cup) {
-			this.props.navigator.push({
+			this.props.pushRoute({
 				state: LEAGUE_MATCHES,
 				leagueID: league.id,
 				title: league.name
 			})
 		} else {
-			this.props.navigator.push({
+			this.props.pushRoute({
 				state: RANKING,
 				leagueID: league.id,
 				title: league.name
@@ -58,8 +58,9 @@ class LeaguesView extends Component {
 }
 
 LeaguesView.propTypes = {
-	leagues: React.PropTypes.object,
-	getRankings: React.PropTypes.func
+	pushRoute: PropTypes.func,
+	leagues: PropTypes.object,
+	getRankings: PropTypes.func
 };
 
 export default connect(state => ({

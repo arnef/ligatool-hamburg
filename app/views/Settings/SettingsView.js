@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
 	View, Switch, Platform, ActionSheetIOS, ActivityIndicator
 } from 'react-native';
@@ -63,13 +63,10 @@ class SettingsView extends Component {
 	}
 
 	_toggleGroups() {
-		if (this.props.navigator) {
-			console.tron.log('open group view');
-			this.props.navigator.push({
-				state: SETTINGS_NOTIFICATION,
-				title: 'Gruppen wählen'
-			});
-		}
+		this.props.pushRoute({
+			state: SETTINGS_NOTIFICATION,
+			title: 'Gruppen wählen'
+		})
 	}
 
 	_renderSectionNotification() {
@@ -151,14 +148,14 @@ class SettingsView extends Component {
 }
 
 SettingsView.propTypes = {
-	showLogin: React.PropTypes.func,
-	logout: React.PropTypes.func,
-	setNotification: React.PropTypes.func,
-	saveNotifications: React.PropTypes.func,
-	user: React.PropTypes.object,
-	settings: React.PropTypes.object,
-	leagues: React.PropTypes.object,
-	navigator: React.PropTypes.object
+	showLogin: PropTypes.func,
+	logout: PropTypes.func,
+	setNotification: PropTypes.func,
+	saveNotifications: PropTypes.func,
+	user: PropTypes.object,
+	settings: PropTypes.object,
+	leagues: PropTypes.object,
+	pushRoute: PropTypes.func
 };
 
 export default connect((state) => ({

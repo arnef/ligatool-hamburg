@@ -198,7 +198,7 @@ class MatchView extends Component {
                     ref={(dialog) => { this.SelectPlayerModal = dialog; }}
                     visible={this.props.dialog.player }
                 />
-                <Match.Header data={match} navigator={this.props.navigator} />
+                <Match.Header data={match} pushRoute={this.props.pushRoute} />
                 <Container 
                     { ...this.props }
                     hasTabbar={this.props.hasTabbar && !showButton}

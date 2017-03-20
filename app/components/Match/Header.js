@@ -22,7 +22,7 @@ class MatchHeader extends Component {
 		return (
 			<View style={[style.header, { backgroundColor: this.props.color}]}>
 				<Touchable color='#fff' style={style.teamContainer}
-					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_home, title: match.team_home.name })}}>
+					onPress={() => this.onPress(match.team_home) }>
 					<Text center bold={isAndroid}  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
 				</Touchable>
 				<View style={style.score}>
@@ -30,11 +30,19 @@ class MatchHeader extends Component {
 					<Text style={style.points} size={12}>({goals})</Text>
 				</View>
 				<Touchable color='#fff' style={style.teamContainer}
-					onPress={() => { this.props.navigator.push({ state: TEAM, team: match.team_away, title: match.team_away.name })}}>
+					onPress={() => this.onPress(match.team_away) }>
 					<Text center bold={isAndroid}  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{away}</Text>
 				</Touchable>
 			</View>
-		);
+		)
+	}
+
+	onPress(team) {
+		this.props.pushRoute({
+			state: TEAM,
+			team,
+			title: team.name
+		})
 	}
 }
 
@@ -66,13 +74,14 @@ const style = StyleSheet.create({
 		textAlign: 'center',
         alignItems: 'center'
 	}
-});
+})
 
 MatchHeader.propTypes = {
+	pushRoute: PropTypes.func,
 	data: PropTypes.object,
 	color: PropTypes.string,
 	navigator: PropTypes.object
-};
+}
 
 export default connect( state => ({
 	color: state.settings.color

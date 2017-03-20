@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View, ScrollView, ActivityIndicator } from 'react-native';
 import { Button, Image, ListItem, Text } from '../components/base';
 import * as theme from '../components/base/theme';
@@ -65,7 +65,7 @@ class NavigationView extends Component {
         });
     }
 
-    render () {
+    render() {
         const height = Math.floor(this.props.width * 0.625);
         const team = this.props.settings.team || null;
 
@@ -74,7 +74,7 @@ class NavigationView extends Component {
             <View style={{ width: this.props.width, height: height, overflow: 'hidden'}}>
                 <Image
                     style={{ resizeMode: 'cover', width: this.props.width, height: height}}
-                    source={ team ? require('../../res/img/turm_bw.png') : require('../../res/img/turm.png') } />
+                    source={{ uri : team ? 'turm_bw' : 'turm' }} />
                     { team && (
                     <View style={{flexDirection: 'row', position: 'absolute', top: height-66, alignItems: 'center', width: this.props.width, height: 60 }}>
                         { team.image && (
@@ -90,16 +90,14 @@ class NavigationView extends Component {
                     { this._renderItem(OVERVIEW, 'Übersicht', 'football') }
                     { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in')}
                     { this.renderSeparator() }
-                    {
-                        !this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (
+                    {!this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (
                             <View style={{ padding: 16, alignItems: 'center' }}>
                                 <Button
                                     centered
                                     style={{backgroundColor: '#ddd', margin: 8 }}
                                     onPress={() => { this.props.getRankings() }}>Erneut laden</Button>
                             </View>
-                        )
-                    }
+                        )}
                     {
                         this.props.leagues.loading && (
                             <View style={{padding: 16}}>
@@ -109,6 +107,7 @@ class NavigationView extends Component {
                     { !this.props.leagues.loading && !this.props.leagues.error && this.renderLeagues() }
                     { this.renderSeparator() }
                     { this._renderItem(SETTINGS, 'Einstellungen', 'settings') }
+                    <View style={{flex: 1, height: 5}} />
                 </ScrollView>
             </View>
             );
@@ -120,11 +119,11 @@ class NavigationView extends Component {
 }
 
 NavigationView.propTypes = {
-    getRankings: React.PropTypes.func,
-    onNavigate: React.PropTypes.func,
-    leagues: React.PropTypes.object,
-    width: React.PropTypes.number,
-    settings: React.PropTypes.object
+    getRankings: PropTypes.func,
+    onNavigate: PropTypes.func,
+    leagues: PropTypes.object,
+    width: PropTypes.number,
+    settings: PropTypes.object
 };
 
 export default NavigationView;

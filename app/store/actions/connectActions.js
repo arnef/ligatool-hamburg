@@ -22,9 +22,9 @@ export const connect = () => {
     return {
         type: INIT_APP,
         payload: new Promise(resolve => {
-
             const restoreSettings = new Promise(resolve => {
                 Storage.getItem(SETTINGS_KEY).then(settings => {
+                    console.tron.log(settings);
                     if (!settings.ok) { // no settings saved 
                         api.get('/leagues').then(resp => {
                             store.dispatch({
@@ -91,7 +91,7 @@ export const connect = () => {
                 if (settings.fcm_token && savedSettings.ok) {
                     console.tron.log('FCM_TOKEN SET SEND UPDATE');
                     api.post('/notification', {
-                        notification: savedSettings.data,
+                        notification: savedSettings.data.notification,
                         fcm_token: settings.fcm_token
                     }).then(resp => {
                         store.dispatch({

@@ -11,7 +11,7 @@ import teams from './teamReducer';
 import league from './leagueReducer';
 import loading from './loadingReducer';
 import appConnected from './restoreReducer';
-
+import route from './routeReducer'
 
 export default combineReducers({
 	appConnected,
@@ -24,5 +24,6 @@ export default combineReducers({
 	match,
 	dialog,
 	teams,
-	loading
+	loading,
+	route
 });

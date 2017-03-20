@@ -1,185 +1,165 @@
-import React, { Component } from 'react';
-import { Navigator, Platform, StyleSheet, View as V } from 'react-native';
+import React, { Component, PropTypes } from 'react'
+import { NavigationExperimental, StyleSheet, Platform, Text, View } from 'react-native'
+import { Touchable, Icon } from './components/base'
 import { connect } from 'react-redux';
-import * as View from './views';
-import * as Route from './views/routes';
-import { Row, Column, Text, Icon, Touchable } from './components/base';
+import * as Views from './views'
+import * as Routes from './views/routes'
 
+const { 
+    CardStack,
+    Header
+ } = NavigationExperimental;
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 24;
 
 class Navigation extends Component {
 
-    constructor(props) {
-        super(props);
-        if (this.props.getNav) {
-            // ref fix for android
-            this.props.getNav(this);
-		}
-    }
-
     render() {
-        
+        const appNavigationState = this.props.route
+        const { tabs } = appNavigationState
+        const tabKey = tabs.routes[tabs.index].key
+        const scenes = appNavigationState[tabKey]
+
         return (
-            <Column style={this.props.topBorder ? { borderTopWidth: 25, borderTopColor: this.props.settings.color } : {}}>
-            <Navigator
-                style={{flexDirection: 'column-reverse'}}
-                ref={(navigator) => { this.navigator = navigator }}
-                initialRoute={this.props.initialRoute}
-                renderScene={this.props.renderScene ? this.renderSceneProps.bind(this) : this.renderScene.bind(this)}
-                navigationBar={
-                    <Navigator.NavigationBar routeMapper={{
-                        LeftButton: this.renderLeftButton.bind(this),
-                        RightButton: () => { return (<Text color='#fff'>{ __DEV__ ? 'DEV':''}</Text>)},
-                        Title: this.renderTitle.bind(this)
-                    }}
-                    style={[styles.toolbar, { 
-                        position: 'relative', 
-                        backgroundColor: this.props.settings.color }]} />
-                }
-            />
-            </Column>
-        );
+            <CardStack navigationState={ scenes }
+                style={ { flex: 1 } }
+                onNavigateBack={ this.onNavigateBack.bind(this) }
+                renderHeader={ this.renderHeader.bind(this) }
+                renderScene={ this.renderScene.bind(this) }
+             />
+        )
     }
 
-    renderSceneProps(route) {
-        return this.props.renderScene(route, this);
+    onNavigateBack() {
+        this.props.popRoute();
     }
 
-    resetTo(route) {
-        this.setState({ title: null }); 
-        this.navigator.resetTo(route);
+    renderHeader(sceneProps) {
+        const { color } = this.props.settings; 
+        return (
+            <Header { ...sceneProps } 
+                direction='horizontal'
+                onNavigateBack={this.onNavigateBack.bind(this)}
+                style={ [styles.appbar, { backgroundColor: color }] }
+                renderTitleComponent={ this.renderTitle.bind(this) }
+                renderLeftComponent={ this.renderLeftComponent.bind(this) }
+                 />
+        )
     }
 
-
-    push(route) {
-        if (!route.title) {
-            route.title = titles[route.state];
-        }
-        this.navigator.push(route);
-    }
-
-
-    pop() {
-        this.navigator.pop();
-    }
-
-    getCurrentRoutes() {
-        if (this.navigator) {
-            return this.navigator.getCurrentRoutes();
-        }
-
-        return [];
-    }
-
-    setTitle(title) {
-        if (this.navigator && this.navigator.getCurrentRoutes) {
-            const stack = this.navigator.getCurrentRoutes();
-            if (stack.length > 0) {
-                stack[stack.length - 1].title = title;
-                this.forceUpdate();
-            }
-        }
-    }
-
-    renderLeftButton(route, navigator, index, navState) {
-        if (index > 0) {
+    renderLeftComponent(sceneProps) {
+        if (sceneProps.scene.index === 0 && Platform.OS === 'android') {
             return (
-                <Touchable color='#fff' borderless onPress={this.pop.bind(this)}>
-                    <V style={styles.leftButton}>
-                    <Icon size={24} color='#fff' name='arrow-back' />
-                    </V>
+                <Touchable color borderless style={ styles.buttonContainer } 
+                    onPress={ () => { if (this.props.drawer) this.props.drawer.openDrawer() } }>
+                    <Icon style={ styles.button } size={ 28 } color='#fff' name='menu' />
                 </Touchable>
-            );
-        } else if (index === 0 && this.props.drawer) {
+            )
+        }
+        else if (sceneProps.scene.index > 0) {
             return (
-                <Touchable color='#fff' borderless onPress={() => { 
-                    this.props.drawer.openDrawer();
-                }}>
-                <V style={styles.leftButton}>
-                    <Icon size={24} color='#fff' name='menu' />
-                    </V>
-                </Touchable>
-            );
-        } else if (index === 0 && this.props.closeModal) {
-            return (
-                <Touchable color='#fff' borderless onPress={this.props.closeModal}>
-                    <V style={styles.leftButton}>
-                    <Icon size={24} color='#fff' name='close' />
-                    </V>
+                <Touchable color borderless style={styles.buttonContainer} onPress={ this.onNavigateBack.bind(this) }>
+                    <Icon style={styles.button} size={24} color='#fff' name='arrow-back' />
                 </Touchable>
             )
         }
     }
 
-    renderTitle(route, navigator, index, navState) {
+    renderTitle(props) {
         return (
-            <Row style={styles.title}>
-                <Text color='#fff' bold size={Platform.OS === 'ios' ? 17 : 20} numberOfLines={1} ellipsizeMode='tail'>{ route.title }</Text>
-            </Row>
-        );
+            <View style={ styles.title }>
+                <Text style={ styles.titleText } numberOfLines={1} ellipsizeMode='tail'>
+                    { props.scene.route.title }
+                </Text>
+            </View>
+        )
     }
 
-    renderScene(route, navigator) {
-        switch (route.state) {
-            case Route.OVERVIEW:
-                return (<View.Overview {...this.props} navigator={this} id={route.id} vid={route.vid} />);
-            case Route.LIVE_MATCH:
-                return (<View.LiveMatch {...this.props} navigator={this} id={route.id} vid={route.vid} />);
-            case Route.MY_TEAM:
-                return (<View.MyTeam {...this.props} navigator={this} />);
-            case Route.LEAGUES:
-                return (<View.Leagues { ...this.props} navigator={this} />)
-            case Route.MATCH:
-                return (<View.Match {...this.props} navigator={this} id={route.id} vid={route.vid} />);
-            case Route.RANKING:
-                return (<View.LeagueView {...this.props} navigator={this} leagueID={route.leagueID} />);
-            case Route.LEAGUE_MATCHES:
-                return (<View.LeagueMatchesView { ...this.props} navigator={this} leagueID={route.leagueID} />);
-            case Route.TEAM:
-                return (<View.TeamOverview {...this.props} navigator={this} team={route.team} />);
-            case Route.PREVIEW:
-                return (<View.PreviewMatch { ...this.props} navigator={this} home={route.home} away={route.away} />);
-            case Route.SETTINGS:
-                return (<View.Settings.SettingsView {...this.props} navigator={this} />);
-            case Route.SETTINGS_NOTIFICATION:
-                return (<View.Settings.SettingsNotificationView { ...this.props } navigator={this} />);
+    renderScene(sceneProps) {
+        const route = sceneProps.scene.route;
+        switch(route.state) {
+            case Routes.OVERVIEW:
+                return <Views.Overview { ...this.props } />
+
+            case Routes.MY_TEAM:
+                return <Views.MyTeam { ...this.props } />
+
+            case Routes.LEAGUES:
+                return <Views.Leagues { ...this.props } />
+            
+            case Routes.SETTINGS:
+                return <Views.Settings.SettingsView { ...this.props } />
+
+            case Routes.LIVE_MATCH:
+                return <Views.LiveMatch { ...this.props } id={ route.id } />
+
+            case Routes.MATCH:
+                return <Views.Match { ...this.props } id={ route.id } />
+
+            case Routes.RANKING:
+                return <Views.LeagueView { ...this.props } leagueID={ route.leagueID } />
+
+            case Routes.PREVIEW:
+                return <Views.PreviewMatch { ...this.props } home={ route.home } away={ route.away } />
+
+            case Routes.TEAM:
+                return <Views.TeamOverview { ...this.props } team={ route.team } />
+
+            case Routes.SETTINGS_NOTIFICATION:
+                return <Views.Settings.SettingsNotificationView { ...this.props } />            
         }
     }
-
 }
 
 const styles = StyleSheet.create({
-    leftButton: Platform.select({
-        ios: { padding: 10 },
-        android: { padding: 16 }
+    buttonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 0,
+        marginTop: Platform.OS === 'ios' ? 0 : STATUSBAR_HEIGHT
+    },
+    button: Platform.select({
+        ios: {
+            height: 24,
+            width: 24,
+            margin: 10
+        }, 
+        android: {
+            height: 28,
+            width: 28,
+            margin: 10
+        }
     }),
-    title: Platform.select({
-        ios: { marginTop: 12 },
-        android: { marginTop: 17 }
-    }),
-    toolbar: Platform.select({
-        ios: {},
-        android: { height: 56 }
-    })
-});
-
-const titles = {};
-titles[Route.OVERVIEW] = 'Übersicht';
-titles[Route.LIVE_MATCH] = 'Begegnung';
-titles[Route.MY_TEAM] = 'Mein Team';
-titles[Route.MATCH] = 'Spiel eintragen';
-titles[Route.LEAGUES] = 'Gruppen';
-titles[Route.SETTINGS] = 'Einstellungen';
-titles[Route.SETTINGS_NOTIFICATION] = 'Gruppen wählen';
+    appbar: {
+        borderBottomWidth: 0, 
+        height: APPBAR_HEIGHT + STATUSBAR_HEIGHT,
+        elevation: 0
+    },
+    title:  {
+        marginHorizontal: Platform.OS === 'ios' ? 16 : 0,
+        borderWidth: 0,
+        justifyContent: 'center',
+        alignItems: Platform.OS === 'ios' ? 'center' : 'flex-start',
+        flex: 1,
+        marginTop: Platform.OS === 'ios' ? 0 : STATUSBAR_HEIGHT
+    },
+    titleText: {
+        color: '#fff',
+        fontWeight: '500',
+        textAlign: Platform.OS === 'ios' ? 'left' : 'left',
+        fontSize: Platform.OS === 'ios' ? 18 : 22
+    }
+})
 
 Navigation.propTypes = {
-    initialRoute: React.PropTypes.object,
-    topBorder: React.PropTypes.bool,
-    drawer: React.PropTypes.object,
-    bottomTabBar: React.PropTypes.bool,
-    settings: React.PropTypes.object
-};
-
+    drawer: PropTypes.object,
+    popRoute: PropTypes.func,
+    route: PropTypes.object,
+    settings: PropTypes.object
+}
 
 export default connect(state => ({
-    ...state
+    ...state //TODO map only needed props
 }))(Navigation);

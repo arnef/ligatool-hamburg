@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ListItem, Text } from '../components/base';
 import { Container, MatchItem } from '../components';
+import { LIVE_MATCH, MATCH, PREVIEW } from './routes'
+import { isAdminForMatch } from '../Helper'
 
 class SelectableMatchListView extends Component {
 
@@ -62,11 +64,31 @@ class SelectableMatchListView extends Component {
                 )}
                 { !this.state.showDropdown && matches.map((match) => {
                     if (match.match_day === this.state.selectedMatchDay) {
-                        return (<MatchItem key={match.id} navigator={this.props.navigator} data={match} />);
+                        return (<MatchItem key={match.id} onPress={ this.onPressMatch.bind(this) } data={match} />);
                     }
                 })}
             </Container>
         );
+    }
+
+    onPressMatch(match) {
+        if (isAdminForMatch(match)) {
+            this.props.pushRoute({
+                state: MATCH,
+                id: match.id
+            })
+        } else if (match.set_points) {
+            this.props.pushRoute({
+                state: LIVE_MATCH,
+                id: match.id
+            })
+        } else {
+            this.props.pushRoute({
+                state: PREVIEW,
+                home: match.team_home,
+                away: match.team_away
+            })
+        }
     }
 
     getMatchDays() {
@@ -101,10 +123,11 @@ class SelectableMatchListView extends Component {
 
 
 SelectableMatchListView.propTypes = {
-    league: React.PropTypes.object,
-    leagueID: React.PropTypes.number,
-    navigator: React.PropTypes.object,
-    getLeagueMatches: React.PropTypes.func
+    pushRoute: PropTypes.func,
+    league: PropTypes.object,
+    leagueID: PropTypes.number,
+    navigator: PropTypes.object,
+    getLeagueMatches: PropTypes.func
 };
 
 export default connect(state => ({ ...state }))(SelectableMatchListView);

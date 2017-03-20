@@ -6,6 +6,7 @@ import { ActionCreators } from './store/actions';
 import LoadingScreen from './components/LoadingScreen';
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm';
 import App from './App';
+import * as routes from './views/routes';
 
 class AppContainer extends Component {
 	
@@ -31,7 +32,6 @@ class AppContainer extends Component {
 				console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED');
 				this.props.saveNotifications();
 			}
-			// 
 		}
 		
 	}
@@ -69,22 +69,23 @@ class AppContainer extends Component {
 				localNotif.show_in_foreground = true;
 
 				FCM.presentLocalNotification(localNotif);
-			}
-			if (notif.opened_from_tray) {
-				//TODOalert('open' + notif.data.id);
-			}
-			
+			}			
 		});	
 		this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
 			this.syncNotifications(token);
 		});
 	}
 
+	changeRoute(route) {
+		if (this.app && this.app.navigator) {
+			this.app.navigator.push(route);
+		}
+	}
 
 	render() {
 		// const initApp = this.props.initApp;
 		if (this.props.appConnected) {
-			return <App {...this.props} />;
+			return <App {...this.props} getRef={app => this.app  = app} />;
 		} else {
 			return <LoadingScreen />;
 		}

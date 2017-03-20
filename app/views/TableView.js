@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Container, TeamLogo } from '../components';
 import { Text, ListItem, Column } from '../components/base';
@@ -41,11 +41,11 @@ class TableView extends Component {
   }
 
   _onPress(team) {
-    this.props.navigator.push({
+    this.props.pushRoute({
       state: TEAM,
       team: team,
       title: team.name
-    });
+    })
   }
 
   _getLeagues() {
@@ -78,11 +78,11 @@ class TableView extends Component {
 }
 
 TableView.propTypes = {
-  league: React.PropTypes.object,
-  leagueID: React.PropTypes.number,
-  color: React.PropTypes.string,
-  navigator: React.PropTypes.object,
-  getLeague: React.PropTypes.func
+  league: PropTypes.object,
+  leagueID: PropTypes.number,
+  color: PropTypes.string,
+  getLeague: PropTypes.func,
+  pushRoute: PropTypes.func
 };
 
 export default connect((state) => ({

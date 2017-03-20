@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
-import { Container, MatchItem  } from '../components';
-import { Row, Column, Button, Text } from '../components/base';
+import React, { Component } from 'react'
+import { Container, MatchItem  } from '../components'
+import { Row, Column, Button, Text } from '../components/base'
+import { isAdminForMatch } from '../Helper'
+import { LIVE_MATCH, MATCH, PREVIEW } from '../views/routes'
+
 
 class MatchListView extends Component {
 
@@ -17,9 +20,33 @@ class MatchListView extends Component {
             <MatchItem
                 key={idx}
                 menuOpen={this.state.openMenu === idx}
+                onPress={() => this.onPress(match) }
                 toggleMenu={() => {this.toggleMenu(idx) }}
                 data={match} navigator={this.props.navigator} />
-        );
+        )
+    }
+
+    onPress(match) {
+        if (isAdminForMatch(match)) {
+            this.props.pushRoute({
+                state: MATCH,
+                title: 'Spiel eintragen',
+                id: match.id
+            })
+        } else if (match.set_points) {
+            this.props.pushRoute({
+                state: LIVE_MATCH,
+                title: 'Begegnung',
+                id: match.id
+            })
+        } else {
+            this.props.pushRoute({
+                state: PREVIEW,
+                title: match.team_home.name,
+                home: match.team_home,
+                away: match.team_away
+            });
+        }
     }
 
     componentDidMount() {
@@ -73,6 +100,7 @@ class MatchListView extends Component {
 }
 
 MatchListView.propTypes = {
+    pushRoute: React.PropTypes.func,
     onRefresh: React.PropTypes.func,
     fetched: React.PropTypes.bool,
     matches: React.PropTypes.array,

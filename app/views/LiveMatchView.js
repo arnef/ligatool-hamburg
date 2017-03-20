@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Match } from '../components';
@@ -23,7 +23,7 @@ class LiveMatchView extends Component {
 	render() {
 		return (
 			<View style={{flex: 1}}>
-				<Match.Header data={this.props.match.data} navigator={this.props.navigator}  />
+				<Match.Header data={this.props.match.data} pushRoute={this.props.pushRoute}  />
 				<Container 
 					{ ...this.props }
 					error={this.props.match.error}
@@ -36,9 +36,10 @@ class LiveMatchView extends Component {
 }
 
 LiveMatchView.propTypes = {
-	getMatch: React.PropTypes.func,
-	match: React.PropTypes.object,
-	id: React.PropTypes.number	
+	pushRoute: PropTypes.func,
+	getMatch: PropTypes.func,
+	match: PropTypes.object,
+	id: PropTypes.number	
 };
 
 export default connect((state) => ({
