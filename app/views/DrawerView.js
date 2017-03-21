@@ -107,7 +107,7 @@ class NavigationView extends Component {
                     { !this.props.leagues.loading && !this.props.leagues.error && this.renderLeagues() }
                     { this.renderSeparator() }
                     { this._renderItem(SETTINGS, 'Einstellungen', 'settings') }
-                    <View style={{flex: 1, height: 5}} />
+                    <View style={{ height: 5, flex: 1 }} />
                 </ScrollView>
             </View>
             );

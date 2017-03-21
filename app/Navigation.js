@@ -4,6 +4,7 @@ import { Touchable, Icon } from './components/base'
 import { connect } from 'react-redux';
 import * as Views from './views'
 import * as Routes from './views/routes'
+import * as LoginModal from './modals/LoginModal/routes'
 
 const { 
     CardStack,
@@ -48,6 +49,16 @@ class Navigation extends Component {
     }
 
     renderLeftComponent(sceneProps) {
+        /*if (sceneProps.scene.index === 0 && this.props.route.modals.open) {
+            return (
+                <Touchable color borderless style={ styles.buttonContainer }
+                    onPress={() => this.props.showLogin(false) }>
+                    <Icon style={ styles.button } size={24} color='#fff' name='close' />
+                </Touchable>
+            )
+
+        }
+        else */
         if (sceneProps.scene.index === 0 && Platform.OS === 'android') {
             return (
                 <Touchable color borderless style={ styles.buttonContainer } 
@@ -78,6 +89,7 @@ class Navigation extends Component {
     renderScene(sceneProps) {
         const route = sceneProps.scene.route;
         switch(route.state) {
+            // App routes
             case Routes.OVERVIEW:
                 return <Views.Overview { ...this.props } />
 
@@ -106,7 +118,17 @@ class Navigation extends Component {
                 return <Views.TeamOverview { ...this.props } team={ route.team } />
 
             case Routes.SETTINGS_NOTIFICATION:
-                return <Views.Settings.SettingsNotificationView { ...this.props } />            
+                return <Views.Settings.SettingsNotificationView { ...this.props } />
+
+            // LoginModa routes
+            case Routes.MODAL_SELECT_GROUP:
+                return <LoginModal.SelectGroup { ...this.props } />
+            
+            case Routes.MODAL_SELECT_TEAM:
+                return <LoginModal.SelectTeam { ...this.props } id={ route.id } />
+
+            case Routes.MODAL_LOGIN:
+                return <LoginModal.Login { ...this.props } />
         }
     }
 }
@@ -157,7 +179,8 @@ Navigation.propTypes = {
     drawer: PropTypes.object,
     popRoute: PropTypes.func,
     route: PropTypes.object,
-    settings: PropTypes.object
+    settings: PropTypes.object,
+    showLogin: PropTypes.func
 }
 
 export default connect(state => ({

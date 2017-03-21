@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, Modal } from 'react-native';
 import { ListItem } from '../components/base';
 import { Container } from '../components';
-import Navigator from '../Navigation';
+import Navigator from './Navigation';
 
 
 class SelectPlayerModal extends Component {

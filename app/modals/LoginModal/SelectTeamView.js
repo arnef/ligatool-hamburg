@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Container } from '../../components';
 import { connect } from 'react-redux';
 import { ListItem, Text } from '../../components/base';
-import { ROUTE_LOGIN } from './LoginModal';
-
+// import { ROUTE_LOGIN } from './LoginModal';
+import  { MODAL_LOGIN } from '../../views/routes'
 
 class SelectTeamView extends Component {
 
@@ -55,17 +55,18 @@ class SelectTeamView extends Component {
 
     onPress(team) {
         this.props.setUserTeam(team);
-        this.props.navigator.push({ state: ROUTE_LOGIN, title: 'Login'});
+        this.props.navigator.push({ state: MODAL_LOGIN, title: 'Login'});
     }
 
 }
 
 SelectTeamView.propTypes = {
-    league: React.PropTypes.object,
-    id: React.PropTypes.number,
-    getLeague: React.PropTypes.func,
-    setUserTeam: React.PropTypes.func,
-    navigator: React.PropTypes.object
+    league: PropTypes.object,
+    id: PropTypes.number,
+    getLeague: PropTypes.func,
+    setUserTeam: PropTypes.func,
+    pushRoute: PropTypes.func
+    
 };
 
 export default connect(state => ({

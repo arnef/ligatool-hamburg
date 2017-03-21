@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-native';
-import Navigator from '../../Navigation';
+import Navigator from '../Navigation';
 import SelectGroupView from './SelectGroupView';
 import SelectTeamView from './SelectTeamView';
 import LoginView from './LoginView';
-
-export const ROUTE_SELECT_GROUP = 'ROUTE.SELECT_GROUP';
-export const ROUTE_SELECT_TEAM = 'ROUTE.SELECT_TEAM';
-export const ROUTE_LOGIN = 'ROUTE.LOGIN';
+import { MODAL_SELECT_TEAM, MODAL_SELECT_GROUP, MODAL_LOGIN } from '../../views/routes';
+// export const ROUTE_SELECT_GROUP = 'ROUTE.SELECT_GROUP';
+// export const ROUTE_SELECT_TEAM = 'ROUTE.SELECT_TEAM';
+// export const ROUTE_LOGIN = 'ROUTE.LOGIN';
 
 class LoginModal extends Component {
 
@@ -19,9 +19,9 @@ class LoginModal extends Component {
     }
 
     render() {
-        let initState = { state: ROUTE_SELECT_GROUP, title: 'Gruppe wählen'};
+        let initState = { state: MODAL_SELECT_GROUP, title: 'Gruppe wählen'};
         if (this.props.settings.team) {
-            initState = { state: ROUTE_LOGIN, title: 'Login', init: true };
+            initState = { state: MODAL_LOGIN, title: 'Login', init: true };
         }
         return (
             <Modal
@@ -41,12 +41,12 @@ class LoginModal extends Component {
     renderScene(route, navigator) {
         console.tron.log(route);
         switch (route.state) {
-            case ROUTE_SELECT_GROUP:
-                console.tron.log(ROUTE_SELECT_GROUP);
+            case MODAL_SELECT_GROUP:
+                console.tron.log(MODAL_SELECT_GROUP);
                 return (<SelectGroupView { ...this.props } navigator={navigator} />);
-            case ROUTE_SELECT_TEAM:
+            case MODAL_SELECT_TEAM:
                 return (<SelectTeamView { ...this.props } navigator={navigator} id={route.id} />);
-            case ROUTE_LOGIN:
+            case MODAL_LOGIN:
                 return (<LoginView { ...this.props } navigator={navigator} init={route.init} />);
         }
     }

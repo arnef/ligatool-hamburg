@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Container } from '../../components';
 import { ListItem, Text } from '../../components/base';
-import { ROUTE_SELECT_TEAM } from './LoginModal'
+// import { ROUTE_SELECT_TEAM } from './LoginModal'
+import { MODAL_SELECT_TEAM } from '../../views/routes'
 
 class SelectGroupView extends Component {
     
@@ -25,7 +26,7 @@ class SelectGroupView extends Component {
                                 return (
                                     <ListItem key={league.id}
                                         last={idx >= this.props.leagues.data.length -2}
-                                        onPress={() => { this.props.navigator.push({ state: ROUTE_SELECT_TEAM, title: 'Team wählen', id: league.id })}}>
+                                        onPress={() => this.onPress(league)}>
                                         <Text>{ league.name }</Text>
                                     </ListItem>
                                 );
@@ -35,6 +36,14 @@ class SelectGroupView extends Component {
                 )}
             </Container>
         );
+    }
+
+    onPress(league) {
+        this.props.navigator.push({ 
+            state: MODAL_SELECT_TEAM, 
+            title: 'Team wählen', 
+            id: league.id 
+        })
     }
 }
 
