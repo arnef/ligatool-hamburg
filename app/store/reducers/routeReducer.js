@@ -79,9 +79,7 @@ export default (state = initialState, action) => {
 
         // for android use always the first tab
         case RESET_TO_ROUTE: {
-            const {
-                tabs
-            } = state
+            const { tabs } = state
             const tabKey = tabs.routes[tabs.index].key
             const route = action.route
 

@@ -3,6 +3,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import { TabBar } from '../components'
 import { connect } from 'react-redux'
 import MatchListView from './MatchListView'
+import { backgroundColor } from '../components/base/theme'
 
 class Overview extends Component {
 
@@ -27,6 +28,7 @@ class Overview extends Component {
 
     return (
       <ScrollableTabView
+        style={{ backgroundColor, flex: 1 }}
         prerenderingSiblingsNumber={2}
         renderTabBar={() => (
           <TabBar />)}>

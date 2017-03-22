@@ -65,7 +65,10 @@ export const connect = () => {
                             type: LOAD_ACCESS_KEY + FULFILLED,
                             payload: apiAccessKey
                         });
-                        if (apiToken.expires < (new Date()).getMilliseconds()) {
+                        const now = (new Date()).getMilliseconds()
+
+                        console.tron.log('token expired ' + (apiToken.expires < now))
+                        if (apiToken.expires < now) {
                             api.post('/uer/auth/refresh', { access_key: apiAccessKey.data })
                             .then(resp => {
                                 store.dispatch({

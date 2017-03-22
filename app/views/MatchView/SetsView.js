@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { View, Keyboard, Dimensions, Platform, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { Container, Match } from '../components'
-import SelectPlayerModal from '../modals/SelectPlayerModal'
-import { Button } from '../components/base'
-import * as theme from '../components/base/theme'
+import { Container, Match } from '../../components'
+import SelectPlayerModal from '../../modals/SelectPlayerModal'
+import { Button } from '../../components/base'
+import * as theme from '../../components/base/theme'
 
 const height = Dimensions.get('window').height
 
-class MatchView extends Component {
+class SetsView extends Component {
 
     constructor(props) {
         super(props)
@@ -62,18 +62,19 @@ class MatchView extends Component {
     componentWillReceiveProps(nextProps) {
         const match = nextProps.match.data
         let idx = 0
-        let editable = true
+        // let editable = true
 
         if (match.score_unconfirmed && !match.live) {
             idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2
-        } else if (!match.score_unconfirmed && match.set_points) {
-            editable = false
-            console.tron.log('match is editable ' + editable)
-        }
+        } 
+        // else if (!match.score_unconfirmed && match.set_points) {
+        //     editable = false
+        //     console.tron.log('match is editable ' + editable)
+        // }
 
         this.setState({ 
-            btnIdx: idx,
-            editable: editable
+            btnIdx: idx
+            // editable: editable
         })   
     }
 
@@ -91,8 +92,7 @@ class MatchView extends Component {
     }
 
     getMatch() {
-        console.tron.log('match view get match')
-        this.props.getMatch(this.props.id)
+        this.props.getMatch(this.props.match.data.id)
     }
 
     onPress(data, idx) {
@@ -210,6 +210,7 @@ class MatchView extends Component {
     render() {
         const match = this.props.match.data
         const showButton =  this.showButton()
+        const editable = this.props.match.data.is_admin
 
         return (
             <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
@@ -227,7 +228,7 @@ class MatchView extends Component {
                     error={this.props.match.error}
                     refreshing={this.props.match.loading}
                     onRefresh={this.getMatch.bind(this)}>
-                    <Match editable={this.state.editable}
+                    <Match editable={editable}
                            toggleMatchType={this.props.toggleMatchType.bind(this)}
                            onPress={this.onPress.bind(this)}
                            scoreInput={this.state.scoreInput}
@@ -239,7 +240,7 @@ class MatchView extends Component {
                     />         
                 </Container>
 
-                { showButton && this.renderSubmitButton() }
+                { showButton && editable && this.renderSubmitButton() }
             </View>
         )
     }
@@ -260,6 +261,7 @@ const styles = StyleSheet.create({
     submitRow: Platform.select({
         android: {
             margin: 0,
+            minHeight: 52,
             paddingHorizontal: 8
         },
         ios: {
@@ -276,7 +278,7 @@ const btnText = [
     'Ergebnis akzeptieren'
 ]
 
-MatchView.propTypes = {
+SetsView.propTypes = {
     auth: PropTypes.object,
     dialog: PropTypes.object,
     getMatch: PropTypes.func,
@@ -297,4 +299,4 @@ MatchView.propTypes = {
 
 export default connect( (state) => ({
     match: state.match
-}))(MatchView)
+}))(SetsView)

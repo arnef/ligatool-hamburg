@@ -1,17 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { NavigationExperimental, StyleSheet, Platform, Text, View } from 'react-native'
 import { Touchable, Icon } from './components/base'
-import { connect } from 'react-redux';
+import * as theme from './components/base/theme'
+import { connect } from 'react-redux'
 import * as Views from './views'
 import * as Routes from './views/routes'
-import * as LoginModal from './modals/LoginModal/routes'
 
-const { 
-    CardStack,
-    Header
- } = NavigationExperimental;
-const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 24;
+const { CardStack, Header } = NavigationExperimental
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 24
+const ICON_SIZE = Platform.OS === 'ios' ? 24 : 28
 
 class Navigation extends Component {
 
@@ -23,7 +21,7 @@ class Navigation extends Component {
 
         return (
             <CardStack navigationState={ scenes }
-                style={ { flex: 1 } }
+                style={{ backgroundColor: theme.backgroundColor, flex: 1 }}
                 onNavigateBack={ this.onNavigateBack.bind(this) }
                 renderHeader={ this.renderHeader.bind(this) }
                 renderScene={ this.renderScene.bind(this) }
@@ -32,11 +30,12 @@ class Navigation extends Component {
     }
 
     onNavigateBack() {
-        this.props.popRoute();
+        this.props.popRoute()
     }
 
     renderHeader(sceneProps) {
-        const { color } = this.props.settings; 
+        const { color } = this.props.settings 
+
         return (
             <Header { ...sceneProps } 
                 direction='horizontal'
@@ -49,28 +48,18 @@ class Navigation extends Component {
     }
 
     renderLeftComponent(sceneProps) {
-        /*if (sceneProps.scene.index === 0 && this.props.route.modals.open) {
-            return (
-                <Touchable color borderless style={ styles.buttonContainer }
-                    onPress={() => this.props.showLogin(false) }>
-                    <Icon style={ styles.button } size={24} color='#fff' name='close' />
-                </Touchable>
-            )
-
-        }
-        else */
         if (sceneProps.scene.index === 0 && Platform.OS === 'android') {
             return (
                 <Touchable color borderless style={ styles.buttonContainer } 
-                    onPress={ () => { if (this.props.drawer) this.props.drawer.openDrawer() } }>
-                    <Icon style={ styles.button } size={ 28 } color='#fff' name='menu' />
+                    onPress={ () => { if (this.props.drawer) { this.props.drawer.openDrawer() } } }>
+                    <Icon style={ styles.button } size={ICON_SIZE} color='#fff' name='menu' />
                 </Touchable>
             )
         }
         else if (sceneProps.scene.index > 0) {
             return (
                 <Touchable color borderless style={styles.buttonContainer} onPress={ this.onNavigateBack.bind(this) }>
-                    <Icon style={styles.button} size={24} color='#fff' name='arrow-back' />
+                    <Icon style={styles.button} size={ICON_SIZE} color='#fff' name='arrow-back' />
                 </Touchable>
             )
         }
@@ -87,91 +76,86 @@ class Navigation extends Component {
     }
 
     renderScene(sceneProps) {
-        const route = sceneProps.scene.route;
+        const route = sceneProps.scene.route
+
         switch(route.state) {
             // App routes
-            case Routes.OVERVIEW:
+            case Routes.OVERVIEW: {
                 return <Views.Overview { ...this.props } />
+            }
 
-            case Routes.MY_TEAM:
+            case Routes.MY_TEAM: {
                 return <Views.MyTeam { ...this.props } />
+            }
 
-            case Routes.LEAGUES:
+            case Routes.LEAGUES: {
                 return <Views.Leagues { ...this.props } />
-            
-            case Routes.SETTINGS:
+            }
+
+            case Routes.SETTINGS: {
                 return <Views.Settings.SettingsView { ...this.props } />
+            }
 
-            case Routes.LIVE_MATCH:
-                return <Views.LiveMatch { ...this.props } id={ route.id } />
+            // case Routes.LIVE_MATCH: {
+            //     return <Views.LiveMatch { ...this.props } id={ route.id } />
+            // }
 
-            case Routes.MATCH:
-                return <Views.Match { ...this.props } id={ route.id } />
+            case Routes.MATCH: {
+                return <Views.Match { ...this.props } />
+            }
 
-            case Routes.RANKING:
+            case Routes.RANKING: {
                 return <Views.LeagueView { ...this.props } leagueID={ route.leagueID } />
+            }
 
-            case Routes.PREVIEW:
-                return <Views.PreviewMatch { ...this.props } home={ route.home } away={ route.away } />
+            // case Routes.PREVIEW: {
+            //     return <Views.PreviewMatch { ...this.props } home={ route.home } away={ route.away } />
+            // }
 
-            case Routes.TEAM:
+            case Routes.TEAM: {
                 return <Views.TeamOverview { ...this.props } team={ route.team } />
+            }
 
-            case Routes.SETTINGS_NOTIFICATION:
+            case Routes.SETTINGS_NOTIFICATION: {
                 return <Views.Settings.SettingsNotificationView { ...this.props } />
-
-            // LoginModa routes
-            case Routes.MODAL_SELECT_GROUP:
-                return <LoginModal.SelectGroup { ...this.props } />
-            
-            case Routes.MODAL_SELECT_TEAM:
-                return <LoginModal.SelectTeam { ...this.props } id={ route.id } />
-
-            case Routes.MODAL_LOGIN:
-                return <LoginModal.Login { ...this.props } />
+            }
         }
     }
 }
 
 const styles = StyleSheet.create({
+    appbar: {
+        borderBottomWidth: 0,
+        elevation: 0,
+        height: APPBAR_HEIGHT + STATUSBAR_HEIGHT
+    },
+    button: {
+        height: ICON_SIZE,
+        margin: 10,
+        width: 24
+    },
     buttonContainer: {
+        alignItems: 'center',
+        borderWidth: 0,
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 0,
         marginTop: Platform.OS === 'ios' ? 0 : STATUSBAR_HEIGHT
     },
-    button: Platform.select({
-        ios: {
-            height: 24,
-            width: 24,
-            margin: 10
-        }, 
-        android: {
-            height: 28,
-            width: 28,
-            margin: 10
-        }
-    }),
-    appbar: {
-        borderBottomWidth: 0, 
-        height: APPBAR_HEIGHT + STATUSBAR_HEIGHT,
-        elevation: 0
-    },
+    
     title:  {
-        marginHorizontal: Platform.OS === 'ios' ? 16 : 0,
-        borderWidth: 0,
-        justifyContent: 'center',
         alignItems: Platform.OS === 'ios' ? 'center' : 'flex-start',
+        borderWidth: 0,
         flex: 1,
+        justifyContent: 'center',
+        marginHorizontal: Platform.OS === 'ios' ? 16 : 0,
         marginTop: Platform.OS === 'ios' ? 0 : STATUSBAR_HEIGHT
     },
     titleText: {
         color: '#fff',
+        fontSize: Platform.OS === 'ios' ? 18 : 22,
         fontWeight: '500',
-        textAlign: Platform.OS === 'ios' ? 'left' : 'left',
-        fontSize: Platform.OS === 'ios' ? 18 : 22
+        textAlign: Platform.OS === 'ios' ? 'left' : 'left'
     }
 })
 
@@ -185,4 +169,4 @@ Navigation.propTypes = {
 
 export default connect(state => ({
     ...state //TODO map only needed props
-}))(Navigation);
+}))(Navigation)

@@ -1,82 +1,84 @@
-import React, { Component, PropTypes } from 'react';
-import { View, ScrollView, ActivityIndicator } from 'react-native';
-import { Button, Image, ListItem, Text } from '../components/base';
-import * as theme from '../components/base/theme';
-import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes';
+import React, { Component, PropTypes } from 'react'
+import { View, ScrollView, ActivityIndicator } from 'react-native'
+import { Button, Image, ListItem, Text } from '../components/base'
+import * as theme from '../components/base/theme'
+import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes'
 
 class NavigationView extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            activePage: OVERVIEW,
-            activeLeague: -1
-        };
+            activeLeague: -1,
+            activePage: OVERVIEW
+        }
     }
 
     componentDidMount() {
-        this.props.getRankings();
+        this.props.getRankings()
     }
 
     _handleRowPress(state) {
         if (state.title === 'Login') {
-            state.title = null;
+            state.title = null
         }
         if (this.props.onNavigate) {
-            this.props.onNavigate(state);
+            this.props.onNavigate(state)
         }
         this.setState({
-            activePage: state.state,
-            activeLeague: state.leagueID ? state.leagueID : -1
-        });
+            activeLeague: state.leagueID ? state.leagueID : -1,
+            activePage: state.state
+        })
     }
 
     _renderItem(state, text, icon) {
-        const active = this.state.activePage === state;
-        const color = this.props.settings.color;
+        const active = this.state.activePage === state
+        const color = this.props.settings.color
+        
         return (
             <ListItem 
                 active={active}
-                onPress={() => { this._handleRowPress({ state: state, title: text} ); }}
+                onPress={() => { this._handleRowPress({ state: state, title: text } ) }}
                 last>
                 <ListItem.Icon color={active ? color : theme.secondaryTextColor} name={icon} />
                 <Text bold color={active ? color : null}>{ text }</Text>
             </ListItem>
-        );
+        )
     }
 
     renderLeagues() {
-        
-        const color = this.props.settings.color;
+        const color = this.props.settings.color
+
         return this.props.leagues.data.map( (league) => {
-                const active = league.id === this.state.activeLeague;
+                const active = league.id === this.state.activeLeague
+
                 return (
                     <ListItem key={league.id}
                         last
                         active={active}
                         onPress={ () => {
-                            this._handleRowPress({state: league.cup ? LEAGUE_MATCHES : RANKING, leagueID: league.id, title: league.name})
+                            this._handleRowPress({ leagueID: league.id, state: league.cup ? LEAGUE_MATCHES : RANKING, title: league.name })
                         }}>
                         <Text bold color={active ? color : null}>
                         { league.name }
                         </Text>
                     </ListItem>
-                );
-        });
+                )
+        })
     }
 
     render() {
-        const height = Math.floor(this.props.width * 0.625);
-        const team = this.props.settings.team || null;
+        const height = Math.floor(this.props.width * 0.625)
+        const team = this.props.settings.team || null
 
         return (
-            <View style={{flex: 1}}>
-            <View style={{ width: this.props.width, height: height, overflow: 'hidden'}}>
+            <View style={{ flex: 1 }}>
+            <View style={{ height: height, overflow: 'hidden', width: this.props.width }}>
                 <Image
-                    style={{ resizeMode: 'cover', width: this.props.width, height: height}}
+                    style={{ height: height, resizeMode: 'cover', width: this.props.width }}
                     source={{ uri : team ? 'turm_bw' : 'turm' }} />
                     { team && (
-                    <View style={{flexDirection: 'row', position: 'absolute', top: height-66, alignItems: 'center', width: this.props.width, height: 60 }}>
+                    <View style={{ flexDirection: 'row', position: 'absolute', top: height-66, alignItems: 'center', width: this.props.width, height: 60 }}>
                         { team.image && (
                             <Image url={team.image}  style={{ width: 60, height: 60, marginLeft: 8}} />
                         )}
@@ -87,6 +89,7 @@ class NavigationView extends Component {
                     )}
                 </View>
                 <ScrollView style={{flex: 1}}>
+                    <View style={{ height: 5, flex: 1 }} />
                     { this._renderItem(OVERVIEW, 'Übersicht', 'football') }
                     { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in')}
                     { this.renderSeparator() }
@@ -110,7 +113,7 @@ class NavigationView extends Component {
                     <View style={{ height: 5, flex: 1 }} />
                 </ScrollView>
             </View>
-            );
+            )
     }
 
     renderSeparator() {
@@ -124,6 +127,6 @@ NavigationView.propTypes = {
     leagues: PropTypes.object,
     width: PropTypes.number,
     settings: PropTypes.object
-};
+}
 
-export default NavigationView;
+export default NavigationView

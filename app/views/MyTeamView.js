@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import MatchListView from '../views/MatchListView'
 import { TabBar } from '../components'
-
+import { backgroundColor } from '../components/base/theme'
 
 class MyTeam extends Component {
 
@@ -31,7 +31,7 @@ class MyTeam extends Component {
 
         return (
             <ScrollableTabView
-                style={this.props.style}
+                style={{ backgroundColor, flex: 1 }}
                 prerenderingSiblingsNumber={1}
                 renderTabBar={() => (<TabBar />)}>
                 <MatchListView tabLabel='KOMMENDE' {...this.props} {...props} matches={this.props.teamMatches.next} />

@@ -72,23 +72,10 @@ class SelectableMatchListView extends Component {
     }
 
     onPressMatch(match) {
-        if (isAdminForMatch(match)) {
-            this.props.pushRoute({
-                state: MATCH,
-                id: match.id
-            })
-        } else if (match.set_points) {
-            this.props.pushRoute({
-                state: LIVE_MATCH,
-                id: match.id
-            })
-        } else {
-            this.props.pushRoute({
-                state: PREVIEW,
-                home: match.team_home,
-                away: match.team_away
-            })
-        }
+        this.props.pushRoute({
+            match: match,
+            state: MATCH
+        })
     }
 
     getMatchDays() {

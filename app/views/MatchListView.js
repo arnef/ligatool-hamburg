@@ -3,7 +3,7 @@ import { Container, MatchItem  } from '../components'
 import { Row, Column, Button, Text } from '../components/base'
 import { isAdminForMatch } from '../Helper'
 import { LIVE_MATCH, MATCH, PREVIEW } from '../views/routes'
-
+import moment from 'moment'
 
 class MatchListView extends Component {
 
@@ -27,26 +27,31 @@ class MatchListView extends Component {
     }
 
     onPress(match) {
-        if (isAdminForMatch(match)) {
-            this.props.pushRoute({
-                state: MATCH,
-                title: 'Spiel eintragen',
-                id: match.id
-            })
-        } else if (match.set_points) {
-            this.props.pushRoute({
-                state: LIVE_MATCH,
-                title: 'Begegnung',
-                id: match.id
-            })
-        } else {
-            this.props.pushRoute({
-                state: PREVIEW,
-                title: match.team_home.name,
-                home: match.team_home,
-                away: match.team_away
-            });
-        }
+        this.props.pushRoute({
+            match: match,
+            state: MATCH,
+            title: 'Begegnung'
+        })
+        // if (isAdminForMatch(match)) {
+        //     this.props.pushRoute({
+        //         id: match.id,
+        //         state: MATCH,
+        //         title: 'Spiel eintragen'
+        //     })
+        // } else if (match.set_points) {
+        //     this.props.pushRoute({
+        //         id: match.id,
+        //         state: MATCH,
+        //         title: 'Begegnung'
+        //     })
+        // } else {
+        //     this.props.pushRoute({
+        //         state: PREVIEW,
+        //         title: match.team_home.name,
+        //         home: match.team_home,
+        //         away: match.team_away
+        //     });
+        // }
     }
 
     componentDidMount() {

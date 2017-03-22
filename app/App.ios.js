@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, TabBarIOS, StatusBar, NavigationExperimental } from 'react-native';
+import { View, TabBarIOS, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LoginModal from './modals/LoginModal';
 import LoadingModal from './modals/LoadingModal';
@@ -60,8 +60,9 @@ class App extends Component {
 
   render() {
     const activeTab = this.props.route.tabs.index;
+
     return (
-      <View style={{flex: 1, backgroundColor: theme.backgroundColor}}>
+      <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
         <LoadingModal />
         <LoginModal { ...this.props } onClose={this.onCloseLogin.bind(this)} />
       <TabBarIOS

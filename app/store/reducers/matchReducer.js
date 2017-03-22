@@ -1,6 +1,5 @@
-import { GET_MATCH, FULFILLED, PENDING, SET_PLAYER, PUT_SETS, SCORE, 
-    SUGGEST_SCORE, SCORE_CONFIRMED, TOGGLE_D5, NOTIFICATION 
-} from '../actions/types'
+import { PUSH_ROUTE, GET_MATCH, FULFILLED, PENDING, SET_PLAYER, PUT_SETS, SCORE, SUGGEST_SCORE, SCORE_CONFIRMED, TOGGLE_D5, NOTIFICATION } from '../actions/types'
+import { isAdminForMatch } from '../../Helper'
 
 export default (state = {
     cache: {},
@@ -10,6 +9,20 @@ export default (state = {
     loading: false 
 }, action) => {
     switch (action.type) {
+
+        case PUSH_ROUTE: {
+            
+            if (action.route.state === 'ROUTE.MATCH') {
+                const match = action.route.match
+
+                match.type = 'default'
+                match.is_admin = isAdminForMatch(match)
+                console.tron.log(match)
+                state = { ...state, data: match }
+            }
+
+            return state
+        }
 
         case GET_MATCH + PENDING: {
             state = { ...state, error: null , loading: true }
@@ -28,6 +41,7 @@ export default (state = {
                 
                 match.type = getMatchType(match)
                 match.sets = compaireSets(match, state.cache[match.id])
+                match.is_admin = isAdminForMatch(match)
                 state = { ...state, data: match, error: null, loading: false }
                 state.cache[match.id] = match
             } else {
@@ -69,6 +83,7 @@ export default (state = {
                 const match = action.payload.data
 
                 match.type = getMatchType(match)
+                match.is_admin = isAdminForMatch(match)
                 state.data = match
                 state.cache[match.id] = match
             } else {
@@ -103,8 +118,7 @@ export default (state = {
         case TOGGLE_D5: {
             state = { ...state }
             for(let idx of action.payload.idx) {
-                idx = `${idx}`
-                // delete state.data.sets[idx];                
+                idx = `${idx}`            
                 if (state.data.sets[idx]) {
                     state.data.sets[idx].player_1_home = null
                     state.data.sets[idx].player_2_home = null
