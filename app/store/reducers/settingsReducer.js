@@ -1,91 +1,99 @@
-import { SET_NOTIFICATION, SET_GROUP_NOTIFICATION,  SET_USER_TEAM, 
-         PUT_NOTIFICATION, LOGOUT, LOAD_SETTINGS, FULFILLED, UPDATE_FCM_TOKEN
-} from '../actions/types';
+import { SET_NOTIFICATION, SET_GROUP_NOTIFICATION,  SET_USER_TEAM, PUT_NOTIFICATION, LOGOUT, LOAD_SETTINGS, FULFILLED, UPDATE_FCM_TOKEN } from '../actions/types'
+import { AsyncStorage } from 'react-native'
 
-const defaultColor = '#ef473a';
-import {AsyncStorage} from 'react-native';
+const defaultColor = '#ef473a'
 
 export default (state = {
-    fcm_token: null,
-    team: null,
-    color: defaultColor,
     changed: false,
-    notification: {}
+    color: defaultColor,
+    fcm_token: null,
+    notification: {},
+    team: null
 }, action) => {
     switch (action.type) {
+
         case LOAD_SETTINGS + FULFILLED: {
             if (action.payload.ok) {
-                state = {...state, ...action.payload.data};
+                state = { ...state, ...action.payload.data }
             }
-            break;
+            
+            return state
         }
-        case UPDATE_FCM_TOKEN + FULFILLED:
-            console.tron.log(UPDATE_FCM_TOKEN + ' fired');
+
+        case UPDATE_FCM_TOKEN + FULFILLED: {
+            console.tron.log(UPDATE_FCM_TOKEN + ' fired')
             if (action.payload.ok) {
-                state = { ...state, fcm_token: action.payload.data.fcm_token };
+                state = { ...state, fcm_token: action.payload.data.fcm_token }
             }
-            break;
+            
+            return state
+        }
 
-        case LOGOUT:
-            state = {...state, color: defaultColor, team: null};
-            saveState(state);
-            break;
+        case LOGOUT: {
+            state = { ...state, color: defaultColor, team: null }
+            saveState(state)
 
-        case SET_NOTIFICATION:
-            state = { ...state };
-            state.notification[action.payload.key] = !!action.payload.value;
-            state.changed = true;
-            break;
-        case SET_GROUP_NOTIFICATION:
-            state = { ...state };
+            return state
+        }
+
+        case SET_NOTIFICATION: {
+            state = { ...state }
+            state.notification[action.payload.key] = !!action.payload.value
+            state.changed = true
+            
+            return state
+        }
+
+        case SET_GROUP_NOTIFICATION: {
+            state = { ...state }
             if (!state.notification.leagues) {
-                state.notification.leagues = {};
+                state.notification.leagues = {}
             }
-            state.changed = true;
-            state.notification.leagues[action.payload.key] = action.payload.value;
-            break;
-        case PUT_NOTIFICATION + FULFILLED:
+            state.changed = true
+            state.notification.leagues[action.payload.key] = action.payload.value
+            
+            return state
+        }
+
+        case PUT_NOTIFICATION + FULFILLED: {
             if (action.payload.ok) {
-                state = { ...state };
-                state.changed = false;
-                saveState(state);
+                state = { ...state }
+                state.changed = false
+                saveState(state)
             }
-            break;
-        case SET_USER_TEAM: 
-            state = { ...state };
+            
+            return state
+        }
+
+        case SET_USER_TEAM: {
+            state = { ...state }
             if (!!action.payload.color) {
                 state.color = action.payload.color
             }
             state.team = {
-                name: action.payload.name,
                 id: action.payload.id,
-                image: action.payload.image
+                image: action.payload.image,
+                name: action.payload.name
             }
-            saveState(state);
-            break;
-        // case LOAD_TOKEN + FULFILLED:
-        // case TOKEN + FULFILLED:
-        //     state = {...state };
-        //     if (action.payload.ok && action.payload.data.color) {
-        //         state.color = action.payload.data.color;
-        //     }
-        //     break;
+            saveState(state)
+            
+            return state
+        }
     }
-    // if (__DEV__) {
-    //     state.color = 'orange';
-    // }
-    return state;
-};
+
+    return state
+}
 
 const saveState = (state) => {
     const value = {
-        notification: state.notification,
         color: state.color,
+        notification: state.notification,
         team: state.team
-    };
-    try {
-        AsyncStorage.setItem('SETTINGS_V09', JSON.stringify(value));
-    } catch (ex) {
-        console.tron.warn('Error store settings');
     }
-};
+    
+    try {
+        AsyncStorage.setItem('SETTINGS_V09', JSON.stringify(value))
+    } catch (ex) {
+        console.tron.warn('Error store settings')
+    }
+}

@@ -8,8 +8,8 @@ import { LIVE_MATCH, MATCH, PREVIEW } from '../views/routes'
 class MatchListView extends Component {
 
     constructor(props) {
-        super(props);
-        this._renderMatch.bind(this);
+        super(props)
+        this._renderMatch.bind(this)
         this.state={
             openMenu: -1
         }
@@ -51,7 +51,7 @@ class MatchListView extends Component {
 
     componentDidMount() {
         if (this.props.matches.length === 0 && this.props.refreshOnMount) {
-            this.props.onRefresh();
+            this.props.onRefresh()
         }
         
     }

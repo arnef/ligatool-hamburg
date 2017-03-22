@@ -1,21 +1,33 @@
-import {QUERY_RANKINGS, GET_LEAGUE, FULFILLED, PENDING} from '../actions/types';
+import { QUERY_RANKINGS, FULFILLED, PENDING } from '../actions/types'
 
 export default (state = {
     data: [],
-    loading: false,
-    error: null
+    error: null,
+    fetched: false,
+    loading: false
 }, action) => {
     switch (action.type) {
-        case QUERY_RANKINGS + PENDING:
-            state = {...state, loading: true, error: null};
-            break;
+
+        case QUERY_RANKINGS + PENDING: {
+            state = { ...state, error: null, loading: true }
+            
+            return state
+        }
+
         case QUERY_RANKINGS + FULFILLED:
             if (action.payload.ok) {
-                state = {...state, data: action.payload.data, loading: false, error: null};
+                state = { ...state, 
+                    data: action.payload.data,
+                    error: null, 
+                    fetched: true, 
+                    loading: false 
+                }
             } else {
-                state = {...state, loading: false, error: action.payload.problem};
+                state = { ...state, error: action.payload.problem, loading: false }
             }
-            break;
+            
+            return state
     }
-    return state;
-};
+
+    return state
+}

@@ -1,3 +1,3 @@
-import TeamView from './TeamDetails';
+import TeamView from './TeamDetails'
 
-export default TeamView;
+export default TeamView

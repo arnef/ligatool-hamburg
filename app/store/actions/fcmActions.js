@@ -15,6 +15,7 @@ export const receiveNotification = (notification) => {
         const ignore = store.getState().match.ignoreNextNotify;
         const match = store.getState().match.data;
         if (!ignore && match && match.id === parseInt(notification.id, 10)) {
+            console.tron.log('FCM ACTION FIRED getMatch')
             store.dispatch(getMatch(match.id, isAdminForMatch(match)));
         }
     }

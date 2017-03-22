@@ -1,86 +1,98 @@
-import React, { Component } from 'react';
-import { View, Keyboard, Dimensions, Platform, StyleSheet } from 'react-native';
+import React, { Component, PropTypes } from 'react'
+import { View, Keyboard, Dimensions, Platform, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { Container, Match } from '../components';
-import SelectPlayerModal from '../modals/SelectPlayerModal';
-import { Button, Row, Column, Text } from '../components/base';
-import * as theme from '../components/base/theme';
+import { Container, Match } from '../components'
+import SelectPlayerModal from '../modals/SelectPlayerModal'
+import { Button } from '../components/base'
+import * as theme from '../components/base/theme'
 
-const height = Dimensions.get('window').height;
+const height = Dimensions.get('window').height
 
 class MatchView extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             btnIdx: 0,
             editable: true,
-            menuOpen: -1,
-            scoreInput: -1,
             keyboardSpace: 0,
+            menuOpen: -1,
+            offsetY: 0,
             py: 0,
-            offsetY: 0
-        };
+            scoreInput: -1
+        }
     }
 
     componentDidMount() {
-        this.getMatch();
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this));
+        if (!this.props.match.loading) {
+            this.getMatch()
+        }
+        if (!this.keyboardDidShowListener) {
+            this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this))
+        }
     }
     componentWillUnmount() {
-        this.keyboardDidShowListener.remove();
+        if (this.keyboardDidShowListener) {
+            this.keyboardDidShowListener.remove()
+        }
     }
 
     scrollToInput() {
-        const visibleHeight = height - this.state.keyboardSpace - 100;
-        const keyboardDistance =  this.state.py - visibleHeight;
+        const visibleHeight = height - this.state.keyboardSpace - 100
+        const keyboardDistance =  this.state.py - visibleHeight
+
         if (keyboardDistance > 0) {
-            this.scrollView.scrollTo({ y: this.state.offsetY + keyboardDistance, x: 0, animated: true});
-            this.setState({ py: this.state.py - keyboardDistance });
+            this.scrollView.scrollTo({ 
+                animated: true,
+                x: 0, 
+                y: this.state.offsetY + keyboardDistance               
+            })
+            this.setState({ py: this.state.py - keyboardDistance })
         }
     }
 
     keyboardDidShow(frames) {
-        if (!frames.endCoordinates) return;
+        if (!frames.endCoordinates) { return }
         if (this.state.keyboardSpace === 0) {
-            this.setState({keyboardSpace: frames.endCoordinates.height});
-            this.scrollToInput();
+            this.setState({ keyboardSpace: frames.endCoordinates.height })
+            this.scrollToInput()
         }
-        
     }
 
     componentWillReceiveProps(nextProps) {
-        const match = nextProps.match.data;
-        let idx = 0;
-        let editable = true;
+        const match = nextProps.match.data
+        let idx = 0
+        let editable = true
+
         if (match.score_unconfirmed && !match.live) {
-            idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2;
+            idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2
         } else if (!match.score_unconfirmed && match.set_points) {
-            editable = false;
-            console.tron.log('match is editable ' + editable);
+            editable = false
+            console.tron.log('match is editable ' + editable)
         }
 
         this.setState({ 
             btnIdx: idx,
             editable: editable
-        });   
+        })   
     }
 
 
     toggleMenu(idx) {
         if (this.state.menuOpen === idx) {
-            this.setState({ menuOpen: -1, scoreInput: -1 });
+            this.setState({ menuOpen: -1, scoreInput: -1 })
         }
         else if (this.state.scoreInput === idx) {
-            this.setState({ menuOpen: -1, scoreInput: -1 });
+            this.setState({ menuOpen: -1, scoreInput: -1 })
         }
         else {
-            this.setState({ menuOpen: idx, scoreInput: -1 });
+            this.setState({ menuOpen: idx, scoreInput: -1 })
         }
     }
 
     getMatch() {
-        this.props.getMatch(this.props.id, true);
+        console.tron.log('match view get match')
+        this.props.getMatch(this.props.id)
     }
 
     onPress(data, idx) {
@@ -93,109 +105,117 @@ class MatchView extends Component {
 
 
     onSelect(data, value) {
-        this.toggleMenu(-1);
+        this.toggleMenu(-1)
         if (value === 0) {
-            this.showPlayerDialog('home', data);
+            this.showPlayerDialog('home', data)
         }
         if (value === 1) {
-            this.setState({ scoreInput: this.state.menuOpen });
+            this.setState({ scoreInput: this.state.menuOpen })
         }
     }
 
 
     showScoreDialog(data) {
         if (this.scoreDialog) {
-            this.props.showScoreDialog();
-            this.scoreDialog.setData(data);
+            this.props.showScoreDialog()
+            this.scoreDialog.setData(data)
             this.scoreDialog.result = (score) => {
-                const sets = { ...this.props.match.data.sets };
-                const idx = data.setsIdx[score.set];
-                const set = { ...data.sets[score.set] };
-                set.number = idx;
-                set.goals_home = score.goals_home;
-                set.goals_away = score.goals_away;
-                sets[idx] = set;
-                this.props.updateSets(this.props.match.data.id, sets);
+                const sets = { ...this.props.match.data.sets }
+                const idx = data.setsIdx[score.set]
+                const set = { ...data.sets[score.set] }
+
+                set.number = idx
+                set.goals_home = score.goals_home
+                set.goals_away = score.goals_away
+                sets[idx] = set
+                this.props.updateSets(this.props.match.data.id, sets)
             }
 
         }
     }
 
     onSave(data, score) {
-        const sets = { ...this.props.match.data.sets };
-        const idx = data.setsIdx[score.set];
-        const set = { ...data.sets[score.set] };
-        set.number = idx;
-        set.goals_home = score.goals_home;
-        set.goals_away = score.goals_away;
-        sets[idx] = set;
-        this.props.updateSets(this.props.match.data.id, sets);
-        this.setState({ scoreInput: -1 });
+        const sets = { ...this.props.match.data.sets }
+        const idx = data.setsIdx[score.set]
+        const set = { ...data.sets[score.set] }
+
+        set.number = idx
+        set.goals_home = score.goals_home
+        set.goals_away = score.goals_away
+        sets[idx] = set
+        this.props.updateSets(this.props.match.data.id, sets)
+        this.setState({ scoreInput: -1 })
     }
 
     showPlayerDialog(team, data) {
-        const match = this.props.match.data;
-        const team_key = `team_${team}`;
-        if (this.SelectPlayerModal && match[team_key] && match[team_key].player) {
-            this.props.showPlayerDialog();
-            this.SelectPlayerModal.setSelection(data.type);
-            this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`);
-            this.SelectPlayerModal.setItems(match[team_key].player);
+        const match = this.props.match.data
+        const teamKey = `team_${team}`
+
+        if (this.SelectPlayerModal && match[teamKey] && match[teamKey].player) {
+            this.props.showPlayerDialog()
+            this.SelectPlayerModal.setSelection(data.type)
+            this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`)
+            this.SelectPlayerModal.setItems(match[teamKey].player)
             this.SelectPlayerModal.result = (result) => {
-                this.props.setPlayer(team, result, data.setsIdx);
+                this.props.setPlayer(team, result, data.setsIdx)
                 if (team === 'home') {
-                    this.props.hidePlayerDialog();
-                    this.showPlayerDialog('away', data);
+                    this.props.hidePlayerDialog()
+                    this.showPlayerDialog('away', data)
                 } else {
-                    this.props.hidePlayerDialog();
+                    this.props.hidePlayerDialog()
                 }
             }
         }
     }
 
     confirmScore() {
-        const match = this.props.match.data;
+        const match = this.props.match.data
+
         if (this.state.btnIdx !== 1) {
-            this.props.suggestScore(match.id, match.sets, this.state.btnIdx);
+            this.props.suggestScore(match.id, match.sets, this.state.btnIdx)
         }
     }
     
     showButton() {
-        const match = this.props.match.data;
+        const match = this.props.match.data
+
         if (match.league && match.league.name.indexOf('pokal') !== -1) {
-            return match.score_unconfirmed && (match.set_points_home !== match.set_points_away &&  (match.set_points_home > 16 || match.set_points_away > 16)) ? true : false;
+            return match.score_unconfirmed && (match.set_points_home !== match.set_points_away &&  (match.set_points_home > 16 || match.set_points_away > 16)) ? true : false
         } else {
-            return match.score_unconfirmed && (match.set_points_home + match.set_points_away === 32) ? true : false;
+            return match.score_unconfirmed && (match.set_points_home + match.set_points_away === 32) ? true : false
         }
     }
 
     toggleScoreInput(idx) {
         if (this.state.scoreInput === idx) {
-            this.setState({ scoreInput: -1, menuOpen: -1 });
+            this.setState({ menuOpen: -1, scoreInput: -1 })
         } else {
-            this.setState({ scoreInput: idx, menuOpen: -1 });
+            this.setState({ menuOpen: -1, scoreInput: idx })
         }
     }
 
     onScroll(event) {
-        const offsetY = event.nativeEvent.contentOffset.y;
-        this.setState({ offsetY });
+        const offsetY = event.nativeEvent.contentOffset.y
+
+        this.setState({ offsetY })
     }
+
     adjustPosition(py) {
-        this.setState({ py });
+        this.setState({ py })
         if (this.state.keyboardSpace > 0) {
-            this.scrollToInput();
+            this.scrollToInput()
         }
     }
 
     render() {
-        const match = this.props.match.data;
-        const showButton =  this.showButton();
+        const match = this.props.match.data
+        const showButton =  this.showButton()
+
         return (
-            <View style={{ flex: 1, backgroundColor: theme.backgroundColor}}>
+            <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
                 <SelectPlayerModal
                     { ...this.props }
-                    ref={(dialog) => { this.SelectPlayerModal = dialog; }}
+                    ref={(dialog) => { this.SelectPlayerModal = dialog }}
                     visible={this.props.dialog.player }
                 />
                 <Match.Header data={match} pushRoute={this.props.pushRoute} />
@@ -221,7 +241,7 @@ class MatchView extends Component {
 
                 { showButton && this.renderSubmitButton() }
             </View>
-        );
+        )
     }
 
     renderSubmitButton() {
@@ -232,46 +252,49 @@ class MatchView extends Component {
                     { `${btnText[this.state.btnIdx]}` }
                 </Button>
             </View>
-        );
+        )
     }
 }
 
 const styles = StyleSheet.create({
     submitRow: Platform.select({
+        android: {
+            margin: 0,
+            paddingHorizontal: 8
+        },
         ios: {
             marginBottom: 50,
-            paddingHorizontal: 8,
-            minHeight: 52
-        },
-        android: {
-            paddingHorizontal: 8,
-            margin: 0
+            minHeight: 52,
+            paddingHorizontal: 8
         }
     })
-});
+})
 
 const btnText = [
     'Ergebnis vorschlagen',
     'Ergebnis vorgeschlagen',
     'Ergebnis akzeptieren'
-];
+]
 
 MatchView.propTypes = {
-    getMatch: React.PropTypes.func,
-    id: React.PropTypes.number,
-    showScoreDialog: React.PropTypes.func,
-    match: React.PropTypes.object,
-    updateSets: React.PropTypes.func,
-    showPlayerDialog: React.PropTypes.func,
-    setPlayer: React.PropTypes.func,
-    hidePlayerDialog: React.PropTypes.func,
-    suggestScore: React.PropTypes.func,
-    dialog: React.PropTypes.object,
-    hideScoreDialog: React.PropTypes.func,
-    toggleMatchType: React.PropTypes.func,
-    settings: React.PropTypes.object
-};
+    auth: PropTypes.object,
+    dialog: PropTypes.object,
+    getMatch: PropTypes.func,
+    hasTabbar: PropTypes.bool,
+    hidePlayerDialog: PropTypes.func,
+    hideScoreDialog: PropTypes.func,
+    id: PropTypes.number,
+    match: PropTypes.object,
+    pushRoute: PropTypes.func,
+    setPlayer: PropTypes.func,
+    settings: PropTypes.object,
+    showPlayerDialog: PropTypes.func,
+    showScoreDialog: PropTypes.func,
+    suggestScore: PropTypes.func,
+    toggleMatchType: PropTypes.func,
+    updateSets: PropTypes.func
+}
 
 export default connect( (state) => ({
     match: state.match
-}))(MatchView);
+}))(MatchView)

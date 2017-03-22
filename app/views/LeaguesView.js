@@ -1,68 +1,70 @@
-import React, { Component, PropTypes } from 'react';
-import { View } from 'react-native';
-import { Container } from '../components';
-import { connect } from 'react-redux';
-import { RANKING, LEAGUE_MATCHES } from './routes';
-import { ListItem, Text } from '../components/base';
+import React, { Component, PropTypes } from 'react'
+import { View } from 'react-native'
+import { Container } from '../components'
+import { connect } from 'react-redux'
+import { RANKING, LEAGUE_MATCHES } from './routes'
+import { ListItem, Text } from '../components/base'
 
 class LeaguesView extends Component {
 
-	componentDidMount() {
-		if (this.props.leagues.data.length === 0) {
-			this.props.getRankings();
-		}
-	}
+    componentDidMount() {
+        const { leagues } = this.props
+        
+        if (!leagues.fetched && !leagues.loading) {
+            this.props.getRankings()
+        }
+    }
 
 
-	render() {
-		return (
-			<Container 
-				{ ...this.props }
-				error={this.props.leagues.error}	
-				refreshing={this.props.leagues.loading}
-				onRefresh={this.props.getRankings.bind(this)}>
-				{ this.props.leagues.data.length > 0 && (
-				<ListItem.Group>
-				{ this.props.leagues.data.map( (league, idx) => {
-					return (
-						<View key={league.id}>
-							<ListItem
-								last={idx === this.props.leagues.data.length-1}
-								onPress={() => this.onPress(league)}>
-								<Text>{ league.name }</Text>
-							</ListItem>
-						</View>
-					)
-				})}	
-				</ListItem.Group>
-				)}
-			</Container>
-		);
-	}
+    render() {
+        return (
+            <Container 
+                { ...this.props }
+                error={ this.props.leagues.error }
+                refreshing={this.props.leagues.loading}
+                onRefresh={this.props.getRankings.bind(this)}>
+                { this.props.leagues.data.length > 0 && (
+                <ListItem.Group>
+                { this.props.leagues.data.map( (league, idx) => {
+                    return (
+                        <View key={league.id}>
+                            <ListItem
+                                last={idx === this.props.leagues.data.length-1}
+                                onPress={() => this.onPress(league)}>
+                                <Text>{ league.name }</Text>
+                            </ListItem>
+                        </View>
+                    )
+                })}
+                </ListItem.Group>
+                )}
+            </Container>
+        )
+    }
 
-	onPress(league) {
-		if (league.cup) {
-			this.props.pushRoute({
-				state: LEAGUE_MATCHES,
-				leagueID: league.id,
-				title: league.name
-			})
-		} else {
-			this.props.pushRoute({
-				state: RANKING,
-				leagueID: league.id,
-				title: league.name
-			});
-		}
-	}
+    onPress(league) {
+        if (league.cup) {
+            this.props.pushRoute({
+                leagueID: league.id,
+                state: LEAGUE_MATCHES,
+                title: league.name
+            })
+        } else {
+            this.props.pushRoute({
+                leagueID: league.id,
+                state: RANKING,
+                title: league.name
+            })
+        }
+    }
 }
 
 LeaguesView.propTypes = {
-	pushRoute: PropTypes.func,
-	leagues: PropTypes.object,
-	getRankings: PropTypes.func
-};
+    getRankings: PropTypes.func,
+    leagues: PropTypes.object,
+    pushRoute: PropTypes.func
+}
 
 export default connect(state => ({
-	leagues: state.leagues
-}))(LeaguesView);
+    leagues: state.leagues
+}))(LeaguesView)

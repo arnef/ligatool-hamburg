@@ -6,9 +6,6 @@ import { Row, Column, Button, ListItem, Image, Text } from '../../components/bas
 
 class TeamView extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         if (this.props.navigator) {
