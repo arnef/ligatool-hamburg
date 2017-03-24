@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Switch, Platform } from 'react-native'
 import { connect } from 'react-redux'
+import actions from '../../store/actions'
 import { Container } from '../../components'
 import { ListItem, Text } from '../../components/base'
 
@@ -33,8 +34,8 @@ class SettingsNotificationView extends Component {
 
         return (
             <ListItem key={data.id}
-                last={idx === this.props.leagues.data.length -1}         
-                onPress={Platform.OS === 'android' ? () => { 
+                last={idx === this.props.leagues.data.length -1}
+                onPress={Platform.OS === 'android' ? () => {
                     this.props.setGroupNotification(data.id, !checked)
                 } : null}>
                 <Text>{ data.name }</Text>
@@ -51,11 +52,17 @@ SettingsNotificationView.propTypes = {
     leagues: React.PropTypes.object,
     saveNotifications: React.PropTypes.func,
     setGroupNotification: React.PropTypes.func,
-    settings: React.PropTypes.object    
+    settings: React.PropTypes.object
 }
 
 
-export default connect( state => ({ 
-    leagues: state.leagues,
-    settings: state.settings
-}))(SettingsNotificationView)
+export default connect(
+    state => ({
+        leagues: state.leagues,
+        settings: state.settings
+    }),
+    dispatch => ({
+        saveNotifications: () => dispatch(actions.saveNotifications()),
+        setGroupNotification: (key, value) => dispatch(actions.setGroupNotification(key, value))
+    })
+)(SettingsNotificationView)

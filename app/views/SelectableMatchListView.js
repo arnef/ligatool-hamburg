@@ -1,74 +1,76 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { ListItem, Text } from '../components/base';
-import { Container, MatchItem } from '../components';
-import { LIVE_MATCH, MATCH, PREVIEW } from './routes'
-import { isAdminForMatch } from '../Helper'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import actions from '../store/actions'
+import { ListItem, Text } from '../components/base'
+import { Container, MatchItem } from '../components'
+import { MATCH } from './routes'
+
 
 class SelectableMatchListView extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
+            matchDays: [],
             selectedMatchDay: null,
-            showDropdown: false,
-            matchDays: []
-        };
+            showDropdown: false
+        }
     }
 
     componentDidMount() {
         if (!this.props.league.matches[`${this.props.leagueID}`]) {
-            this.props.getLeagueMatches(this.props.leagueID);
+            this.props.getLeagueMatches(this.props.leagueID)
         } else {
-            this.getMatchDays();
+            this.getMatchDays()
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        console.tron.log('view receive new props');
+        console.tron.log('view receive new props')
         if (nextProps.league.matches[`${nextProps.leagueID}`]) {
-            console.tron.log('update match days');
-            this.getMatchDays();
+            console.tron.log('update match days')
+            this.getMatchDays()
         }
     }
 
     render() {
         const props = {
-            refreshing: this.props.league.loading,
             error: this.props.league.error,
-            onRefresh: () => { this.props.getLeagueMatches(this.props.leagueID)}
-        };
+            onRefresh: () => { this.props.getLeagueMatches(this.props.leagueID)},
+            refreshing: this.props.league.loading
+        }
 
-        const matches = this.props.league.matches[`${this.props.leagueID}`] || [];
-        const matchDays = this.state.matchDays;
+        const matches = this.props.league.matches[`${this.props.leagueID}`] || []
+        const matchDays = this.state.matchDays
+
         return (
             <Container { ...this.props} { ...props } getRef={container => { this.container = container }}>
                 { matches.length > 0 && (
                     <ListItem.Group>
-                        <ListItem.Header 
+                        <ListItem.Header
                             hideSeparator={!this.state.showDropdown}
                             menuOpen={this.state.showDropdown}
-                            title={'Spieltag wählen'} 
+                            title={'Spieltag wählen'}
                             toggleMenu={this.onPress.bind(this)}>
                                 { this.state.selectedMatchDay }
                             </ListItem.Header>
                         { this.state.showDropdown && matchDays.map((matchDay, idx) => {
                             return (
-                                <ListItem key={idx} 
+                                <ListItem key={idx}
                                     onPress={() => { this.onSelectMatchDay(matchDay) }}
                                     last={idx === matchDays.length -1}><Text>{ matchDay }</Text>
-                                </ListItem>);
+                                </ListItem>)
                         })
                         }
-                    </ListItem.Group>                    
+                    </ListItem.Group>
                 )}
                 { !this.state.showDropdown && matches.map((match) => {
                     if (match.match_day === this.state.selectedMatchDay) {
-                        return (<MatchItem key={match.id} onPress={ this.onPressMatch.bind(this) } data={match} />);
+                        return (<MatchItem key={match.id} onPress={ this.onPressMatch.bind(this) } data={match} />)
                     }
                 })}
             </Container>
-        );
+        )
     }
 
     onPressMatch(match) {
@@ -79,42 +81,50 @@ class SelectableMatchListView extends Component {
     }
 
     getMatchDays() {
-        const matchDays = [];
-        const matches = this.props.league.matches[`${this.props.leagueID}`] || [];
-        let selectedMatchDay = null;
+        const matchDays = []
+        const matches = this.props.league.matches[`${this.props.leagueID}`] || []
+        let selectedMatchDay = null
+
         for (let match of matches) {
             if (matchDays.indexOf(match.match_day) === -1) {
-                matchDays.push(match.match_day);
+                matchDays.push(match.match_day)
             }
             if (!match.set_points && !selectedMatchDay) {
-                selectedMatchDay = match.match_day;
-            } 
+                selectedMatchDay = match.match_day
+            }
         }
         if (!selectedMatchDay) {
-            selectedMatchDay = matchDays[matchDays.length-1];
+            selectedMatchDay = matchDays[matchDays.length-1]
         }
-        this.setState({ selectedMatchDay, matchDays });
+        this.setState({ matchDays, selectedMatchDay })
     }
 
     onSelectMatchDay(matchDay) {
-        this.setState({ showDropdown: false, selectedMatchDay: matchDay });
+        this.setState({ selectedMatchDay: matchDay, showDropdown: false })
         if (this.container && this.container.scrollTo) {
-            this.container.scrollTo({ x: 0 , y: 0, animated: true });
+            this.container.scrollTo({ animated: true, x: 0 , y: 0 })
         }
     }
-    
+
     onPress() {
-        this.setState({ showDropdown: !this.state.showDropdown });
+        this.setState({ showDropdown: !this.state.showDropdown })
     }
 }
 
 
 SelectableMatchListView.propTypes = {
-    pushRoute: PropTypes.func,
+    getLeagueMatches: PropTypes.func,
     league: PropTypes.object,
     leagueID: PropTypes.number,
-    navigator: PropTypes.object,
-    getLeagueMatches: PropTypes.func
-};
+    pushRoute: PropTypes.func
+}
 
-export default connect(state => ({ ...state }))(SelectableMatchListView);
+export default connect(
+    state => ({
+        league: state.league
+    }),
+    dispatch => ({
+        getLeagueMatches: (id) => dispatch(actions.getLeagueMatches(id)),
+        pushRoute: (route) => dispatch(actions.pushRoute(route))
+    })
+)(SelectableMatchListView)

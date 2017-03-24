@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Container, MatchItem  } from '../components'
 import { Row, Column, Button, Text } from '../components/base'
-import { isAdminForMatch } from '../Helper'
-import { LIVE_MATCH, MATCH, PREVIEW } from '../views/routes'
-import moment from 'moment'
+
 
 class MatchListView extends Component {
 
@@ -20,51 +18,21 @@ class MatchListView extends Component {
             <MatchItem
                 key={idx}
                 menuOpen={this.state.openMenu === idx}
-                onPress={() => this.onPress(match) }
                 toggleMenu={() => {this.toggleMenu(idx) }}
-                data={match} navigator={this.props.navigator} />
+                data={match} />
         )
-    }
-
-    onPress(match) {
-        this.props.pushRoute({
-            match: match,
-            state: MATCH,
-            title: 'Begegnung'
-        })
-        // if (isAdminForMatch(match)) {
-        //     this.props.pushRoute({
-        //         id: match.id,
-        //         state: MATCH,
-        //         title: 'Spiel eintragen'
-        //     })
-        // } else if (match.set_points) {
-        //     this.props.pushRoute({
-        //         id: match.id,
-        //         state: MATCH,
-        //         title: 'Begegnung'
-        //     })
-        // } else {
-        //     this.props.pushRoute({
-        //         state: PREVIEW,
-        //         title: match.team_home.name,
-        //         home: match.team_home,
-        //         away: match.team_away
-        //     });
-        // }
     }
 
     componentDidMount() {
         if (this.props.matches.length === 0 && this.props.refreshOnMount) {
             this.props.onRefresh()
         }
-        
     }
 
     toggleMenu(idx) {
-        console.tron.log('open ' + idx);
-        const openMenu = this.state.openMenu === idx ? -1 : idx;
-        this.setState({ openMenu });
+        const openMenu = this.state.openMenu === idx ? -1 : idx
+
+        this.setState({ openMenu })
     }
 
     render() {
@@ -72,7 +40,7 @@ class MatchListView extends Component {
             return (
                 <Container
                     { ...this.props }>
-                    <Row style={{marginTop: 16}}>
+                    <Row style={{ marginTop: 16 }}>
                         <Column center>
                             <Button onPress={this.props.onRefresh}>Erneut Laden</Button>
                         </Column>
@@ -82,15 +50,16 @@ class MatchListView extends Component {
         }
         if (this.props.fetched && this.props.matches.length === 0) {
             return (
-                <Container 
+                <Container
                     { ...this.props }
                     error={this.props.error}
                     refreshing={this.props.refreshing}
                     onRefresh={this.props.onRefresh}>
-                    <Text center secondary style={{padding: 16}}>Keine Begegnungen</Text>
-                </Container>  
+                    <Text center secondary style={{ padding: 16 }}>Keine Begegnungen</Text>
+                </Container>
             )
         }
+
         return (
             <Container
                 { ...this.props }
@@ -100,18 +69,17 @@ class MatchListView extends Component {
                 dataSource={this.props.matches}
                 renderRow={this._renderMatch.bind(this)}
              />
-        );
+        )
     }
 }
 
 MatchListView.propTypes = {
-    pushRoute: React.PropTypes.func,
-    onRefresh: React.PropTypes.func,
-    fetched: React.PropTypes.bool,
-    matches: React.PropTypes.array,
-    navigator: React.PropTypes.object,
-    error: React.PropTypes.string,
-    refreshing: React.PropTypes.bool
-};
+    error: PropTypes.string,
+    fetched: PropTypes.bool,
+    matches: PropTypes.array,
+    onRefresh: PropTypes.func,
+    refreshOnMount: PropTypes.bool,
+    refreshing: PropTypes.bool
+}
 
-export default MatchListView;
+export default MatchListView

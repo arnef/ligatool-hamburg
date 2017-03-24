@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { View, Switch, Platform, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
+import actions from '../../store/actions'
 import codePush from 'react-native-code-push'
 import { ListItem, Text } from '../../components/base'
 import { Container } from '../../components'
@@ -50,16 +51,16 @@ class SettingsView extends Component {
     }
 
     _renderCheckbox(text, value, key, disabled) {
-            return (
-                <ListItem 
-                    disabled={disabled}
-                    onPress={Platform.OS === 'android' ? () => {
-                        this._toggleNotification(key, !value)
-                    } : null}>
-                    <Text>{ text }</Text>
-                    <View style={{ flex: 1 }} />
-                    <Switch value={value} disabled={disabled} onValueChange={(newValue) => this._toggleNotification(key, newValue)} />
-                </ListItem>)
+        return (
+            <ListItem
+                disabled={disabled}
+                onPress={Platform.OS === 'android' ? () => {
+                    this._toggleNotification(key, !value)
+                } : null}>
+                <Text>{ text }</Text>
+                <View style={{ flex: 1 }} />
+                <Switch value={value} disabled={disabled} onValueChange={(newValue) => this._toggleNotification(key, newValue)} />
+            </ListItem>)
     }
 
     _toggleGroups() {
@@ -123,7 +124,7 @@ class SettingsView extends Component {
                     </ListItem>
                 )}
                 </ListItem.Group>
-                
+
                 { this._renderSectionNotification() }
 
                 <ListItem.Group>
@@ -132,7 +133,7 @@ class SettingsView extends Component {
                         <ListItem.Icon name='information-circle' color={this.props.settings.color} />
                         <Text>App-Version { !!this.state.pkg ? `${this.state.pkg.appVersion} (${this.state.pkg.label})`: '0.9' }</Text>
                     </ListItem>
-                    
+
                 </ListItem.Group>
             </Container>
         )
@@ -152,12 +153,22 @@ SettingsView.propTypes = {
     saveNotifications: PropTypes.func,
     setNotification: PropTypes.func,
     settings: PropTypes.object,
-    showLogin: PropTypes.func,
-    user: PropTypes.object
+    showLogin: PropTypes.func
 }
 
-export default connect((state) => ({
-    dialog: state.dialog,
-    leagues: state.leagues,
-    settings: state.settings
-}))(SettingsView)
+export default connect(
+    state => ({
+        auth: state.auth,
+        dialog: state.dialog,
+        leagues: state.leagues,
+        settings: state.settings
+    }),
+    dispatch => ({
+        getRankings: () => dispatch(actions.getRankings()),
+        logout: () => dispatch(actions.logout()),
+        pushRoute: (route) => dispatch(actions.pushRoute(route)),
+        saveNotifications: () => dispatch(actions.saveNotifications()),
+        setNotification: (key, value) => dispatch(actions.setNotification(key, value)),
+        showLogin: (show) => dispatch(actions.showLogin(show))
+    })
+)(SettingsView)

@@ -17,7 +17,7 @@ import {
 /**
  * synchronize local data with server
  */
-export const connect = () => {
+export const initApp = () => {
 
     return {
         type: INIT_APP,

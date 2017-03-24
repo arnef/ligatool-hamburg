@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import actions from '../store/actions'
 import { View } from 'react-native'
 import { Container } from '../components'
-import { connect } from 'react-redux'
+
 import { RANKING, LEAGUE_MATCHES } from './routes'
 import { ListItem, Text } from '../components/base'
 
@@ -9,7 +11,7 @@ class LeaguesView extends Component {
 
     componentDidMount() {
         const { leagues } = this.props
-        
+
         if (!leagues.fetched && !leagues.loading) {
             this.props.getRankings()
         }
@@ -18,7 +20,7 @@ class LeaguesView extends Component {
 
     render() {
         return (
-            <Container 
+            <Container
                 { ...this.props }
                 error={ this.props.leagues.error }
                 refreshing={this.props.leagues.loading}
@@ -65,6 +67,12 @@ LeaguesView.propTypes = {
     pushRoute: PropTypes.func
 }
 
-export default connect(state => ({
-    leagues: state.leagues
-}))(LeaguesView)
+export default connect(
+    state => ({
+        leagues: state.leagues
+    }),
+    dispatch => ({
+        getRankings: () => dispatch(actions.getRankings()),
+        pushRoute: (route) => dispatch(actions.pushRoute(route))
+    })
+)(LeaguesView)

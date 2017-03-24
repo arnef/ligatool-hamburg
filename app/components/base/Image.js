@@ -4,10 +4,10 @@ import { baseUrl } from '../../api'
 
 class Image extends Component {
     render() {
-        const source = this.props.url ? 
+        const source = this.props.url ?
             { uri: baseUrl + this.props.url } : this.props.source
         const imageStyle = [styles.image]
-        
+
         if (this.props.size) {
             imageStyle.push({ height: this.props.size, width: this.props.size })
         }
@@ -28,7 +28,7 @@ Image.propTypes = {
     height: PropTypes.number,
     size: PropTypes.number,
     source: PropTypes.oneOfType([ PropTypes.object, PropTypes.number ]),
-    style: PropTypes.object,
+    style: PropTypes.oneOfType([ PropTypes.object, PropTypes.number ]),
     url: PropTypes.string,
     width: PropTypes.number
 }

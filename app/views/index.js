@@ -1,4 +1,3 @@
-import LiveMatch from './LiveMatchView'
 import MatchList from './MatchListView'
 import Match from './MatchView'
 import MyTeam from './MyTeamView'
@@ -13,7 +12,6 @@ import LeagueView from './LeagueView'
 import LeagueMatchesView from './SelectableMatchListView'
 
 export {
-    LiveMatch,
     MatchList,
     Match,
     MyTeam,

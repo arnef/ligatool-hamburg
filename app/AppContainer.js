@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 import { Platform } from 'react-native'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { ActionCreators } from './store/actions'
+import actions from './store/actions'
 import LoadingScreen from './components/LoadingScreen'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
 import App from './App'
+import { MATCH } from './views/routes'
 
 class AppContainer extends Component {
-    
+
     componentDidMount() {
         this.mountNotification()
-        this.props.connect()
+        this.props.initApp()
     }
 
     componentWillUnmount() {
@@ -30,7 +30,7 @@ class AppContainer extends Component {
                 console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED')
                 this.props.saveNotifications()
             }
-        }   
+        }
     }
 
     mountNotification() {
@@ -41,15 +41,15 @@ class AppContainer extends Component {
         this.notificationListener = FCM.on(FCMEvent.Notification, (notif) => {
             if (Platform.OS === 'ios') {
                 switch (notif._notificationType) {
-                    case NotificationType.Remote:
-                        notif.finish(RemoteNotificationResult.NewData)
-                        break
-                    case NotificationType.NotificationResponse:
-                        notif.finish()
-                        break
-                    case NotificationType.WillPresent:
-                        notif.finish(WillPresentNotificationResult.All)
-                        break
+                case NotificationType.Remote:
+                    notif.finish(RemoteNotificationResult.NewData)
+                    break
+                case NotificationType.NotificationResponse:
+                    notif.finish()
+                    break
+                case NotificationType.WillPresent:
+                    notif.finish(WillPresentNotificationResult.All)
+                    break
                 }
             }
             if (Platform.OS === 'android' && notif.fcm && notif.fcm.tag) {
@@ -61,14 +61,35 @@ class AppContainer extends Component {
                 localNotif.show_in_foreground = true
                 if (!(this.props.match.ignoreNextNotify && parseInt(matchId) === this.props.match.data.id)) {
                     FCM.presentLocalNotification(localNotif)
-                }   
+                }
             }
-            if (!notif.local_notification) {
+            if (!notif.local_notification && !notif._completionHandlerId) {
                 this.props.receiveNotification(notif)
             }
-            console.tron.log(notif)
-            if (notif.opened_from_tray === 1) {
-                
+
+            if (notif.opened_from_tray) {
+
+                const { setTab, pushRoute, route } = this.props
+                const tabKey = route.tabs.routes[0].key
+                const index = route[tabKey].index
+                const lastRoute = route[tabKey].routes[index]
+
+                if (Platform.OS === 'ios') {
+                    setTab(0)
+                }
+                console.tron.log(`app mounted ${this.props.appConnected}`)
+                console.tron.log(notif)
+                const matchId = notif.data ? notif.data.id : notif.id
+
+                if (!(lastRoute.match && lastRoute.match.id === matchId)) {
+                    pushRoute({
+                        match: {
+                            id: matchId,
+                            set_points: true
+                        },
+                        state: MATCH
+                    })
+                }
             }
         })
         this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
@@ -76,43 +97,42 @@ class AppContainer extends Component {
         })
     }
 
-    changeRoute(route) {
-        if (this.app && this.app.navigator) {
-            this.app.navigator.push(route)
-        }
-    }
-
     render() {
         if (this.props.appConnected) {
-            return <App {...this.props} getRef={app => this.app  = app} />
+            return <App />
         } else {
             return <LoadingScreen />
         }
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(ActionCreators, dispatch)
-}
-
-function mapStateToProps(state) {
-    return state
-}
 
 AppContainer.propTypes = {
     appConnected: PropTypes.bool,
-    auth: PropTypes.object,
-    connect: PropTypes.func,
-    initApp: PropTypes.object,
-    loadAccessKey: PropTypes.func,
-    loadSettings: PropTypes.func,
-    loadToken: PropTypes.func,
+    initApp: PropTypes.func,
     match: PropTypes.object,
+    pushRoute: PropTypes.func,
     receiveNotification: PropTypes.func,
-    renewToken: PropTypes.func,
+    route: PropTypes.object,
     saveNotifications: PropTypes.func,
+    setTab: PropTypes.func,
     settings: PropTypes.object,
     updateFCMToken: PropTypes.func
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)
+export default connect(
+    state => ({
+        appConnected: state.appConnected,
+        match: state.match,
+        route: state.route,
+        settings: state.settings
+    }),
+    dispatch => ({
+        initApp: () => dispatch(actions.initApp()),
+        pushRoute: (route) => dispatch(actions.pushRoute(route)),
+        receiveNotification: (notif) => dispatch(actions.receiveNotification(notif)),
+        saveNotifications: () => dispatch(actions.saveNotifications()),
+        setTab: (idx) => dispatch(actions.setTab(idx)),
+        updateFCMToken: (token) => dispatch(actions.updateFCMToken(token))
+    })
+)(AppContainer)

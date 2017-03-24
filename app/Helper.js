@@ -19,7 +19,7 @@ export const compareDays = (date1, date2) => {
     const day1 = parseInt(date1.getFullYear() + ('0' + date1.getMonth()).slice(-2) + ('0' + date1.getDate()).slice(-2), 10)
     const day2 = parseInt(date2.getFullYear() + ('0' + date2.getMonth()).slice(-2) + ('0' + date2.getDate()).slice(-2), 10)
     const diff = day1 - day2
-    
+
     return diff
 }
 
@@ -30,7 +30,7 @@ export const compareDays = (date1, date2) => {
  * @return {boolean}
  */
 export const isAdminForMatch = (match) => {
-    const date = moment(match.datetime).diff(moment(), 'minutes') 
+    const date = moment(match.datetime).diff(moment(), 'minutes')
     const user = store.getState().auth
 
     return (user.team && user.team.ids && match && match.id

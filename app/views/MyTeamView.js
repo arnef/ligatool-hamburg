@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import actions from '../store/actions'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import MatchListView from '../views/MatchListView'
 import { TabBar } from '../components'
@@ -44,16 +45,20 @@ class MyTeam extends Component {
 
 
 MyTeam.propTypes = {
-    auth: PropTypes.object,
     queryTeamMatches: PropTypes.func,
     setTitle: PropTypes.func,
     settings: PropTypes.object,
-    style: PropTypes.object,
     teamMatches: PropTypes.object
 }
 
-export default connect(state => ({
-    auth: state.auth,
-    settings: state.settings,
-    teamMatches: state.teamMatches
-}))(MyTeam)
+export default connect(
+    state => ({
+        auth: state.auth,
+        settings: state.settings,
+        teamMatches: state.teamMatches
+    }),
+    dispatch => ({
+        queryTeamMatches: () => dispatch(actions.queryTeamMatches()),
+        setTitle: (title) => dispatch(actions.setTitle(title))
+    })
+)(MyTeam)

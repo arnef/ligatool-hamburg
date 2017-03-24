@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { getTeamMatches } from '../../store/actions/teamActions'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import MatchListView from '../MatchListView'
 import TeamDetails from './TeamDetails'
@@ -35,4 +37,11 @@ TeamView.propTypes = {
     teams: PropTypes.object
 }
 
-export default TeamView
+export default connect(
+    state => ({
+        teams: state.teams
+    }),
+    dispatch => ({
+        getTeamMatches: (id) => dispatch(getTeamMatches(id))
+    })
+)(TeamView)

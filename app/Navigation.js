@@ -3,6 +3,7 @@ import { NavigationExperimental, StyleSheet, Platform, Text, View } from 'react-
 import { Touchable, Icon } from './components/base'
 import * as theme from './components/base/theme'
 import { connect } from 'react-redux'
+import * as actions from './store/actions/routeActions'
 import * as Views from './views'
 import * as Routes from './views/routes'
 
@@ -21,6 +22,7 @@ class Navigation extends Component {
 
         return (
             <CardStack navigationState={ scenes }
+                direction={ Platform.OS === 'android' ? 'vertical' : 'horizontal' }
                 style={{ backgroundColor: theme.backgroundColor, flex: 1 }}
                 onNavigateBack={ this.onNavigateBack.bind(this) }
                 renderHeader={ this.renderHeader.bind(this) }
@@ -34,10 +36,10 @@ class Navigation extends Component {
     }
 
     renderHeader(sceneProps) {
-        const { color } = this.props.settings 
+        const { color } = this.props.settings
 
         return (
-            <Header { ...sceneProps } 
+            <Header { ...sceneProps }
                 direction='horizontal'
                 onNavigateBack={this.onNavigateBack.bind(this)}
                 style={ [styles.appbar, { backgroundColor: color }] }
@@ -50,7 +52,7 @@ class Navigation extends Component {
     renderLeftComponent(sceneProps) {
         if (sceneProps.scene.index === 0 && Platform.OS === 'android') {
             return (
-                <Touchable color borderless style={ styles.buttonContainer } 
+                <Touchable color borderless style={ styles.buttonContainer }
                     onPress={ () => { if (this.props.drawer) { this.props.drawer.openDrawer() } } }>
                     <Icon style={ styles.button } size={ICON_SIZE} color='#fff' name='menu' />
                 </Touchable>
@@ -80,45 +82,37 @@ class Navigation extends Component {
 
         switch(route.state) {
             // App routes
-            case Routes.OVERVIEW: {
-                return <Views.Overview { ...this.props } />
-            }
+        case Routes.OVERVIEW: {
+            return <Views.Overview { ...this.props } />
+        }
 
-            case Routes.MY_TEAM: {
-                return <Views.MyTeam { ...this.props } />
-            }
+        case Routes.MY_TEAM: {
+            return <Views.MyTeam { ...this.props } />
+        }
 
-            case Routes.LEAGUES: {
-                return <Views.Leagues { ...this.props } />
-            }
+        case Routes.LEAGUES: {
+            return <Views.Leagues { ...this.props } />
+        }
 
-            case Routes.SETTINGS: {
-                return <Views.Settings.SettingsView { ...this.props } />
-            }
+        case Routes.SETTINGS: {
+            return <Views.Settings.SettingsView { ...this.props } />
+        }
 
-            // case Routes.LIVE_MATCH: {
-            //     return <Views.LiveMatch { ...this.props } id={ route.id } />
-            // }
+        case Routes.MATCH: {
+            return <Views.Match { ...this.props } />
+        }
 
-            case Routes.MATCH: {
-                return <Views.Match { ...this.props } />
-            }
+        case Routes.RANKING: {
+            return <Views.LeagueView { ...this.props } leagueID={ route.leagueID } />
+        }
 
-            case Routes.RANKING: {
-                return <Views.LeagueView { ...this.props } leagueID={ route.leagueID } />
-            }
+        case Routes.TEAM: {
+            return <Views.TeamOverview { ...this.props } team={ route.team } />
+        }
 
-            // case Routes.PREVIEW: {
-            //     return <Views.PreviewMatch { ...this.props } home={ route.home } away={ route.away } />
-            // }
-
-            case Routes.TEAM: {
-                return <Views.TeamOverview { ...this.props } team={ route.team } />
-            }
-
-            case Routes.SETTINGS_NOTIFICATION: {
-                return <Views.Settings.SettingsNotificationView { ...this.props } />
-            }
+        case Routes.SETTINGS_NOTIFICATION: {
+            return <Views.Settings.SettingsNotificationView { ...this.props } />
+        }
         }
     }
 }
@@ -142,7 +136,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: Platform.OS === 'ios' ? 0 : STATUSBAR_HEIGHT
     },
-    
     title:  {
         alignItems: Platform.OS === 'ios' ? 'center' : 'flex-start',
         borderWidth: 0,
@@ -167,6 +160,12 @@ Navigation.propTypes = {
     showLogin: PropTypes.func
 }
 
-export default connect(state => ({
-    ...state //TODO map only needed props
-}))(Navigation)
+export default connect(
+    state => ({
+        route: state.route,
+        settings: state.settings
+    }),
+    dispatch => ({
+        popRoute: () => dispatch(actions.popRoute())
+    })
+)(Navigation)

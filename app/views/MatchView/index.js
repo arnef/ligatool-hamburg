@@ -8,11 +8,11 @@ class MatchView extends Component {
 
     render() {
         const { match } = this.props
-        
+
         if (match.data.set_points || (match.data.is_admin && moment(match.data.datetime).diff(moment(), 'minutes') < 16)) {
-            return <SetsView { ...this.props } />
+            return <SetsView />
         } else {
-            return <PreView { ...this.props } />
+            return <PreView />
         }
     }
 

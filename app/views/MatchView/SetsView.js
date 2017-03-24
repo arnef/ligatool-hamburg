@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { View, Keyboard, Dimensions, Platform, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import actions from '../../store/actions'
 import { Container, Match } from '../../components'
 import SelectPlayerModal from '../../modals/SelectPlayerModal'
 import { Button } from '../../components/base'
@@ -42,10 +43,10 @@ class SetsView extends Component {
         const keyboardDistance =  this.state.py - visibleHeight
 
         if (keyboardDistance > 0) {
-            this.scrollView.scrollTo({ 
+            this.scrollView.scrollTo({
                 animated: true,
-                x: 0, 
-                y: this.state.offsetY + keyboardDistance               
+                x: 0,
+                y: this.state.offsetY + keyboardDistance
             })
             this.setState({ py: this.state.py - keyboardDistance })
         }
@@ -64,18 +65,18 @@ class SetsView extends Component {
         let idx = 0
         // let editable = true
 
-        if (match.score_unconfirmed && !match.live) {
+        if (match.is_admin && match.score_unconfirmed && !match.live) {
             idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2
-        } 
+        }
         // else if (!match.score_unconfirmed && match.set_points) {
         //     editable = false
         //     console.tron.log('match is editable ' + editable)
         // }
 
-        this.setState({ 
+        this.setState({
             btnIdx: idx
             // editable: editable
-        })   
+        })
     }
 
 
@@ -111,26 +112,6 @@ class SetsView extends Component {
         }
         if (value === 1) {
             this.setState({ scoreInput: this.state.menuOpen })
-        }
-    }
-
-
-    showScoreDialog(data) {
-        if (this.scoreDialog) {
-            this.props.showScoreDialog()
-            this.scoreDialog.setData(data)
-            this.scoreDialog.result = (score) => {
-                const sets = { ...this.props.match.data.sets }
-                const idx = data.setsIdx[score.set]
-                const set = { ...data.sets[score.set] }
-
-                set.number = idx
-                set.goals_home = score.goals_home
-                set.goals_away = score.goals_away
-                sets[idx] = set
-                this.props.updateSets(this.props.match.data.id, sets)
-            }
-
         }
     }
 
@@ -175,7 +156,7 @@ class SetsView extends Component {
             this.props.suggestScore(match.id, match.sets, this.state.btnIdx)
         }
     }
-    
+
     showButton() {
         const match = this.props.match.data
 
@@ -220,7 +201,7 @@ class SetsView extends Component {
                     visible={this.props.dialog.player }
                 />
                 <Match.Header data={match} pushRoute={this.props.pushRoute} />
-                <Container 
+                <Container
                     { ...this.props }
                     hasTabbar={this.props.hasTabbar && !showButton}
                     getRef={scrollView => { this.scrollView = scrollView}}
@@ -237,7 +218,7 @@ class SetsView extends Component {
                            onSave={this.onSave.bind(this)}
                            adjustPosition={this.adjustPosition.bind(this)}
                            onSelect={this.onSelect.bind(this)}
-                    />         
+                    />
                 </Container>
 
                 { showButton && editable && this.renderSubmitButton() }
@@ -248,7 +229,7 @@ class SetsView extends Component {
     renderSubmitButton() {
         return (
             <View style={styles.submitRow}>
-                <Button disabled={this.state.btnIdx === 1} 
+                <Button disabled={this.state.btnIdx === 1}
                     onPress={this.confirmScore.bind(this)}>
                     { `${btnText[this.state.btnIdx]}` }
                 </Button>
@@ -265,8 +246,8 @@ const styles = StyleSheet.create({
             paddingHorizontal: 8
         },
         ios: {
-            marginBottom: 50,
-            minHeight: 52,
+            marginBottom: 40,
+            minHeight: 60,
             paddingHorizontal: 8
         }
     })
@@ -284,19 +265,29 @@ SetsView.propTypes = {
     getMatch: PropTypes.func,
     hasTabbar: PropTypes.bool,
     hidePlayerDialog: PropTypes.func,
-    hideScoreDialog: PropTypes.func,
-    id: PropTypes.number,
     match: PropTypes.object,
     pushRoute: PropTypes.func,
     setPlayer: PropTypes.func,
-    settings: PropTypes.object,
     showPlayerDialog: PropTypes.func,
-    showScoreDialog: PropTypes.func,
     suggestScore: PropTypes.func,
     toggleMatchType: PropTypes.func,
     updateSets: PropTypes.func
 }
 
-export default connect( (state) => ({
-    match: state.match
-}))(SetsView)
+export default connect(
+    state => ({
+        auth: state.auth,
+        dialog: state.dialog,
+        match: state.match
+    }),
+    dispatch => ({
+        getMatch: (id) => dispatch(actions.getMatch(id)),
+        hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
+        pushRoute: (route) => dispatch(actions.pushRoute(route)),
+        setPlayer: (team, result, setsIdx) => dispatch(actions.setPlayer(team, result, setsIdx)),
+        showPlayerDialog: () => dispatch(actions.showPlayerDialog()),
+        suggestScore: (id, sets, btnIdx) => dispatch(actions.suggestScore(id, sets, btnIdx)),
+        toggleMatchType: () => dispatch(actions.toggleMatchType()),
+        updateSets: (id, sets) => dispatch(actions.updateSets(id, sets))
+    })
+)(SetsView)
