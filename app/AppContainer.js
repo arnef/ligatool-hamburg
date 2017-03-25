@@ -6,6 +6,7 @@ import LoadingScreen from './components/LoadingScreen'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
 import App from './App'
 import { MATCH } from './views/routes'
+import { TAB_OVERVIEW } from './views/tabs'
 
 class AppContainer extends Component {
 
@@ -75,13 +76,13 @@ class AppContainer extends Component {
                 const lastRoute = route[tabKey].routes[index]
 
                 if (Platform.OS === 'ios') {
-                    setTab(0)
+                    setTab(TAB_OVERVIEW)
                 }
-                console.tron.log(`app mounted ${this.props.appConnected}`)
-                console.tron.log(notif)
+
                 const matchId = notif.data ? notif.data.id : notif.id
 
-                if (!(lastRoute.match && lastRoute.match.id === matchId)) {
+                if (matchId && !(lastRoute.match && lastRoute.match.id === matchId)) {
+                    console.tron.log('OPEN ROUTE')
                     pushRoute({
                         match: {
                             id: matchId,
@@ -90,6 +91,7 @@ class AppContainer extends Component {
                         state: MATCH
                     })
                 }
+
             }
         })
         this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {

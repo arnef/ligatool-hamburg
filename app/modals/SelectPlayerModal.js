@@ -1,128 +1,156 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, ListView, Modal } from 'react-native';
-import { ListItem } from '../components/base';
-import { Container } from '../components';
-import Navigator from './Navigation';
+import React, { Component } from 'react'
+import { View, Text, ListView, Modal } from 'react-native'
+import { connect } from 'react-redux'
+import { hidePlayerDialog } from '../store/actions/dialogActions'
+import { ListItem } from '../components/base'
+import { Container } from '../components'
+import Navigator from './Navigation'
 
 
 class SelectPlayerModal extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            title: 'Spieler wählen',
+            data: null,
+            ds: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),
             items: [],
             selected: {},
             selection: 1,
-            ds: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-        };
+            title: 'Spieler wählen'
+        }
     }
 
-    setItems(items) {
-          if (this.listView) {
-            this.listView.scrollTo({ x: 0, y: 0, animated: false});
-        }
-        this.setState({
-            items: items,
-            selected: {}
-        });
-    }
+    // setItems(items) {
+    //     const { title } = this.state
+
+    //     if (!!this && this.navigator && this.navigator.push) {
+    //         this.navigator.push({ items, selected: {}, title })
+    //     }
+    //     //  else {
+    //     //     this.setState({
+    //     //         items: items,
+    //     //         selected: {}
+    //     //     })
+    //     // }
+    //     if (this.listView) {
+    //         this.listView.scrollTo({ animated: false, x: 0, y: 0 })
+    //     }
+    //     this.setState({
+    //         items: items,
+    //         selected: {}
+    //     })
+    // }
 
     setSelection(selection) {
         if (typeof selection !== 'number') {
-            throw 'selection must be number';
+            throw 'selection must be number'
         }
         this.setState({
             selection: selection
-        });
+        })
     }
 
     setTitle(title) {
-        this.setState({ title });
+        this.setState({ title })
     }
 
+
     onPress(data, idx) {
-        const selected = {...this.state.selected };
+        const { selected } = this.state
+
         if (selected[idx]) {
-            delete selected[idx];
+            delete selected[idx]
         } else {
-            selected[idx] = true;
+            selected[idx] = true
         }
         this.setState({
             selected: selected
-        });
-        console.tron.log(""+idx);
-        console.tron.log(data);
+        })
+        console.tron.log(""+idx)
+        console.tron.log(data)
         if (Object.values(selected).length === this.state.selection && this.result) {
-            console.tron.log('return results');
-            const result = [];
+            console.tron.log('return results')
+            const result = []
+
             for (let itemIdx in selected) {
-                result.push(this.state.items[itemIdx]);
+                result.push(this.state.items[itemIdx])
             }
 
             setTimeout(() => { // wait animation is done
-                this.result(result);
-            }, 50);
+                this.result(result)
+                //TODO props.setPlayer
+            }, 50)
 
         }
     }
 
-    renderItem(data, idx) {
-        const color = this.state.selected[idx] ?
-            this.props.settings.color : '#666';
-        return (
-                <ListItem key={data.id} last={idx === this.state.items.length-1} icon onPress={() => { this.onPress(data, idx); }}>
-                    <ListItem.Image url={data.image} />
-                    <Text>{ `${data.name} ${data.surname}` }</Text>
-                    <View style={{flex:1}} />
-                    <ListItem.Icon right name={this.state.selected[idx] ? 'checkbox' : 'square-outline'} />
-                </ListItem>
-        );
-    }
 
-    renderItems() {
+    renderItems(route, navigator) {
+        this.navigator = navigator
+
         return (
             <Container>
                 <ListItem.Group>
-                    { this.state.items.map( (item, idx) => {
-                        return this.renderItem(item, idx);
-                        })
+                    { route.items.map( (item, idx) => {
+                        return this.renderItem(item, idx)
+                    })
                     }
                 </ListItem.Group>
             </Container>
-        );
-        
+        )
     }
 
     render() {
+        // const { items, title } = this.state
+        const { data, match, visible } = this.props
+        const items = match.team_home ? match.team_home.player : []
+        const title = 'Spieler wählen'
+
         return (
-            <Modal 
-                visible={this.props.dialog.player}
+            <Modal
+                visible={visible}
                 animationType='slide'
-                onRequestClose={() => { this.props.hidePlayerDialog(); }}>
-                <Navigator 
+                onRequestClose={this.onRequestClose.bind(this)}>
+                <Navigator
                     closeModal={this.props.hidePlayerDialog.bind(this)}
                     renderScene={this.renderItems.bind(this)}
-                    initialRoute={{ title: this.state.title }}
-                    />                
+                    initialRoute={{ items, title }}
+                    />
             </Modal>
         )
     }
+
+
+    renderItem(data, idx) {
+        const { items } = this.state
+
+        return (
+                <ListItem key={data.id} last={idx === items.length-1} icon onPress={() => { this.onPress(data, idx) }}>
+                    <ListItem.Image url={data.image} />
+                    <Text>{ `${data.name} ${data.surname}` }</Text>
+                    <View style={{ flex:1 }} />
+                    <ListItem.Icon right name={this.state.selected[idx] ? 'checkbox' : 'square-outline'} />
+                </ListItem>
+        )
+    }
+
+    onRequestClose() {
+        this.props.hidePlayerDialog()
+    }
 }
 
-const style = StyleSheet.create({
-    listItem: {
-        height: 62,
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        flexDirection: 'row',
-        alignItems: 'center'
-    }
-});
-
 SelectPlayerModal.propTypes = {
-    hidePlayerDialog: React.PropTypes.func,
-    settings: React.PropTypes.object,
-    dialog: React.PropTypes.object
-};
+    dialog: React.PropTypes.object,
+    hidePlayerDialog: React.PropTypes.func
+}
 
-export default SelectPlayerModal;
+export default connect(
+    state => ({
+        data: state.dialog.player.data,
+        match: state.match.data,
+        visible: state.dialog.player.visible
+    }),
+    dispatch => ({
+        hidePlayerDialog: () => dispatch(hidePlayerDialog())
+    })
+)(SelectPlayerModal)

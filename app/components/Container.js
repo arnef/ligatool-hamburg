@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl, ListView } from 'react-native';
-import { connect } from 'react-redux';
-import ErrorFlash from './ErrorFlash';
-import * as theme from './base/theme';
+import React, { Component, PropTypes } from 'react'
+import { View, ScrollView, RefreshControl, ListView , Platform } from 'react-native'
+import { connect } from 'react-redux'
+import ErrorFlash from './ErrorFlash'
+import * as theme from './base/theme'
 
 
 class Container extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             data: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
         }
         if (this.props.getRef) {
-            this.props.getRef(this);
+            this.props.getRef(this)
         }
     }
 
@@ -22,8 +22,9 @@ class Container extends Component {
             <RefreshControl colors={[this.props.color]}
                 refreshing={this.props.refreshing || false}
                 onRefresh={this.props.onRefresh} />
-        );
-        const style = { flex: 1, backgroundColor: theme.backgroundColor };
+        )
+        const style = { backgroundColor: theme.backgroundColor, flex: 1 }
+
         if (this.props.renderRow) {
             return (
                 <View style={style}>
@@ -36,11 +37,13 @@ class Container extends Component {
                         initialListSize={3}
                         pageSize={4}
                         enableEmptySections={true}
+                                                automaticallyAdjustContentInsets={true}
+
                         renderFooter={this.renderFooter.bind(this)}
                         dataSource={this.state.data.cloneWithRows(this.props.dataSource)}
                     />
                 </View>
-            );
+            )
         } else {
             return (
                 <View style={style}>
@@ -56,26 +59,38 @@ class Container extends Component {
                         <View>
                         { this.props.children }
                         </View>
-                        { this.props.hasTabbar && (<View style={{height: 50}} />)}
+                        { Platform.OS === 'ios' && (<View style={{ height: 50 }} />)}
                     </ScrollView>
                 </View>
-            );
+            )
         }
     }
 
     scrollTo(params) {
         if (this.scrollView) {
             setTimeout(() => {
-                this.scrollView.scrollTo(params);
-            }, 100);
+                this.scrollView.scrollTo(params)
+            }, 100)
         }
     }
 
     renderFooter() {
-        return (<View style={{height: this.props.hasTabbar ? 50 : 0 }} />);
+        return (<View style={{ height: Platform.OS === 'ios' ? 50 : 0 }} />)
     }
+}
+
+Container.propTypes = {
+    children: PropTypes.any,
+    color: PropTypes.string,
+    dataSource: PropTypes.array,
+    error: PropTypes.string,
+    getRef: PropTypes.func,
+    onRefresh: PropTypes.func,
+    onScroll: PropTypes.func,
+    refreshing: PropTypes.bool,
+    renderRow: PropTypes.func
 }
 
 export default connect(state => ({
     color: state.settings.color
-}))(Container);
+}))(Container)

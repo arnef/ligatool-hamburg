@@ -129,24 +129,25 @@ class SetsView extends Component {
     }
 
     showPlayerDialog(team, data) {
-        const match = this.props.match.data
-        const teamKey = `team_${team}`
+        // const match = this.props.match.data
+        // const teamKey = `team_${team}`
 
-        if (this.SelectPlayerModal && match[teamKey] && match[teamKey].player) {
-            this.props.showPlayerDialog()
-            this.SelectPlayerModal.setSelection(data.type)
-            this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`)
-            this.SelectPlayerModal.setItems(match[teamKey].player)
-            this.SelectPlayerModal.result = (result) => {
-                this.props.setPlayer(team, result, data.setsIdx)
-                if (team === 'home') {
-                    this.props.hidePlayerDialog()
-                    this.showPlayerDialog('away', data)
-                } else {
-                    this.props.hidePlayerDialog()
-                }
-            }
-        }
+        // if (this.SelectPlayerModal && match[teamKey] && match[teamKey].player) {
+        this.props.showPlayerDialog(data)
+
+            // this.SelectPlayerModal.setSelection(data.type)
+            // this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`)
+            // this.SelectPlayerModal.setItems(match[teamKey].player)
+            // this.SelectPlayerModal.result = (result) => {
+            //     this.props.setPlayer(team, result, data.setsIdx)
+            //     if (team === 'home') {
+            //         // this.props.hidePlayerDialog()
+            //         this.showPlayerDialog('away', data)
+            //     } else {
+            //         this.props.hidePlayerDialog()
+            //     }
+            // }
+        // }
     }
 
     confirmScore() {
@@ -195,11 +196,7 @@ class SetsView extends Component {
 
         return (
             <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
-                <SelectPlayerModal
-                    { ...this.props }
-                    ref={(dialog) => { this.SelectPlayerModal = dialog }}
-                    visible={this.props.dialog.player }
-                />
+                <SelectPlayerModal />
                 <Match.Header data={match} pushRoute={this.props.pushRoute} />
                 <Container
                     { ...this.props }

@@ -83,35 +83,39 @@ class Navigation extends Component {
         switch(route.state) {
             // App routes
         case Routes.OVERVIEW: {
-            return <Views.Overview { ...this.props } />
+            return <Views.Overview />
         }
 
         case Routes.MY_TEAM: {
-            return <Views.MyTeam { ...this.props } />
+            return <Views.MyTeam />
         }
 
         case Routes.LEAGUES: {
-            return <Views.Leagues { ...this.props } />
+            return <Views.Leagues />
+        }
+
+        case Routes.LEAGUE_MATCHES: {
+            return <Views.LeagueMatchesView leagueID={ route.leagueID } />
         }
 
         case Routes.SETTINGS: {
-            return <Views.Settings.SettingsView { ...this.props } />
+            return <Views.Settings.SettingsView />
         }
 
         case Routes.MATCH: {
-            return <Views.Match { ...this.props } />
+            return <Views.Match />
         }
 
         case Routes.RANKING: {
-            return <Views.LeagueView { ...this.props } leagueID={ route.leagueID } />
+            return <Views.LeagueView leagueID={ route.leagueID } />
         }
 
         case Routes.TEAM: {
-            return <Views.TeamOverview { ...this.props } team={ route.team } />
+            return <Views.TeamOverview team={ route.team } />
         }
 
         case Routes.SETTINGS_NOTIFICATION: {
-            return <Views.Settings.SettingsNotificationView { ...this.props } />
+            return <Views.Settings.SettingsNotificationView />
         }
         }
     }

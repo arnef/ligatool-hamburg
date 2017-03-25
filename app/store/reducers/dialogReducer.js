@@ -17,92 +17,71 @@ export default (state={
         loading: false,
         visible: false
     },
-    player: false    
+    player: {
+        data: {},
+        visible: false
+    }
 }, action) => {
     switch (action.type) {
 
-        // case DIALOG_SCORE: {
-        //     state = { ...state, score: { loading: false, visible: action.payload } }
-            
-        //     return state
-        // }
-
-        // case PUT_SETS + PENDING: {
-        //     state = { ...state, score: { loading: true, visible: true } }
-            
-        //     return state
-        // }
-
-        // case PUT_SETS + FULFILLED: {
-        //     state = { ...state, score: { loading: false, visible: false } }
-            
-        //     return state
-        // }
-
-        case DIALOG_PLAYER: {
-            state = { ...state, player: action.payload }
-            
-            return state
+    case DIALOG_PLAYER: {
+        if (action.payload) {
+            state = { ...state, player: { data: action.payload.data, visible: true } }
+        } else {
+            state = { ...state, player: { data: {}, visible: false } }
         }
 
-        // case DIALOG_SUBMIT:
-        //     state = { ...state, submit: { visible: action.payload, loading: false }}
-        //     break
-        // case CONFIRM_RESULT + PENDING:
-        //     state = { ...state, submit: { visible: true, loading: true }}
-        //     break
-        // case CONFIRM_RESULT + FULFILLED:
-        //     state = { ...state, submit: { visible: true, loading: false }}
-        //     break
+        return state
+    }
 
 
-        case SHOW_LOGIN: {
-            state = { ...state, login: { loading: false, visible: action.payload } }
-            
-            return state
+    case SHOW_LOGIN: {
+        state = { ...state, login: { loading: false, visible: action.payload } }
+
+        return state
+    }
+
+    case QUERY_RANKINGS + PENDING: {
+        state = { ...state }
+        state.login.loading = true
+
+        return state
+    }
+
+    case QUERY_RANKINGS + FULFILLED: {
+        state = { ...state }
+        state.login.loading = false
+
+        return state
+    }
+
+    case API_KEY + PENDING: {
+        state = { ...state }
+        state.login.loading = true
+
+        return state
+    }
+
+    case API_KEY + FULFILLED: {
+        if (!action.payload.ok) {
+            state = { ...state, login: { loading: false }, visible: true }
         }
 
-        case QUERY_RANKINGS + PENDING: {
-            state = { ...state }
-            state.login.loading = true
-            
-            return state
-        }
+        return state
+    }
 
-        case QUERY_RANKINGS + FULFILLED: {
-            state = { ...state }
-            state.login.loading = false
-            
-            return state
-        }
-
-        case API_KEY + PENDING: {
-            state = { ...state }
-            state.login.loading = true
-            
-            return state
-        }
-
-        case API_KEY + FULFILLED: {
-            if (!action.payload.ok) {
-                state = { ...state, login: { loading: false }, visible: true }
+    case TOKEN + FULFILLED: {
+        if (action.payload.ok) {
+            state = { ...state, login: { loading: false, visible: false } }
+        } else {
+            state = { ...state, login: {
+                loading: false,
+                visible: action.payload.status !== 200 }
             }
-
-            return state
         }
 
-        case TOKEN + FULFILLED: {
-            if (action.payload.ok) {
-                state = { ...state, login: { loading: false, visible: false } }
-            } else {
-                state = { ...state, login: { 
-                    loading: false,
-                    visible: action.payload.status !== 200 } 
-                }
-            }
-
-            return state
-        }
+        return state
+    }
     }
 
     return state
