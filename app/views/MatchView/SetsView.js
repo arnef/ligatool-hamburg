@@ -100,7 +100,10 @@ class SetsView extends Component {
         if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
             this.toggleScoreInput(idx)
         } else {
-            this.showPlayerDialog(data.sets[0].player_1_home ? 'away' : 'home', data)
+            console.tron.log('OPEN SHOW PALYER MODAL')
+            console.tron.log(data)
+            this.props.showPlayerDialog(data)
+            // this.showPlayerDialog(data.sets[0].player_1_home ? 'away' : 'home', data)
         }
     }
 
@@ -108,7 +111,9 @@ class SetsView extends Component {
     onSelect(data, value) {
         this.toggleMenu(-1)
         if (value === 0) {
-            this.showPlayerDialog('home', data)
+            console.tron.log('option show player selected')
+            console.tron.log(data)
+            this.props.showPlayerDialog(data)
         }
         if (value === 1) {
             this.setState({ scoreInput: this.state.menuOpen })
@@ -128,27 +133,27 @@ class SetsView extends Component {
         this.setState({ scoreInput: -1 })
     }
 
-    showPlayerDialog(team, data) {
-        // const match = this.props.match.data
-        // const teamKey = `team_${team}`
+    // showPlayerDialog(data) {
+    //     // const match = this.props.match.data
+    //     // const teamKey = `team_${team}`
 
-        // if (this.SelectPlayerModal && match[teamKey] && match[teamKey].player) {
-        this.props.showPlayerDialog(data)
+    //     // if (this.SelectPlayerModal && match[teamKey] && match[teamKey].player) {
+    //     this.props.showPlayerDialog(data)
 
-            // this.SelectPlayerModal.setSelection(data.type)
-            // this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`)
-            // this.SelectPlayerModal.setItems(match[teamKey].player)
-            // this.SelectPlayerModal.result = (result) => {
-            //     this.props.setPlayer(team, result, data.setsIdx)
-            //     if (team === 'home') {
-            //         // this.props.hidePlayerDialog()
-            //         this.showPlayerDialog('away', data)
-            //     } else {
-            //         this.props.hidePlayerDialog()
-            //     }
-            // }
-        // }
-    }
+    //         // this.SelectPlayerModal.setSelection(data.type)
+    //         // this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`)
+    //         // this.SelectPlayerModal.setItems(match[teamKey].player)
+    //         // this.SelectPlayerModal.result = (result) => {
+    //         //     this.props.setPlayer(team, result, data.setsIdx)
+    //         //     if (team === 'home') {
+    //         //         // this.props.hidePlayerDialog()
+    //         //         this.showPlayerDialog('away', data)
+    //         //     } else {
+    //         //         this.props.hidePlayerDialog()
+    //         //     }
+    //         // }
+    //     // }
+    // }
 
     confirmScore() {
         const match = this.props.match.data
@@ -282,7 +287,7 @@ export default connect(
         hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
         pushRoute: (route) => dispatch(actions.pushRoute(route)),
         setPlayer: (team, result, setsIdx) => dispatch(actions.setPlayer(team, result, setsIdx)),
-        showPlayerDialog: () => dispatch(actions.showPlayerDialog()),
+        showPlayerDialog: (data) => dispatch(actions.showPlayerDialog(data)),
         suggestScore: (id, sets, btnIdx) => dispatch(actions.suggestScore(id, sets, btnIdx)),
         toggleMatchType: () => dispatch(actions.toggleMatchType()),
         updateSets: (id, sets) => dispatch(actions.updateSets(id, sets))

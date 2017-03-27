@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { View, Text, ListView, Modal } from 'react-native'
+import React, { Component, PropTypes } from 'react'
+import { View, Text, Modal } from 'react-native'
 import { connect } from 'react-redux'
-import { hidePlayerDialog } from '../store/actions/dialogActions'
+import actions from '../store/actions'
 import { ListItem } from '../components/base'
 import { Container } from '../components'
 import Navigator from './Navigation'
@@ -11,35 +11,12 @@ class SelectPlayerModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: null,
-            ds: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),
-            items: [],
-            selected: {},
-            selection: 1,
-            title: 'Spieler wählen'
+            selected: {
+                away: {},
+                home: {}
+            }
         }
     }
-
-    // setItems(items) {
-    //     const { title } = this.state
-
-    //     if (!!this && this.navigator && this.navigator.push) {
-    //         this.navigator.push({ items, selected: {}, title })
-    //     }
-    //     //  else {
-    //     //     this.setState({
-    //     //         items: items,
-    //     //         selected: {}
-    //     //     })
-    //     // }
-    //     if (this.listView) {
-    //         this.listView.scrollTo({ animated: false, x: 0, y: 0 })
-    //     }
-    //     this.setState({
-    //         items: items,
-    //         selected: {}
-    //     })
-    // }
 
     setSelection(selection) {
         if (typeof selection !== 'number') {
@@ -55,31 +32,37 @@ class SelectPlayerModal extends Component {
     }
 
 
-    onPress(data, idx) {
+    onPress(idx, team) {
+        const { data, match, setPlayer } = this.props
         const { selected } = this.state
 
-        if (selected[idx]) {
-            delete selected[idx]
+        if (selected[team][idx]) {
+            delete selected[team][idx]
         } else {
-            selected[idx] = true
+            selected[team][idx] = true
         }
         this.setState({
             selected: selected
         })
-        console.tron.log(""+idx)
-        console.tron.log(data)
-        if (Object.values(selected).length === this.state.selection && this.result) {
-            console.tron.log('return results')
+
+        if (Object.values(selected[team]).length === data.type) {
             const result = []
 
-            for (let itemIdx in selected) {
-                result.push(this.state.items[itemIdx])
+            for (let itemIdx in selected[team]) {
+                console.tron.log('select player ' + itemIdx)
+                result.push(match[`team_${team}`].player[itemIdx])
             }
+            setPlayer(team, result, data.setsIdx)
 
             setTimeout(() => { // wait animation is done
-                this.result(result)
-                //TODO props.setPlayer
-            }, 50)
+                if (team === 'home') {
+                    const title = data.type === 1 ? 'Spieler (Gast) wählen' : 'Doppel (Gast) wählen'
+
+                    this.navigator.push({ team: 'away', title })
+                } else {
+                    this.onRequestClose()
+                }
+            }, 10)
 
         }
     }
@@ -87,12 +70,14 @@ class SelectPlayerModal extends Component {
 
     renderItems(route, navigator) {
         this.navigator = navigator
+        const { match  } = this.props
+        const items = match[`team_${route.team}`] ? match[`team_${route.team}`].player : []
 
         return (
             <Container>
                 <ListItem.Group>
-                    { route.items.map( (item, idx) => {
-                        return this.renderItem(item, idx)
+                    { items.map( (item, idx) => {
+                        return this.renderItem(item, idx, route.team)
                     })
                     }
                 </ListItem.Group>
@@ -101,10 +86,8 @@ class SelectPlayerModal extends Component {
     }
 
     render() {
-        // const { items, title } = this.state
-        const { data, match, visible } = this.props
-        const items = match.team_home ? match.team_home.player : []
-        const title = 'Spieler wählen'
+        const { data, visible } = this.props
+        const title = data.type === 1 ? 'Spieler (Heim) wählen' : 'Doppel (Heim) wählen'
 
         return (
             <Modal
@@ -114,34 +97,46 @@ class SelectPlayerModal extends Component {
                 <Navigator
                     closeModal={this.props.hidePlayerDialog.bind(this)}
                     renderScene={this.renderItems.bind(this)}
-                    initialRoute={{ items, title }}
-                    />
+                    initialRoute={{ team: 'home', title }} />
             </Modal>
         )
     }
 
 
-    renderItem(data, idx) {
-        const { items } = this.state
+    renderItem(data, idx, team) {
+        const { selected } = this.state
+        const { match } = this.props
+        const itemLength = match[`team_${team}`].player.length - 1
 
         return (
-                <ListItem key={data.id} last={idx === items.length-1} icon onPress={() => { this.onPress(data, idx) }}>
+                <ListItem key={data.id} last={idx === itemLength} icon onPress={() => { this.onPress(idx, team) }}>
                     <ListItem.Image url={data.image} />
                     <Text>{ `${data.name} ${data.surname}` }</Text>
                     <View style={{ flex:1 }} />
-                    <ListItem.Icon right name={this.state.selected[idx] ? 'checkbox' : 'square-outline'} />
+                    <ListItem.Icon right name={selected[team][idx] ? 'checkbox' : 'square-outline'} />
                 </ListItem>
         )
     }
 
     onRequestClose() {
-        this.props.hidePlayerDialog()
+        const { hidePlayerDialog } = this.props
+
+        this.setState({
+            selected: {
+                away: {},
+                home: {}
+            }
+        })
+        hidePlayerDialog()
     }
 }
 
 SelectPlayerModal.propTypes = {
-    dialog: React.PropTypes.object,
-    hidePlayerDialog: React.PropTypes.func
+    data: PropTypes.object,
+    hidePlayerDialog: PropTypes.func,
+    match: PropTypes.object,
+    setPlayer: PropTypes.func,
+    visible: PropTypes.bool
 }
 
 export default connect(
@@ -151,6 +146,7 @@ export default connect(
         visible: state.dialog.player.visible
     }),
     dispatch => ({
-        hidePlayerDialog: () => dispatch(hidePlayerDialog())
+        hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
+        setPlayer: (team, player, setsIdx) => dispatch(actions.setPlayer(team, player, setsIdx))
     })
 )(SelectPlayerModal)

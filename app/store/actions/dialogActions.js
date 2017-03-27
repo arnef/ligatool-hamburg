@@ -15,6 +15,8 @@ export const hideScoreDialog = () => {
 }
 
 export const showPlayerDialog = (data) => {
+    console.tron.log(data)
+
     return {
         payload: { data },
         type: DIALOG_PLAYER

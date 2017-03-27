@@ -54,6 +54,7 @@ export default (state = {
         if (!state.data.sets) {
             state.data.sets = {}
         }
+        console.tron.log(action.payload)
         for (let idx of action.payload.setsIdx) {
             const set = state.data.sets[idx] || {}
 
