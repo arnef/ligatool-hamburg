@@ -86,11 +86,11 @@ Match.propTypes = {
     adjustPosition: PropTypes.func,
     editable: PropTypes.bool,
     match: PropTypes.object,
-    menuOpen: PropTypes.boo,
+    menuOpen: PropTypes.number,
     onPress: PropTypes.func,
     onSave: PropTypes.func,
     onSelect: PropTypes.func,
-    scoreInput: PropTypes.func,
+    scoreInput: PropTypes.number,
     toggleMatchType: PropTypes.func,
     toggleMenu: PropTypes.func,
     type: PropTypes.string

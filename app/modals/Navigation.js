@@ -69,7 +69,7 @@ class Navigation extends Component {
     renderLeftButton(route, navigator, index) {
         if (index > 0) {
             return (
-                <Touchable color='#fff' borderless onPress={this.pop.bind(this)}>
+                <Touchable color borderless onPress={this.pop.bind(this)}>
                     <V style={styles.leftButton}>
                     <Icon size={24} color='#fff' name='arrow-back' />
                     </V>
@@ -77,7 +77,7 @@ class Navigation extends Component {
             )
         } else if (index === 0 && this.props.closeModal) {
             return (
-                <Touchable color='#fff' borderless onPress={this.props.closeModal}>
+                <Touchable color borderless onPress={this.props.closeModal}>
                     <V style={styles.leftButton}>
                     <Icon size={24} color='#fff' name='close' />
                     </V>

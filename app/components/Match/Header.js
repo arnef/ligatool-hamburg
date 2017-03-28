@@ -21,7 +21,7 @@ class MatchHeader extends Component {
 
         return (
             <View style={[style.header, { backgroundColor: this.props.color }]}>
-                <Touchable color='#fff' style={style.teamContainer}
+                <Touchable color style={style.teamContainer}
                     onPress={() => this.onPress(match.team_home) }>
                     <Text center bold={isAndroid}  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
                 </Touchable>
@@ -29,7 +29,7 @@ class MatchHeader extends Component {
                     <Text style={style.points}>{score}</Text>
                     <Text style={style.points} size={12}>({goals})</Text>
                 </View>
-                <Touchable color='#fff' style={style.teamContainer}
+                <Touchable color style={style.teamContainer}
                     onPress={() => this.onPress(match.team_away) }>
                     <Text center bold={isAndroid}  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{away}</Text>
                 </Touchable>

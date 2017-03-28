@@ -35,7 +35,7 @@ class TabBar extends Component {
 
     renderTab(name, page, isActive, onPressHandler) {
         return (
-            <Touchable color='#fff' style={styles.tab} key={name} onPress={() => onPressHandler(page)}>
+            <Touchable style={styles.tab} key={name} onPress={() => onPressHandler(page)}>
                 <Text
                     bold={Platform.OS === 'android'} size={13}
                     color={ isActive ? '#fff' : 'rgba(255, 255, 255, 0.7)'}>{name}</Text>

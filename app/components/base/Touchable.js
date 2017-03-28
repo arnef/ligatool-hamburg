@@ -37,7 +37,7 @@ Touchable.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.array, PropTypes.object
     ]),
-    color: PropTypes.string,
+    color: PropTypes.bool,
     onPress: PropTypes.func.isRequired,
     style: PropTypes.oneOfType([ PropTypes.array, PropTypes.number, PropTypes.object ])
 }

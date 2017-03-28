@@ -11,14 +11,13 @@ class ListItemHeader extends Component {
     render() {
         const { toggleMenu, title, menuOpen, closeIcon, children, hideSeparator } = this.props
         const Container = !!toggleMenu ? Touchable : View
-        const headerTextStyle = [styles.headerText]
 
         return (
             <View style={[ styles.separator, { borderBottomWidth: hideSeparator ? 0 : 1 } ]}>
                 <Container onPress={ toggleMenu }>
                     <View style={ styles.header }>
                     <Text bold size={14}
-                        style={ headerTextStyle }
+                        style={ styles.headerText }
                         color={this.props.color}>{ title }</Text>
                         <View style={{ flex: 1 }} />
                     { !!toggleMenu && (
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
 
 
 ListItemHeader.propTypes = {
-    children: PropTypes.string,
+    children: PropTypes.oneOfType([ PropTypes.array, PropTypes.string ]),
     closeIcon: PropTypes.string,
     color: PropTypes.string,
     hideSeparator: PropTypes.bool,

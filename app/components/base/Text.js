@@ -37,10 +37,10 @@ class Text extends Component {
 Text.propTypes = {
     bold: PropTypes.bool,
     center: PropTypes.bool,
-    children: PropTypes.string,
+    children: PropTypes.oneOfType([ PropTypes.array, PropTypes.string ]),
     color: PropTypes.string,
     secondary: PropTypes.bool,
-    size: PropTypes.bool,
+    size: PropTypes.number,
     style: PropTypes.oneOfType([ PropTypes.number, PropTypes.object ]),
     upperCase: PropTypes.bool
 }
