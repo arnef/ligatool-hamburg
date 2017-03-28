@@ -64,9 +64,10 @@ class AppContainer extends Component {
                     FCM.presentLocalNotification(localNotif)
                 }
             }
-            if (!notif.local_notification && !notif._completionHandlerId) {
+            if (notif.type && !notif.local_notification && !notif._completionHandlerId) {
                 this.props.receiveNotification(notif)
             }
+            console.tron.log(notif)
 
             if (notif.opened_from_tray) {
 
