@@ -21,12 +21,20 @@ class App extends Component {
         this.props.resetToRoute(action)
     }
 
-    _openDrawer() {
+    openDrawer() {
         if (this.drawer) {
             this.drawer.openDrawer()
         }
     }
 
+
+    getRoute() {
+        const { route } = this.props
+        const tabKey = route.tabs.routes[route.tabs.index].key
+        const index = route[tabKey].index
+
+        return route[tabKey].routes[index]
+    }
 
     componentDidMount() {
         if (Platform.Version > 20) {
@@ -45,7 +53,7 @@ class App extends Component {
             else if (index > 0) {
                 popRoute()
             }
-            else if (index === 0 && route[tabKey].routes[0].state !== Route.OVERVIEW) {
+            else if (index === 0 && this.getRoute().state !== Route.OVERVIEW) {
                 resetToRoute({ state: Route.OVERVIEW, title: 'Übersicht' })
             } else {
                 BackAndroid.exitApp()
@@ -60,6 +68,14 @@ class App extends Component {
         BackAndroid.removeEventListener('hardwareBackPress')
     }
 
+    onCloseLogin() {
+        const { settings, resetToRoute } = this.props
+
+        if (!settings.team && this.getRoute().state === Route.MY_TEAM) {
+            resetToRoute({ state: Route.OVERVIEW, title: 'Übersicht' })
+            console.tron.log('TOOD handle login modal closed')
+        }
+    }
 
     render() {
         return (
@@ -73,29 +89,31 @@ class App extends Component {
                 renderNavigationView={() => (
                     <Drawer {...this.props}
                         onNavigate={this._onNavigate.bind(this)}
-                        width={drawerWidth} />)
-                }>
-                    <LoginModal />
+                        width={drawerWidth} />)}>
+                    <LoginModal onClose={this.onCloseLogin.bind(this)} />
                     <LoadingModal />
                     <Navigation
                         topBorder={ Platform.Version > 20 }
                         initialRoute={{ state: Route.OVERVIEW, title: 'Übersicht' }}
-                        drawer={this.drawer} />
+                        openDrawer={this.openDrawer.bind(this)} />
             </DrawerLayoutAndroid>
         )
     }
+
 }
 
 App.propTypes = {
     popRoute: PropTypes.func,
     pushRoute: PropTypes.func,
     resetToRoute: PropTypes.func,
-    route: PropTypes.object
+    route: PropTypes.object,
+    settings: PropTypes.object
 }
 
 export default connect(
     state => ({
-        route: state.route
+        route: state.route,
+        settings: state.settings
     }),
     dispatch => ({
         popRoute: () => dispatch(popRoute()),

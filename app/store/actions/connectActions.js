@@ -1,6 +1,6 @@
-import Storage from '../../Storage';
-import api from '../../api';
-import store from '../index';
+import Storage from '../../Storage'
+import api from '../../api'
+import store from '../index'
 import {
     INIT_APP,
     API_KEY,
@@ -11,7 +11,7 @@ import {
     LOAD_TOKEN,
     FULFILLED,
     QUERY_RANKINGS
-} from './types';
+} from './types'
 
 
 /**
@@ -20,51 +20,55 @@ import {
 export const initApp = () => {
 
     return {
-        type: INIT_APP,
         payload: new Promise(resolve => {
             const restoreSettings = new Promise(resolve => {
                 Storage.getItem(SETTINGS_KEY).then(settings => {
-                    console.tron.log(settings);
-                    if (!settings.ok) { // no settings saved 
+                    console.tron.log(settings)
+                    if (!settings.ok) { // no settings saved
                         api.get('/leagues').then(resp => {
                             store.dispatch({
-                                type: QUERY_RANKINGS + FULFILLED,
-                                payload: resp
-                            });
+                                payload: resp,
+                                type: QUERY_RANKINGS + FULFILLED
+                            })
                             if (resp.ok) {
                                 const notification = {
-                                    on: true,
-                                    live: true,
                                     ended: true,
-                                    leagues: {}
-                                };
+                                    leagues: {},
+                                    live: true,
+                                    on: true
+                                }
+
                                 for (let league of resp.data) {
-                                    notification.leagues[`${league.id}`] = true;
+                                    notification.leagues[`${league.id}`] = true
                                 }
                                 Storage.setItem(SETTINGS_KEY, {
                                     notification
-                                });
-                                resolve({ ok: true, data: { notification }});
+                                })
+                                resolve({
+                                    data: { notification },
+                                    ok: true
+                                })
                             } else {
-                                resolve({});
+                                resolve({})
                             }
-                        });
+                        })
                     } else {
-                        resolve(settings);
+                        resolve(settings)
                     }
-                });
-            });
+                })
+            })
 
             const restoreAuth = new Promise(resolve => {
                 Promise.all([Storage.getItem(API_KEY), Storage.getItem(TOKEN)])
                 .then(values => {
-                    const apiAccessKey = values[0];
-                    const apiToken = values[1];
+                    const apiAccessKey = values[0]
+                    const apiToken = values[1]
+
                     if (apiAccessKey.ok && apiToken.ok) {
                         store.dispatch({
-                            type: LOAD_ACCESS_KEY + FULFILLED,
-                            payload: apiAccessKey
-                        });
+                            payload: apiAccessKey,
+                            type: LOAD_ACCESS_KEY + FULFILLED
+                        })
                         const now = (new Date()).getMilliseconds()
 
                         console.tron.log('token expired ' + (apiToken.expires < now))
@@ -72,49 +76,53 @@ export const initApp = () => {
                             api.post('/uer/auth/refresh', { access_key: apiAccessKey.data })
                             .then(resp => {
                                 store.dispatch({
-                                    type: TOKEN + FULFILLED,
-                                    payload: resp
-                                });
-                                resolve();
-                            });
+                                    payload: resp,
+                                    type: TOKEN + FULFILLED
+                                })
+                                resolve()
+                            })
                         } else {
                             store.dispatch({
-                                type: LOAD_TOKEN + FULFILLED,
-                                payload: apiToken
-                            });
-                            resolve();
+                                payload: apiToken,
+                                type: LOAD_TOKEN + FULFILLED
+                            })
+                            resolve()
                         }
                     } else { resolve() }
-                });
+                })
             })
 
             Promise.all([restoreSettings, restoreAuth]).then(values => {
-                const settings = store.getState().settings;
-                const savedSettings = values[0];
-                if (settings.fcm_token && savedSettings.ok) {
-                    console.tron.log('FCM_TOKEN SET SEND UPDATE');
-                    api.post('/notification', {
-                        notification: savedSettings.data.notification,
-                        fcm_token: settings.fcm_token
-                    }).then(resp => {
-                        store.dispatch({
-                            type: LOAD_SETTINGS + FULFILLED,
-                            payload: savedSettings
-                        });
-                        resolve();
-                    });
-                    
-                } else {
-                    console.tron.log('NO FCM TOKEN, SKIP UPDATE');
-                    store.dispatch({
-                        type: LOAD_SETTINGS + FULFILLED,
-                        payload: savedSettings
-                    });
-                    resolve();
-                }
-            });
+                const settings = store.getState().settings
+                const savedSettings = values[0]
 
-        })
-    };
-};
+                if (settings.fcm_token && savedSettings.ok) {
+                    console.tron.log('FCM_TOKEN SET SEND UPDATE')
+
+                    api.post('/notification', {
+                        fcm_token: settings.fcm_token,
+                        notification: savedSettings.data.notification
+                    }).then(() => {
+                        store.dispatch({
+                            payload: savedSettings,
+                            type: LOAD_SETTINGS + FULFILLED
+                        })
+                        resolve()
+                    })
+
+                } else {
+                    console.tron.log('NO FCM TOKEN, SKIP UPDATE')
+
+                    store.dispatch({
+                        payload: savedSettings,
+                        type: LOAD_SETTINGS + FULFILLED
+                    })
+                    resolve()
+                }
+            })
+
+        }),
+        type: INIT_APP
+    }
+}
 

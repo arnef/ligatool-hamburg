@@ -47,7 +47,7 @@ class App extends Component {
         const { setTab, settings, route } = this.props
 
         if (!settings.team && route.tabs.index === 1) {
-            setTab(0)
+            setTab(TAB_OVERVIEW)
         }
     }
 

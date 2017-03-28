@@ -6,27 +6,18 @@ import { reactotronRedux } from 'reactotron-redux'
 import promise from 'redux-promise-middleware'
 import apisaucePlugin from 'reactotron-apisauce'
 
-
 const middleware = [ promise(), thunk ]
 
-
 if (__DEV__) {
-    // quick fix for logging promise state actions in reactotron
-    const logger = store => next => action => {
-        return next(action)
-    }
-
-    middleware.push(logger)
-
 
     Reactotron.configure({
-            // host: '192.168.1.4',
-            host: '192.168.0.164',
-            name: 'LigaTool'
-        })
-        .use(reactotronRedux())
-        .use(apisaucePlugin())
-        .connect()
+        // host: '192.168.1.4',
+        host: '192.168.0.164',
+        name: 'LigaTool'
+    })
+    .use(reactotronRedux())
+    .use(apisaucePlugin())
+    .connect()
 
     console.tron = Reactotron
     console.tron.clear()

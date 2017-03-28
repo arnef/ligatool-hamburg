@@ -15,7 +15,7 @@ class SetsView extends Component {
         super(props)
         this.state = {
             btnIdx: 0,
-            editable: true,
+            // editable: true,
             keyboardSpace: 0,
             menuOpen: -1,
             offsetY: 0,
@@ -63,19 +63,14 @@ class SetsView extends Component {
     componentWillReceiveProps(nextProps) {
         const match = nextProps.match.data
         let idx = 0
-        // let editable = true
 
+        //TODO check submit action in reducer
         if (match.is_admin && match.score_unconfirmed && !match.live) {
             idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2
         }
-        // else if (!match.score_unconfirmed && match.set_points) {
-        //     editable = false
-        //     console.tron.log('match is editable ' + editable)
-        // }
 
         this.setState({
             btnIdx: idx
-            // editable: editable
         })
     }
 
@@ -103,7 +98,6 @@ class SetsView extends Component {
             console.tron.log('OPEN SHOW PALYER MODAL')
             console.tron.log(data)
             this.props.showPlayerDialog(data)
-            // this.showPlayerDialog(data.sets[0].player_1_home ? 'away' : 'home', data)
         }
     }
 
@@ -128,32 +122,16 @@ class SetsView extends Component {
         set.number = idx
         set.goals_home = score.goals_home
         set.goals_away = score.goals_away
+        if (!set.player_1_home && !set.player_1_away) {
+            set.player_1_home = { id: 0 }
+            set.player_2_home = { id: 0 }
+            set.player_1_away = { id: 0 }
+            set.player_2_away = { id: 0 }
+        }
         sets[idx] = set
         this.props.updateSets(this.props.match.data.id, sets)
         this.setState({ scoreInput: -1 })
     }
-
-    // showPlayerDialog(data) {
-    //     // const match = this.props.match.data
-    //     // const teamKey = `team_${team}`
-
-    //     // if (this.SelectPlayerModal && match[teamKey] && match[teamKey].player) {
-    //     this.props.showPlayerDialog(data)
-
-    //         // this.SelectPlayerModal.setSelection(data.type)
-    //         // this.SelectPlayerModal.setTitle(`${data.type === 1 ? 'Spieler':'Doppel'} wählen`)
-    //         // this.SelectPlayerModal.setItems(match[teamKey].player)
-    //         // this.SelectPlayerModal.result = (result) => {
-    //         //     this.props.setPlayer(team, result, data.setsIdx)
-    //         //     if (team === 'home') {
-    //         //         // this.props.hidePlayerDialog()
-    //         //         this.showPlayerDialog('away', data)
-    //         //     } else {
-    //         //         this.props.hidePlayerDialog()
-    //         //     }
-    //         // }
-    //     // }
-    // }
 
     confirmScore() {
         const match = this.props.match.data

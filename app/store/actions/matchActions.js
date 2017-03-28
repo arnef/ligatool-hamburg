@@ -1,38 +1,37 @@
-import { QUERY_MATCHES, GET_MATCH, SET_PLAYER, PUT_SETS, 
-         TOGGLE_D5 
-} from './types'
+import { QUERY_MATCHES, GET_MATCH, SET_PLAYER, PUT_SETS, TOGGLE_D5 } from './types'
 import api from '../../api'
 
 
 export const queryMatches = () => {
     return {
-        type: QUERY_MATCHES,
-        payload: api.get('/matches')
+        payload: api.get('/matches'),
+        type: QUERY_MATCHES
     }
 }
 
 export const getMatch = (id) => {
     console.tron.log('action get match fired')
+
     return {
-        type: GET_MATCH,
         payload: {
-            promise: api.get('/matches/' + id),
-            data: id
-        }
+            data: id,
+            promise: api.get('/matches/' + id)
+        },
+        type: GET_MATCH
     }
 }
 
 export const setPlayer = (team, player, setsIdx) => {
     return {
-        type: SET_PLAYER,
-        payload: { team, player, setsIdx }
+        payload: { player, setsIdx, team },
+        type: SET_PLAYER
     }
 }
 
 export const updateSets = (matchId, sets) =>  {
     return {
-        type: PUT_SETS,
-        payload: api.put('/matches/'+matchId, { sets} )
+        payload: api.put('/matches/'+matchId, { sets } ),
+        type: PUT_SETS
     }
 }
 
@@ -42,15 +41,16 @@ export const suggestScore = (matchId, sets, type) => {
     }
     const action = type === 0 ? { score_suggest: true } : { score_unconfirmed: false }
     const body = { sets, ...action }
+
     return {
-        type: PUT_SETS,
-        payload: api.put('/matches/'+ matchId, body)
+        payload: api.put('/matches/'+ matchId, body),
+        type: PUT_SETS
     }
 }
 
 export const toggleMatchType = (setsIdx, type) => {
     return {
-        type: TOGGLE_D5,
-        payload: { idx: setsIdx, type }
+        payload: { idx: setsIdx, type },
+        type: TOGGLE_D5
     }
 }

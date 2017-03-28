@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import Score from '../Score';
-import ScoreInput from './ScoreInput';
-import { Row, Column, ListItem, Touchable, Text, Image } from '../../components/base';
+import React, { Component, PropTypes } from 'react'
+import { View } from 'react-native'
+import Score from '../Score'
+import ScoreInput from './ScoreInput'
+import { Row, Column, ListItem, Touchable, Text, Image } from '../../components/base'
 
 class ListItemSet extends Component {
 
     render() {
-        const data = this.props.data;
-        const Container = this.props.editable ? Touchable : View;
+        const data = this.props.data
+        const Container = this.props.editable ? Touchable : View
+
         return (
             <ListItem.Group>
                 <ListItem.Header title={data.name} toggleMenu={this.props.toggleMenu} closeIcon={this.props.scoreInput ? 'close' : 'caret-up'} menuOpen={this.props.menuOpen||this.props.scoreInput} />
                 { !this.props.menuOpen && !this.props.scoreInput && (
-                    <Container onPress={this.props.onPress ? () => { this.props.onPress(data); } : null}>
-                        <View style={{marginTop: 8}}>
+                    <Container onPress={this.props.onPress ? () => { this.props.onPress(data) } : null}>
+                        <View style={{ marginTop: 8 }}>
                         { data.sets.map( (set, idx) => {
                             return this.renderRow(set, idx)
                         }) }
@@ -23,7 +24,7 @@ class ListItemSet extends Component {
                 )}
                 { this.props.menuOpen && this.renderOptions() }
                 { this.props.scoreInput && (
-                    <ScoreInput data={data} 
+                    <ScoreInput data={data}
                         adjustPosition={this.props.adjustPosition}
                         onSave={this.props.onSave}
                         toggleMenu={this.props.toggleMenu} />
@@ -35,16 +36,17 @@ class ListItemSet extends Component {
     renderOptions() {
         return (
             <View>
-                <ListItem onPress={() => { this.props.onSelect(this.props.data, 0); }}><Text>Spieler wählen</Text></ListItem>
-                <ListItem disabled={!(this.props.data.sets[0].player_1_home && this.props.data.sets[0].player_1_away)} last onPress={() => { this.props.onSelect(this.props.data, 1)}}><Text>Ergebnis eintragen</Text></ListItem>
+                <ListItem onPress={() => { this.props.onSelect(this.props.data, 0)}}><Text>Spieler wählen</Text></ListItem>
+                <ListItem onPress={() => { this.props.onSelect(this.props.data, 1)}} last><Text>Ergebnis eintragen</Text></ListItem>
             </View>
-        );
+        )
     }
 
 
     renderRow(set, idx) {
-        const playerHome = set[`player_${idx+1}_home`];
-        const playerAway = set[`player_${idx+1}_away`];
+        const playerHome = set[`player_${idx+1}_home`]
+        const playerAway = set[`player_${idx+1}_away`]
+
         return (
             <Row center key={idx}>
                 <Column>
@@ -53,7 +55,7 @@ class ListItemSet extends Component {
                 <Column fluid>
                     { playerHome && (<Image url={playerHome.image} size={32} />)}
                 </Column>
-                <Column fluid center style={{opacity: this.props.scoreInput ? 0 : 1}}>
+                <Column fluid center style={{ opacity: this.props.scoreInput ? 0 : 1 }}>
                     <Score goals={set} />
                 </Column>
                 <Column fluid>
@@ -63,19 +65,25 @@ class ListItemSet extends Component {
                     <Text center>{this.getName(playerAway)}</Text>
                 </Column>
             </Row>
-        );
+        )
     }
 
     getName(player) {
-        return !!player ? `${player.name} ${player.surname}` : this.props.editable ? 'Bitte wählen' : '';
+        return !!player ? `${player.name} ${player.surname}` : this.props.editable ? 'Bitte wählen' : ''
     }
 }
 
 
 ListItemSet.propTypes = {
-    editable: React.PropTypes.bool,
-    data: React.PropTypes.object,
-    onPress: React.PropTypes.func
-};
+    adjustPosition: PropTypes.func,
+    data: PropTypes.object,
+    editable: PropTypes.bool,
+    menuOpen: PropTypes.bool,
+    onPress: PropTypes.func,
+    onSave: PropTypes.func,
+    onSelect: PropTypes.func,
+    scoreInput: PropTypes.bool,
+    toggleMenu: PropTypes.func
+}
 
-export default ListItemSet;
+export default ListItemSet

@@ -10,7 +10,7 @@ class LeagueView extends Component {
 
 
     render() {
-        
+
         return (
             <ScrollableTabView
                 style={{ backgroundColor, flex: 1 }}

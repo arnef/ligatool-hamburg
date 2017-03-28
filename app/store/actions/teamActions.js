@@ -1,38 +1,40 @@
-import { GET_TEAM, GET_TEAM_MATCHES , QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types';
-import store from '../index';
-import api from '../../api';
+import { GET_TEAM, GET_TEAM_MATCHES , QUERY_TEAM_MATCHES, SHOW_LOGIN } from './types'
+import store from '../index'
+import api from '../../api'
 
 
 export const queryTeamMatches = () => {
-    const team = store.getState().settings.team;
+    const team = store.getState().settings.team
+
     if (!!team && !!team.id) {
         return {
-            type: QUERY_TEAM_MATCHES,
-            payload: api.get('/teams/' + team.id + '/matches')
-        };
+            payload: api.get('/teams/' + team.id + '/matches'),
+            type: QUERY_TEAM_MATCHES
+        }
     } else {
         return {
-            type: SHOW_LOGIN,
-            payload: true
-        };
+            payload: true,
+            type: SHOW_LOGIN
+        }
     }
-};
+}
 
 
 export const getTeam = (teamID) => {
-    console.tron.log(api.headers);
+    console.tron.log(api.headers)
+
     return {
-        type: GET_TEAM,
-        payload: api.get('/teams/' + teamID)
-    };
-};
+        payload: api.get('/teams/' + teamID),
+        type: GET_TEAM
+    }
+}
 
 export const getTeamMatches = (teamID) => {
     return {
-        type: GET_TEAM_MATCHES,
         payload: {
             data: teamID,
             promise: api.get('/teams/' + teamID + '/matches')
-        }
-    };
-};
+        },
+        type: GET_TEAM_MATCHES
+    }
+}

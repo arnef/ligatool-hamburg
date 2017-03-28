@@ -1,17 +1,21 @@
 import React, { Component, PropTypes } from 'react'
-import { Modal, View, ActivityIndicator, StyleSheet } from 'react-native'
+import { Modal, View, ActivityIndicator, StyleSheet, Platform } from 'react-native'
 import { connect } from 'react-redux'
 
 class LoadingModal extends Component {
 
     render() {
+        const { loading } = this.props
+
         return (
             <Modal animationType='fade'
                 onRequestClose={this.onRequestClose.bind(this)}
                 transparent={true}
-                visible={this.props.loading}>
+                visible={loading}>
                 <View style={styles.loadingContainer}>
-                    <ActivityIndicator size='large' color='#fff' />
+                    <View style={styles.loading}>
+                        <ActivityIndicator size='large' color='#fff' />
+                    </View>
                 </View>
             </Modal>
         )
@@ -23,9 +27,20 @@ class LoadingModal extends Component {
 }
 
 const styles = StyleSheet.create({
+    loading: Platform.select({
+        android: {},
+        ios: {
+            alignItems: 'center',
+            backgroundColor: 'rgba(68, 68, 68, .7)',
+            borderRadius: 10,
+            height: 80,
+            justifyContent: 'center',
+            width: 80
+        }
+    }),
     loadingContainer: {
         alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,.6)',
+        backgroundColor: Platform.OS === 'ios' ? 'rgba(0,0,0,.3)' : 'rgba(0, 0, 0, .6)',
         flex: 1,
         justifyContent: 'center'
     }

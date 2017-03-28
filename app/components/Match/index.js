@@ -1,36 +1,37 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { View, Switch } from 'react-native'
 import formats from './formats'
 import { connect } from 'react-redux'
-import { Row, Column, Text } from '../base' 
+import { Row, Column, Text } from '../base'
 import Set from './Set'
 import Header from './Header'
 
 class Match extends Component {
 
     renderRow(data, idx) {
-        const { onPress, editable, menuOpen, onSave, adjustPosition, scoreInput, toggleMenu, toggleMatchType } = this.props
+        const { onPress, match, editable, menuOpen, onSave, onSelect, adjustPosition, scoreInput, toggleMenu, toggleMatchType } = this.props
+
         return (
             <View key={idx}>
                 { data.toggle && editable && (
-                    <Row center style={{ paddingTop: 8}}>
+                    <Row center style={{ paddingTop: 8 }}>
                         <Text >{ data.toggle.title }</Text>
                         <Column />
-                        <Switch onValueChange={ () => { 
-                                toggleMatchType(data.setsIdx, data.toggle.type) 
-                            }}
-                            value={this.props.match.data.type.indexOf('d5') !== -1} />
+                        <Switch onValueChange={ () => {
+                            toggleMatchType(data.setsIdx, data.toggle.type)
+                        }}
+                        value={match.data.type.indexOf('d5') !== -1} />
                     </Row>
                 )}
                 <Set
-                    onPress={this.props.onPress ? () => { this.props.onPress(data, idx)} : null}
-                    editable={this.props.editable}
-                    toggleMenu={this.props.editable ? () => { this.props.toggleMenu(idx)} : null}
-                    menuOpen={this.props.menuOpen === idx}
-                    onSelect={this.props.onSelect}
-                    onSave={this.props.onSave}
-                    adjustPosition={this.props.adjustPosition}
-                    scoreInput={this.props.scoreInput === idx}
+                    onPress={onPress ? () => { onPress(data, idx)} : null}
+                    editable={editable}
+                    toggleMenu={editable ? () => { toggleMenu(idx)} : null}
+                    menuOpen={menuOpen === idx}
+                    onSelect={onSelect}
+                    onSave={onSave}
+                    adjustPosition={adjustPosition}
+                    scoreInput={scoreInput === idx}
                     data={data} />
             </View>
         )
@@ -46,9 +47,10 @@ class Match extends Component {
         const match = this.props.match.data.sets ? this.props.match.data : { sets: [] }
         const sets = []
         const format = formats[this.props.match.data.type]
-        
+
         for (let set of format) {
             const data = { ...set }
+
             data.sets = []
             for(let setIdx of data.setsIdx) {
                 if (match.sets[setIdx]) {
@@ -63,11 +65,13 @@ class Match extends Component {
                 sets.push(data)
             }
         }
+
         return sets
     }
 
     render() {
         const sets = this.buildMatchData()
+
         return (
             <View>
                 { sets.map((set, idx) => {
@@ -79,8 +83,17 @@ class Match extends Component {
 }
 
 Match.propTypes = {
-    type: React.PropTypes.string,
-    onSelect: React.PropTypes.func
+    adjustPosition: PropTypes.func,
+    editable: PropTypes.bool,
+    match: PropTypes.object,
+    menuOpen: PropTypes.boo,
+    onPress: PropTypes.func,
+    onSave: PropTypes.func,
+    onSelect: PropTypes.func,
+    scoreInput: PropTypes.func,
+    toggleMatchType: PropTypes.func,
+    toggleMenu: PropTypes.func,
+    type: PropTypes.string
 }
 
 Match.Header = Header

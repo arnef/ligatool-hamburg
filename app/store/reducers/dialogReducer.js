@@ -1,16 +1,4 @@
-import {
-    // DIALOG_SCORE,
-    // PUT_SETS,
-    PENDING,
-    FULFILLED,
-    DIALOG_PLAYER,
-    // DIALOG_SUBMIT,
-    // CONFIRM_RESULT,
-    API_KEY,
-    TOKEN,
-    QUERY_RANKINGS,
-    SHOW_LOGIN
-} from '../actions/types'
+import { PENDING, FULFILLED, DIALOG_PLAYER, API_KEY, TOKEN, QUERY_RANKINGS, SHOW_LOGIN } from '../actions/types'
 
 export default (state={
     login: {

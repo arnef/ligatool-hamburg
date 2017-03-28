@@ -272,6 +272,7 @@
 		145910251E54ACEF0085CAE2 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		148CD4051E7197F9001F54A7 /* arnefeilligatool.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = arnefeilligatool.entitlements; path = arnefeilligatool/arnefeilligatool.entitlements; sourceTree = "<group>"; };
+		1496706A1E8A508200206EFD /* View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		14E4099C1E54B7DB00C2FAA3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		27836BC261E429614E961F1D /* Pods_arnefeilligatool.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_arnefeilligatool.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28461EFFC95443A7B3F2164D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -423,6 +424,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				1496706A1E8A508200206EFD /* View.xib */,
 			);
 			name = arnefeilligatool;
 			sourceTree = "<group>";

@@ -1,57 +1,57 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, StatusBar, Platform, Animated } from 'react-native';
+import React, { Component } from 'react'
+import { View, StyleSheet, StatusBar, Platform, Animated } from 'react-native'
 
 
 class LoadingScreen extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			opacity: new Animated.Value(0)
-		};
-	}
+    constructor(props) {
+        super(props)
+        this.state = {
+            opacity: new Animated.Value(0)
+        }
+    }
 
-	componentDidMount() {
+    componentDidMount() {
+        this.animation()
+    }
 
-		this.animation();
-	}
+    animation() {
+        Animated.sequence([
+            Animated.timing(this.state.opacity, { duration: 700, toValue: 1 }),
+            Animated.timing(this.state.opacity, { duration: 700, toValue: 0.3 })
+        ]).start(event => {
+            if (event.finished) {
+                this.animation()
+            }
+        })
+    }
 
-	animation() {
-		Animated.sequence([
-			Animated.timing(this.state.opacity, { toValue: 1, duration: 700 }),
-			Animated.timing(this.state.opacity, { toValue: 0.3, duration: 700 })
-		]).start(event => {
-			if (event.finished) {
-				this.animation();
-			}
-		});
-	}
+    render() {
+        const oldAndroid = Platform.Version < 21
 
-	render() {
-		const oldAndroid = Platform.Version < 21;
-		return (
-			<View style={style.container}>
-				<StatusBar translucent={!oldAndroid}
-					backgroundColor={ oldAndroid ? 'rgb(0,0,0)' : 'rgba(0,0,0,.3)'} />
-				<Animated.Image source={{ uri: 'loading'}} style={[style.icon, { opacity: this.state.opacity}]} />
-			</View>
-		);
-	}
+        return (
+            <View style={style.container}>
+                <StatusBar translucent={!oldAndroid}
+                    backgroundColor={ oldAndroid ? 'rgb(0,0,0)' : 'rgba(0,0,0,.3)'} />
+                <Animated.Image source={{ uri: 'loading' }} style={[style.icon, { opacity: this.state.opacity }]} />
+            </View>
+        )
+    }
 
 }
 
 const style = StyleSheet.create({
-	container: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexDirection: 'column',
-		flex: 1,
-		backgroundColor: '#fff'
-	},
-	icon: {
-		width: 64,
-		height: 64
-	}
-});
+    container: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center'
+    },
+    icon: {
+        height: 64,
+        width: 64
+    }
+})
 
-export default LoadingScreen;
+export default LoadingScreen

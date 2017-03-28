@@ -40,6 +40,7 @@ class Container extends Component {
                                                 automaticallyAdjustContentInsets={true}
 
                         renderFooter={this.renderFooter.bind(this)}
+                        renderHeader={this.renderHeader.bind(this)}
                         dataSource={this.state.data.cloneWithRows(this.props.dataSource)}
                     />
                 </View>
@@ -56,7 +57,7 @@ class Container extends Component {
                         refreshControl={!!this.props.onRefresh ? refreshControl : null}
                         ref={scrollview => { this.scrollView = scrollview }}
                         style={{ flex: 1 }}>
-                        <View>
+                        <View style={{ paddingVertical: 4 }}>
                         { this.props.children }
                         </View>
                         { Platform.OS === 'ios' && (<View style={{ height: 50 }} />)}
@@ -75,7 +76,11 @@ class Container extends Component {
     }
 
     renderFooter() {
-        return (<View style={{ height: Platform.OS === 'ios' ? 50 : 0 }} />)
+        return (<View style={{ height: Platform.OS === 'ios' ? 54 : 4 }} />)
+    }
+
+    renderHeader() {
+        return (<View style={{ height: 4 }} />)
     }
 }
 

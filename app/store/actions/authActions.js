@@ -1,98 +1,100 @@
-import { API_KEY, TOKEN, LOAD_ACCESS_KEY, LOAD_TOKEN, LOGOUT, 
-         SET_USER_TEAM 
-} from './types';
-import api from '../../api';
-import store from '../index';
-import { AsyncStorage } from 'react-native';
+import { API_KEY, TOKEN, LOAD_ACCESS_KEY, LOAD_TOKEN, LOGOUT, SET_USER_TEAM } from './types'
+import api from '../../api'
+import store from '../index'
+import { AsyncStorage } from 'react-native'
 
 
 export const requestAPIKey = (user) => {
-    const accesskey = store.getState().auth.api_key;
-    
+    const accesskey = store.getState().auth.api_key
+
     if (accesskey != null) {
-        return renewToken(accesskey);
+        return renewToken(accesskey)
     } else {
         return {
-            type: API_KEY,
-            payload: api.post('/user/auth', user)
-        };
+            payload: api.post('/user/auth', user),
+            type: API_KEY
+        }
     }
-};
+}
 
 export const renewToken = (apiKey) => {
-    console.tron.log(apiKey);
+
     return {
-        type: TOKEN,
-        payload: api.post('/user/auth/refresh', { access_key: apiKey })
-    };
-};
+        payload: api.post('/user/auth/refresh', { access_key: apiKey }),
+        type: TOKEN
+    }
+}
 
 export const logout = () => {
-    api.delete('/user/auth');
+    //TODO async payload
+    api.delete('/user/auth')
+
     return {
-        type: LOGOUT,
-        payload: {}
-    };
-};
+        payload: {},
+        type: LOGOUT
+    }
+}
 
 export const setUserTeam = (team) => {
     return {
-        type: SET_USER_TEAM,
-        payload: team
-    };
+        payload: team,
+        type: SET_USER_TEAM
+    }
 }
 
 export const loadAccessKey = () => {
     return {
-        type: LOAD_ACCESS_KEY,
-        payload: new Promise((resolve, reject) => {
+        payload: new Promise(resolve => {
             try {
                 AsyncStorage.getItem(API_KEY).then(serializedKey => {
                     if (serializedKey) {
-                        const accessKey = JSON.parse(serializedKey);
+                        const accessKey = JSON.parse(serializedKey)
+
                         resolve({
-                            ok: true,
-                            data: accessKey
-                        });
+                            data: accessKey,
+                            ok: true
+                        })
                     } else {
                         resolve({
                             ok: false
-                        });
-                    }                
-                });
+                        })
+                    }
+                })
             } catch (ex) {
                 resolve({
                     ok: false
-                });
+                })
             }
-        })
-    };
-};
+        }),
+        type: LOAD_ACCESS_KEY
+    }
+}
 
 export const loadToken = () => {
     return {
-        type: LOAD_TOKEN,
-        payload: new Promise( (resolve, reject) => {
+
+        payload: new Promise(resolve => {
             try {
                 AsyncStorage.getItem(TOKEN).then( serializedToken => {
                     if (serializedToken) {
-                        const token = JSON.parse(serializedToken);
-                        console.tron.log(token);
+                        const token = JSON.parse(serializedToken)
+
                         resolve({
-                            ok: true,
-                            data: token
-                        });
+                            data: token,
+                            ok: true
+                        })
                     } else {
                         resolve({
                             ok: false
-                        });
+                        })
                     }
-                });
+                })
             } catch (ex) {
                 resolve({
                     ok: false
-                });
+                })
             }
-        })
-    };
-};
+        }),
+        type: LOAD_TOKEN
+    }
+}

@@ -1,4 +1,4 @@
-import SettingsView from './SettingsView';
-import SettingsNotificationView from './SettingsNotificationView';
+import SettingsView from './SettingsView'
+import SettingsNotificationView from './SettingsNotificationView'
 
-export { SettingsView, SettingsNotificationView };
+export { SettingsView, SettingsNotificationView }

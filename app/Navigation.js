@@ -37,12 +37,25 @@ class Navigation extends Component {
 
     renderHeader(sceneProps) {
         const { color } = this.props.settings
+        const route = sceneProps.scene.route
+        const appbarStyle = [styles.appbar]
+
+        appbarStyle.push({ backgroundColor: color })
+        if (route.state === Routes.LEAGUES
+            || route.state === Routes.SETTINGS
+            || route.state === Routes.SETTINGS_NOTIFICATION
+            || route.state === Routes.LEAGUE_MATCHES) {
+            appbarStyle.push({
+                borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
+                elevation: 4
+            })
+        }
 
         return (
             <Header { ...sceneProps }
                 direction='horizontal'
                 onNavigateBack={this.onNavigateBack.bind(this)}
-                style={ [styles.appbar, { backgroundColor: color }] }
+                style={ appbarStyle }
                 renderTitleComponent={ this.renderTitle.bind(this) }
                 renderLeftComponent={ this.renderLeftComponent.bind(this) }
                  />
@@ -53,7 +66,7 @@ class Navigation extends Component {
         if (sceneProps.scene.index === 0 && Platform.OS === 'android') {
             return (
                 <Touchable color borderless style={ styles.buttonContainer }
-                    onPress={ () => { if (this.props.drawer) { this.props.drawer.openDrawer() } } }>
+                    onPress={ () =>  this.props.openDrawer() }>
                     <Icon style={ styles.button } size={ICON_SIZE} color='#fff' name='menu' />
                 </Touchable>
             )
@@ -123,6 +136,7 @@ class Navigation extends Component {
 
 const styles = StyleSheet.create({
     appbar: {
+        borderBottomColor: 'rgba(0, 0, 0, .15)',
         borderBottomWidth: 0,
         elevation: 0,
         height: APPBAR_HEIGHT + STATUSBAR_HEIGHT
@@ -157,7 +171,7 @@ const styles = StyleSheet.create({
 })
 
 Navigation.propTypes = {
-    drawer: PropTypes.object,
+    openDrawer: PropTypes.func,
     popRoute: PropTypes.func,
     route: PropTypes.object,
     settings: PropTypes.object,

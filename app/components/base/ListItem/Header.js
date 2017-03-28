@@ -1,66 +1,78 @@
-import React, { Component, PropTypes } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import Text from '../Text';
-import Icon from '../Icon';
-import Touchable from '../Touchable';
-import * as theme from '../theme';
+import React, { Component, PropTypes } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import Text from '../Text'
+import Icon from '../Icon'
+import Touchable from '../Touchable'
+import * as theme from '../theme'
 
 class ListItemHeader extends Component {
 
     render() {
-        const Container = this.props.toggleMenu ? Touchable : View;
-        const headerTextStyle = [styles.headerText];
+        const { toggleMenu, title, menuOpen, closeIcon, children, hideSeparator } = this.props
+        const Container = !!toggleMenu ? Touchable : View
+        const headerTextStyle = [styles.headerText]
+
         return (
-            <View style={[styles.separator, {borderBottomWidth: this.props.hideSeparator ? 0 : 1}]}>
-                <Container onPress={this.props.toggleMenu}>
-                    <View style={styles.header}>
-                    <Text bold size={14} 
-                        style={headerTextStyle}
-                        color={this.props.color}>{ this.props.title }</Text>
-                        <View style={{flex: 1}} />
-                    { this.props.toggleMenu && (
-                        <Icon name={this.props.menuOpen ? this.props.closeIcon ? this.props.closeIcon : 'caret-up' : 'caret-down'} size={18} 
-                            style={{marginRight: 10, textAlign: 'right'}}
-                            color={theme.secondaryTextColor} />
+            <View style={[ styles.separator, { borderBottomWidth: hideSeparator ? 0 : 1 } ]}>
+                <Container onPress={ toggleMenu }>
+                    <View style={ styles.header }>
+                    <Text bold size={14}
+                        style={ headerTextStyle }
+                        color={this.props.color}>{ title }</Text>
+                        <View style={{ flex: 1 }} />
+                    { !!toggleMenu && (
+                        <Icon name={ menuOpen ? closeIcon ? closeIcon : 'caret-up' : 'caret-down' } size={18}
+                            style={{ marginRight: 10, textAlign: 'right' }}
+                            color={ theme.secondaryTextColor } />
                     )}
                     </View>
-                    
-                    { this.props.children && (<Text secondary size={12}
-                    style={styles.subHeaderText}>{this.props.children}</Text>)}
-                    
+
+                    { !!children && (
+                        <Text secondary size={12} style={ styles.subHeaderText }>
+                            { children }
+                        </Text>
+                    )}
                 </Container>
             </View>
         )
     }
 }
 
-ListItemHeader.propTypes = {
-    title: PropTypes.string.isRequired,
-    color: PropTypes.string
-};
 
 const styles = StyleSheet.create({
-    separator: {
-        borderBottomWidth: 1,
-        borderBottomColor: theme.backgroundColor,
+    header: {
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     headerText: {
+        marginBottom: 9,
         marginHorizontal: 10,
-        marginTop: 10,
-        marginBottom: 9
+        marginTop: 10
+    },
+    separator: {
+        borderBottomColor: theme.backgroundColor,
+        borderBottomWidth: 1
     },
     subHeaderText: {
-        marginHorizontal: 10,
         marginBottom: 10,
+        marginHorizontal: 10,
         marginTop: -8
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center'
     }
-});
+})
+
+
+ListItemHeader.propTypes = {
+    children: PropTypes.string,
+    closeIcon: PropTypes.string,
+    color: PropTypes.string,
+    hideSeparator: PropTypes.bool,
+    menuOpen: PropTypes.bool,
+    title: PropTypes.string.isRequired,
+    toggleMenu: PropTypes.func
+}
+
 
 export default connect(state => ({
     color: state.settings.color
-}))(ListItemHeader);
+}))(ListItemHeader)

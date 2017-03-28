@@ -10,48 +10,48 @@ const defaultState = {
 export default (state=defaultState, action) => {
     switch (action.type) {
 
-        case GET_TEAM + PENDING: {
-            state = { ...state, error: null, loading: true }
-            
-            return state
-        }
+    case GET_TEAM + PENDING: {
+        state = { ...state, error: null, loading: true }
 
-        case GET_TEAM + FULFILLED: {
-            state = { ...state, loading: false }
-            if (action.payload.ok) {
-                if (!state.id[`${action.payload.data.id}`]) {
-                    state.id[`${action.payload.data.id}`] = { details: {}, matches: [] }
-                }
-                state.id[`${action.payload.data.id}`].details = action.payload.data
-            } else {
-                state.error = action.payload.problem
+        return state
+    }
+
+    case GET_TEAM + FULFILLED: {
+        state = { ...state, loading: false }
+        if (action.payload.ok) {
+            if (!state.id[`${action.payload.data.id}`]) {
+                state.id[`${action.payload.data.id}`] = { details: {}, matches: [] }
             }
-            
-            return state
-        }
-        
-        case GET_TEAM_MATCHES + PENDING: {
-            state = { ...state, error: null, loading: true, pendingID: action.payload }
-            
-            return state
+            state.id[`${action.payload.data.id}`].details = action.payload.data
+        } else {
+            state.error = action.payload.problem
         }
 
-        case GET_TEAM_MATCHES + FULFILLED: {
-            state = { ...state, loading: false }
-            if (action.payload.ok) {
-                const teamID = state.pendingID
+        return state
+    }
 
-                if (!state.id[`${teamID}`]) {
-                    state.id[`${teamID}`] = { details: {}, matches: [] }
-                }
-                state.id[`${teamID}`].matches = action.payload.data
-            } else {
-                state.error = action.payload.problem
+    case GET_TEAM_MATCHES + PENDING: {
+        state = { ...state, error: null, loading: true, pendingID: action.payload }
+
+        return state
+    }
+
+    case GET_TEAM_MATCHES + FULFILLED: {
+        state = { ...state, loading: false }
+        if (action.payload.ok) {
+            const teamID = state.pendingID
+
+            if (!state.id[`${teamID}`]) {
+                state.id[`${teamID}`] = { details: {}, matches: [] }
             }
-            state.pendingID = -1
-            
-            return state
+            state.id[`${teamID}`].matches = action.payload.data
+        } else {
+            state.error = action.payload.problem
         }
+        state.pendingID = -1
+
+        return state
+    }
     }
 
     return state

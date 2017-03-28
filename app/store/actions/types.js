@@ -56,7 +56,7 @@ export const PENDING = '_PENDING'
 export const FULFILLED = '_FULFILLED'
 export const NOTIFICATION = '_NOTIFICATION'
 
-// notification 
+// notification
 export const SCORE = 'LIVE_SCORE'
 export const SUGGEST_SCORE = 'SUGGEST_SCORE'
 export const SCORE_CONFIRMED = 'SCORE_CONFIRMED'

@@ -1,29 +1,29 @@
-import { QUERY_RANKINGS, GET_LEAGUE, GET_LEAGUE_MATCHES } from './types';
-import api from '../../api';
+import { QUERY_RANKINGS, GET_LEAGUE, GET_LEAGUE_MATCHES } from './types'
+import api from '../../api'
 
 export const getRankings = () => {
-	return {
-		type: QUERY_RANKINGS,
-		payload: api.get('/leagues')
-	};
-};
+    return {
+        payload: api.get('/leagues'),
+        type: QUERY_RANKINGS
+    }
+}
 
 
 export const getLeague = (id) => {
-	return {
-		type: GET_LEAGUE,
-		payload: api.get('/leagues/' + id)
-	};
-};
+    return {
+        payload: api.get('/leagues/' + id),
+        type: GET_LEAGUE
+    }
+}
 
 
 export const getLeagueMatches = (id) => {
-	return {
-		type: GET_LEAGUE_MATCHES,
-		payload: {
-			data: id,
-			promise: api.get(`/leagues/${id}/matches`)
-		}
-	};
-};
+    return {
+        payload: {
+            data: id,
+            promise: api.get(`/leagues/${id}/matches`)
+        },
+        type: GET_LEAGUE_MATCHES
+    }
+}
 
