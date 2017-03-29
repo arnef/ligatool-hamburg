@@ -1,7 +1,8 @@
-import { QUERY_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH } from '../actions/types'
-import { compareDays } from '../../Helper'
+import { QUERY_MATCHES, QUERY_TEAM_MATCHES, GET_TEAM_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH } from '../actions/types'
+import { compareDays, isAdminForMatch } from '../../Helper'
 
 export default (state = {
+    data: {},
     error: null,
     fetched: false,
     fetching: false,
@@ -9,8 +10,33 @@ export default (state = {
     played: [],
     today: []
 }, action) => {
-    // let matchId
+
     switch (action.type) {
+    case GET_TEAM_MATCHES + FULFILLED:
+    case QUERY_TEAM_MATCHES + FULFILLED: {
+        if (action.payload.ok) {
+            state = { ...state }
+            for (let match of action.payload.data) {
+                state.data[match.id] = match
+            }
+        }
+
+        return state
+    }
+    case PUT_SETS + FULFILLED:
+    case GET_MATCH + FULFILLED: {
+        if (action.payload.ok) {
+            state = { ...state }
+            const match = action.payload.data
+
+            match.type = getMatchType(match)
+            match.is_admin = isAdminForMatch(match)
+            state.data[match.id] = match
+        }
+
+        return state
+    }
+
     case QUERY_MATCHES + PENDING:
         state = { ...state, error: null, fetching: true  }
         break
@@ -23,84 +49,44 @@ export default (state = {
             state.today = newState.today
             state.next = newState.next
             state.played = newState.played
+            state.data = newState.data
             state.fetched = true
         } else {
             state.error = action.payload.problem
         }
         break
 
-    case PUT_SETS + FULFILLED: {
-        if (action.payload.ok) {
-            state = { ...state }
-            for (let i = 0; i < state.today.length; i++) {
-                if (state.today[i].id === action.payload.data.id) {
-                    state.today[i] = action.payload.data
-                    break
-                }
-            }
-        }
+    // case PUT_SETS + FULFILLED: {
+    //     if (action.payload.ok) {
+    //         const match = action.payload.data
 
-        return state
-    }
+    //         state = { ...state }
+    //         state.data[match.id] = match
+    //     }
 
-    case GET_MATCH + FULFILLED: {
-        state = { ...state }
-        if (action.payload.ok && action.payload.data.live) {
-            for (let i = 0; i < state.today.length; i++) {
-                if (state.today[i].id === action.payload.data.id) {
-                    state.today[i].set_points = action.payload.data.set_points
-                    state.today[i].set_points_home = action.payload.data.set_points_home
-                    state.today[i].set_points_away = action.payload.data.set_points_away
-                    break
-                }
-            }
-        }
-
-        return state
-    }
-
+    //     return state
+    // }
 
     case SCORE + NOTIFICATION:
     case SUGGEST_SCORE + NOTIFICATION: {
-        const matchId = parseInt(action.payload.id, 10)
-        const data = state.today
-
         state = { ...state }
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].id === matchId) {
-                data[i].set_points_home = parseInt(action.payload.set_points_home, 10)
-                data[i].set_points_away = parseInt(action.payload.set_points_away, 10)
-                data[i].live = JSON.parse(action.payload.live)
-                break
-            }
-        }
+        const matchId = parseInt(action.payload.id, 10)
+        const { set_points_away, set_points_home, live } = action.payload
+
+        state.data[matchId].set_points_home = parseInt(set_points_home)
+        state.data[matchId].set_points_away = parseInt(set_points_away)
+        state.data[matchId].live = JSON.parse(live)
+        state.data[matchId].set_points = true
 
         return state
     }
 
     case SCORE_CONFIRMED + NOTIFICATION: {
-        const matchId = parseInt(action.payload.id, 10)
-        let skipPlayed = false
-
         state = { ... state }
-        for (let i = 0; i < state.today.length; i++) {
-            if (state.today[i].id === matchId) {
-                state.today[i].score_unconfirmed = JSON.parse(action.payload.score_unconfirmed)
-                state.today[i].live = JSON.parse(action.payload.live)
-                skipPlayed = true
-                break
-            }
-        }
-        console.tron.log('skilp played ' + skipPlayed)
-        if (!skipPlayed) {
-            for (let i = 0; i < state.played.length; i++) {
-                if (state.played[i].id === matchId) {
-                    state.played[i].score_unconfirmed = JSON.parse(action.payload.score_unconfirmed)
-                    state.played[i].live = JSON.parse(action.payload.live)
-                    break
-                }
-            }
-        }
+        const matchId = parseInt(action.payload.id, 10)
+
+        state.data[matchId].score_unconfirmed = parseInt(action.payload.score_unconfirmed)
+        state.data[matchId].live = false
 
         return state
     }
@@ -110,59 +96,86 @@ export default (state = {
 }
 
 const reorderMatches = (matches) => {
-    let today = []
+    const today = []
     const next = []
     const played = []
+    const data = {}
     const now = new Date().getTime()
 
-    matches.map((match) => {
+    for (let match of matches) {
+        data[match.id] = match
+
         if (match.date_confirmed) {
             const diff = compareDays(match.datetime, now)
 
             if ((match.live && diff > -2) || diff === 0) {
-                today.push(match)
+                today.push(match.id)
             } else if (diff < 0) {
                 if (match.set_points) {
-                    played.push(match)
+                    played.push(match.id)
                 }
             } else if (diff > 0) {
                 if (match.set_points) {
-                    played.push(match)
+                    played.push(match.id)
                 } else {
-                    next.push(match)
+                    next.push(match.id)
                 }
             }
         }
+    }
 
-    })
-    today.sort(sortMatches)
-    next.sort(sortMatches)
-    played.sort((a, b) => {
-        let order = b.datetime-a.datetime
-
-        if (order === 0) {
-            order = a.league.name < b.league.name ? -1 : 1
-        }
-
-        return order
-    })
-
-    return {
+    return sortMatches( {
+        data,
         next,
         played,
         today
-    }
+    } )
 }
 
-const sortMatches = (a, b) => {
-    let order = (b.live ? 2 : b.set_points ? 1 : 0) - (a.live ? 2 : a.set_points ? 1 : 0)
+const sortMatches = (matches) => {
+    const sortDESC = (a, b) => {
+        const matchA = matches.data[a]
+        const matchB = matches.data[b]
+        let order = matchB.datetime - matchA.datetime
 
-    if (order === 0) {
-        order = a.datetime-b.datetime
+        if (order === 0) {
+            order = matchA.league.name < matchB.league.name ? -1 : 1
+        }
+
+        return order
     }
-    if (order === 0) {
-        order = a.league.name < b.league.name ? -1 : 1
+    const sortASC = (a, b) => {
+        const matchA = matches.data[a]
+        const matchB = matches.data[b]
+        let order = (matchB.live ? 2 : matchB.set_points ? 1 : 0) - (matchA.live ? 2 : matchA.set_points ? 1 : 0)
+
+        if (order === 0) {
+            order = matchA.datetime - matchB.datetime
+        }
+
+        if (order === 0) {
+            order = matchA.league.name < matchB.league.name ? -1 : 1
+        }
+
+        return order
     }
 
-    return order
+    matches.today.sort(sortASC)
+    matches.next.sort(sortASC)
+    matches.played.sort(sortDESC)
+
+    return matches
+}
+
+const getMatchType = (match) => {
+    let type = match.league.cup ? 'cup' : 'default'
+    const sets = match.sets || {}
+
+    if (sets['5'] !== null && sets['6'] !== null) {
+        if (sets['5'].player_2_home !== null && sets['6'].player_2_away !== null) {
+            type += '_d5'
+        }
+    }
+
+    return type
 }

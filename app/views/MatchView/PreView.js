@@ -10,12 +10,12 @@ import { backgroundColor } from '../../components/base/theme'
 class PreviewMatch extends Component {
 
     componentDidMount() {
-        this.props.setTitle(this.props.match.data.team_home.name)
+        this.props.setTitle(this.props.match.team_home.name)
     }
 
     onChangeTab(keys) {
         const { match } = this.props
-        const title = keys.i === 0 ? match.data.team_home.name : match.data.team_away.name
+        const title = keys.i === 0 ? match.team_home.name : match.team_away.name
 
         this.props.setTitle(title)
     }
@@ -29,8 +29,8 @@ class PreviewMatch extends Component {
             onChangeTab={this.onChangeTab.bind(this)}
             prerenderingSiblingsNumber={0}
             renderTabBar={() => (<TabBar />)}>
-            <TeamView {...this.props} team={match.data.team_home} tabLabel='HEIM' />
-            <TeamView {...this.props} team={match.data.team_away} tabLabel='GAST' />
+            <TeamView {...this.props} team={match.team_home} tabLabel='HEIM' />
+            <TeamView {...this.props} team={match.team_away} tabLabel='GAST' />
         </ScrollableTabView>
         )
     }
@@ -42,9 +42,7 @@ PreviewMatch.propTypes = {
 }
 
 export default connect(
-    state => ({
-        match: state.match
-    }),
+    null,
     dispatch => ({
         setTitle: (title) => dispatch(setTitle(title))
     })

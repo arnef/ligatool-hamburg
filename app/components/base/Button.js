@@ -23,7 +23,7 @@ class Button extends Component {
 
         return (
             <Touch onPress={onPress} style={buttonStyle} color>
-                <Text color='#fff' bold={android} upperCase={android}>{ this.props.children }</Text>
+                <Text color='#fff' bold={android}>{ android ? this.props.children.toUpperCase() : this.props.children }</Text>
             </Touch>
         )
     }

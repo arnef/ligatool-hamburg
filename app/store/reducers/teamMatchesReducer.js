@@ -99,9 +99,9 @@ const reorderMatches = (matches) => {
 
     matches.map((match) => {
         if (match.set_points && !match.score_unconfirmed) {
-            played.push(match)
+            played.push(match.id)
         } else {
-            next.push(match)
+            next.push(match.id)
         }
     })
 

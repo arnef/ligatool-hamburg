@@ -116,7 +116,7 @@ class Navigation extends Component {
         }
 
         case Routes.MATCH: {
-            return <Views.Match />
+            return <Views.Match id={ route.id } />
         }
 
         case Routes.RANKING: {

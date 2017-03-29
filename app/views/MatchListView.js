@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Container, MatchItem  } from '../components'
 import { Row, Column, Button, Text } from '../components/base'
 
@@ -13,7 +14,9 @@ class MatchListView extends Component {
         }
     }
 
-    _renderMatch(match, sec, idx) {
+    _renderMatch(id, sec, idx) {
+        const match = this.props.data[id]
+
         return (
             <MatchItem
                 key={idx}
@@ -74,6 +77,7 @@ class MatchListView extends Component {
 }
 
 MatchListView.propTypes = {
+    data: PropTypes.object,
     error: PropTypes.string,
     fetched: PropTypes.bool,
     matches: PropTypes.array,
@@ -82,4 +86,8 @@ MatchListView.propTypes = {
     refreshing: PropTypes.bool
 }
 
-export default MatchListView
+export default connect(
+    state => ({
+        data: state.matches.data
+    })
+)(MatchListView)

@@ -20,7 +20,7 @@ class Match extends Component {
                         <Switch onValueChange={ () => {
                             toggleMatchType(data.setsIdx, data.toggle.type)
                         }}
-                        value={match.data.type.indexOf('d5') !== -1} />
+                        value={match.type.indexOf('d5') !== -1} />
                     </Row>
                 )}
                 <Set
@@ -43,10 +43,13 @@ class Match extends Component {
     }
 
     buildMatchData() {
+        console.tron.log('build match data')
+        const id = this.props.match.id
+        const { matches } = this.props
         const editMatch = this.props.editable
-        const match = this.props.match.data.sets ? this.props.match.data : { sets: [] }
+        const match = matches[id].sets ? matches[id] : { sets: [] }
         const sets = []
-        const format = formats[this.props.match.data.type]
+        const format = formats[ this.props.match.type || 'default' ]
 
         for (let set of format) {
             const data = { ...set }
@@ -99,5 +102,6 @@ Match.propTypes = {
 Match.Header = Header
 
 export default connect( (state) => ({
-    match: state.match
+    matches: state.matches.data
 }))(Match)
+// export default Match

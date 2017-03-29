@@ -28,7 +28,7 @@ class Text extends Component {
 
         return(
             <RNText { ...this.props} style={textStyle}>
-                { this.props.upperCase ? this.props.children.toUpperCase() : this.props.children }
+                { this.props.children }
             </RNText>
         )
     }
@@ -37,7 +37,7 @@ class Text extends Component {
 Text.propTypes = {
     bold: PropTypes.bool,
     center: PropTypes.bool,
-    children: PropTypes.oneOfType([ PropTypes.array, PropTypes.string ]),
+    children: PropTypes.any,
     color: PropTypes.string,
     secondary: PropTypes.bool,
     size: PropTypes.number,

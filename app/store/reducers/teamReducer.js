@@ -44,7 +44,9 @@ export default (state=defaultState, action) => {
             if (!state.id[`${teamID}`]) {
                 state.id[`${teamID}`] = { details: {}, matches: [] }
             }
-            state.id[`${teamID}`].matches = action.payload.data
+            state.id[`${teamID}`].matches = action.payload.data.map(match => {
+                return match.id
+            })
         } else {
             state.error = action.payload.problem
         }

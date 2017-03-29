@@ -10,38 +10,38 @@ export default (state = {
 }, action) => {
     switch (action.type) {
 
-    case PUSH_ROUTE: {
-        if (action.route.state === 'ROUTE.MATCH') {
-            const match = action.route.match
+    // case PUSH_ROUTE: {
+    //     if (action.route.state === 'ROUTE.MATCH') {
+    //         const match = action.route.match
 
-            match.type = 'default'
-            match.is_admin = false
-            state = { ...state, data: match }
-        }
+    //         match.type = 'default'
+    //         match.is_admin = false
+    //         state = { ...state, data: match }
+    //     }
 
-        return state
-    }
+    //     return state
+    // }
 
     case GET_MATCH + PENDING: {
         state = { ...state, error: null , loading: true }
-        if (state.data.id !== action.payload) {
-            const match = state.cache[action.payload] || { type: 'default' }
+        // if (state.data.id !== action.payload) {
+        //     const match = state.cache[action.payload] || { type: 'default' }
 
-            state.data = match
-        }
+        //     state.data = match
+        // }
 
         return state
     }
 
     case GET_MATCH + FULFILLED: {
         if (action.payload.ok) {
-            const match = action.payload.data
+            // const match = action.payload.data
 
-            match.type = getMatchType(match)
-            match.sets = compaireSets(match, state.cache[match.id])
-            match.is_admin = isAdminForMatch(match)
-            state = { ...state, data: match, error: null, loading: false }
-            state.cache[match.id] = match
+            // match.type = getMatchType(match)
+            // match.sets = compaireSets(match, state.cache[match.id])
+            // match.is_admin = isAdminForMatch(match)
+            state = { ...state, error: null, loading: false }
+            // state.cache[match.id] = match
         } else {
             state = { ...state, error: action.payload.problem, loading: false }
         }

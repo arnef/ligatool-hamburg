@@ -7,21 +7,25 @@ import moment from 'moment'
 class MatchView extends Component {
 
     render() {
-        const { match } = this.props
+        const { id, matches } = this.props
+        const match = matches[id]
 
-        if (match.data.set_points || (match.data.is_admin && moment(match.data.datetime).diff(moment(), 'minutes') < 16)) {
-            return <SetsView  />
+
+
+        if (match.set_points || (match.is_admin && moment(match.datetime).diff(moment(), 'minutes') < 16)) {
+            return <SetsView data={match}  />
         } else {
-            return <PreView  />
+            return <PreView match={match} />
         }
     }
 
 }
 
 MatchView.propTypes = {
-    match: PropTypes.object.isRequired
+    id: PropTypes.number.isRequired,
+    matches: PropTypes.object
 }
 
 export default connect(state => ({
-    match: state.match
+    matches: state.matches.data
 }))(MatchView)

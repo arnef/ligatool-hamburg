@@ -61,7 +61,7 @@ class SetsView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const match = nextProps.match.data
+        const match = nextProps.matches[nextProps.data.id]
         let idx = 0
 
         //TODO check submit action in reducer
@@ -88,7 +88,7 @@ class SetsView extends Component {
     }
 
     getMatch() {
-        this.props.getMatch(this.props.match.data.id)
+        this.props.getMatch(this.props.data.id)
     }
 
     onPress(data, idx) {
@@ -115,7 +115,7 @@ class SetsView extends Component {
     }
 
     onSave(data, score) {
-        const sets = { ...this.props.match.data.sets }
+        const sets = { ...this.props.match.sets }
         const idx = data.setsIdx[score.set]
         const set = { ...data.sets[score.set] }
 
@@ -129,12 +129,12 @@ class SetsView extends Component {
             set.player_2_away = { id: 0 }
         }
         sets[idx] = set
-        this.props.updateSets(this.props.match.data.id, sets)
+        this.props.updateSets(this.props.data.id, sets)
         this.setState({ scoreInput: -1 })
     }
 
     confirmScore() {
-        const match = this.props.match.data
+        const match = this.props.matches[this.props.data.id]
 
         if (this.state.btnIdx !== 1) {
             this.props.suggestScore(match.id, match.sets, this.state.btnIdx)
@@ -142,7 +142,7 @@ class SetsView extends Component {
     }
 
     showButton() {
-        const match = this.props.match.data
+        const match = this.props.matches[this.props.data.id]
 
         if (match.league && match.league.name.indexOf('pokal') !== -1) {
             return match.score_unconfirmed && (match.set_points_home !== match.set_points_away &&  (match.set_points_home > 16 || match.set_points_away > 16)) ? true : false
@@ -173,14 +173,14 @@ class SetsView extends Component {
     }
 
     render() {
-        const match = this.props.match.data
+        const data = this.props.matches[this.props.data.id]
         const showButton =  this.showButton()
-        const editable = this.props.match.data.is_admin
+        const editable = data.is_admin
 
         return (
             <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
                 <SelectPlayerModal />
-                <Match.Header data={match} pushRoute={this.props.pushRoute} />
+                <Match.Header data={data} pushRoute={this.props.pushRoute} />
                 <Container
                     { ...this.props }
                     hasTabbar={this.props.hasTabbar && !showButton}
@@ -190,14 +190,15 @@ class SetsView extends Component {
                     refreshing={this.props.match.loading}
                     onRefresh={this.getMatch.bind(this)}>
                     <Match editable={editable}
-                           toggleMatchType={this.props.toggleMatchType.bind(this)}
-                           onPress={this.onPress.bind(this)}
-                           scoreInput={this.state.scoreInput}
-                           toggleMenu={this.toggleMenu.bind(this)}
-                           menuOpen={this.state.menuOpen}
-                           onSave={this.onSave.bind(this)}
-                           adjustPosition={this.adjustPosition.bind(this)}
-                           onSelect={this.onSelect.bind(this)}
+                        match={data}
+                        toggleMatchType={this.props.toggleMatchType.bind(this)}
+                        onPress={this.onPress.bind(this)}
+                        scoreInput={this.state.scoreInput}
+                        toggleMenu={this.toggleMenu.bind(this)}
+                        menuOpen={this.state.menuOpen}
+                        onSave={this.onSave.bind(this)}
+                        adjustPosition={this.adjustPosition.bind(this)}
+                        onSelect={this.onSelect.bind(this)}
                     />
                 </Container>
 
@@ -258,7 +259,8 @@ export default connect(
     state => ({
         auth: state.auth,
         dialog: state.dialog,
-        match: state.match
+        match: state.match,
+        matches: state.matches.data
     }),
     dispatch => ({
         getMatch: (id) => dispatch(actions.getMatch(id)),

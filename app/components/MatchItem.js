@@ -57,7 +57,7 @@ class MatchItem extends Component {
      */
     onPress(match) {
         this.props.pushRoute({
-            match,
+            id: match.id,
             state: MATCH
         })
     }
