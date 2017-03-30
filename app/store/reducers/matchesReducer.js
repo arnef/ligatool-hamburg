@@ -37,11 +37,13 @@ export default (state = {
         return state
     }
 
-    case QUERY_MATCHES + PENDING:
+    case QUERY_MATCHES + PENDING: {
         state = { ...state, error: null, fetching: true  }
-        break
 
-    case QUERY_MATCHES + FULFILLED:
+        return state
+    }
+
+    case QUERY_MATCHES + FULFILLED: {
         state = { ...state, fetching: false }
         if (action.payload.ok) {
             const newState = reorderMatches(action.payload.data)
@@ -54,29 +56,25 @@ export default (state = {
         } else {
             state.error = action.payload.problem
         }
-        break
 
-    // case PUT_SETS + FULFILLED: {
-    //     if (action.payload.ok) {
-    //         const match = action.payload.data
-
-    //         state = { ...state }
-    //         state.data[match.id] = match
-    //     }
-
-    //     return state
-    // }
+        return state
+    }
 
     case SCORE + NOTIFICATION:
     case SUGGEST_SCORE + NOTIFICATION: {
         state = { ...state }
+        console.tron.log(action.payload)
         const matchId = parseInt(action.payload.id, 10)
         const { set_points_away, set_points_home, live } = action.payload
 
+        if (!state.data[matchId]) {
+            state.data[matchId] = { id: matchId }
+        }
         state.data[matchId].set_points_home = parseInt(set_points_home)
         state.data[matchId].set_points_away = parseInt(set_points_away)
         state.data[matchId].live = JSON.parse(live)
         state.data[matchId].set_points = true
+
 
         return state
     }
@@ -85,8 +83,10 @@ export default (state = {
         state = { ... state }
         const matchId = parseInt(action.payload.id, 10)
 
-        state.data[matchId].score_unconfirmed = parseInt(action.payload.score_unconfirmed)
-        state.data[matchId].live = false
+        if (state.data[matchId]) {
+            state.data[matchId].score_unconfirmed = parseInt(action.payload.score_unconfirmed)
+            state.data[matchId].live = false
+        }
 
         return state
     }

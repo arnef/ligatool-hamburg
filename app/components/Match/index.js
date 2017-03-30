@@ -10,6 +10,7 @@ class Match extends Component {
 
     renderRow(data, idx) {
         const { onPress, match, editable, menuOpen, onSave, onSelect, adjustPosition, scoreInput, toggleMenu, toggleMatchType } = this.props
+        // const match = matches[this.props.match.id]
 
         return (
             <View key={idx}>

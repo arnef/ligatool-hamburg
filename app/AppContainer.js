@@ -80,15 +80,12 @@ class AppContainer extends Component {
                     setTab(TAB_OVERVIEW)
                 }
 
-                const matchId = notif.data ? notif.data.id : notif.id
+                const matchId = parseInt(notif.data ? notif.data.id : notif.id)
 
-                if (matchId && !(lastRoute.match && lastRoute.match.id === matchId)) {
+                if (matchId && !(lastRoute.id === matchId)) {
                     console.tron.log('OPEN ROUTE')
                     pushRoute({
-                        match: {
-                            id: matchId,
-                            set_points: true
-                        },
+                        id: matchId,
                         state: MATCH
                     })
                 }
