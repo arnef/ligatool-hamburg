@@ -47,3 +47,7 @@ android/keystores/debug.keystore
 ligatool-release.keystore
 google-services.json
 GoogleService-Info.plist
+
+*.xcworkspace
+Pods/
+Podfile.lock

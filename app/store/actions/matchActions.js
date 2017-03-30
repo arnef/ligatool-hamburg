@@ -21,9 +21,9 @@ export const getMatch = (id) => {
     }
 }
 
-export const setPlayer = (team, player, setsIdx) => {
+export const setPlayer = (id, team, player, setsIdx) => {
     return {
-        payload: { player, setsIdx, team },
+        payload: { id, player, setsIdx, team },
         type: SET_PLAYER
     }
 }
@@ -48,9 +48,9 @@ export const suggestScore = (matchId, sets, type) => {
     }
 }
 
-export const toggleMatchType = (setsIdx, type) => {
+export const toggleMatchType = (id, setsIdx, type) => {
     return {
-        payload: { idx: setsIdx, type },
+        payload: { id, idx: setsIdx, type },
         type: TOGGLE_D5
     }
 }

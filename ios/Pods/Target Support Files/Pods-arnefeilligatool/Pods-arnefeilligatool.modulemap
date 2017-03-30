@@ -1,6 +1,0 @@
-framework module Pods_arnefeilligatool {
-  umbrella header "Pods-arnefeilligatool-umbrella.h"
-
-  export *
-  module * { export * }
-}

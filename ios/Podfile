@@ -3,15 +3,10 @@
 
 target 'arnefeilligatool' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  use_frameworks!
+  #use_frameworks!
 
   # Pods for arnefeilligatool
   pod 'Firebase/Core'
-	pod 'Firebase/Messaging'
-
-  target 'arnefeilligatoolTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+  pod 'Firebase/Messaging'
 
 end

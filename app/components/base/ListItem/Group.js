@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 
 class ListItemGroup extends Component {
 
@@ -21,13 +21,22 @@ ListItemGroup.propTypes = {
 }
 
 const styles = StyleSheet.create({
-    group: {
-        backgroundColor: '#fff',
-        borderRadius: 4,
-        elevation: 1,
-        marginHorizontal: 8,
-        marginVertical: 6
-    }
+    group: Platform.select({
+        android: {
+            backgroundColor: '#fff',
+            borderRadius: 4,
+            elevation: 1,
+            marginHorizontal: 8,
+            marginVertical: 6
+        },
+        ios: {
+            backgroundColor: '#fff',
+            marginHorizontal: 0,
+            marginVertical: 6,
+            shadowOffset: { height: 0, width: 0 },
+            shadowOpacity: .25
+        }
+    })
 })
 
 export default ListItemGroup

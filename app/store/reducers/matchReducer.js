@@ -49,25 +49,25 @@ export default (state = {
         return state
     }
 
-    case SET_PLAYER: {
-        state = { ...state }
-        if (!state.data.sets) {
-            state.data.sets = {}
-        }
-        console.tron.log(action.payload)
-        for (let idx of action.payload.setsIdx) {
-            const set = state.data.sets[idx] || {}
+    // case SET_PLAYER: {
+    //     state = { ...state }
+    //     if (!state.data.sets) {
+    //         state.data.sets = {}
+    //     }
+    //     console.tron.log(action.payload)
+    //     for (let idx of action.payload.setsIdx) {
+    //         const set = state.data.sets[idx] || {}
 
-            for (let i = 0; i < action.payload.player.length; i++) {
-                set[`player_${i + 1}_${action.payload.team}`] = action.payload.player[i]
-            }
-            set.number = idx
-            state.data.sets[idx] = set
-        }
-        state.cache[state.data.id] = { ...state.data }
+    //         for (let i = 0; i < action.payload.player.length; i++) {
+    //             set[`player_${i + 1}_${action.payload.team}`] = action.payload.player[i]
+    //         }
+    //         set.number = idx
+    //         state.data.sets[idx] = set
+    //     }
+    //     state.cache[state.data.id] = { ...state.data }
 
-        return state
-    }
+    //     return state
+    // }
 
     case PUT_SETS + PENDING: {
         state = { ...state, error: null }
@@ -76,61 +76,61 @@ export default (state = {
         return state
     }
 
-    case PUT_SETS + FULFILLED: {
-        state = { ...state, error: null }
-        if (action.payload.ok) {
-            const match = action.payload.data
+    // case PUT_SETS + FULFILLED: {
+    //     state = { ...state, error: null }
+    //     if (action.payload.ok) {
+    //         const match = action.payload.data
 
-            match.type = getMatchType(match)
-            match.is_admin = isAdminForMatch(match)
-            state.data = match
-            state.cache[match.id] = match
-        } else {
-            state = { ...state, error: action.payload.problem }
-        }
+    //         match.type = getMatchType(match)
+    //         match.is_admin = isAdminForMatch(match)
+    //         state.data = match
+    //         state.cache[match.id] = match
+    //     } else {
+    //         state = { ...state, error: action.payload.problem }
+    //     }
 
-        return state
-    }
+    //     return state
+    // }
 
-    case SCORE + NOTIFICATION:
-    case SUGGEST_SCORE + NOTIFICATION: {
-        state = { ...state }
-        state.ignoreNextNotify = false
-        if (state.data.id === parseInt(action.payload.id, 10)) {
-            state.data.set_points_home = parseInt(action.payload.set_points_home, 10)
-            state.data.set_points_away = parseInt(action.payload.set_points_away, 10)
-        }
+    // case SCORE + NOTIFICATION:
+    // case SUGGEST_SCORE + NOTIFICATION: {
+    //     state = { ...state }
+    //     state.ignoreNextNotify = false
+    //     if (state.data.id === parseInt(action.payload.id, 10)) {
+    //         state.data.set_points_home = parseInt(action.payload.set_points_home, 10)
+    //         state.data.set_points_away = parseInt(action.payload.set_points_away, 10)
+    //     }
 
-        return state
-    }
+    //     return state
+    // }
 
-    case SCORE_CONFIRMED + NOTIFICATION: {
-        if (state.data.id === parseInt(action.payload.id, 10)) {
-            state = { ...state }
-            state.data.score_unconfirmed = JSON.parse(action.payload.score_unconfirmed)
-            state.data.live = JSON.parse(action.payload.live)
-        }
+    // case SCORE_CONFIRMED + NOTIFICATION: {
+    //     if (state.data.id === parseInt(action.payload.id, 10)) {
+    //         state = { ...state }
+    //         state.data.score_unconfirmed = JSON.parse(action.payload.score_unconfirmed)
+    //         state.data.live = JSON.parse(action.payload.live)
+    //     }
 
-        return state
-    }
+    //     return state
+    // }
 
-    case TOGGLE_D5: {
-        state = { ...state }
-        for(let idx of action.payload.idx) {
-            idx = `${idx}`
-            if (state.data.sets[idx]) {
-                state.data.sets[idx].player_1_home = null
-                state.data.sets[idx].player_2_home = null
-                state.data.sets[idx].player_1_away = null
-                state.data.sets[idx].player_2_away = null
-                state.data.sets[idx].goals_home = null
-                state.data.sets[idx].goals_away = null
-            }
-        }
-        state.type = action.payload.type
+    // case TOGGLE_D5: {
+    //     state = { ...state }
+    //     for(let idx of action.payload.idx) {
+    //         idx = `${idx}`
+    //         if (state.data.sets[idx]) {
+    //             state.data.sets[idx].player_1_home = null
+    //             state.data.sets[idx].player_2_home = null
+    //             state.data.sets[idx].player_1_away = null
+    //             state.data.sets[idx].player_2_away = null
+    //             state.data.sets[idx].goals_home = null
+    //             state.data.sets[idx].goals_away = null
+    //         }
+    //     }
+    //     state.type = action.payload.type
 
-        return state
-    }
+    //     return state
+    // }
     }
 
     return state

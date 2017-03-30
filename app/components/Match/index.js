@@ -9,8 +9,8 @@ import Header from './Header'
 class Match extends Component {
 
     renderRow(data, idx) {
-        const { onPress, match, editable, menuOpen, onSave, onSelect, adjustPosition, scoreInput, toggleMenu, toggleMatchType } = this.props
-        // const match = matches[this.props.match.id]
+        const { onPress, matches, editable, menuOpen, onSave, onSelect, adjustPosition, scoreInput, toggleMenu, toggleMatchType } = this.props
+        const match = matches.data[this.props.match.id]
 
         return (
             <View key={idx}>
@@ -19,7 +19,8 @@ class Match extends Component {
                         <Text >{ data.toggle.title }</Text>
                         <Column />
                         <Switch onValueChange={ () => {
-                            toggleMatchType(data.setsIdx, data.toggle.type)
+                            toggleMatchType(match.id, data.setsIdx, data.toggle.type)
+                            this.forceUpdate()
                         }}
                         value={match.type.indexOf('d5') !== -1} />
                     </Row>
@@ -46,11 +47,11 @@ class Match extends Component {
     buildMatchData() {
         console.tron.log('build match data')
         const id = this.props.match.id
-        const { matches } = this.props
+        const matches = this.props.matches.data
         const editMatch = this.props.editable
         const match = matches[id].sets ? matches[id] : { sets: [] }
         const sets = []
-        const format = formats[ this.props.match.type || 'default' ]
+        const format = formats[ match.type || 'default' ]
 
         for (let set of format) {
             const data = { ...set }
@@ -103,6 +104,6 @@ Match.propTypes = {
 Match.Header = Header
 
 export default connect( (state) => ({
-    matches: state.matches.data
+    matches: state.matches
 }))(Match)
 // export default Match

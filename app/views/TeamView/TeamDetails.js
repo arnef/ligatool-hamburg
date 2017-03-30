@@ -40,13 +40,14 @@ class TeamView extends Component {
         return (
             <ListItem.Group >
                 <ListItem.Header title='Details' />
+                <View style={{ height: 10 }} />
                 { !!team.image && (
-                    <View style={{ alignItems: 'center', marginTop: 10 }}>
+                    <Row center>
                         <Image url={team.image} size={240} />
-                    </View>
+                    </Row>
                 )}
                 { !!team.league && (
-                    <Row style={{ marginTop: 10 }}>
+                    <Row>
                         <Column width={leftWidth}>
                             <Text bold>Gruppe</Text>
                         </Column>

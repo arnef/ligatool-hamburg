@@ -7,7 +7,7 @@ import { TEAM } from '../../views/routes'
 class MatchHeader extends Component {
 
     render() {
-        const match = this.props.data
+        const match = this.props.matches.data[this.props.data.id]
         const home = match.team_home ? match.team_home.name : ''
         const away = match.team_away ? match.team_away.name : ''
         const goalsHome = match.goals_home != null ? match.goals_home : '-'
@@ -87,5 +87,6 @@ MatchHeader.propTypes = {
 }
 
 export default connect( state => ({
-    color: state.settings.color
+    color: state.settings.color,
+    matches: state.matches
 }))(MatchHeader)

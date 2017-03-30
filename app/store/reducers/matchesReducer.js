@@ -1,4 +1,4 @@
-import { QUERY_MATCHES, QUERY_TEAM_MATCHES, GET_TEAM_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH } from '../actions/types'
+import { TOGGLE_D5, SET_PLAYER, QUERY_MATCHES, QUERY_TEAM_MATCHES, GET_TEAM_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH } from '../actions/types'
 import { compareDays, isAdminForMatch } from '../../Helper'
 
 export default (state = {
@@ -29,6 +29,9 @@ export default (state = {
             state = { ...state }
             const match = action.payload.data
 
+            if (state.data[match.id]) {
+                match.sets = compaireSets(match, state.data[match.id])
+            }
             match.type = getMatchType(match)
             match.is_admin = isAdminForMatch(match)
             state.data[match.id] = match
@@ -87,6 +90,49 @@ export default (state = {
             state.data[matchId].score_unconfirmed = parseInt(action.payload.score_unconfirmed)
             state.data[matchId].live = false
         }
+
+        return state
+    }
+
+    case TOGGLE_D5: {
+        state = { ...state }
+        const match = state.data[action.payload.id]
+
+        if (match) {
+            for (let idx of action.payload.idx) {
+                if (match.sets[idx]) {
+                    match.sets[idx].player_1_home = null
+                    match.sets[idx].player_2_home = null
+                    match.sets[idx].player_1_away = null
+                    match.sets[idx].player_2_away = null
+                    match.sets[idx].goals_home = null
+                    match.sets[idx].goals_away = null
+                }
+            }
+            match.type = action.payload.type
+            console.tron.log(action.payload)
+        }
+
+        return state
+    }
+    case SET_PLAYER: {
+        state = { ...state }
+        const match = state.data[action.payload.id]
+
+        console.tron.log(action.payload)
+        if (!match.sets) {
+            match.sets = {}
+        }
+        for (let idx of action.payload.setsIdx) {
+            const set = match.sets[idx] || {}
+
+            for (let i = 0; i < action.payload.player.length; i++) {
+                set[`player_${i + 1}_${action.payload.team}`] = action.payload.player[i]
+            }
+            set.number = idx
+            match.sets[idx] = set
+        }
+        // state.data[action.payload.id] = match
 
         return state
     }
@@ -169,13 +215,27 @@ const sortMatches = (matches) => {
 
 const getMatchType = (match) => {
     let type = match.league.cup ? 'cup' : 'default'
-    const sets = match.sets || {}
+    const sets = match && match.sets ? match.sets : {}
 
-    if (sets['5'] !== null && sets['6'] !== null) {
+    if (sets['5'] && sets['6']) {
         if (sets['5'].player_2_home !== null && sets['6'].player_2_away !== null) {
             type += '_d5'
         }
     }
 
     return type
+}
+
+const compaireSets = (match, cacheMatch) => {
+    let sets = match.sets
+
+    if (cacheMatch && cacheMatch.sets) {
+        for(let nr in cacheMatch.sets) {
+            if (!match.sets[nr] && cacheMatch.sets[nr]) {
+                sets[nr] = cacheMatch.sets[nr]
+            }
+        }
+    }
+
+    return sets
 }

@@ -33,7 +33,8 @@ class SelectPlayerModal extends Component {
 
 
     onPress(idx, team) {
-        const { data, match, setPlayer } = this.props
+        const { data, matches, setPlayer, id } = this.props
+        const match = matches[id]
         const { selected } = this.state
 
         if (selected[team][idx]) {
@@ -52,7 +53,7 @@ class SelectPlayerModal extends Component {
                 console.tron.log('select player ' + itemIdx)
                 result.push(match[`team_${team}`].player[itemIdx])
             }
-            setPlayer(team, result, data.setsIdx)
+            setPlayer(id, team, result, data.setsIdx)
 
             setTimeout(() => { // wait animation is done
                 if (team === 'home') {
@@ -70,7 +71,8 @@ class SelectPlayerModal extends Component {
 
     renderItems(route, navigator) {
         this.navigator = navigator
-        const { match  } = this.props
+        const { matches, id  } = this.props
+        const match = matches[id]
         const items = match[`team_${route.team}`] ? match[`team_${route.team}`].player : []
 
         return (
@@ -105,7 +107,9 @@ class SelectPlayerModal extends Component {
 
     renderItem(data, idx, team) {
         const { selected } = this.state
-        const { match } = this.props
+        const { matches, id } = this.props
+        const match = matches[id]
+
         const itemLength = match[`team_${team}`].player.length - 1
 
         return (
@@ -134,7 +138,7 @@ class SelectPlayerModal extends Component {
 SelectPlayerModal.propTypes = {
     data: PropTypes.object,
     hidePlayerDialog: PropTypes.func,
-    match: PropTypes.object,
+    matches: PropTypes.object,
     setPlayer: PropTypes.func,
     visible: PropTypes.bool
 }
@@ -142,11 +146,11 @@ SelectPlayerModal.propTypes = {
 export default connect(
     state => ({
         data: state.dialog.player.data,
-        match: state.match.data,
+        matches: state.matches.data,
         visible: state.dialog.player.visible
     }),
     dispatch => ({
         hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
-        setPlayer: (team, player, setsIdx) => dispatch(actions.setPlayer(team, player, setsIdx))
+        setPlayer: (id, team, player, setsIdx) => dispatch(actions.setPlayer(id, team, player, setsIdx))
     })
 )(SelectPlayerModal)

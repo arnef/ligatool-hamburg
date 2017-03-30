@@ -179,7 +179,7 @@ class SetsView extends Component {
 
         return (
             <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
-                <SelectPlayerModal />
+                <SelectPlayerModal id={data.id} />
                 <Match.Header data={data} pushRoute={this.props.pushRoute} />
                 <Container
                     { ...this.props }
@@ -269,7 +269,7 @@ export default connect(
         setPlayer: (team, result, setsIdx) => dispatch(actions.setPlayer(team, result, setsIdx)),
         showPlayerDialog: (data) => dispatch(actions.showPlayerDialog(data)),
         suggestScore: (id, sets, btnIdx) => dispatch(actions.suggestScore(id, sets, btnIdx)),
-        toggleMatchType: () => dispatch(actions.toggleMatchType()),
+        toggleMatchType: (id, setsIdx, type) => dispatch(actions.toggleMatchType(id, setsIdx, type)),
         updateSets: (id, sets) => dispatch(actions.updateSets(id, sets))
     })
 )(SetsView)
