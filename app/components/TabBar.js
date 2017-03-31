@@ -53,13 +53,18 @@ const styles = StyleSheet.create({
         paddingBottom: 2
     },
     tabs: {
-        borderBottomColor: 'rgba(0, 0, 0, .15)',
-        borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
+        // borderBottomColor: 'rgba(0, 0, 0, .15)',
+        // borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
         elevation: 4,
         flexDirection: 'row',
         height: 46,
         justifyContent: 'space-around',
-        maxHeight: 46
+        maxHeight: 46,
+        shadowColor: 'black',
+        shadowOffset: { height:  StyleSheet.hairlineWidth },
+        shadowOpacity: .1,
+        shadowRadius: StyleSheet.hairlineWidth,
+        zIndex: 99
     }
 })
 

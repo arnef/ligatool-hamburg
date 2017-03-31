@@ -183,7 +183,6 @@ class SetsView extends Component {
                 <Match.Header data={data} pushRoute={this.props.pushRoute} />
                 <Container
                     { ...this.props }
-                    hasTabbar={this.props.hasTabbar && !showButton}
                     getRef={scrollView => { this.scrollView = scrollView}}
                     onScroll={this.onScroll.bind(this)}
                     error={this.props.match.error}
@@ -200,6 +199,7 @@ class SetsView extends Component {
                         adjustPosition={this.adjustPosition.bind(this)}
                         onSelect={this.onSelect.bind(this)}
                     />
+                    { showButton && (<View style={{ height: 48 }} />)}
                 </Container>
 
                 { showButton && editable && this.renderSubmitButton() }
@@ -220,18 +220,24 @@ class SetsView extends Component {
 }
 
 const styles = StyleSheet.create({
-    submitRow: Platform.select({
-        android: {
-            margin: 0,
-            minHeight: 52,
-            paddingHorizontal: 8
-        },
-        ios: {
+    submitRow:
+    // Platform.select({
+    //     android: {
+    //         margin: 0,
+    //         minHeight: 52,
+    //         paddingHorizontal: 8
+    //     },
+    //     ios:
+        {
+            position: 'absolute',
+            bottom: Platform.OS === 'ios' ? 48 : 0,
+            width: Dimensions.get('window').width,
             marginBottom: 40,
-            minHeight: 60,
-            paddingHorizontal: 8
+            // height: 54,
+            paddingHorizontal: 8,
+            backgroundColor: 'rgba(221, 221, 221, .9)'
         }
-    })
+    // })
 })
 
 const btnText = [

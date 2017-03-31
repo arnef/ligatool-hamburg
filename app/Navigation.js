@@ -10,7 +10,7 @@ import * as Routes from './views/routes'
 const { CardStack, Header } = NavigationExperimental
 const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 24
-const ICON_SIZE = Platform.OS === 'ios' ? 24 : 28
+const ICON_SIZE = 24 //Platform.OS === 'ios' ? 24 : 28
 
 class Navigation extends Component {
 
@@ -46,8 +46,9 @@ class Navigation extends Component {
             || route.state === Routes.SETTINGS_NOTIFICATION
             || route.state === Routes.LEAGUE_MATCHES) {
             appbarStyle.push({
-                borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
-                elevation: 4
+                elevation: 4,
+                shadowOffset: { height :  StyleSheet.hairlineWidth },
+                shadowRadius: StyleSheet.hairlineWidth
             })
         }
 
@@ -136,14 +137,20 @@ class Navigation extends Component {
 
 const styles = StyleSheet.create({
     appbar: {
-        borderBottomColor: 'rgba(0, 0, 0, .15)',
+        // borderBottomColor: 'rgba(0, 0, 0, .15)',
         borderBottomWidth: 0,
         elevation: 0,
-        height: APPBAR_HEIGHT + STATUSBAR_HEIGHT
+        height: APPBAR_HEIGHT + STATUSBAR_HEIGHT,
+        shadowColor: 'black',
+        shadowOffset: { height: 0 },
+        shadowOpacity: .1,
+        shadowRadius: 0,
+        zIndex: 99
     },
     button: {
         height: ICON_SIZE,
-        margin: 10,
+        marginHorizontal: 12,
+        marginVertical: 10,
         width: 24
     },
     buttonContainer: {
@@ -164,7 +171,7 @@ const styles = StyleSheet.create({
     },
     titleText: {
         color: '#fff',
-        fontSize: Platform.OS === 'ios' ? 18 : 22,
+        fontSize: Platform.OS === 'ios' ? 18 : 20,
         fontWeight: '500',
         textAlign: Platform.OS === 'ios' ? 'left' : 'left'
     }

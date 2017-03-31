@@ -20,7 +20,7 @@ class MatchHeader extends Component {
         const isAndroid = Platform.OS === 'android'
 
         return (
-            <View style={[style.header, { backgroundColor: this.props.color }]}>
+            <View style={[{ backgroundColor: this.props.color }, style.header]}>
                 <Touchable color style={style.teamContainer}
                     onPress={() => this.onPress(match.team_home) }>
                     <Text center bold={isAndroid}  color='#fff' numberOfLines={2} ellipsizeMode='tail'>{home}</Text>
@@ -49,13 +49,16 @@ class MatchHeader extends Component {
 
 const style = StyleSheet.create({
     header: {
-        borderBottomColor: 'rgba(0, 0, 0, .15)',
-        borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
         elevation: 4,
         flexDirection: 'row',
         height: 46,
         justifyContent: 'space-around',
-        maxHeight: 46
+        maxHeight: 46,
+        shadowColor: 'black',
+        shadowOffset: { height: StyleSheet.hairlineWidth },
+        shadowOpacity: .1,
+        shadowRadius: StyleSheet.hairlineWidth,
+        zIndex: 999
     },
     points: {
         alignItems: 'center',

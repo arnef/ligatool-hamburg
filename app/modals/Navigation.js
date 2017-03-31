@@ -89,7 +89,7 @@ class Navigation extends Component {
     renderTitle(route) {
         return (
             <Row style={styles.title}>
-                <Text color='#fff' bold size={Platform.OS === 'ios' ? 17 : 20} numberOfLines={1} ellipsizeMode='tail'>{ route.title }</Text>
+                <Text color='#fff' bold size={Platform.OS === 'ios' ? 18 : 20} numberOfLines={1} ellipsizeMode='tail'>{ route.title }</Text>
             </Row>
         )
     }
@@ -97,7 +97,10 @@ class Navigation extends Component {
 
 const styles = StyleSheet.create({
     leftButton: Platform.select({
-        android: { padding: 16 },
+        android: {
+            paddingHorizontal: 10,
+            paddingVertical: 16
+        },
         ios: { padding: 10 }
     }),
     title: Platform.select({
