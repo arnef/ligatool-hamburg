@@ -34,7 +34,6 @@
         "no-useless-constructor": 2,
         "sort-vars": 2,
         "no-var": 2,
-        "sort-keys": 2,
         "newline-before-return": 2,
         "comma-dangle": [2, "never"],
         "semi": [2, "never"],

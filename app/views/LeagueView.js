@@ -1,24 +1,25 @@
-import React, { Component } from 'react'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
-import { TabBar } from '../components'
 import TableView from './TableView'
 import SelectableMatchListView from './SelectableMatchListView'
-import { backgroundColor } from '../components/base/theme'
+import NavIcon from '../Nav/NavIcon'
+import { TabNavigator } from 'react-navigation'
+import NavTabBarTop from '../Nav/NavTabBarTop'
 
+const LeagueView = TabNavigator({
+    League: { screen: TableView },
+    MatchDay: { screen: SelectableMatchListView }
+}, {
+    tabBarComponent: NavTabBarTop,
+    tabBarPosition: 'top',
+    swipeEnabled: true,
+    animationEnabled: true,
+    lazyLoad: true
+})
 
-class LeagueView extends Component {
-
-
-    render() {
-
-        return (
-            <ScrollableTabView
-                style={{ backgroundColor, flex: 1 }}
-                renderTabBar={() => (<TabBar />)}>
-                <TableView { ...this.props } tabLabel='TABELLE' />
-                <SelectableMatchListView tabLabel='BEGEGNUNGEN' { ...this.props }  />
-            </ScrollableTabView>
-        )
+LeagueView.navigationOptions = {
+    title: ({ state }) => state.params.title,
+    tabBar: {
+        icon: ({ tintColor }) => NavIcon('trophy', tintColor),
+        label: 'Gruppen'
     }
 }
 

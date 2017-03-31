@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { getRankings } from '../../store/actions/leagueActions'
 import { Container } from '../../components'
 import { ListItem, Text } from '../../components/base'
-
+import { NavigationActions } from 'react-navigation'
 import { MODAL_SELECT_TEAM } from '../../views/routes'
 
 class SelectGroupView extends Component {
 
 
     componentDidMount() {
+        console.tron.log(this.props.navigation.state.key)
         if (this.props.leagues.data.length === 0) {
             this.props.getRankings()
         }
@@ -41,11 +42,15 @@ class SelectGroupView extends Component {
     }
 
     onPress(league) {
-        this.props.navigator.push({
-            id: league.id,
-            state: MODAL_SELECT_TEAM,
-            title: 'Team wählen'
+        this.props.navigate({
+            routeName: 'SelectTeam',
+            params: { id: league.id }
         })
+        // this.props.navigator.push({
+        //     id: league.id,
+        //     state: MODAL_SELECT_TEAM,
+        //     title: 'Team wählen'
+        // })
     }
 }
 
@@ -55,11 +60,16 @@ SelectGroupView.propTypes = {
     navigator: PropTypes.object
 }
 
+SelectGroupView.navigationOptions = {
+    title: 'Gruppe wählen'
+}
+
 export default connect(
     state => ({
         leagues: state.leagues
     }),
     dispatch => ({
-        getRankings: () => dispatch(getRankings())
+        getRankings: () => dispatch(getRankings()),
+        navigate: (route) => dispatch(NavigationActions.navigate(route))
     })
 )(SelectGroupView)

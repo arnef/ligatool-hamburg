@@ -6,7 +6,7 @@ import { Row, Column, ListItem, Touchable, Icon, Text } from '../components/base
 import { TeamLogo } from '../components'
 import { MATCH } from '../views/routes'
 import { pushRoute } from '../store/actions/routeActions'
-
+import { NavigationActions } from 'react-navigation'
 class MatchItem extends Component {
 
     render() {
@@ -56,9 +56,10 @@ class MatchItem extends Component {
      * @param {object} match
      */
     onPress(match) {
+
         this.props.pushRoute({
-            id: match.id,
-            state: MATCH
+            routeName: 'Match',
+            params: { id: match.id }
         })
     }
 }
@@ -74,6 +75,6 @@ export default connect(
         settings: state.settings
     }),
     dispatch => ({
-        pushRoute: (route) => dispatch(pushRoute(route))
+        pushRoute: (route) => dispatch(NavigationActions.navigate(route))
     })
 )(MatchItem)

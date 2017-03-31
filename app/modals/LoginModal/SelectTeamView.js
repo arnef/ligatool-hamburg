@@ -3,23 +3,27 @@ import { Container } from '../../components'
 import { connect } from 'react-redux'
 import actions from '../../store/actions'
 import { ListItem, Text } from '../../components/base'
-
+import { NavigationActions } from 'react-navigation'
 import  { MODAL_LOGIN } from '../../views/routes'
 
 class SelectTeamView extends Component {
 
     componentDidMount() {
-        if (!this.props.league.id[this.props.id]) {
+        const lid = this.props.navigation.state.params.id
+
+        if (!this.props.league.id[lid]) {
             this.getTeams()
         }
+        console.tron.log(this.props.navigation)
     }
 
 
     render() {
-        const teams = this.props.league.id[this.props.id] ?
-            JSON.parse(JSON.stringify(this.props.league.id[this.props.id].table)) : []
-        // sort teams alphabetically
+        const lid = this.props.navigation.state.params.id
+        const teams = this.props.league.id[lid] ?
+            JSON.parse(JSON.stringify(this.props.league.id[lid].table)) : []
 
+        // sort teams alphabetically
         teams.sort((a, b) => {
             return a.name < b.name ? -1 : 1
         })
@@ -52,14 +56,22 @@ class SelectTeamView extends Component {
 
 
     getTeams() {
-        this.props.getLeague(this.props.id)
+        const lid = this.props.navigation.state.params.id
+        this.props.getLeague(lid)
     }
 
     onPress(team) {
         this.props.setUserTeam(team)
-        this.props.navigator.push({ state: MODAL_LOGIN, title: 'Login' })
+        this.props.navigate({
+            routeName: 'Login'
+        })
+        // this.props.navigator.push({ state: MODAL_LOGIN, title: 'Login' })
     }
 
+}
+
+SelectTeamView.navigationOptions = {
+    title: 'Team wählen'
 }
 
 SelectTeamView.propTypes = {
@@ -76,6 +88,7 @@ export default connect(
     }),
     dispatch => ({
         getLeague: (id) => dispatch(actions.getLeague(id)),
-        setUserTeam: (team) => dispatch(actions.setUserTeam(team))
+        setUserTeam: (team) => dispatch(actions.setUserTeam(team)),
+        navigate: (route) => dispatch(NavigationActions.navigate(route))
     })
 )(SelectTeamView)

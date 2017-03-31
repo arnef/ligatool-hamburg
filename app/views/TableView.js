@@ -8,7 +8,10 @@ import { TEAM } from '../views/routes'
 class TableView extends Component {
 
     componentDidMount() {
-        if (!this.props.league.id[this.props.leagueID]) {
+        const id = this.props.navigation.state.params.id
+
+        console.tron.log(`LeagueID: ${id}`)
+        if (!this.props.league.id[id]) {
             this._getLeagues()
         }
     }
@@ -50,11 +53,14 @@ class TableView extends Component {
     }
 
     _getLeagues() {
-        this.props.getLeague(this.props.leagueID)
+        const id = this.props.navigation.state.params.id
+
+        this.props.getLeague(id)
     }
 
     render() {
-        const table = this.props.league.id[this.props.leagueID] ? this.props.league.id[this.props.leagueID].table : []
+        const id = this.props.navigation.state.params.id
+        const table = this.props.league.id[id] ? this.props.league.id[id].table : []
 
         return (
         <Container
@@ -86,6 +92,9 @@ TableView.propTypes = {
     league: PropTypes.object,
     leagueID: PropTypes.number,
     pushRoute: PropTypes.func
+}
+TableView.navigationOptions = {
+    title: 'Tabelle'
 }
 
 export default connect(

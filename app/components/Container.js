@@ -60,7 +60,6 @@ class Container extends Component {
                         <View style={{ paddingVertical: 4 }}>
                         { this.props.children }
                         </View>
-                        { Platform.OS === 'ios' && !this.props.noTabbar && (<View style={{ height: 50 }} />)}
                     </ScrollView>
                 </View>
             )
@@ -76,7 +75,7 @@ class Container extends Component {
     }
 
     renderFooter() {
-        return (<View style={{ height: Platform.OS === 'ios' ? 54 : 4 }} />)
+        return (<View style={{ height: 4 }} />)
     }
 
     renderHeader() {

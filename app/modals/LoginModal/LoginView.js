@@ -5,7 +5,7 @@ import actions from '../../store/actions'
 import { Container } from '../../components'
 import { ListItem, Row, Column, Button, Text } from '../../components/base'
 import * as theme from '../../components/base/theme'
-// import style from '../../style'
+import { NavigationActions } from 'react-navigation'
 import { CLIENT_ERROR } from 'apisauce'
 
 class LoginView extends Component {
@@ -110,7 +110,9 @@ class LoginView extends Component {
     }
 
     closeModal() {
-        this.props.showLogin(false)
+        console.tron.log('close modal')
+        this.props.closeModal()
+        // this.props.showLogin(false)
     }
 
     login() {
@@ -131,12 +133,14 @@ class LoginView extends Component {
     }
 
     loginFullfiled(nextProps) {
-        if (this.props.dialog.login.visible && !nextProps.dialog.login.visible) {
-            this.setState({
-                pass: '',
-                user: ''
-            })
-        }
+        // console.tron.log('logon fullfiled')
+        // if (this.props.dialog.login.visible && !nextProps.dialog.login.visible) {
+        //     this.setState({
+        //         pass: '',
+        //         user: ''
+        //     })
+        //     this.closeModal()
+        // }
     }
 }
 
@@ -160,6 +164,10 @@ LoginView.propTypes = {
     showLogin: PropTypes.func
 }
 
+LoginView.navigationOptions = {
+    title: 'Login'
+}
+
 export default connect(
     state => ({
         auth: state.auth,
@@ -169,6 +177,7 @@ export default connect(
     dispatch => ({
         renewToken: (apiKey) => dispatch(actions.renewToken(apiKey)),
         requestAPIKey: (user) => dispatch(actions.requestAPIKey(user)),
-        showLogin: (show) => dispatch(actions.showLogin(show))
+        showLogin: (show) => dispatch(actions.showLogin(show)),
+        closeModal: () => dispatch({ type: 'CLOSE_LOGIN_MODAL' })
     })
 )(LoginView)

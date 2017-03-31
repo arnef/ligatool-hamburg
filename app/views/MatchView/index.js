@@ -7,8 +7,8 @@ import moment from 'moment'
 class MatchView extends Component {
 
     render() {
-        const { id, matches } = this.props
-        const match = matches[id]
+        const { navigation, matches } = this.props
+        const match = matches[navigation.state.params.id]
 
 
 
@@ -20,9 +20,12 @@ class MatchView extends Component {
     }
 
 }
+MatchView.navigationOptions = {
+    title: 'Begegnung'
+}
 
 MatchView.propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     matches: PropTypes.object
 }
 

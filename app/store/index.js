@@ -34,5 +34,6 @@ if (__DEV__) {
 
 // use reactron createsore in dev mode
 const cs = __DEV__ ? console.tron.createStore : createStore
+const store = cs(reducer, applyMiddleware(...middleware))
 
-export default cs(reducer, applyMiddleware(...middleware))
+export default store

@@ -6,7 +6,12 @@ import { Container } from '../components'
 
 import { RANKING, LEAGUE_MATCHES } from './routes'
 import { ListItem, Text } from '../components/base'
+import NavIcon from '../Nav/NavIcon'
+import LeagueView from './LeagueView'
+import SelectableMatchListView from './SelectableMatchListView'
 
+import { StackNavigator, NavigationActions } from 'react-navigation'
+import NavHeader from '../Nav/NavHeader'
 class LeaguesView extends Component {
 
     componentDidMount() {
@@ -45,19 +50,21 @@ class LeaguesView extends Component {
     }
 
     onPress(league) {
-        if (league.cup) {
-            this.props.pushRoute({
-                leagueID: league.id,
-                state: LEAGUE_MATCHES,
+        const { dispatch } = this.props
+        dispatch(NavigationActions.navigate({
+            routeName: league.cup ? 'SelectedMatchList' : 'League',
+            params: {
+                id: league.id,
                 title: league.name
-            })
-        } else {
-            this.props.pushRoute({
-                leagueID: league.id,
-                state: RANKING,
-                title: league.name
-            })
-        }
+            }
+        }))
+    }
+}
+
+LeaguesView.navigationOptions = {
+    title: 'Gruppen',
+    tabBar: {
+        icon: ({ tintColor }) => NavIcon('trophy', tintColor)
     }
 }
 
@@ -67,12 +74,22 @@ LeaguesView.propTypes = {
     pushRoute: PropTypes.func
 }
 
-export default connect(
-    state => ({
-        leagues: state.leagues
-    }),
-    dispatch => ({
-        getRankings: () => dispatch(actions.getRankings()),
-        pushRoute: (route) => dispatch(actions.pushRoute(route))
-    })
-)(LeaguesView)
+export default StackNavigator({
+    Leagues: { screen: connect(
+        state => ({
+            leagues: state.leagues
+        }),
+        dispatch => ({
+            getRankings: () => dispatch(actions.getRankings()),
+            pushRoute: (route) => dispatch(actions.pushRoute(route)),
+            dispatch: (action) => dispatch(action)
+        })
+        )(LeaguesView)
+    },
+    League: { screen: LeagueView },
+    SelectedMatchList: { screen: SelectableMatchListView }
+}, {
+    navigationOptions: {
+        header: NavHeader
+    }
+})

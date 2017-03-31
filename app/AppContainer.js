@@ -1,12 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { Platform } from 'react-native'
 import { connect } from 'react-redux'
+import { addNavigationHelpers } from 'react-navigation'
+
 import actions from './store/actions'
 import LoadingScreen from './components/LoadingScreen'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
-import App from './App'
+// import App from './App'
 import { MATCH } from './views/routes'
 import { TAB_OVERVIEW } from './views/tabs'
+import Navigator from './Navigator'
 
 class AppContainer extends Component {
 
@@ -99,7 +102,12 @@ class AppContainer extends Component {
 
     render() {
         if (this.props.appConnected) {
-            return <App />
+            const { dispatch, nav } = this.props
+
+            return <Navigator navigation={ addNavigationHelpers({
+                dispatch,
+                state: nav
+            })} />
         } else {
             return <LoadingScreen />
         }
@@ -109,8 +117,10 @@ class AppContainer extends Component {
 
 AppContainer.propTypes = {
     appConnected: PropTypes.bool,
+    dispatch: PropTypes.func,
     initApp: PropTypes.func,
     match: PropTypes.object,
+    nav: PropTypes.object,
     pushRoute: PropTypes.func,
     receiveNotification: PropTypes.func,
     route: PropTypes.object,
@@ -124,10 +134,12 @@ export default connect(
     state => ({
         appConnected: state.appConnected,
         match: state.match,
+        nav: state.nav,
         route: state.route,
         settings: state.settings
     }),
     dispatch => ({
+        dispatch: (action) => dispatch(action),
         initApp: () => dispatch(actions.initApp()),
         pushRoute: (route) => dispatch(actions.pushRoute(route)),
         receiveNotification: (notif) => dispatch(actions.receiveNotification(notif)),

@@ -1,64 +1,87 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import actions from '../store/actions'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
-import MatchListView from '../views/MatchListView'
-import { TabBar } from '../components'
-import { backgroundColor } from '../components/base/theme'
+import NavIcon from '../Nav/NavIcon'
+import { TabNavigator, TabView } from 'react-navigation'
+import MatchListView from './MatchListView'
+import NavTabBarTop from '../Nav/NavTabBarTop'
+import { queryTeamMatches } from '../store/actions/teamActions'
 
-class MyTeam extends Component {
-
-    componentDidMount() {
-        if (!this.props.teamMatches.fetched && !this.props.teamMatches.loading) {
-            this.props.queryTeamMatches()
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (!this.props.settings.team && nextProps.settings.team
-            && !nextProps.teamMatches.fetched) {
-            console.tron.log('logged in query matches')
-            this.props.queryTeamMatches()
-            this.props.setTitle('Mein Team')
-        }
-    }
+class Comming extends Component {
 
     render() {
+        const { error, loading, next } = this.props.teamMatches
+
         const props = {
-            error: this.props.teamMatches.error,
-            onRefresh: this.props.queryTeamMatches.bind(this),
-            refreshing: this.props.teamMatches.loading
+            error,
+            onRefresh: () => { this.props.dispatch(queryTeamMatches())},
+            refreshing: loading
         }
 
         return (
-            <ScrollableTabView
-                style={{ backgroundColor, flex: 1 }}
-                prerenderingSiblingsNumber={1}
-                renderTabBar={() => (<TabBar />)}>
-                <MatchListView tabLabel='KOMMENDE' {...this.props} {...props} matches={this.props.teamMatches.next} />
-                <MatchListView tabLabel='VERGANGENE' {...this.props} { ...props} matches={this.props.teamMatches.played} />
-            </ScrollableTabView>
+            <MatchListView { ...props } matches={next} refreshOnMount />
         )
+    }
+}
+Comming.propTypes = {
+    teamMatches: PropTypes.object,
+    dispatch: PropTypes.func
+}
+
+class Played extends Component {
+
+    render() {
+        const { error, loading, played } = this.props.teamMatches
+
+        const props = {
+            error,
+            onRefresh: () => { this.props.dispatch(queryTeamMatches())},
+            refreshing: loading
+        }
+
+        return (
+            <MatchListView { ...props } matches={played} />
+        )
+    }
+}
+Played.propTypes = {
+    teamMatches: PropTypes.object,
+    dispatch: PropTypes.func
+}
+
+
+Comming.navigationOptions = {
+    title: 'Kommende'
+}
+Played.navigationOptions = {
+    title: 'Vergagene'
+}
+
+
+
+const MyTeam = TabNavigator({
+    Comming: {
+        screen: connect(state => ({
+            teamMatches: state.teamMatches
+        }))(Comming)
+    },
+    Played: {
+        screen: connect(state => ({ teamMatches: state.teamMatches }))(Played)
+    }
+}, {
+    tabBarComponent: NavTabBarTop,
+    tabBarPosition: 'top',
+    swipeEnabled: true,
+    animationEnabled: true,
+    lazyLoad: false
+})
+
+
+MyTeam.navigationOptions = {
+    title: 'Mein Team',
+    tabBar: {
+        icon: ({ tintColor }) => NavIcon('shirt', tintColor)
     }
 }
 
 
-
-MyTeam.propTypes = {
-    queryTeamMatches: PropTypes.func,
-    setTitle: PropTypes.func,
-    settings: PropTypes.object,
-    teamMatches: PropTypes.object
-}
-
-export default connect(
-    state => ({
-        auth: state.auth,
-        settings: state.settings,
-        teamMatches: state.teamMatches
-    }),
-    dispatch => ({
-        queryTeamMatches: () => dispatch(actions.queryTeamMatches()),
-        setTitle: (title) => dispatch(actions.setTitle(title))
-    })
-)(MyTeam)
+export default MyTeam

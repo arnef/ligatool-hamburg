@@ -18,29 +18,35 @@ class SelectableMatchListView extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.league.matches[`${this.props.leagueID}`]) {
-            this.props.getLeagueMatches(this.props.leagueID)
+        const id = this.props.navigation.state.params.id
+
+        if (!this.props.league.matches[`${id}`]) {
+            this.props.getLeagueMatches(id)
         } else {
             this.getMatchDays()
         }
     }
 
     componentWillReceiveProps(nextProps) {
+        const id = nextProps.navigation.state.params.id
+
         console.tron.log('view receive new props')
-        if (nextProps.league.matches[`${nextProps.leagueID}`]) {
+        if (nextProps.league.matches[`${id}`]) {
             console.tron.log('update match days')
             this.getMatchDays()
         }
     }
 
     render() {
+        const id = this.props.navigation.state.params.id
+
         const props = {
             error: this.props.league.error,
-            onRefresh: () => { this.props.getLeagueMatches(this.props.leagueID)},
+            onRefresh: () => { this.props.getLeagueMatches(id)},
             refreshing: this.props.league.loading
         }
 
-        const matches = this.props.league.matches[`${this.props.leagueID}`] || []
+        const matches = this.props.league.matches[`${id}`] || []
         const matchDays = this.state.matchDays
 
         return (
@@ -81,8 +87,9 @@ class SelectableMatchListView extends Component {
     }
 
     getMatchDays() {
+        const id = this.props.navigation.state.params.id
         const matchDays = []
-        const matches = this.props.league.matches[`${this.props.leagueID}`] || []
+        const matches = this.props.league.matches[`${id}`] || []
         let selectedMatchDay = null
 
         for (let match of matches) {
@@ -111,11 +118,13 @@ class SelectableMatchListView extends Component {
     }
 }
 
+SelectableMatchListView.navigationOptions = {
+    title: 'Begegnungen'
+}
 
 SelectableMatchListView.propTypes = {
     getLeagueMatches: PropTypes.func,
     league: PropTypes.object,
-    leagueID: PropTypes.number,
     pushRoute: PropTypes.func
 }
 

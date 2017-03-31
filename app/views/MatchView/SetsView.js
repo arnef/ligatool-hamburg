@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     //     ios:
         {
             position: 'absolute',
-            bottom: Platform.OS === 'ios' ? 48 : 0,
+            bottom: 0,
             width: Dimensions.get('window').width,
             marginBottom: 40,
             // height: 54,
