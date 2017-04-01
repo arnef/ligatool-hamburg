@@ -10,22 +10,21 @@ import { backgroundColor } from '../../components/base/theme'
 
 class TeamView extends Component {
 
+    componentDidMount() {
+        console.tron.log(this.props.navigation.state)
+    }
+
     render() {
-        const matches = this.props.teams.id[`${this.props.team.id}`] ? this.props.teams.id[`${this.props.team.id}`].matches : []
+        const { state } = this.props.navigation
+        const matches = this.props.teams.id[`${state.params.team.id}`] ?
+            this.props.teams.id[`${state.params.team.id}`].matches : []
         const props = {
             error: this.props.teams.error,
-            onRefresh: () => this.props.getTeamMatches(this.props.team.id),
+            onRefresh: () => this.props.getTeamMatches(state.params.team.id),
             refreshing: this.props.teams.loading
         }
 
-        return (
-            <ScrollableTabView
-                style={{ backgroundColor, flex: 1 }}
-                renderTabBar={ () => (<TabBar />)}>
-                <TeamDetails tabLabel='TEAM' { ...this.props } />
-                <MatchListView tabLabel='BEGEGNUNGEN' { ...this.props } { ...props } refreshOnMount matches={matches} />
-            </ScrollableTabView>
-        )
+        return (<MatchListView { ...props} refreshOnMount matches={matches} />)
     }
 
 }

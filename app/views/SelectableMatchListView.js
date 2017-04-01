@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import actions from '../store/actions'
 import { ListItem, Text } from '../components/base'
 import { Container, MatchItem } from '../components'
-import { MATCH } from './routes'
-
+import { NavigationActions } from 'react-navigation'
+// import NavIcon from '../Nav/NavIcon'
 
 class SelectableMatchListView extends Component {
 
@@ -72,19 +72,21 @@ class SelectableMatchListView extends Component {
                 )}
                 { !this.state.showDropdown && matches.map((match) => {
                     if (match.match_day === this.state.selectedMatchDay) {
-                        return (<MatchItem key={match.id} onPress={ this.onPressMatch.bind(this) } data={match} />)
+                        return (<MatchItem key={match.id}  data={match} />)
                     }
                 })}
             </Container>
         )
     }
 
-    onPressMatch(match) {
-        this.props.pushRoute({
-            match: match,
-            state: MATCH
-        })
-    }
+    // onPressMatch(match) {
+    //     // const match = this.props.matches[mid]
+
+    //     this.props.pushRoute({
+    //         routeName: 'Match',
+    //         params: { id: match.id }
+    //     })
+    // }
 
     getMatchDays() {
         const id = this.props.navigation.state.params.id
@@ -118,9 +120,13 @@ class SelectableMatchListView extends Component {
     }
 }
 
-SelectableMatchListView.navigationOptions = {
-    title: 'Begegnungen'
-}
+// SelectableMatchListView.navigationOptions = {
+//     title: 'Begegnungen',
+//     tabBar: {
+//         label: 'Begegnungen',
+//         icon: ({ tintColor }) => NavIcon('trophy', tintColor)
+//     }
+// }
 
 SelectableMatchListView.propTypes = {
     getLeagueMatches: PropTypes.func,
@@ -130,10 +136,11 @@ SelectableMatchListView.propTypes = {
 
 export default connect(
     state => ({
-        league: state.league
+        league: state.league,
+        matches: state.matches.data
     }),
     dispatch => ({
         getLeagueMatches: (id) => dispatch(actions.getLeagueMatches(id)),
-        pushRoute: (route) => dispatch(actions.pushRoute(route))
+        pushRoute: (route) => dispatch(NavigationActions.navigate(route))
     })
 )(SelectableMatchListView)

@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import actions from '../store/actions'
 import { Container, TeamLogo } from '../components'
 import { Text, ListItem, Column } from '../components/base'
-import { TEAM } from '../views/routes'
+import { NavigationActions } from 'react-navigation'
+
 
 class TableView extends Component {
 
@@ -46,9 +47,8 @@ class TableView extends Component {
 
     _onPress(team) {
         this.props.pushRoute({
-            state: TEAM,
-            team: team,
-            title: team.name
+            routeName: 'Team',
+            params: { team, title: team.name }
         })
     }
 
@@ -93,9 +93,7 @@ TableView.propTypes = {
     leagueID: PropTypes.number,
     pushRoute: PropTypes.func
 }
-TableView.navigationOptions = {
-    title: 'Tabelle'
-}
+
 
 export default connect(
     state => ({
@@ -103,6 +101,6 @@ export default connect(
     }),
     dispatch => ({
         getLeague: (id) => dispatch(actions.getLeague(id)),
-        pushRoute: (route) => dispatch(actions.pushRoute(route))
+        pushRoute: (route) => dispatch(NavigationActions.navigate(route))
     })
 )(TableView)

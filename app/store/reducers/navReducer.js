@@ -2,8 +2,21 @@ import { TOKEN, FULFILLED } from '../actions/types'
 import Navigator from '../../Navigator'
 import { NavigationActions } from 'react-navigation'
 
+const tabs = ['Overview', 'MyTeam', 'Leagues', 'Settings']
+let openTab = tabs[0]
+
 export default (state, action) => {
     switch (action.type) {
+    // case 'SET_TITLE': {
+    //     console.tron.log(action)
+    //     const key = findRouteKey(state, action.key)
+    //     const title = action.title
+
+    //     return Navigator.router.getStateForAction(
+    //         NavigationActions.setParams({ params: { title }, key }),
+    //         state
+    //     )
+    // }
     case 'CLOSE_LOGIN_MODAL': {
         const key = findRouteKey(state, 'Login')
 
@@ -23,6 +36,20 @@ export default (state, action) => {
         }
     }
     default: {
+        if (action.type === NavigationActions.NAVIGATE) {
+            console.tron.log(`route name ${action.routeName}`)
+            if (tabs.indexOf(action.routeName) !== -1) {
+                console.tron.log(`set open tab ${action.routeName}`)
+                openTab = action.routeName
+            }
+            if (action.routeName === 'Match') {
+                const newAction = { ...action, routeName: `${openTab}Match` }
+
+                console.tron.log(`open tab ${openTab}`)
+                return Navigator.router.getStateForAction(newAction, state)
+
+            }
+        }
 
         return Navigator.router.getStateForAction(action, state)
     }
@@ -31,9 +58,6 @@ export default (state, action) => {
 
 
 const recursiveFindRoute = (route, name) => {
-    if (route) {
-        console.tron.log(`route Name: ${route.routeName}`)
-    }
     if (!route) {
         return null
     }
@@ -60,6 +84,8 @@ const findRouteKey = (state, name) => {
     const found = recursiveFindRoute(state, name)
 
     if (found) {
+        console.tron.log('route key ' + found.key)
+
         return found.key
     }
 

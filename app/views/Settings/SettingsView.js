@@ -5,9 +5,7 @@ import actions from '../../store/actions'
 import codePush from 'react-native-code-push'
 import { ListItem, Text } from '../../components/base'
 import { Container } from '../../components'
-import { SETTINGS_NOTIFICATION } from '../routes'
 import * as theme from '../../components/base/theme'
-import NavIcon from '../../Nav/NavIcon'
 import { StackNavigator, NavigationActions } from 'react-navigation'
 import SettingsNotificationView from './SettingsNotificationView'
 import NavHeader from '../../Nav/NavHeader'
@@ -150,13 +148,6 @@ class SettingsView extends Component {
     }
 }
 
-SettingsView.navigationOptions = {
-    title: 'Einstellungen',
-    key: 'settings-view',
-    tabBar: {
-        icon: ({ tintColor }) => NavIcon('settings', tintColor)
-    }
-}
 
 SettingsView.propTypes = {
     auth: PropTypes.object,
@@ -170,22 +161,9 @@ SettingsView.propTypes = {
     showLogin: PropTypes.func
 }
 
-// export default connect(
-//     state => ({
-//         auth: state.auth,
-//         dialog: state.dialog,
-//         leagues: state.leagues,
-//         settings: state.settings
-//     }),
-//     dispatch => ({
-//         getRankings: () => dispatch(actions.getRankings()),
-//         logout: () => dispatch(actions.logout()),
-//         pushRoute: (route) => dispatch(actions.pushRoute(route)),
-//         saveNotifications: () => dispatch(actions.saveNotifications()),
-//         setNotification: (key, value) => dispatch(actions.setNotification(key, value)),
-//         showLogin: (show) => dispatch(actions.showLogin(show))
-//     })
-// )(SettingsView)
+SettingsView.navigationOptions = { title: 'Einstellungen' }
+SettingsNotificationView.navigationOptions = { title: 'Benachrichtigungen' }
+
 
 export default StackNavigator({
     Settings: { screen:
@@ -207,7 +185,6 @@ export default StackNavigator({
     )(SettingsView) },
     SettingsNotification: { screen: SettingsNotificationView }
 }, {
-    navigationOptions: {
-        header: NavHeader
-    }
+    ...NavHeader
 })
+

@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import { Platform } from 'react-native'
+import { Platform, StatusBar } from 'react-native'
 import { connect } from 'react-redux'
 import { addNavigationHelpers } from 'react-navigation'
 
 import actions from './store/actions'
 import LoadingScreen from './components/LoadingScreen'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
-// import App from './App'
-import { MATCH } from './views/routes'
 import { TAB_OVERVIEW } from './views/tabs'
 import Navigator from './Navigator'
 
@@ -16,6 +14,13 @@ class AppContainer extends Component {
     componentDidMount() {
         this.mountNotification()
         this.props.initApp()
+        if (Platform.OS === 'android' && Platform.Version >= 21) {
+            // StatusBar.setTranslucent(true)
+            // StatusBar.setBackgroundColor('rgba(0,0,0,.3)')
+        }
+        else if (Platform.OS === 'ios') {
+            StatusBar.setBarStyle('light-content')
+        }
     }
 
     componentWillUnmount() {
@@ -87,10 +92,10 @@ class AppContainer extends Component {
 
                 if (matchId && !(lastRoute.id === matchId)) {
                     console.tron.log('OPEN ROUTE')
-                    pushRoute({
-                        id: matchId,
-                        state: MATCH
-                    })
+                    // pushRoute({
+                    //     // id: matchId,
+                    //     // state: MATCH
+                    // })
                 }
 
             }

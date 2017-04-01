@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import NavIcon from '../Nav/NavIcon'
-import { TabNavigator, TabView } from 'react-navigation'
+import { TabNavigator } from 'react-navigation'
 import MatchListView from './MatchListView'
 import NavTabBarTop from '../Nav/NavTabBarTop'
 import { queryTeamMatches } from '../store/actions/teamActions'
@@ -39,7 +38,7 @@ class Played extends Component {
         }
 
         return (
-            <MatchListView { ...props } matches={played} />
+            <MatchListView { ...props } matches={played}  />
         )
     }
 }
@@ -65,7 +64,9 @@ const MyTeam = TabNavigator({
         }))(Comming)
     },
     Played: {
-        screen: connect(state => ({ teamMatches: state.teamMatches }))(Played)
+        screen: connect(state => ({
+            teamMatches: state.teamMatches
+        }))(Played)
     }
 }, {
     tabBarComponent: NavTabBarTop,
@@ -75,13 +76,8 @@ const MyTeam = TabNavigator({
     lazyLoad: false
 })
 
-
 MyTeam.navigationOptions = {
-    title: 'Mein Team',
-    tabBar: {
-        icon: ({ tintColor }) => NavIcon('shirt', tintColor)
-    }
+    title: 'Mein Team'
 }
-
 
 export default MyTeam

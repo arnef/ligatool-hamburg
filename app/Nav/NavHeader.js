@@ -1,24 +1,37 @@
-import store from '../store'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { CardStack } from 'react-navigation'
 
-export default ({ state, setParams }) => {
-    console.tron.log(state)
-    return {
-    backTitle: null,
-    style: {
-        backgroundColor: store.getState().settings.color
+class NavHeader extends Component {
 
-    },
-    tintColor: '#fff'
+    render() {
+        const { style, ...rest } = this.props
+        const headerStyle = [ style ]
+
+        headerStyle.push({
+            backgroundColor: this.props.color
+        })
+
+        return (<CardStack.Header
+            { ...rest }
+            style={ headerStyle } />
+        )
     }
 }
 
-// export default connect(
-//     state => ({ color: state.settings.color })
-// )((props) => ({
-//     backTitle: null,
-//     style: {
-//         backgroundColor: props.color
-//     },
-//     tintColor: '#fff'
-// }))
+NavHeader.propTypes = {
+    color: PropTypes.string,
+    style: PropTypes.oneOfType([ PropTypes.object, PropTypes.number ])
+}
+
+export default {
+    headerComponent: connect(
+        state => ({ color: state.settings.color })
+    )(NavHeader),
+    navigationOptions: {
+        header: {
+            backTitle: null,
+            tintColor: '#fff'
+        }
+    }
+}

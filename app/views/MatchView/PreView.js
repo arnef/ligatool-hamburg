@@ -5,19 +5,23 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TeamView from '../TeamView'
 import { TabBar } from '../../components'
 import { backgroundColor } from '../../components/base/theme'
+import TeamDetails from '../TeamView/TeamDetails'
+import TeamAway from '../TeamView/TeamDetails'
+import NavTabBarTop from '../../Nav/NavTabBarTop'
+import { TabNavigator } from 'react-navigation'
 
 
 class PreviewMatch extends Component {
 
     componentDidMount() {
-        this.props.setTitle(this.props.match.team_home.name)
+        // this.props.setTitle(this.props.match.team_home.name)
     }
 
     onChangeTab(keys) {
-        const { match } = this.props
-        const title = keys.i === 0 ? match.team_home.name : match.team_away.name
+        // const { match } = this.props
+        // const title = keys.i === 0 ? match.team_home.name : match.team_away.name
 
-        this.props.setTitle(title)
+        // this.props.setTitle(title)
     }
 
     render() {
@@ -41,9 +45,15 @@ PreviewMatch.propTypes = {
     setTitle: PropTypes.func
 }
 
-export default connect(
-    null,
-    dispatch => ({
-        setTitle: (title) => dispatch(setTitle(title))
-    })
-)(PreviewMatch)
+TeamDetails.navigationOptions = {
+    title: 'Heim'
+}
+export default TabNavigator({
+    TeamHome: { screen: TeamDetails }
+})
+// export default connect(
+//     null,
+//     dispatch => ({
+//         setTitle: (title) => dispatch(setTitle(title))
+//     })
+// )(PreviewMatch)

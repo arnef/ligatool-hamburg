@@ -4,7 +4,6 @@ import { getRankings } from '../../store/actions/leagueActions'
 import { Container } from '../../components'
 import { ListItem, Text } from '../../components/base'
 import { NavigationActions } from 'react-navigation'
-import { MODAL_SELECT_TEAM } from '../../views/routes'
 
 class SelectGroupView extends Component {
 

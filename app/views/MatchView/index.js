@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import SetsView from './SetsView'
 import PreView from './PreView'
 import moment from 'moment'
+import NavIcon from '../../Nav/NavIcon'
+
 
 class MatchView extends Component {
 
@@ -10,18 +12,22 @@ class MatchView extends Component {
         const { navigation, matches } = this.props
         const match = matches[navigation.state.params.id]
 
+        // console.tron.log(navigation)
+        // if (match.set_points || (match.is_admin && moment(match.datetime).diff(moment(), 'minutes') < 16)) {
 
-
-        if (match.set_points || (match.is_admin && moment(match.datetime).diff(moment(), 'minutes') < 16)) {
-            return <SetsView data={match}  />
-        } else {
-            return <PreView match={match} />
-        }
+        return <SetsView data={match}  />
+        // } else {
+        //     return <PreView { ...this.props } />
+        // }
     }
 
 }
 MatchView.navigationOptions = {
-    title: 'Begegnung'
+    title: 'Begegnung',
+    tabBar: {
+        label: 'Mein Team',
+        icon: ({ tintColor }) => NavIcon('shirt', tintColor)
+    }
 }
 
 MatchView.propTypes = {

@@ -5,7 +5,6 @@ import actions from '../../store/actions'
 import { Container } from '../../components'
 import { ListItem, Row, Column, Button, Text } from '../../components/base'
 import * as theme from '../../components/base/theme'
-import { NavigationActions } from 'react-navigation'
 import { CLIENT_ERROR } from 'apisauce'
 
 class LoginView extends Component {

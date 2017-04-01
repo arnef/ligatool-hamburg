@@ -1,4 +1,4 @@
-import { TOGGLE_D5, SET_PLAYER, QUERY_MATCHES, QUERY_TEAM_MATCHES, GET_TEAM_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH } from '../actions/types'
+import { TOGGLE_D5, SET_PLAYER, GET_LEAGUE_MATCHES, QUERY_MATCHES, QUERY_TEAM_MATCHES, GET_TEAM_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH } from '../actions/types'
 import { compareDays, isAdminForMatch } from '../../Helper'
 
 export default (state = {
@@ -12,6 +12,7 @@ export default (state = {
 }, action) => {
 
     switch (action.type) {
+    case GET_LEAGUE_MATCHES + FULFILLED:
     case GET_TEAM_MATCHES + FULFILLED:
     case QUERY_TEAM_MATCHES + FULFILLED: {
         if (action.payload.ok) {

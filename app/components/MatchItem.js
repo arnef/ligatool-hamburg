@@ -4,9 +4,9 @@ import { formatDate, formatTime } from '../Helper'
 import Score from './Score'
 import { Row, Column, ListItem, Touchable, Icon, Text } from '../components/base'
 import { TeamLogo } from '../components'
-import { MATCH } from '../views/routes'
-import { pushRoute } from '../store/actions/routeActions'
 import { NavigationActions } from 'react-navigation'
+
+
 class MatchItem extends Component {
 
     render() {
@@ -56,11 +56,17 @@ class MatchItem extends Component {
      * @param {object} match
      */
     onPress(match) {
-
-        this.props.pushRoute({
-            routeName: 'Match',
-            params: { id: match.id }
-        })
+        if (match.set_points) {
+            this.props.pushRoute({
+                routeName: 'Match',
+                params: { id: match.id }
+            })
+        } else {
+            this.props.pushRoute({
+                routeName: 'MatchPreview',
+                params: { match }
+            })
+        }
     }
 }
 

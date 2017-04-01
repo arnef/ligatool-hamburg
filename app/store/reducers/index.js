@@ -11,7 +11,7 @@ import teams from './teamReducer'
 import league from './leagueReducer'
 import loading from './loadingReducer'
 import appConnected from './restoreReducer'
-import route from './routeReducer'
+// import route from './routeReducer'
 import nav from './navReducer'
 
 
@@ -25,7 +25,7 @@ export default combineReducers({
     match,
     matches,
     nav,
-    route,
+    // route,
     settings,
     teamMatches,
     teams

@@ -4,7 +4,7 @@ import actions from '../store/actions'
 import { View } from 'react-native'
 import { Container } from '../components'
 
-import { RANKING, LEAGUE_MATCHES } from './routes'
+// import { RANKING, LEAGUE_MATCHES } from './routes'
 import { ListItem, Text } from '../components/base'
 import NavIcon from '../Nav/NavIcon'
 import LeagueView from './LeagueView'
@@ -12,6 +12,10 @@ import SelectableMatchListView from './SelectableMatchListView'
 
 import { StackNavigator, NavigationActions } from 'react-navigation'
 import NavHeader from '../Nav/NavHeader'
+import TeamView from './TeamView'
+import MatchView from './MatchView'
+
+
 class LeaguesView extends Component {
 
     componentDidMount() {
@@ -87,9 +91,9 @@ export default StackNavigator({
         )(LeaguesView)
     },
     League: { screen: LeagueView },
+    Team: { screen: TeamView },
+    LeaguesMatch: { screen: MatchView },
     SelectedMatchList: { screen: SelectableMatchListView }
 }, {
-    navigationOptions: {
-        header: NavHeader
-    }
+    ...NavHeader
 })

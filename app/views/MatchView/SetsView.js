@@ -180,7 +180,7 @@ class SetsView extends Component {
         return (
             <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
                 <SelectPlayerModal id={data.id} />
-                <Match.Header data={data} pushRoute={this.props.pushRoute} />
+                <Match.Header data={data} />
                 <Container
                     { ...this.props }
                     getRef={scrollView => { this.scrollView = scrollView}}
@@ -199,7 +199,7 @@ class SetsView extends Component {
                         adjustPosition={this.adjustPosition.bind(this)}
                         onSelect={this.onSelect.bind(this)}
                     />
-                    { showButton && (<View style={{ height: 48 }} />)}
+                    { showButton && editable && (<View style={{ height: 48 }} />)}
                 </Container>
 
                 { showButton && editable && this.renderSubmitButton() }

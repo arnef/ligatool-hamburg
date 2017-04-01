@@ -4,6 +4,9 @@ import NavIcon from '../Nav/NavIcon'
 import { TabNavigator } from 'react-navigation'
 import NavTabBarTop from '../Nav/NavTabBarTop'
 
+TableView.navigationOptions = { title: 'Tabelle' }
+SelectableMatchListView.navigationOptions = { title: 'Begegnungen' }
+
 const LeagueView = TabNavigator({
     League: { screen: TableView },
     MatchDay: { screen: SelectableMatchListView }

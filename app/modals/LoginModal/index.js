@@ -1,6 +1,3 @@
-// import LoginModal from './LoginModal'
-
-// export default LoginModal
 import { StackNavigator } from 'react-navigation'
 import SelectGroupView from './SelectGroupView'
 import SelectTeamView from './SelectTeamView'
@@ -12,9 +9,7 @@ const NavStack = StackNavigator({
     SelectTeam: { screen: SelectTeamView },
     Login: { screen: LoginView }
 }, {
-    navigationOptions: {
-        header: NavHeader
-    }
+    ...NavHeader
 })
 
 export default NavStack

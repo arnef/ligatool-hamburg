@@ -128,7 +128,7 @@ const Tabs = TabNavigator({
     tabBarComponent: NavTabBarTop,
     tabBarPosition: 'top',
     swipeEnabled: true,
-    animationEnabnled: true,
+    animationEnabled: true,
     lazyLoad: false
 })
 

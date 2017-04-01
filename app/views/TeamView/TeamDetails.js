@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Linking, Alert, Platform } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { getTeam } from '../../store/actions/teamActions'
 import { Container } from '../../components'
@@ -16,11 +17,13 @@ class TeamView extends Component {
             this.loadTeam()
             console.tron.log('get team')
         }
+        // const { state } = this.props.navigation
 
+        // this.props.setTitle(state.params.team.name, state.key)
     }
 
     render() {
-        const team = this.getTeam() || this.props.team
+        const team = this.getTeam() || this.props.navigation.state.params.team
 
         return (
             <Container
@@ -164,13 +167,14 @@ class TeamView extends Component {
     }
 
     getTeam() {
-        const teamID = `${this.props.team.id}`
+        const { navigation } = this.props
+        const teamID = `${navigation.state.params.team.id}`
 
         return this.props.teams.id[teamID] ? this.props.teams.id[teamID].details : null
     }
 
     loadTeam() {
-        const teamID = this.props.team.id
+        const teamID = this.props.navigation.state.params.team.id
 
         this.props.getTeam(teamID)
     }
@@ -213,6 +217,8 @@ export default connect(
         teams: state.teams
     }),
     dispatch => ({
-        getTeam: (id) => dispatch(getTeam(id))
+        getTeam: (id) => dispatch(getTeam(id)),
+        setTitle: (title, key) => dispatch({ type: 'SET_TITLE', title, key })
+        // setTitle: (title, key) => dispatch(NavigationActions.setParams({ title, key }))
     })
 )(TeamView)

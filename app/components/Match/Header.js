@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { StyleSheet, View, Platform } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { Touchable, Text } from '../../components/base'
-import { TEAM } from '../../views/routes'
 
 class MatchHeader extends Component {
 
@@ -39,9 +39,8 @@ class MatchHeader extends Component {
 
     onPress(team) {
         this.props.pushRoute({
-            state: TEAM,
-            team,
-            title: team.name
+            routeName: 'Team',
+            params: { team, title: team.name }
         })
     }
 }
@@ -89,7 +88,12 @@ MatchHeader.propTypes = {
     pushRoute: PropTypes.func
 }
 
-export default connect( state => ({
-    color: state.settings.color,
-    matches: state.matches
-}))(MatchHeader)
+export default connect(
+    state => ({
+        color: state.settings.color,
+        matches: state.matches
+    }),
+    dispatch => ({
+        pushRoute: (route) => dispatch(NavigationActions.navigate(route))
+    })
+)(MatchHeader)

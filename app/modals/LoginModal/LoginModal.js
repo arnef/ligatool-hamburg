@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+/*import React, { Component, PropTypes } from 'react'
 import { Modal } from 'react-native'
 import { connect } from 'react-redux'
 import actions from '../../store/actions'
@@ -76,4 +76,4 @@ export default connect(
     dispatch => ({
         showLogin: (show) => dispatch(actions.showLogin(show))
     })
-)(LoginModal)
+)(LoginModal)*/

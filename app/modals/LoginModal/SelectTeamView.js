@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import actions from '../../store/actions'
 import { ListItem, Text } from '../../components/base'
 import { NavigationActions } from 'react-navigation'
-import  { MODAL_LOGIN } from '../../views/routes'
 
 class SelectTeamView extends Component {
 
