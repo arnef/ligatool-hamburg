@@ -21,8 +21,6 @@ class SettingsView extends Component {
         }
     }
 
-
-
     _logout() {
         this.props.logout()
     }
