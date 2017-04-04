@@ -3,6 +3,8 @@ import { Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { CardStack } from 'react-navigation'
 import { ANDROID, ANDROID_VERSION_LOLLIPOP } from '../consts'
+
+
 class NavHeader extends Component {
 
     render() {
@@ -32,7 +34,7 @@ NavHeader.propTypes = {
     style: PropTypes.oneOfType([ PropTypes.object, PropTypes.number ])
 }
 
-const singleHeader = ['Leagues', 'Settings', 'SettingsNotification', 'SelectGroup', 'SelectTeam', 'LoginView']
+const singleHeader = ['Leagues', 'Settings', 'SettingsNotification', 'SelectGroup', 'SelectTeam', 'LoginView', 'SelectPlayerView']
 
 export default {
     headerComponent: connect(

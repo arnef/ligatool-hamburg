@@ -10,7 +10,6 @@ export default (navigation, defaultHeader) => {
         left: (
             <Touchable
                 borderless
-                pressColor='#fff'
                 delayPressIn={0}
                 onPress={() => navigation.dispatch(showLogin(false)) }>
                 <Icon name='close' color='#fff' style={styles.icon} size={iconSize} />

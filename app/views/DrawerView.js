@@ -13,8 +13,7 @@ class NavigationView extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            activeLeague: -1,
-            activePage: OVERVIEW
+            activeLeague: -1
         }
     }
 
@@ -26,12 +25,22 @@ class NavigationView extends Component {
         const { navigate, closeDrawer } = this.props
 
         if (!state.active) {
+            this.setState({ activeLeague: state.leagueID || -1 })
             if (state.state === RANKING) {
                 navigate({
-                routeName: 'League',
+                    routeName: 'League',
                     params: {
                         id: state.leagueID,
                         title: state.title
+                    }
+                })
+            } else if (state.state === LEAGUE_MATCHES) {
+                navigate({
+                    routeName: 'LeagueCupMatches',
+                    params: {
+                        id: state.leagueID,
+                        title: state.title,
+                        cup: state.title
                     }
                 })
             } else {
@@ -40,24 +49,6 @@ class NavigationView extends Component {
 
         }
         closeDrawer()
-
-        // console.tron.log(this.props.navigation.state)
-        // navigate({ routeName: 'DrawerClose' })
-        // this.props.onNavigate(state)
-        // navigate({
-        //     routeName: SETTINGS
-        // })
-        // if (state.title === 'Login') {
-        //     state.title = null
-        // }
-        // if (this.props.onNavigate) {
-        //     this.props.onNavigate(state)
-        // }
-        // // this.props.pushRoute(state)
-        // this.setState({
-        //     activeLeague: state.leagueID ? state.leagueID : -1,
-        //     activePage: state.state
-        // })
     }
 
     _renderItem(state, text, icon, idx) {
@@ -78,17 +69,21 @@ class NavigationView extends Component {
     }
 
     renderLeagues() {
+        const { navigation } = this.props
         const color = this.props.settings.color
 
+
+        console.tron.log(`active state ${navigation.state.index}`)
+
         return this.props.leagues.data.map( (league) => {
-            const active = league.id === this.state.activeLeague
+            const active = navigation.state.index === 3  && league.id === this.state.activeLeague
 
             return (
                 <ListItem key={league.id}
                     last
                     active={active}
                     onPress={ () => {
-                        this._handleRowPress({ leagueID: league.id, state: league.cup ? LEAGUE_MATCHES : RANKING, title: league.name })
+                        this._handleRowPress({ leagueID: league.id, state: league.cup ? LEAGUE_MATCHES : RANKING, title: league.name, active })
                     }}>
                     <Text bold color={active ? color : null}>
                     { league.name }

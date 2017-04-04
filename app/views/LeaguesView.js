@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import actions from '../store/actions'
-import { View } from 'react-native'
+import { View, Platform } from 'react-native'
 import { Container } from '../components'
+import { ANDROID } from '../consts'
+import NavDrawerIcon from '../Nav/NavDrawerIcon'
 
 // import { RANKING, LEAGUE_MATCHES } from './routes'
 import { ListItem, Text } from '../components/base'
@@ -58,10 +60,11 @@ class LeaguesView extends Component {
         const { dispatch } = this.props
 
         dispatch(NavigationActions.navigate({
-            routeName: league.cup ? 'SelectedMatchList' : 'League',
+            routeName: league.cup ? 'LeagueCupMatches' : 'League',
             params: {
                 id: league.id,
-                title: league.name
+                title: league.name,
+                cup: league.cup ? league.name : undefined
             }
         }))
     }
@@ -78,6 +81,10 @@ LeaguesView.propTypes = {
     getRankings: PropTypes.func,
     leagues: PropTypes.object,
     pushRoute: PropTypes.func
+}
+SelectableMatchListView.navigationOptions = {
+    title: ({ state }) => state.params.cup || 'Begegnungen',
+    header: NavDrawerIcon
 }
 
 export default StackNavigator({
@@ -96,7 +103,7 @@ export default StackNavigator({
     LeaguesTeam: { screen: TeamView },
     LeaguesMatch: { screen: MatchView },
     LeaguesPreview: { screen: Preview },
-    SelectedMatchList: { screen: SelectableMatchListView }
+    LeagueCupMatches: { screen: SelectableMatchListView }
 }, {
     ...NavHeader
 })

@@ -1,156 +1,124 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Text, Modal } from 'react-native'
+import { View } from 'react-native'
+import { StackNavigator, NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
-import actions from '../store/actions'
-import { ListItem } from '../components/base'
+
+import { hidePlayerDialog } from '../store/actions/dialogActions'
+import { setPlayer } from '../store/actions/matchActions'
 import { Container } from '../components'
-import Navigator from './Navigation'
+import { ListItem, Text } from '../components/base'
+import NavHeader from '../Nav/NavHeader'
+import NavCloseIcon from '../Nav/NavCloseIcon'
 
+class SelectPlayer extends Component {
 
-class SelectPlayerModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selected: {
-                away: {},
-                home: {}
-            }
-        }
-    }
-
-    setSelection(selection) {
-        if (typeof selection !== 'number') {
-            throw 'selection must be number'
-        }
-        this.setState({
-            selection: selection
-        })
-    }
-
-    setTitle(title) {
-        this.setState({ title })
-    }
-
-
-    onPress(idx, team) {
-        const { data, matches, setPlayer, id } = this.props
-        const match = matches[id]
-        const { selected } = this.state
-
-        if (selected[team][idx]) {
-            delete selected[team][idx]
-        } else {
-            selected[team][idx] = true
-        }
-        this.setState({
-            selected: selected
-        })
-
-        if (Object.values(selected[team]).length === data.type) {
-            const result = []
-
-            for (let itemIdx in selected[team]) {
-                // console.tron.log('select player ' + itemIdx)
-                result.push(match[`team_${team}`].player[itemIdx])
-            }
-            setPlayer(id, team, result, data.setsIdx)
-
-            setTimeout(() => { // wait animation is done
-                if (team === 'home') {
-                    const title = data.type === 1 ? 'Spieler (Gast) wählen' : 'Doppel (Gast) wählen'
-
-                    this.navigator.push({ team: 'away', title })
-                } else {
-                    this.onRequestClose()
-                }
-            }, 10)
-
+            selected: {}
         }
     }
 
 
-    renderItems(route, navigator) {
-        this.navigator = navigator
-        const { matches, id  } = this.props
-        const match = matches[id]
-        const items = match[`team_${route.team}`] ? match[`team_${route.team}`].player : []
+    render() {
+        const { matches } = this.props
+        const { state } = this.props.navigation
+        const match = matches[state.params.matchId]
+        const teamKey = `team_${state.params.team}`
+        const items = match[teamKey] ? match[teamKey].player : []
 
         return (
             <Container>
                 <ListItem.Group>
-                    { items.map( (item, idx) => {
-                        return this.renderItem(item, idx, route.team)
-                    })
-                    }
+                    { items.map((item, idx) => {
+                        return this.renderItem(item, idx)
+                    })}
                 </ListItem.Group>
             </Container>
         )
     }
 
-    render() {
-        const { data, visible } = this.props
-        const title = data.type === 1 ? 'Spieler (Heim) wählen' : 'Doppel (Heim) wählen'
-
-        return (
-            <Modal
-                visible={visible}
-                animationType='slide'
-                onRequestClose={this.onRequestClose.bind(this)}>
-                <Navigator
-                    closeModal={this.props.hidePlayerDialog.bind(this)}
-                    renderScene={this.renderItems.bind(this)}
-                    initialRoute={{ team: 'home', title }} />
-            </Modal>
-        )
-    }
-
-
-    renderItem(data, idx, team) {
+    renderItem(data, idx) {
         const { selected } = this.state
-        const { matches, id } = this.props
-        const match = matches[id]
 
-        const itemLength = match[`team_${team}`].player.length - 1
 
         return (
-                <ListItem key={data.id} last={idx === itemLength} icon onPress={() => { this.onPress(idx, team) }}>
-                    <ListItem.Image url={data.image} />
-                    <Text>{ `${data.name} ${data.surname}` }</Text>
-                    <View style={{ flex:1 }} />
-                    <ListItem.Icon right name={selected[team][idx] ? 'checkbox' : 'square-outline'} />
-                </ListItem>
+            <ListItem key={data.id} icon onPress={ () => this.onPress(idx) }>
+                <ListItem.Image url={data.image} />
+                <Text>{ `${data.name} ${data.surname}` }</Text>
+                <View style={{ flex: 1 }} />
+                <ListItem.Icon right name={ selected[idx] ? 'checkbox' : 'square-outline' } />
+            </ListItem>
         )
     }
 
-    onRequestClose() {
-        const { hidePlayerDialog } = this.props
+    onPress(idx) {
+        const { state } = this.props.navigation
+        const { navigate, closeModal, setPlayer, matches } = this.props
+        const { selected } = this.state
 
-        this.setState({
-            selected: {
-                away: {},
-                home: {}
+        if (selected[idx]) {
+            delete selected[idx]
+        } else {
+            selected[idx] = true
+        }
+        this.setState({ selected })
+        const selectionLength = Object.values(selected).length
+
+        console.tron.log(`items selected ${selectionLength}`)
+        if (selectionLength === state.params.data.type) {
+            const result = []
+            const player = matches[state.params.matchId][`team_${state.params.team}`].player
+
+            for (let itemIdx in selected) {
+                result.push(player[itemIdx])
             }
-        })
-        hidePlayerDialog()
+
+            setPlayer(state.params.matchId, state.params.team, result, state.params.data.setsIdx)
+            // wait animation done
+            setTimeout(() => {
+                if (state.params.team === 'home') {
+                    navigate({
+                        routeName: 'SelectPlayerView',
+                        params: { ...state.params, team: 'away' }
+                    })
+                } else {
+                    closeModal()
+                }
+            }, 10)
+        } else if (selectionLength > state.params.data.type) {
+            this.setState({
+                selected: { [idx]: true }
+            })
+        }
     }
 }
 
-SelectPlayerModal.propTypes = {
-    data: PropTypes.object,
-    hidePlayerDialog: PropTypes.func,
-    matches: PropTypes.object,
-    setPlayer: PropTypes.func,
-    visible: PropTypes.bool
+SelectPlayer.navigationOptions = {
+    title: ({ state }) => {
+        const team = state.params.team === 'home' ? 'Heim' : 'Gast'
+
+        return `${state.params.data.name} ${team}`
+    },
+    header: (navigation, defaulHeader) => {
+        // maybe check this in NavCloseIcon
+        if (navigation.state.key === 'Init'){
+            return NavCloseIcon(navigation, defaulHeader)
+        } else {
+            return defaulHeader
+        }
+    }
 }
 
-export default connect(
-    state => ({
-        data: state.dialog.player.data,
-        matches: state.matches.data,
-        visible: state.dialog.player.visible
-    }),
-    dispatch => ({
-        hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
-        setPlayer: (id, team, player, setsIdx) => dispatch(actions.setPlayer(id, team, player, setsIdx))
-    })
-)(SelectPlayerModal)
+export default StackNavigator({
+    SelectPlayerView: { screen: connect(
+        state => ({ matches: state.matches.data }),
+        dispatch => ({
+            navigate: (route) => dispatch(NavigationActions.navigate(route)),
+            closeModal: () => dispatch(hidePlayerDialog()),
+            setPlayer: (id, team, player, setsIdx) => dispatch(setPlayer(id, team, player, setsIdx))
+        })
+    )(SelectPlayer) }
+}, {
+    ...NavHeader
+})

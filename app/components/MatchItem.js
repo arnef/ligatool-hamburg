@@ -5,7 +5,7 @@ import Score from './Score'
 import { Row, Column, ListItem, Touchable, Icon, Text } from '../components/base'
 import { TeamLogo } from '../components'
 import { NavigationActions } from 'react-navigation'
-
+import moment from 'moment'
 
 class MatchItem extends Component {
 
@@ -56,7 +56,9 @@ class MatchItem extends Component {
      * @param {object} match
      */
     onPress(match) {
-        if (match.set_points || match.is_admin) {
+
+        if (match.set_points ||
+            (match.is_admin && moment(match.datetime).diff(moment(), 'minutes') < 31 )) {
             this.props.pushRoute({
                 routeName: 'Match',
                 params: { id: match.id }

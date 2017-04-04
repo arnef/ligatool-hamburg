@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Platform } from 'react-native'
+import { View, Platform, BackAndroid, PanResponder } from 'react-native'
 import { connect } from 'react-redux'
 import { addNavigationHelpers, NavigationActions } from 'react-navigation'
-
+import { ANDROID } from './consts'
 import actions from './store/actions'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
 import Navigator from './Navigator'
@@ -14,7 +14,28 @@ class AppContainer extends Component {
     componentDidMount() {
         this.mountNotification()
         this.props.initApp()
-        console.tron.log('APP CONTAINER MOUNTED')
+        if (Platform.OS === ANDROID) {
+            BackAndroid.addEventListener('hardwareBackPress', () => {
+                // const route = findOpenRoute(this.props.nav)
+                // if (route.routeName === 'Played' || route.routeName === 'Next') {
+
+                // }
+
+                this.props.dispatch({ type: NavigationActions.BACK })
+                console.tron.log(`close ${this.props.nav.closeApp}`)
+                if (this.props.nav.closeApp) {
+                    BackAndroid.exitApp()
+                }
+
+                return true
+            })
+            this._panResponder = PanResponder.create({
+                onPanResponderStart: (e, gestureState) => {
+                    console.tron.log(e)
+                    console.tron.log(gestureState)
+                }
+            })
+        }
     }
 
     componentWillUnmount() {
@@ -23,6 +44,9 @@ class AppContainer extends Component {
         }
         if (this.notificationListener) {
             this.notificationListener.remove()
+        }
+        if (Platform.OS === ANDROID) {
+            BackAndroid.removeEventListener('hardwareBackPress')
         }
     }
 

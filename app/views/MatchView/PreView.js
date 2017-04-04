@@ -38,9 +38,5 @@ export default TabNavigator({
     TeamHome: { screen: TeamHome },
     TeamAway: { screen: TeamAway }
 }, {
-    tabBarComponent: NavTabBarTop,
-    tabBarPosition: 'top',
-    swipeEnabled: true,
-    animationEnabled: true,
-    lazyload: true
+    ...NavTabBarTop
 })

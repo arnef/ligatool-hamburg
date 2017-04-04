@@ -29,6 +29,12 @@ NavTabBarTop.propTypes = {
     color: PropTypes.string
 }
 
-export default connect(
-    state => ({ color: state.settings.color })
-)(NavTabBarTop)
+
+export default {
+    tabBarComponent: connect(state => ({ color: state.settings.color }))(NavTabBarTop),
+    tabBarPosition: 'top',
+    swipeEnabled: true,
+    animationEnabled: true,
+    lazyLoad: true,
+    backBehavior: 'none'
+}

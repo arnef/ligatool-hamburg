@@ -120,14 +120,6 @@ class SelectableMatchListView extends Component {
     }
 }
 
-// SelectableMatchListView.navigationOptions = {
-//     title: 'Begegnungen',
-//     tabBar: {
-//         label: 'Begegnungen',
-//         icon: ({ tintColor }) => NavIcon('trophy', tintColor)
-//     }
-// }
-
 SelectableMatchListView.propTypes = {
     getLeagueMatches: PropTypes.func,
     league: PropTypes.object,

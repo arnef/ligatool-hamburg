@@ -67,10 +67,7 @@ const Tabs = TabNavigator({
     Next: { screen: connect(state => ({ matches: state.matches }))(Next) },
     Played: { screen: connect(state => ({ matches: state.matches }))(Played) }
 }, {
-    tabBarComponent: NavTabBarTop,
-    tabBarPosition: 'top',
-    swipeEnabled: true,
-    animationEnabled: true,
+    ...NavTabBarTop,
     lazyLoad: false
 })
 

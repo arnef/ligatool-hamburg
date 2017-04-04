@@ -3,7 +3,6 @@ import { View, Keyboard, Dimensions, Platform, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import actions from '../../store/actions'
 import { Container, Match } from '../../components'
-import SelectPlayerModal from '../../modals/SelectPlayerModal'
 import { Button } from '../../components/base'
 import * as theme from '../../components/base/theme'
 
@@ -61,17 +60,19 @@ class SetsView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const match = nextProps.matches[nextProps.data.id]
-        let idx = 0
+        if (nextProps.data) {
+            const match = nextProps.matches[nextProps.data.id]
+            let idx = 0
 
-        //TODO check submit action in reducer
-        if (match.is_admin && match.score_unconfirmed && !match.live) {
-            idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2
+            //TODO check submit action in reducer
+            if (match.is_admin && match.score_unconfirmed && !match.live) {
+                idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2
+            }
+
+            this.setState({
+                btnIdx: idx
+            })
         }
-
-        this.setState({
-            btnIdx: idx
-        })
     }
 
 
@@ -92,12 +93,14 @@ class SetsView extends Component {
     }
 
     onPress(data, idx) {
+        console.tron.log('SetView onPress')
+        console.tron.log(data)
+
         if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
             this.toggleScoreInput(idx)
         } else {
-            // console.tron.log('OPEN SHOW PALYER MODAL')
-            // console.tron.log(data)
-            this.props.showPlayerDialog(data)
+
+            this.props.showPlayerDialog(this.props.data.id, data)
         }
     }
 
@@ -105,9 +108,7 @@ class SetsView extends Component {
     onSelect(data, value) {
         this.toggleMenu(-1)
         if (value === 0) {
-            // console.tron.log('option show player selected')
-            // console.tron.log(data)
-            this.props.showPlayerDialog(data)
+            this.props.showPlayerDialog(this.props.data.id, data)
         }
         if (value === 1) {
             this.setState({ scoreInput: this.state.menuOpen })
@@ -142,13 +143,17 @@ class SetsView extends Component {
     }
 
     showButton() {
-        const match = this.props.matches[this.props.data.id]
+        if (this.props.data) {
+            const match = this.props.matches[this.props.data.id]
 
-        if (match.league && match.league.name.indexOf('pokal') !== -1) {
-            return match.score_unconfirmed && (match.set_points_home !== match.set_points_away &&  (match.set_points_home > 16 || match.set_points_away > 16)) ? true : false
-        } else {
-            return match.score_unconfirmed && (match.set_points_home + match.set_points_away === 32) ? true : false
+            if (match.league && match.league.name.indexOf('pokal') !== -1) {
+                return match.score_unconfirmed && (match.set_points_home !== match.set_points_away &&  (match.set_points_home > 16 || match.set_points_away > 16)) ? true : false
+            } else {
+                return match.score_unconfirmed && (match.set_points_home + match.set_points_away === 32) ? true : false
+            }
         }
+
+        return false
     }
 
     toggleScoreInput(idx) {
@@ -179,7 +184,6 @@ class SetsView extends Component {
 
         return (
             <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
-                <SelectPlayerModal id={data.id} />
                 <Match.Header data={data} />
                 <Container
                     { ...this.props }
@@ -273,7 +277,7 @@ export default connect(
         hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
         pushRoute: (route) => dispatch(actions.pushRoute(route)),
         setPlayer: (team, result, setsIdx) => dispatch(actions.setPlayer(team, result, setsIdx)),
-        showPlayerDialog: (data) => dispatch(actions.showPlayerDialog(data)),
+        showPlayerDialog: (id, data) => dispatch(actions.showPlayerDialog(id, data)),
         suggestScore: (id, sets, btnIdx) => dispatch(actions.suggestScore(id, sets, btnIdx)),
         toggleMatchType: (id, setsIdx, type) => dispatch(actions.toggleMatchType(id, setsIdx, type)),
         updateSets: (id, sets) => dispatch(actions.updateSets(id, sets))

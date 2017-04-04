@@ -70,11 +70,13 @@ const MyTeam = TabNavigator({
         }))(Played)
     }
 }, {
-    tabBarComponent: NavTabBarTop,
-    tabBarPosition: 'top',
-    swipeEnabled: true,
-    animationEnabled: true,
+    ...NavTabBarTop,
     lazyLoad: false
+    // tabBarComponent: NavTabBarTop,
+    // tabBarPosition: 'top',
+    // swipeEnabled: true,
+    // animationEnabled: true,
+    // lazyLoad: false
 })
 
 MyTeam.navigationOptions = {

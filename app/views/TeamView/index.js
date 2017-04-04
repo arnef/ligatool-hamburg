@@ -12,11 +12,7 @@ const Team = TabNavigator({
     TeamDetails: { screen: TeamView },
     TeamMatches: { screen: TeamMatches }
 }, {
-    tabBarComponent: NavTabBarTop,
-    tabBarPosition: 'top',
-    swipeEnabled: true,
-    animationEnabled: true,
-    lazyLoad: true
+    ...NavTabBarTop
 })
 
 Team.navigationOptions = {

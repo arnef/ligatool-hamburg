@@ -20,7 +20,6 @@ class Match extends Component {
                         <Column />
                         <Switch onValueChange={ () => {
                             toggleMatchType(match.id, data.setsIdx, data.toggle.type)
-                            this.forceUpdate()
                         }}
                         value={match.type.indexOf('d5') !== -1} />
                     </Row>
