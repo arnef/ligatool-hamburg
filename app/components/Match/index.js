@@ -48,7 +48,7 @@ class Match extends Component {
         const id = this.props.match.id
         const matches = this.props.matches.data
         const editMatch = this.props.editable
-        const match = matches[id].sets ? matches[id] : { sets: [] }
+        const match = matches[id] && matches[id].sets ? matches[id] : { sets: [] }
         const sets = []
         const format = formats[ match.type || 'default' ]
 

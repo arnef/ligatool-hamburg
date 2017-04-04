@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Platform, BackAndroid, PanResponder } from 'react-native'
+import { View, Platform, BackAndroid } from 'react-native'
 import { connect } from 'react-redux'
 import { addNavigationHelpers, NavigationActions } from 'react-navigation'
-import { ANDROID } from './consts'
 import actions from './store/actions'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
 import Navigator from './Navigator'
 import Loading from './modals/LoadingModal'
+import { ANDROID, IOS } from './consts'
 
 
 class AppContainer extends Component {
@@ -14,28 +14,17 @@ class AppContainer extends Component {
     componentDidMount() {
         this.mountNotification()
         this.props.initApp()
-        if (Platform.OS === ANDROID) {
-            BackAndroid.addEventListener('hardwareBackPress', () => {
-                // const route = findOpenRoute(this.props.nav)
-                // if (route.routeName === 'Played' || route.routeName === 'Next') {
 
-                // }
+        BackAndroid.addEventListener('hardwareBackPress', () => {
+            this.props.dispatch({ type: NavigationActions.BACK })
+            console.tron.log(`close ${this.props.nav.closeApp}`)
+            if (this.props.nav.closeApp) {
+                BackAndroid.exitApp()
+            }
 
-                this.props.dispatch({ type: NavigationActions.BACK })
-                console.tron.log(`close ${this.props.nav.closeApp}`)
-                if (this.props.nav.closeApp) {
-                    BackAndroid.exitApp()
-                }
+            return true
+        })
 
-                return true
-            })
-            this._panResponder = PanResponder.create({
-                onPanResponderStart: (e, gestureState) => {
-                    console.tron.log(e)
-                    console.tron.log(gestureState)
-                }
-            })
-        }
     }
 
     componentWillUnmount() {
@@ -45,9 +34,7 @@ class AppContainer extends Component {
         if (this.notificationListener) {
             this.notificationListener.remove()
         }
-        if (Platform.OS === ANDROID) {
-            BackAndroid.removeEventListener('hardwareBackPress')
-        }
+        BackAndroid.removeEventListener('hardwareBackPress')
     }
 
     syncNotifications(token) {
@@ -66,7 +53,7 @@ class AppContainer extends Component {
             this.syncNotifications(token)
         })
         this.notificationListener = FCM.on(FCMEvent.Notification, (notif) => {
-            if (Platform.OS === 'ios') {
+            if (Platform.OS === IOS) {
                 switch (notif._notificationType) {
                 case NotificationType.Remote:
                     notif.finish(RemoteNotificationResult.NewData)
@@ -79,21 +66,22 @@ class AppContainer extends Component {
                     break
                 }
             }
+            const openRoute = findOpenRoute(this.props.nav)
+            const isMatchRoute = openRoute.routeName.indexOf('Match') !== -1
+            const matchId = parseInt(notif.data ? notif.data.id : notif.id)
 
-            if (Platform.OS === 'android' && notif.fcm && notif.fcm.tag) {
+            if (Platform.OS === ANDROID && notif.fcm && notif.fcm.tag) {
                 const localNotif = { ...notif.fcm }
-                const matchId = parseInt(notif.id)
+                // const matchId = parseInt(notif.id)
 
                 localNotif.vibrate = 0
                 localNotif.data = { id: notif.id, type: notif.type }
                 localNotif.show_in_foreground = true
-                if (!(this.props.match.ignoreNextNotify && parseInt(matchId) === this.props.match.data.id)) {
+                if (!(this.props.match.ignoreNextNotify && isMatchRoute && openRoute.params.id === matchId)) {
                     FCM.presentLocalNotification(localNotif)
                 }
             }
-            const openRoute = findOpenRoute(this.props.nav)
-            const isMatchRoute = openRoute.routeName.indexOf('Match') !== -1
-            const matchId = parseInt(notif.data ? notif.data.id : notif.id)
+
 
             if (notif.type && !notif.local_notification && !notif._completionHandlerId) {
                 this.props.receiveNotification(notif)
@@ -106,11 +94,9 @@ class AppContainer extends Component {
             if (notif.opened_from_tray) {
                 const { pushRoute } = this.props
 
-
-                console.tron.log(openRoute)
-
                 if (matchId) {
                     if (!isMatchRoute || openRoute.params.id !== matchId) {
+                        //TODO check if user is admin for match
                         pushRoute({
                             routeName: 'OverviewMatch',
                             params: {

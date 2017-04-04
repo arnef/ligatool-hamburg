@@ -1,4 +1,4 @@
-import { TOKEN, FULFILLED, SHOW_LOGIN, DIALOG_PLAYER, INIT_APP, PENDING } from '../actions/types'
+import { TOKEN, FULFILLED, SHOW_LOGIN, DIALOG_PLAYER, INIT_APP } from '../actions/types'
 import { Platform } from 'react-native'
 import { ANDROID } from '../../consts'
 import Navigator from '../../Navigator'
@@ -47,18 +47,6 @@ export default (state, action) => {
             )
         }
     }
-    // case INIT_APP + PENDING: {
-    //     return Navigator.router.getStateForAction(
-    //         NavigationActions.init(),
-    //         // NavigationActions.reset({
-    //         //     index: 0,
-    //         //     actions: [
-    //         //         NavigationActions.navigate({ routeName: 'Splash' })
-    //         //     ]
-    //         // }),
-    //         state
-    //     )
-    // }
     case INIT_APP + FULFILLED: {
         return Navigator.router.getStateForAction(
             NavigationActions.reset({
@@ -165,7 +153,6 @@ const findRouteKey = (state, name) => {
     const found = recursiveFindRoute(state, name)
 
     if (found) {
-        // console.tron.log('route key ' + found.key)
 
         return found.key
     }

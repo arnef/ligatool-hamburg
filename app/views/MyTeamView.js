@@ -72,11 +72,6 @@ const MyTeam = TabNavigator({
 }, {
     ...NavTabBarTop,
     lazyLoad: false
-    // tabBarComponent: NavTabBarTop,
-    // tabBarPosition: 'top',
-    // swipeEnabled: true,
-    // animationEnabled: true,
-    // lazyLoad: false
 })
 
 MyTeam.navigationOptions = {

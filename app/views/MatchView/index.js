@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { View } from 'react-native'
 import { connect } from 'react-redux'
 import SetsView from './SetsView'
 import PreView from './PreView'
@@ -10,15 +11,9 @@ class MatchView extends Component {
 
     render() {
         const { navigation, matches } = this.props
-        const match = matches[navigation.state.params.id]
-
-        // console.tron.log(navigation)
-        // if (match.set_points || (match.is_admin && moment(match.datetime).diff(moment(), 'minutes') < 16)) {
+        const match = matches[navigation.state.params.id] || { id: navigation.state.params.id }
 
         return <SetsView data={match}  />
-        // } else {
-        //     return <PreView { ...this.props } />
-        // }
     }
 
 }

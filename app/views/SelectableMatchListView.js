@@ -4,7 +4,6 @@ import actions from '../store/actions'
 import { ListItem, Text } from '../components/base'
 import { Container, MatchItem } from '../components'
 import { NavigationActions } from 'react-navigation'
-// import NavIcon from '../Nav/NavIcon'
 
 class SelectableMatchListView extends Component {
 
@@ -30,9 +29,7 @@ class SelectableMatchListView extends Component {
     componentWillReceiveProps(nextProps) {
         const id = nextProps.navigation.state.params.id
 
-        // console.tron.log('view receive new props')
         if (nextProps.league.matches[`${id}`]) {
-            // console.tron.log('update match days')
             this.getMatchDays()
         }
     }
@@ -79,15 +76,6 @@ class SelectableMatchListView extends Component {
         )
     }
 
-    // onPressMatch(match) {
-    //     // const match = this.props.matches[mid]
-
-    //     this.props.pushRoute({
-    //         routeName: 'Match',
-    //         params: { id: match.id }
-    //     })
-    // }
-
     getMatchDays() {
         const id = this.props.navigation.state.params.id
         const matchDays = []
@@ -121,6 +109,7 @@ class SelectableMatchListView extends Component {
 }
 
 SelectableMatchListView.propTypes = {
+    navigation: PropTypes.object,
     getLeagueMatches: PropTypes.func,
     league: PropTypes.object,
     pushRoute: PropTypes.func

@@ -34,7 +34,14 @@ NavHeader.propTypes = {
     style: PropTypes.oneOfType([ PropTypes.object, PropTypes.number ])
 }
 
-const singleHeader = ['Leagues', 'Settings', 'SettingsNotification', 'SelectGroup', 'SelectTeam', 'LoginView', 'SelectPlayerView']
+const singleHeader = ['Leagues',
+    'Settings',
+    'SettingsNotification',
+    'SelectGroup',
+    'SelectTeam',
+    'LoginView',
+    'SelectPlayerView',
+    'LeagueCupMatches' ]
 
 export default {
     headerComponent: connect(
@@ -47,7 +54,10 @@ export default {
 
             const defaultHeader = { backTitle: null, tintColor: '#fff' }
 
-            if (singleHeader.indexOf(navigation.state.routeName) === -1) {
+            if (singleHeader.indexOf(navigation.state.routeName) !== -1) {
+
+                return defaultHeader
+            } else {
                 return {
                     ...defaultHeader,
                     style : {
@@ -57,8 +67,7 @@ export default {
                         shadowOffset: {}
                     }
                 }
-            } else {
-                return defaultHeader
+
             }
         }
     }

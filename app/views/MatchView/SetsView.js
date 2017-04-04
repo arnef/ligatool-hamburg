@@ -60,8 +60,9 @@ class SetsView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data) {
-            const match = nextProps.matches[nextProps.data.id]
+        const match = nextProps.matches[nextProps.data.id]
+
+        if (match) {
             let idx = 0
 
             //TODO check submit action in reducer
@@ -143,9 +144,9 @@ class SetsView extends Component {
     }
 
     showButton() {
-        if (this.props.data) {
-            const match = this.props.matches[this.props.data.id]
+        const match = this.props.matches[this.props.data.id]
 
+        if (match) {
             if (match.league && match.league.name.indexOf('pokal') !== -1) {
                 return match.score_unconfirmed && (match.set_points_home !== match.set_points_away &&  (match.set_points_home > 16 || match.set_points_away > 16)) ? true : false
             } else {
@@ -178,7 +179,7 @@ class SetsView extends Component {
     }
 
     render() {
-        const data = this.props.matches[this.props.data.id]
+        const data = this.props.matches[this.props.data.id] || {}
         const showButton =  this.showButton()
         const editable = data.is_admin
 

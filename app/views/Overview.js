@@ -1,12 +1,7 @@
-import React, { Component } from 'react'
-import { View, Text, Platform } from 'react-native'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { TabBar } from '../components'
 import MatchListView from './MatchListView'
-import { Icon, Touchable } from '../components/base'
-import { backgroundColor } from '../components/base/theme'
 import actions from '../store/actions'
-import NavIcon from '../Nav/NavIcon'
 import NavDrawerIcon from '../Nav/NavDrawerIcon'
 import NavTabBarTop from '../Nav/NavTabBarTop'
 import { TabNavigator } from 'react-navigation'
@@ -29,6 +24,10 @@ class Live extends Component {
 Live.navigationOptions = {
     title: 'Heute'
 }
+Live.propTypes = {
+    matches: PropTypes.object,
+    dispatch: PropTypes.func
+}
 
 class Next extends Component {
     render() {
@@ -46,9 +45,12 @@ class Next extends Component {
 Next.navigationOptions = {
     title: 'Kommende'
 }
-
+Next.propTypes = {
+    matches: PropTypes.object,
+    dispatch: PropTypes.func
+}
 class Played extends Component {
-    static navigationOptions = { title: 'Vergangene' }
+
     render() {
         const { error, fetched, fetching, played } = this.props.matches
         const props = {
@@ -60,6 +62,13 @@ class Played extends Component {
 
         return (<MatchListView { ...props } matches={played} />)
     }
+}
+Played.navigationOptions = {
+    title: 'Vergangene'
+}
+Played.propTypes = {
+    matches: PropTypes.object,
+    dispatch: PropTypes.func
 }
 
 const Tabs = TabNavigator({

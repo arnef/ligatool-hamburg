@@ -94,7 +94,7 @@ class NavigationView extends Component {
     }
 
     render() {
-        const width  = 260//this.props.drawerWidth
+        const width  = 260
         const height = Math.floor(width * 0.625)
         const team = this.props.settings.team || null
 
@@ -182,10 +182,11 @@ const styles = StyleSheet.create({
 
 NavigationView.propTypes = {
     getRankings: PropTypes.func,
-    leagues: PropTypes.object,
-    onNavigate: PropTypes.func,
+    navigate: PropTypes.func,
+    navigation: PropTypes.object,
     settings: PropTypes.object,
-    width: PropTypes.number
+    leagues: PropTypes.object,
+    closeDrawer: PropTypes.func
 }
 
 export default connect(

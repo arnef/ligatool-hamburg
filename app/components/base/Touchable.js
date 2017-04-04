@@ -1,4 +1,4 @@
-import React, { Component, PropTypes, Children } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { View, TouchableNativeFeedback, TouchableOpacity, Platform } from 'react-native'
 import  { ANDROID_VERSION_LOLLIPOP } from '../../consts'
 
@@ -13,6 +13,7 @@ class Touchable extends Component {
                 <TouchableNativeFeedback
                     { ...rest }
                     style={null}
+                    delayPressIn={50}
                     background={
                         TouchableNativeFeedback.Ripple(
                             this.props.pressColor,
@@ -31,28 +32,6 @@ class Touchable extends Component {
                 </TouchableOpacity>
             )
         }
-        /*if (Platform.OS === 'ios') {
-
-            return (
-                <TouchableOpacity style={{ flex: 1, justifyContent: 'center' }}
-                      onPress={ onPress }>
-                    <View style={ style }>{ children }</View>
-                </TouchableOpacity>
-            )
-        } else {
-            const background = color ?
-                TouchableNativeFeedback.Ripple('rgba(256,256,256,.3)', borderless) :
-                TouchableNativeFeedback.SelectableBackground()
-
-            return (
-                <TouchableNativeFeedback
-                    background={background}
-                    delayPressIn={50} style={{ flex: 1, justifyContent: 'center' }}
-                    onPress={onPress}>
-                    <View style={ style }>{ children }</View>
-                </TouchableNativeFeedback>
-            )
-        }*/
     }
 }
 

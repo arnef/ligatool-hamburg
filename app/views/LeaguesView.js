@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import actions from '../store/actions'
-import { View, Platform } from 'react-native'
+import { View } from 'react-native'
 import { Container } from '../components'
-import { ANDROID } from '../consts'
 import NavDrawerIcon from '../Nav/NavDrawerIcon'
 
-// import { RANKING, LEAGUE_MATCHES } from './routes'
 import { ListItem, Text } from '../components/base'
 import NavIcon from '../Nav/NavIcon'
 import LeagueView from './LeagueView'
@@ -78,6 +76,7 @@ LeaguesView.navigationOptions = {
 }
 
 LeaguesView.propTypes = {
+    dispatch: PropTypes.func,
     getRankings: PropTypes.func,
     leagues: PropTypes.object,
     pushRoute: PropTypes.func

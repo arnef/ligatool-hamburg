@@ -10,7 +10,7 @@ export default (navigation, defaultHeader) => {
             left: (
                 <Touchable
                     borderless
-                    delayPressIn={0}
+
                     onPress={() => navigation.navigate('DrawerOpen')}>
                     <Icon name='menu' style={styles.icon} color='#fff' size={24} />
                 </Touchable>
