@@ -4,12 +4,14 @@ import { getRankings } from '../../store/actions/leagueActions'
 import { Container } from '../../components'
 import { ListItem, Text } from '../../components/base'
 import { NavigationActions } from 'react-navigation'
+import NavCloseIcon from '../../Nav/NavCloseIcon'
+
 
 class SelectGroupView extends Component {
 
 
     componentDidMount() {
-        console.tron.log(this.props.navigation.state.key)
+        // console.tron.log(this.props.navigation.state.key)
         if (this.props.leagues.data.length === 0) {
             this.props.getRankings()
         }
@@ -60,7 +62,8 @@ SelectGroupView.propTypes = {
 }
 
 SelectGroupView.navigationOptions = {
-    title: 'Gruppe wählen'
+    title: 'Gruppe wählen',
+    header: NavCloseIcon
 }
 
 export default connect(

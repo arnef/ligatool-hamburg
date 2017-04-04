@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { TabNavigator } from 'react-navigation'
 import MatchListView from './MatchListView'
 import NavTabBarTop from '../Nav/NavTabBarTop'
+import NavDrawerIcon from '../Nav/NavDrawerIcon'
 import { queryTeamMatches } from '../store/actions/teamActions'
 
 class Comming extends Component {
@@ -77,7 +78,8 @@ const MyTeam = TabNavigator({
 })
 
 MyTeam.navigationOptions = {
-    title: 'Mein Team'
+    title: 'Mein Team',
+    header: NavDrawerIcon
 }
 
 export default MyTeam

@@ -6,6 +6,8 @@ import { Container } from '../../components'
 import { ListItem, Row, Column, Button, Text } from '../../components/base'
 import * as theme from '../../components/base/theme'
 import { CLIENT_ERROR } from 'apisauce'
+import NavCloseIcon from '../../Nav/NavCloseIcon'
+
 
 class LoginView extends Component {
 
@@ -20,7 +22,6 @@ class LoginView extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.apiKeyFullfilled(nextProps)
-        this.loginFullfiled(nextProps)
     }
 
     render() {
@@ -76,7 +77,7 @@ class LoginView extends Component {
                 <Row center>
                     <Column>
                         <Button
-                            onPress={this.closeModal.bind(this)}>
+                            onPress={ () => this.props.showLogin(false) }>
                             { !!this.props.init ? 'Abbrechen' : 'Überspringen' }
                         </Button>
                     </Column>
@@ -108,11 +109,6 @@ class LoginView extends Component {
         )
     }
 
-    closeModal() {
-        console.tron.log('close modal')
-        this.props.closeModal()
-        // this.props.showLogin(false)
-    }
 
     login() {
         if (this.state.user !== '' && this.state.pass !== '') {
@@ -129,17 +125,6 @@ class LoginView extends Component {
         if (this.props.auth.api_key === null && nextProps.auth.api_key !== null) {
             nextProps.renewToken(nextProps.auth.api_key)
         }
-    }
-
-    loginFullfiled(nextProps) {
-        // console.tron.log('logon fullfiled')
-        // if (this.props.dialog.login.visible && !nextProps.dialog.login.visible) {
-        //     this.setState({
-        //         pass: '',
-        //         user: ''
-        //     })
-        //     this.closeModal()
-        // }
     }
 }
 
@@ -164,7 +149,15 @@ LoginView.propTypes = {
 }
 
 LoginView.navigationOptions = {
-    title: 'Login'
+    title: 'Login',
+    header: (navigation, defaultHeader) => {
+
+        if (navigation.state.key === 'Init') {
+            return NavCloseIcon(navigation, defaultHeader)
+        } else {
+            return defaultHeader
+        }
+    }
 }
 
 export default connect(
@@ -176,7 +169,6 @@ export default connect(
     dispatch => ({
         renewToken: (apiKey) => dispatch(actions.renewToken(apiKey)),
         requestAPIKey: (user) => dispatch(actions.requestAPIKey(user)),
-        showLogin: (show) => dispatch(actions.showLogin(show)),
-        closeModal: () => dispatch({ type: 'CLOSE_LOGIN_MODAL' })
+        showLogin: (show) => dispatch(actions.showLogin(show))
     })
 )(LoginView)

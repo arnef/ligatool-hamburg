@@ -5,6 +5,8 @@ import actions from '../store/actions'
 import { Button, Image, ListItem, Text } from '../components/base'
 import * as theme from '../components/base/theme'
 import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes'
+import { NavigationActions } from 'react-navigation'
+
 
 class NavigationView extends Component {
 
@@ -21,27 +23,53 @@ class NavigationView extends Component {
     }
 
     _handleRowPress(state) {
-        if (state.title === 'Login') {
-            state.title = null
+        const { navigate, closeDrawer } = this.props
+
+        if (!state.active) {
+            if (state.state === RANKING) {
+                navigate({
+                routeName: 'League',
+                    params: {
+                        id: state.leagueID,
+                        title: state.title
+                    }
+                })
+            } else {
+                navigate({ routeName: state.state })
+            }
+
         }
-        if (this.props.onNavigate) {
-            this.props.onNavigate(state)
-        }
-        // this.props.pushRoute(state)
-        this.setState({
-            activeLeague: state.leagueID ? state.leagueID : -1,
-            activePage: state.state
-        })
+        closeDrawer()
+
+        // console.tron.log(this.props.navigation.state)
+        // navigate({ routeName: 'DrawerClose' })
+        // this.props.onNavigate(state)
+        // navigate({
+        //     routeName: SETTINGS
+        // })
+        // if (state.title === 'Login') {
+        //     state.title = null
+        // }
+        // if (this.props.onNavigate) {
+        //     this.props.onNavigate(state)
+        // }
+        // // this.props.pushRoute(state)
+        // this.setState({
+        //     activeLeague: state.leagueID ? state.leagueID : -1,
+        //     activePage: state.state
+        // })
     }
 
-    _renderItem(state, text, icon) {
-        const active = this.state.activePage === state
+    _renderItem(state, text, icon, idx) {
+        const { navigation } = this.props
+
+        const active = navigation.state.index === idx
         const color = this.props.settings.color
 
         return (
             <ListItem
                 active={active}
-                onPress={() => { this._handleRowPress({ state: state, title: text } ) }}
+                onPress={() => { this._handleRowPress({ state: state, title: text, active } ) }}
                 last>
                 <ListItem.Icon color={active ? color : theme.secondaryTextColor} name={icon} />
                 <Text bold color={active ? color : null}>{ text }</Text>
@@ -71,7 +99,7 @@ class NavigationView extends Component {
     }
 
     render() {
-        const { width } = this.props
+        const width  = 260//this.props.drawerWidth
         const height = Math.floor(width * 0.625)
         const team = this.props.settings.team || null
 
@@ -94,8 +122,8 @@ class NavigationView extends Component {
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.space} />
-                    { this._renderItem(OVERVIEW, 'Übersicht', 'football') }
-                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in')}
+                    { this._renderItem(OVERVIEW, 'Übersicht', 'football', 0) }
+                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in', 1)}
                     { this.renderSeparator() }
                     {!this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (
                             <View style={{ alignItems: 'center', padding: 16 }}>
@@ -113,7 +141,7 @@ class NavigationView extends Component {
                     }
                     { !this.props.leagues.loading && !this.props.leagues.error && this.renderLeagues() }
                     { this.renderSeparator() }
-                    { this._renderItem(SETTINGS, 'Einstellungen', 'settings') }
+                    { this._renderItem(SETTINGS, 'Einstellungen', 'settings', 2) }
                     <View style={styles.space} />
                 </ScrollView>
             </View>
@@ -171,6 +199,8 @@ export default connect(
         settings: state.settings
     }),
     dispatch => ({
-        getRankings: () => dispatch(actions.getRankings())
+        getRankings: () => dispatch(actions.getRankings()),
+        navigate: (route) => dispatch(NavigationActions.navigate(route)),
+        closeDrawer: () => dispatch(NavigationActions.navigate({ routeName: 'DrawerClose' }))
     })
 )(NavigationView)

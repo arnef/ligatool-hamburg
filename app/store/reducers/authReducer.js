@@ -60,7 +60,7 @@ export default (state={
         return state
     }
 
-    case LOGOUT: {
+    case LOGOUT + FULFILLED: {
         api.setHeaders(DEFAULT_HEADERS)
         state = { api_key: null, team: null }
         try {

@@ -18,6 +18,8 @@ export default (state = {
         if (action.payload.ok) {
             state = { ...state }
             for (let match of action.payload.data) {
+                match.type = getMatchType(match)
+                match.is_admin = isAdminForMatch(match)
                 state.data[match.id] = match
             }
         }
@@ -67,7 +69,7 @@ export default (state = {
     case SCORE + NOTIFICATION:
     case SUGGEST_SCORE + NOTIFICATION: {
         state = { ...state }
-        console.tron.log(action.payload)
+        // console.tron.log(action.payload)
         const matchId = parseInt(action.payload.id, 10)
         const { set_points_away, set_points_home, live } = action.payload
 
@@ -111,7 +113,7 @@ export default (state = {
                 }
             }
             match.type = action.payload.type
-            console.tron.log(action.payload)
+            // console.tron.log(action.payload)
         }
 
         return state
@@ -120,7 +122,7 @@ export default (state = {
         state = { ...state }
         const match = state.data[action.payload.id]
 
-        console.tron.log(action.payload)
+        // console.tron.log(action.payload)
         if (!match.sets) {
             match.sets = {}
         }

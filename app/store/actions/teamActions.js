@@ -21,7 +21,7 @@ export const queryTeamMatches = () => {
 
 
 export const getTeam = (teamID) => {
-    console.tron.log(api.headers)
+    // console.tron.log(api.headers)
 
     return {
         payload: api.get('/teams/' + teamID),

@@ -9,7 +9,7 @@ class SettingsNotificationView extends Component {
 
     componentWillUnmount() {
         if (this.props.settings.changed) {
-            console.tron.log('save group settings')
+            // console.tron.log('save group settings')
             this.props.saveNotifications()
         }
     }

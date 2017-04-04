@@ -1,6 +1,6 @@
 {
   "name": "arnefeilligatool",
-  "version": "0.5.1",
+  "version": "0.9.1",
   "private": true,
   "scripts": {
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
@@ -9,22 +9,20 @@
   "dependencies": {
     "apisauce": "^0.11.0",
     "moment": "^2.18.1",
-    "react": "15.4.2",
-    "react-native": "^0.42.3",
-    "react-native-code-push": "^1.17.3-beta",
+    "react": "^16.0.0-alpha.6",
+    "react-native": "^0.43.0",
     "react-native-fcm": "^6.2.0",
-    "react-native-scrollable-tab-view": "0.6.3",
     "react-native-vector-icons": "^4.0.0",
-    "react-navigation": "^1.0.0-beta.7",
+    "react-navigation": "git+https://github.com/react-community/react-navigation.git#master",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
-    "redux-logger": "^3.0.0",
+    "redux-logger": "^3.0.1",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.1",
-    "eslint": "^3.18.0",
+    "eslint": "^3.19.0",
     "eslint-plugin-react": "^6.10.3",
     "reactotron-react-native": "^1.9.1",
     "reactotron-redux": "^1.9.1",

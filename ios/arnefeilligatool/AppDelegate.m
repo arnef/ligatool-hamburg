@@ -8,7 +8,6 @@
  */
 
 #import "AppDelegate.h"
-#import "CodePush.h"
 #import "RNFIRMessaging.h"
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
@@ -22,12 +21,8 @@
   
   [[RCTBundleURLProvider sharedSettings] setDefaults];
   
-#ifdef DEBUG
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-#else
-  jsCodeLocation = [CodePush bundleURL];
-#endif
-  
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"arnefeilligatool"
                                                initialProperties:nil

@@ -1,18 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { getTeamMatches } from '../../store/actions/teamActions'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
 import MatchListView from '../MatchListView'
-import TeamDetails from './TeamDetails'
-import { TabBar } from '../../components'
-import { backgroundColor } from '../../components/base/theme'
+
 
 
 class TeamView extends Component {
 
-    componentDidMount() {
-        console.tron.log(this.props.navigation.state)
-    }
 
     render() {
         const { state } = this.props.navigation

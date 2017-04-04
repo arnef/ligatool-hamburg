@@ -30,9 +30,9 @@ class SelectableMatchListView extends Component {
     componentWillReceiveProps(nextProps) {
         const id = nextProps.navigation.state.params.id
 
-        console.tron.log('view receive new props')
+        // console.tron.log('view receive new props')
         if (nextProps.league.matches[`${id}`]) {
-            console.tron.log('update match days')
+            // console.tron.log('update match days')
             this.getMatchDays()
         }
     }

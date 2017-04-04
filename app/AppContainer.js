@@ -1,26 +1,20 @@
 import React, { Component, PropTypes } from 'react'
-import { Platform, StatusBar } from 'react-native'
+import { View, Platform } from 'react-native'
 import { connect } from 'react-redux'
-import { addNavigationHelpers } from 'react-navigation'
+import { addNavigationHelpers, NavigationActions } from 'react-navigation'
 
 import actions from './store/actions'
-import LoadingScreen from './components/LoadingScreen'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
-import { TAB_OVERVIEW } from './views/tabs'
 import Navigator from './Navigator'
+import Loading from './modals/LoadingModal'
+
 
 class AppContainer extends Component {
 
     componentDidMount() {
         this.mountNotification()
         this.props.initApp()
-        if (Platform.OS === 'android' && Platform.Version >= 21) {
-            // StatusBar.setTranslucent(true)
-            // StatusBar.setBackgroundColor('rgba(0,0,0,.3)')
-        }
-        else if (Platform.OS === 'ios') {
-            StatusBar.setBarStyle('light-content')
-        }
+        console.tron.log('APP CONTAINER MOUNTED')
     }
 
     componentWillUnmount() {
@@ -36,7 +30,7 @@ class AppContainer extends Component {
         if (token) {
             this.props.updateFCMToken(token)
             if (this.props.settings.notification.leagues) {
-                console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED')
+                // console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED')
                 this.props.saveNotifications()
             }
         }
@@ -61,6 +55,7 @@ class AppContainer extends Component {
                     break
                 }
             }
+
             if (Platform.OS === 'android' && notif.fcm && notif.fcm.tag) {
                 const localNotif = { ...notif.fcm }
                 const matchId = parseInt(notif.id)
@@ -72,30 +67,33 @@ class AppContainer extends Component {
                     FCM.presentLocalNotification(localNotif)
                 }
             }
+            const openRoute = findOpenRoute(this.props.nav)
+            const isMatchRoute = openRoute.routeName.indexOf('Match') !== -1
+            const matchId = parseInt(notif.data ? notif.data.id : notif.id)
+
             if (notif.type && !notif.local_notification && !notif._completionHandlerId) {
                 this.props.receiveNotification(notif)
+                if (isMatchRoute && openRoute.params.id === matchId && !this.props.match.ignoreNextNotify) {
+                    this.props.dispatch(actions.getMatch(matchId))
+                }
             }
-            console.tron.log(notif)
+
 
             if (notif.opened_from_tray) {
+                const { pushRoute } = this.props
 
-                const { setTab, pushRoute, route } = this.props
-                const tabKey = route.tabs.routes[0].key
-                const index = route[tabKey].index
-                const lastRoute = route[tabKey].routes[index]
 
-                if (Platform.OS === 'ios') {
-                    setTab(TAB_OVERVIEW)
-                }
+                console.tron.log(openRoute)
 
-                const matchId = parseInt(notif.data ? notif.data.id : notif.id)
-
-                if (matchId && !(lastRoute.id === matchId)) {
-                    console.tron.log('OPEN ROUTE')
-                    // pushRoute({
-                    //     // id: matchId,
-                    //     // state: MATCH
-                    // })
+                if (matchId) {
+                    if (!isMatchRoute || openRoute.params.id !== matchId) {
+                        pushRoute({
+                            routeName: 'OverviewMatch',
+                            params: {
+                                id: matchId
+                            }
+                        })
+                    }
                 }
 
             }
@@ -106,19 +104,28 @@ class AppContainer extends Component {
     }
 
     render() {
-        if (this.props.appConnected) {
-            const { dispatch, nav } = this.props
+        const { dispatch, nav } = this.props
 
-            return <Navigator navigation={ addNavigationHelpers({
-                dispatch,
-                state: nav
-            })} />
-        } else {
-            return <LoadingScreen />
-        }
+        return (
+            <View style={{ flex: 1 }}>
+                <Loading />
+                <Navigator
+                    navigation={ addNavigationHelpers({
+                        dispatch,
+                        state: nav
+                    })} />
+            </View>
+        )
     }
 }
 
+const findOpenRoute = (state) => {
+    if (state.routes) {
+        return findOpenRoute(state.routes[state.index])
+    }
+
+    return state
+}
 
 AppContainer.propTypes = {
     appConnected: PropTypes.bool,
@@ -140,13 +147,12 @@ export default connect(
         appConnected: state.appConnected,
         match: state.match,
         nav: state.nav,
-        route: state.route,
         settings: state.settings
     }),
     dispatch => ({
         dispatch: (action) => dispatch(action),
         initApp: () => dispatch(actions.initApp()),
-        pushRoute: (route) => dispatch(actions.pushRoute(route)),
+        pushRoute: (route) => dispatch(NavigationActions.navigate(route)),
         receiveNotification: (notif) => dispatch(actions.receiveNotification(notif)),
         saveNotifications: () => dispatch(actions.saveNotifications()),
         setTab: (idx) => dispatch(actions.setTab(idx)),

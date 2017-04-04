@@ -2,57 +2,52 @@ import React, { Component, PropTypes } from 'react'
 import { View, Switch, Platform, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import actions from '../../store/actions'
-import codePush from 'react-native-code-push'
+// import codePush from 'react-native-code-push'
 import { ListItem, Text } from '../../components/base'
 import { Container } from '../../components'
 import * as theme from '../../components/base/theme'
 import { StackNavigator, NavigationActions } from 'react-navigation'
 import SettingsNotificationView from './SettingsNotificationView'
 import NavHeader from '../../Nav/NavHeader'
+import NavDrawerIcon from '../../Nav/NavDrawerIcon'
+
 
 class SettingsView extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            pkg: null
-        }
-    }
+
 
     _logout() {
         this.props.logout()
     }
 
     _login() {
-        // this.props.showLogin(true)
         this.props.pushRoute({
             routeName: 'Login'
+        })
+    }
+    loginView() {
+        this.props.pushRoute({
+            routeName: 'Login',
+            action: NavigationActions.navigate({ routeName: 'LoginView' })
+
         })
     }
 
     componentDidMount() {
         const { leagues, getRankings } = this.props
-        console.tron.log(this.props.navigation.state.key)
+        // console.tron.log(this.props.navigation.state.key)
 
-        codePush.getUpdateMetadata().then(pkg => {
-            this.setState({ pkg: pkg })
-        })
+        // codePush.getUpdateMetadata().then(pkg => {
+        //     this.setState({ pkg: pkg })
+        // })
         if (!leagues.fetched && !leagues.loading) {
             getRankings()
         }
     }
 
-    componentWillUnmount() {
-        console.tron.log('SETTINGS VIEW WILL UNMOUNT')
-        if (this.props.settings.changed) {
-            console.tron.log('save group settings')
-            this.props.saveNotifications()
-        }
-    }
-
     _toggleNotification(key, value) {
-        console.tron.log(key + ' => ' + value)
         this.props.setNotification(key, value)
+        this.props.saveNotifications()
     }
 
     _renderCheckbox(text, value, key, disabled) {
@@ -110,7 +105,7 @@ class SettingsView extends Component {
                             <Text>{ team.name }</Text>
                         </ListItem>
                         { !this.props.auth.api_key && (
-                            <ListItem icon onPress={this._login.bind(this)}>
+                            <ListItem icon onPress={this.loginView.bind(this)}>
                                 <ListItem.Icon name='key' color={this.props.settings.color} />
                                     <Text>Zugangsdaten eingeben</Text>
                             </ListItem>
@@ -133,19 +128,19 @@ class SettingsView extends Component {
 
                 <ListItem.Group>
                     <ListItem.Header title='Informationen' />
-                    <ListItem last onPress={Platform.OS === 'android' ? this._checkForUpdate.bind(this) : null}>
+                    <ListItem last>
                         <ListItem.Icon name='information-circle' color={this.props.settings.color} />
-                        <Text>App-Version { !!this.state.pkg ? `${this.state.pkg.appVersion} (${this.state.pkg.label})`: '0.9' }</Text>
+                        <Text>App-Version 0.10</Text>
                     </ListItem>
 
                 </ListItem.Group>
             </Container>
         )
     }
-    _checkForUpdate() {
-        console.tron.log('check for update')
-        codePush.sync({ installMode: codePush.InstallMode.IMMEDIATE, updateDialog: true })
-    }
+
+    // _checkForUpdate() {
+    //     codePush.sync({ installMode: codePush.InstallMode.IMMEDIATE, updateDialog: true })
+    // }
 }
 
 
@@ -161,7 +156,10 @@ SettingsView.propTypes = {
     showLogin: PropTypes.func
 }
 
-SettingsView.navigationOptions = { title: 'Einstellungen' }
+SettingsView.navigationOptions = {
+    title: 'Einstellungen',
+    header: NavDrawerIcon
+}
 SettingsNotificationView.navigationOptions = { title: 'Benachrichtigungen' }
 
 

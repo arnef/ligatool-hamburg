@@ -43,7 +43,7 @@ class LoginModal extends Component {
     }
 
     renderScene(route, navigator) {
-        console.tron.log(route)
+        // console.tron.log(route)
         switch (route.state) {
         case MODAL_SELECT_GROUP:
 

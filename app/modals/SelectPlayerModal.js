@@ -50,7 +50,7 @@ class SelectPlayerModal extends Component {
             const result = []
 
             for (let itemIdx in selected[team]) {
-                console.tron.log('select player ' + itemIdx)
+                // console.tron.log('select player ' + itemIdx)
                 result.push(match[`team_${team}`].player[itemIdx])
             }
             setPlayer(id, team, result, data.setsIdx)

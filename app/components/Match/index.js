@@ -45,7 +45,7 @@ class Match extends Component {
     }
 
     buildMatchData() {
-        console.tron.log('build match data')
+        // console.tron.log('build match data')
         const id = this.props.match.id
         const matches = this.props.matches.data
         const editMatch = this.props.editable

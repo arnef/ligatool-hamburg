@@ -116,7 +116,7 @@ class ScoreInput extends Component {
         const input = this.inputField
 
         input.measure((fx, fy, width, height, px, py) => {
-            console.tron.log(`position: ${py}`)
+            // console.tron.log(`position: ${py}`)
             this.props.adjustPosition(py)
         })
         // console.tron.log(input.measureLayout)

@@ -56,14 +56,14 @@ class MatchItem extends Component {
      * @param {object} match
      */
     onPress(match) {
-        if (match.set_points) {
+        if (match.set_points || match.is_admin) {
             this.props.pushRoute({
                 routeName: 'Match',
                 params: { id: match.id }
             })
         } else {
             this.props.pushRoute({
-                routeName: 'MatchPreview',
+                routeName: 'Preview',
                 params: { match }
             })
         }

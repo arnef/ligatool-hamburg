@@ -1,7 +1,6 @@
 import React, { Component, PropTypes, Children } from 'react'
 import { View, TouchableNativeFeedback, TouchableOpacity, Platform } from 'react-native'
-
-const ANDROID_VERSION_LOLLIPOP = 21;
+import  { ANDROID_VERSION_LOLLIPOP } from '../../consts'
 
 
 class Touchable extends Component {
@@ -17,7 +16,7 @@ class Touchable extends Component {
                     background={
                         TouchableNativeFeedback.Ripple(
                             this.props.pressColor,
-                            this.propsborderless
+                            this.props.borderless
                         )
                     }>
                     <View style={style}>

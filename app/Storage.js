@@ -11,14 +11,14 @@ const Storage = {
 
                             resolve({ data: item, ok: true })
                         } catch (ex) {
-                            console.tron.log(ex)
+                            // console.tron.log(ex)
                             resolve({ ok: false })
                         }
                     } else {
                         resolve({ ok: false })
                     }
                 }).catch(ex => {
-                    console.tron.log(ex)
+                    // console.tron.log(ex)
                     resolve({ ok: false })
                 })
         })
@@ -32,12 +32,12 @@ const Storage = {
                     .then(() => {
                         resolve({ ok: true })
                     }).catch(ex => {
-                        console.tron.log(ex)
+                        // console.tron.log(ex)
                         resolve({ ok: false })
                     })
 
             } catch (ex) {
-                console.tron.log(ex)
+                // console.tron.log(ex)
                 resolve({ ok: false })
             }
         })

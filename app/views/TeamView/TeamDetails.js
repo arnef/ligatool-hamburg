@@ -10,20 +10,24 @@ class TeamView extends Component {
 
 
     componentDidMount() {
-        // if (this.props.navigator) {
-        //     this.props.navigator.setTitle(this.props.team.name)
-        // }
         if (!this.getTeam()) {
             this.loadTeam()
-            console.tron.log('get team')
+            // console.tron.log('get team')
         }
-        // const { state } = this.props.navigation
-
-        // this.props.setTitle(state.params.team.name, state.key)
     }
 
     render() {
-        const team = this.getTeam() || this.props.navigation.state.params.team
+        const { state } = this.props.navigation
+        let team = this.getTeam()
+
+        if (!team) {
+            if (state.params.match) {
+                team = state.params.match[`team_${this.props.teamKey}`]
+            } else {
+                team = state.params.team
+            }
+        }
+        // this.props.navigation.state.params.team
 
         return (
             <Container
@@ -168,15 +172,25 @@ class TeamView extends Component {
 
     getTeam() {
         const { navigation } = this.props
-        const teamID = `${navigation.state.params.team.id}`
+        const  teamID = this.getTeamId()
 
         return this.props.teams.id[teamID] ? this.props.teams.id[teamID].details : null
     }
 
-    loadTeam() {
-        const teamID = this.props.navigation.state.params.team.id
+    getTeamId() {
+        const { state } = this.props.navigation
 
-        this.props.getTeam(teamID)
+        if (state.params.match) {
+            return state.params.match[`team_${this.props.teamKey}`].id
+        } else {
+            return state.params.team.id
+        }
+    }
+
+    loadTeam() {
+        // const teamID = this.props.navigation.state.params.team.id
+
+        this.props.getTeam(this.getTeamId())
     }
 
     openMail(email) {

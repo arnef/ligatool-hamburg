@@ -30,13 +30,13 @@ export const compareDays = (date1, date2) => {
  * @return {boolean}
  */
 export const isAdminForMatch = (match) => {
-    const date = moment(match.datetime).diff(moment(), 'minutes')
+    // const date = moment(match.datetime).diff(moment(), 'minutes')
     const user = store.getState().auth
 
     return (user.team && user.team.ids && match && match.id
         && !(user.team.ids.indexOf(match.team_home.id) === -1
             && user.team.ids.indexOf(match.team_away.id) === -1)
-        && (date < 16)
+        // && (date < 16)
         && (!match.set_points || match.score_unconfirmed)
     ) ? true : false
 }

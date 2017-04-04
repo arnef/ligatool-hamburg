@@ -13,7 +13,7 @@ class SelectTeamView extends Component {
         if (!this.props.league.id[lid]) {
             this.getTeams()
         }
-        console.tron.log(this.props.navigation)
+        // console.tron.log(this.props.navigation)
     }
 
 
@@ -62,7 +62,7 @@ class SelectTeamView extends Component {
     onPress(team) {
         this.props.setUserTeam(team)
         this.props.navigate({
-            routeName: 'Login'
+            routeName: 'LoginView'
         })
         // this.props.navigator.push({ state: MODAL_LOGIN, title: 'Login' })
     }

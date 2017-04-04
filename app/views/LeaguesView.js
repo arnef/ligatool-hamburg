@@ -14,6 +14,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 import NavHeader from '../Nav/NavHeader'
 import TeamView from './TeamView'
 import MatchView from './MatchView'
+import Preview from './MatchView/PreView'
 
 
 class LeaguesView extends Component {
@@ -55,6 +56,7 @@ class LeaguesView extends Component {
 
     onPress(league) {
         const { dispatch } = this.props
+
         dispatch(NavigationActions.navigate({
             routeName: league.cup ? 'SelectedMatchList' : 'League',
             params: {
@@ -91,8 +93,9 @@ export default StackNavigator({
         )(LeaguesView)
     },
     League: { screen: LeagueView },
-    Team: { screen: TeamView },
+    LeaguesTeam: { screen: TeamView },
     LeaguesMatch: { screen: MatchView },
+    LeaguesPreview: { screen: Preview },
     SelectedMatchList: { screen: SelectableMatchListView }
 }, {
     ...NavHeader

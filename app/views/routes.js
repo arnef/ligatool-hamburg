@@ -1,0 +1,5 @@
+export const RANKING = 'Leagues'
+export const LEAGUE_MATCHES = 'LeagueMatches'
+export const OVERVIEW = 'Overview'
+export const MY_TEAM = 'MyTeam'
+export const SETTINGS = 'Settings'

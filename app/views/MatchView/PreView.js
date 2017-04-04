@@ -1,59 +1,46 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { setTitle } from '../../store/actions/routeActions'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
-import TeamView from '../TeamView'
-import { TabBar } from '../../components'
-import { backgroundColor } from '../../components/base/theme'
 import TeamDetails from '../TeamView/TeamDetails'
-import TeamAway from '../TeamView/TeamDetails'
 import NavTabBarTop from '../../Nav/NavTabBarTop'
 import { TabNavigator } from 'react-navigation'
 
-
-class PreviewMatch extends Component {
-
-    componentDidMount() {
-        // this.props.setTitle(this.props.match.team_home.name)
-    }
-
-    onChangeTab(keys) {
-        // const { match } = this.props
-        // const title = keys.i === 0 ? match.team_home.name : match.team_away.name
-
-        // this.props.setTitle(title)
-    }
+class TeamHome extends Component {
 
     render() {
-        const { match } = this.props
-
         return (
-        <ScrollableTabView
-            style={{ backgroundColor, flex: 1 }}
-            onChangeTab={this.onChangeTab.bind(this)}
-            prerenderingSiblingsNumber={0}
-            renderTabBar={() => (<TabBar />)}>
-            <TeamView {...this.props} team={match.team_home} tabLabel='HEIM' />
-            <TeamView {...this.props} team={match.team_away} tabLabel='GAST' />
-        </ScrollableTabView>
+            <TeamDetails navigation={ this.props.navigation } teamKey='home' />
         )
     }
 }
 
-PreviewMatch.propTypes = {
-    match: PropTypes.object,
-    setTitle: PropTypes.func
+class TeamAway extends Component {
+
+    render() {
+        return (
+            <TeamDetails navigation={ this.props.navigation } teamKey='away' />
+        )
+    }
 }
 
-TeamDetails.navigationOptions = {
-    title: 'Heim'
+
+TeamHome.navigationOptions = {
+    title: ({ state }) => state.params.match.team_home.name,
+    tabBar: {
+        label: 'Heim'
+    }
+}
+TeamAway.navigationOptions = {
+    title: ({ state }) => state.params.match.team_away.name,
+    tabBar: {
+        label: 'Gast'
+    }
 }
 export default TabNavigator({
-    TeamHome: { screen: TeamDetails }
+    TeamHome: { screen: TeamHome },
+    TeamAway: { screen: TeamAway }
+}, {
+    tabBarComponent: NavTabBarTop,
+    tabBarPosition: 'top',
+    swipeEnabled: true,
+    animationEnabled: true,
+    lazyload: true
 })
-// export default connect(
-//     null,
-//     dispatch => ({
-//         setTitle: (title) => dispatch(setTitle(title))
-//     })
-// )(PreviewMatch)

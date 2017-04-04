@@ -11,7 +11,7 @@ class TableView extends Component {
     componentDidMount() {
         const id = this.props.navigation.state.params.id
 
-        console.tron.log(`LeagueID: ${id}`)
+        // console.tron.log(`LeagueID: ${id}`)
         if (!this.props.league.id[id]) {
             this._getLeagues()
         }

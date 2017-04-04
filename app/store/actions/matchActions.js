@@ -10,7 +10,7 @@ export const queryMatches = () => {
 }
 
 export const getMatch = (id) => {
-    console.tron.log('action get match fired')
+    // console.tron.log('action get match fired')
 
     return {
         payload: {

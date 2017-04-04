@@ -20,7 +20,6 @@ if (__DEV__) {
     .connect()
 
     console.tron = Reactotron
-    console.tron.clear()
 } else {
     // a mock version should you decide to leave console.tron in your codebase
     console.tron = {

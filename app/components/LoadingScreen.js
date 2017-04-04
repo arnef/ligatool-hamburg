@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, StatusBar, Platform, Animated } from 'react-native'
+import { View, StyleSheet, Animated } from 'react-native'
 
 
 class LoadingScreen extends Component {
@@ -27,12 +27,9 @@ class LoadingScreen extends Component {
     }
 
     render() {
-        const oldAndroid = Platform.Version < 21
 
         return (
             <View style={style.container}>
-                <StatusBar translucent={!oldAndroid}
-                    backgroundColor={ oldAndroid ? 'rgb(0,0,0)' : 'rgba(0,0,0,.3)'} />
                 <Animated.Image source={{ uri: 'loading' }} style={[style.icon, { opacity: this.state.opacity }]} />
             </View>
         )

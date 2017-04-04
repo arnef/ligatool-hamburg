@@ -23,7 +23,7 @@ export const initApp = () => {
         payload: new Promise(resolve => {
             const restoreSettings = new Promise(resolve => {
                 Storage.getItem(SETTINGS_KEY).then(settings => {
-                    console.tron.log(settings)
+                    // console.tron.log(settings)
                     if (!settings.ok) { // no settings saved
                         api.get('/leagues').then(resp => {
                             store.dispatch({
@@ -71,7 +71,7 @@ export const initApp = () => {
                         })
                         const now = (new Date()).getMilliseconds()
 
-                        console.tron.log('token expired ' + (apiToken.expires < now))
+                        // console.tron.log('token expired ' + (apiToken.expires < now))
                         if (apiToken.expires < now) {
                             api.post('/uer/auth/refresh', { access_key: apiAccessKey.data })
                             .then(resp => {
@@ -92,12 +92,18 @@ export const initApp = () => {
                 })
             })
 
-            Promise.all([restoreSettings, restoreAuth]).then(values => {
+            const timeout = new Promise(resolve => {
+                setTimeout(() => {
+                    resolve()
+                }, 2000)
+            })
+
+            Promise.all([restoreSettings, restoreAuth, timeout]).then(values => {
                 const settings = store.getState().settings
                 const savedSettings = values[0]
 
                 if (settings.fcm_token && savedSettings.ok) {
-                    console.tron.log('FCM_TOKEN SET SEND UPDATE')
+                    // console.tron.log('FCM_TOKEN SET SEND UPDATE')
 
                     api.post('/notification', {
                         fcm_token: settings.fcm_token,
@@ -111,7 +117,7 @@ export const initApp = () => {
                     })
 
                 } else {
-                    console.tron.log('NO FCM TOKEN, SKIP UPDATE')
+                    // console.tron.log('NO FCM TOKEN, SKIP UPDATE')
 
                     store.dispatch({
                         payload: savedSettings,

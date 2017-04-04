@@ -7,7 +7,7 @@ import NavHeader from '../../Nav/NavHeader'
 const NavStack = StackNavigator({
     SelectGroup: { screen: SelectGroupView },
     SelectTeam: { screen: SelectTeamView },
-    Login: { screen: LoginView }
+    LoginView: { screen: LoginView }
 }, {
     ...NavHeader
 })

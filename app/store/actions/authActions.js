@@ -26,11 +26,9 @@ export const renewToken = (apiKey) => {
 }
 
 export const logout = () => {
-    //TODO async payload
-    api.delete('/user/auth')
 
     return {
-        payload: {},
+        payload: api.delete('/usr/auth'),
         type: LOGOUT
     }
 }

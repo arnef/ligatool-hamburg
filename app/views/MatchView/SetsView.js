@@ -95,8 +95,8 @@ class SetsView extends Component {
         if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
             this.toggleScoreInput(idx)
         } else {
-            console.tron.log('OPEN SHOW PALYER MODAL')
-            console.tron.log(data)
+            // console.tron.log('OPEN SHOW PALYER MODAL')
+            // console.tron.log(data)
             this.props.showPlayerDialog(data)
         }
     }
@@ -105,8 +105,8 @@ class SetsView extends Component {
     onSelect(data, value) {
         this.toggleMenu(-1)
         if (value === 0) {
-            console.tron.log('option show player selected')
-            console.tron.log(data)
+            // console.tron.log('option show player selected')
+            // console.tron.log(data)
             this.props.showPlayerDialog(data)
         }
         if (value === 1) {
