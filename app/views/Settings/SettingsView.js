@@ -10,7 +10,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 import SettingsNotificationView from './SettingsNotificationView'
 import NavHeader from '../../Nav/NavHeader'
 import NavDrawerIcon from '../../Nav/NavDrawerIcon'
-
+import { SETTINGS, SETTINGS_NOTIFICATIONS} from '../routes'
 
 class SettingsView extends Component {
 
@@ -21,25 +21,18 @@ class SettingsView extends Component {
     }
 
     _login() {
-        this.props.pushRoute({
-            routeName: 'Login'
-        })
+        this.props.showLogin(true)
     }
     loginView() {
         this.props.pushRoute({
-            routeName: 'Login',
+            routeName: 'LoginModal',
             action: NavigationActions.navigate({ routeName: 'LoginView' })
-
         })
     }
 
     componentDidMount() {
         const { leagues, getRankings } = this.props
-        // console.tron.log(this.props.navigation.state.key)
 
-        // codePush.getUpdateMetadata().then(pkg => {
-        //     this.setState({ pkg: pkg })
-        // })
         if (!leagues.fetched && !leagues.loading) {
             getRankings()
         }
@@ -65,7 +58,7 @@ class SettingsView extends Component {
 
     _toggleGroups() {
         this.props.pushRoute({
-            routeName: 'SettingsNotification'
+            routeName: SETTINGS_NOTIFICATIONS
         })
     }
 
@@ -164,7 +157,7 @@ SettingsNotificationView.navigationOptions = { title: 'Benachrichtigungen' }
 
 
 export default StackNavigator({
-    Settings: { screen:
+    [SETTINGS]: { screen:
     connect(
     state => ({
         auth: state.auth,
@@ -181,8 +174,7 @@ export default StackNavigator({
         showLogin: (show) => dispatch(actions.showLogin(show))
     })
     )(SettingsView) },
-    SettingsNotification: { screen: SettingsNotificationView }
+    [SETTINGS_NOTIFICATIONS]: { screen: SettingsNotificationView }
 }, {
     ...NavHeader
 })
-

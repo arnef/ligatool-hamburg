@@ -152,6 +152,8 @@ const reorderMatches = (matches) => {
     const now = new Date().getTime()
 
     for (let match of matches) {
+        match.is_admin = isAdminForMatch(match)
+        match.type = getMatchType(match)
         data[match.id] = match
 
         if (match.date_confirmed) {

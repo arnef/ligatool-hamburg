@@ -1,20 +1,21 @@
 import { StackNavigator } from 'react-navigation'
 
-import Login from './modals/LoginModal'
-import App from './AppNavigator'
-import SelectPlayer from './modals/SelectPlayerModal'
-import InitScreen from './components/LoadingScreen'
-import { backgroundColor } from './components/base/theme'
 
+import App from './AppNavigator'
+import ModalLogin from './modals/LoginModal'
+import ModalSelectPlayer from './modals/SelectPlayerModal'
+import Splash from './components/LoadingScreen'
+import { backgroundColor } from './components/base/theme'
+import { APP, SPLASH, MODAL_LOGIN, MODAL_SELECT_PLAYER } from './views/routes'
 
 export default StackNavigator({
-    App: { screen: App },
-    Login: { screen: Login },
-    Splash: { screen: InitScreen },
-    SelectPlayer: { screen: SelectPlayer }
+    [SPLASH]: { screen: Splash },
+    [APP]: { screen: App },
+    [MODAL_LOGIN]: { screen: ModalLogin },
+    [MODAL_SELECT_PLAYER]: { screen: ModalSelectPlayer }
 }, {
     cardStyle: { backgroundColor },
     headerMode: 'none',
     mode: 'modal',
-    initialRouteName: 'Splash'
+    initialRouteName: SPLASH
 })

@@ -5,6 +5,7 @@ import MatchListView from './MatchListView'
 import NavTabBarTop from '../Nav/NavTabBarTop'
 import NavDrawerIcon from '../Nav/NavDrawerIcon'
 import { queryTeamMatches } from '../store/actions/teamActions'
+import strings from '../Strings'
 
 class Comming extends Component {
 
@@ -50,10 +51,10 @@ Played.propTypes = {
 
 
 Comming.navigationOptions = {
-    title: 'Kommende'
+    title: strings.next
 }
 Played.navigationOptions = {
-    title: 'Vergagene'
+    title: strings.played
 }
 
 
@@ -75,7 +76,7 @@ const MyTeam = TabNavigator({
 })
 
 MyTeam.navigationOptions = {
-    title: 'Mein Team',
+    title: strings.my_team,
     header: NavDrawerIcon
 }
 

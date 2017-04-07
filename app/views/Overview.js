@@ -5,6 +5,7 @@ import actions from '../store/actions'
 import NavDrawerIcon from '../Nav/NavDrawerIcon'
 import NavTabBarTop from '../Nav/NavTabBarTop'
 import { TabNavigator } from 'react-navigation'
+import strings from '../Strings'
 
 class Live extends Component {
 
@@ -22,7 +23,7 @@ class Live extends Component {
     }
 }
 Live.navigationOptions = {
-    title: 'Heute'
+    title: strings.today
 }
 Live.propTypes = {
     matches: PropTypes.object,
@@ -43,7 +44,7 @@ class Next extends Component {
     }
 }
 Next.navigationOptions = {
-    title: 'Kommende'
+    title: strings.next
 }
 Next.propTypes = {
     matches: PropTypes.object,
@@ -64,7 +65,7 @@ class Played extends Component {
     }
 }
 Played.navigationOptions = {
-    title: 'Vergangene'
+    title: strings.played
 }
 Played.propTypes = {
     matches: PropTypes.object,
@@ -81,7 +82,7 @@ const Tabs = TabNavigator({
 })
 
 Tabs.navigationOptions = {
-    title: 'Übersicht',
+    title: strings.overview,
     header: NavDrawerIcon
 }
 

@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import actions from '../store/actions'
 import { Button, Image, ListItem, Text } from '../components/base'
 import * as theme from '../components/base/theme'
-import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes'
+// import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes'
 import { NavigationActions } from 'react-navigation'
-
+import { LEAUGE, LEAGUE_CUP } from './routes'
 
 class NavigationView extends Component {
 
@@ -28,7 +28,7 @@ class NavigationView extends Component {
             this.setState({ activeLeague: state.leagueID || -1 })
             if (state.state === RANKING) {
                 navigate({
-                    routeName: 'League',
+                    routeName: LEAGUE,
                     params: {
                         id: state.leagueID,
                         title: state.title
@@ -36,7 +36,7 @@ class NavigationView extends Component {
                 })
             } else if (state.state === LEAGUE_MATCHES) {
                 navigate({
-                    routeName: 'LeagueCupMatches',
+                    routeName: LEAUGE_CUP,
                     params: {
                         id: state.leagueID,
                         title: state.title,

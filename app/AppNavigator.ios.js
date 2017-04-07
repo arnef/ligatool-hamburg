@@ -1,3 +1,4 @@
+/* @flow */
 import { TabNavigator } from 'react-navigation'
 import Overview from './views/OverviewNavigator'
 import MyTeam from './views/MyTeamNavigator'
@@ -6,37 +7,44 @@ import Settings from './views/Settings/SettingsView'
 import NavTabBarBottom from './Nav/NavTabBarBottom'
 import NavIcon from './Nav/NavIcon'
 
+import {
+  OVERVIEW_NAVIGATOR,
+  MY_TEAM_NAVIGATOR,
+  LEAGUES_NAVIGATOR,
+  SETTINGS_NAVIGATOR
+} from './views/routes'
+import strings from './Strings'
+
 Overview.navigationOptions = {
-    title: 'Übersicht',
+    title: strings.overview,
     tabBar: {
         icon: ({ tintColor }) => NavIcon('football', tintColor)
     }
 }
 MyTeam.navigationOptions = {
-    title: 'Mein Team',
+    title: strings.my_team,
     tabBar: {
-        label: 'Mein Team',
         icon: ({ tintColor }) => NavIcon('shirt', tintColor)
     }
 }
 Leagues.navigationOptions = {
-    title: 'Gruppen',
+    title: strings.leagues,
     tabBar: {
         icon: ({ tintColor }) => NavIcon('trophy', tintColor)
     }
 }
 Settings.navigationOptions = {
-    title: 'Einstellungen',
+    title: strings.settings,
     tabBar: {
         icon: ({ tintColor }) => NavIcon('settings', tintColor)
     }
 }
 
 export default TabNavigator({
-    Overview: { screen: Overview },
-    MyTeam: { screen: MyTeam },
-    Leagues: { screen: Leagues },
-    Settings: { screen: Settings }
+    [OVERVIEW_NAVIGATOR]: { screen: Overview },
+    [MY_TEAM_NAVIGATOR]: { screen: MyTeam },
+    [LEAGUES_NAVIGATOR]: { screen: Leagues },
+    [SETTINGS_NAVIGATOR]: { screen: Settings }
 }, {
     tabBarComponent: NavTabBarBottom,
     tabBarPosition: 'bottom',

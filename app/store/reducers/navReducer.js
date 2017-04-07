@@ -1,161 +1,215 @@
+/* @flow */
 import { TOKEN, FULFILLED, SHOW_LOGIN, DIALOG_PLAYER, INIT_APP } from '../actions/types'
 import { Platform } from 'react-native'
 import { ANDROID } from '../../consts'
 import Navigator from '../../Navigator'
 import { NavigationActions } from 'react-navigation'
 
-const tabs = ['Overview', 'MyTeam', 'Leagues', 'Settings']
-const tabRoutes = ['Match', 'Preview', 'Team']
+const tabs = [
+  Route.OVERVIEW_NAVIGATOR,
+  Route.MY_TEAM_NAVIGATOR,
+  Route.LEAGUES_NAVIGATOR,
+  Route.SETTINGS_NAVIGATOR
+]
+const tabRoutes = [ Route.MATCH, Route.PREVIEW, Route.TEAM ]
 
-let openTab = tabs[0]
+const topTabRoutes = ['Live', 'Next', 'Comming', 'Played']
+const initialRoute = { routeName: Route.OVERVIEW_NAVIGATOR }
+import * as Route from '../../views/routes'
 
-export default (state, action) => {
-    switch (action.type) {
-    case DIALOG_PLAYER: {
-        if (action.payload) {
-            console.tron.log(action.payload)
+export default (nav={
+  state: null,
+  actionStack: [],
+  currentRoute: initialRoute,
+  drawerOpen: false,
+  modalOpen: false,
+  currentTab: Route.OVERVIEW_NAVIGATOR //TODO rename to currentNavigator?
+}, action) => {
+  switch (action.type) {
+  case DIALOG_PLAYER: {
+      nav = { ...nav }
+      if (action.payload) {
+          console.tron.log(action.payload)
+          nav.state =
+              Navigator.router.getStateForAction(
+                  NavigationActions.navigate({
+                      routeName: Route.MODAL_SELECT_PLAYER,
+                      params:  { ...action.payload, team: 'home' }
+                  }),
+                  nav.state
+              )
+      } else {
+          const key = findRouteKey(nav.state, Route.MODAL_SELECT_PLAYER)
 
-            return Navigator.router.getStateForAction(
-                NavigationActions.navigate({
-                    routeName: 'SelectPlayer',
-                    params:  { ...action.payload, team: 'home' }
-                }),
-                state
-            )
-        } else {
-            const key = findRouteKey(state, 'SelectPlayer')
+          nav.state =
+              Navigator.router.getStateForAction(
+                  NavigationActions.back({ key }),
+                  nav.state
+              )
 
-            return Navigator.router.getStateForAction(
-                NavigationActions.back({ key }),
-                state
-            )
-        }
-    }
-    case SHOW_LOGIN: {
-        if (action.payload) {
+      }
+      nav.modalOpen = action.payload ? true : false
 
-            return Navigator.router.getStateForAction(
-                NavigationActions.navigate({ routeName: 'Login' }),
-                state
-            )
-        } else {
-            const key = findRouteKey(state, 'Login')
+      return nav
+  }
+  case SHOW_LOGIN: {
+      nav = { ...nav }
 
-            return Navigator.router.getStateForAction(
-                NavigationActions.back({ key }),
-                state
-            )
-        }
-    }
-    case INIT_APP + FULFILLED: {
-        return Navigator.router.getStateForAction(
-            NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'App' })
-                ]
-            }),
-            state
-        )
-    }
-    case 'CLOSE_LOGIN_MODAL': {
-        const key = findRouteKey(state, 'Login')
+      if (action.payload) {
+          nav.state = Navigator.router.getStateForAction(
+              NavigationActions.navigate({ routeName: Route.MODAL_LOGIN }),
+              nav.state
+          )
+      } else {
+          const key = findRouteKey(nav.state, Route.MODAL_LOGIN)
 
-        return Navigator.router.getStateForAction(
-            NavigationActions.back({ key }),
-            state
-        )
-    }
-    case TOKEN + FULFILLED: {
-        if (action.payload.ok) {
-            const key = findRouteKey(state, 'Login')
+          nav.state = Navigator.router.getStateForAction(
+              NavigationActions.back({ key }),
+              nav.state
+          )
+      }
+      nav.modalOpen = action.payload ? true : false
 
-            return Navigator.router.getStateForAction(
-                NavigationActions.back({ key }),
-                state
-            )
-        }
-    }
-    default: {
-        if (action.type === NavigationActions.NAVIGATE) {
+      return nav
+  }
+  case INIT_APP + FULFILLED: {
+      nav = { ...nav }
+      const action = Platform.OS === ANDROID ?
+          NavigationActions.navigate({ routeName: Route.APP })
+      :   NavigationActions.reset({
+          index: 0,
+          actions: [ NavigationActions.navigate({ routeName: Route.APP })]
+      })
 
-            if (tabs.indexOf(action.routeName) !== -1) {
-                console.tron.log(`set open tab ${action.routeName}`)
-                openTab = action.routeName
-            }
-            if (Platform.OS === ANDROID && (action.routeName === 'League' || action.routeName === 'LeagueCupMatches')) {
-                openTab = 'Leagues'
-            }
-            const idx = tabRoutes.indexOf(action.routeName)
+      nav.state = Navigator.router.getStateForAction(action, nav.state)
 
-            console.tron.log(action.routeName + ' idx ' + idx)
-            if (idx > -1) {
-                const newAction = { ...action, routeName: `${openTab}${tabRoutes[idx]}` }
+      //
+      if (nav.actionStack.length > 0) {
+          nav.actionStack.map(action => {
+              nav.state = Navigator.router.getStateForAction(
+                  action, nav.state
+              )
+          })
+      }
 
-                console.tron.log(newAction)
+      return nav
+  }
+  case TOKEN + FULFILLED: {
+      if (action.payload.ok) {
+          const key = findRouteKey(nav.state, Route.MODAL_LOGIN)
 
-                return Navigator.router.getStateForAction(newAction, state)
-            }
-        }
-        let newState = Navigator.router.getStateForAction(action, state)
+          nav =  { ...nav }
+          nav.state = Navigator.router.getStateForAction(
+              NavigationActions.back({ key }),
+              nav.state
+          )
+          nav.modalOpen = false
+      }
 
-        if (Platform.OS === ANDROID && action.type === NavigationActions.BACK) {
-            // don't show group overview on android
-            if (openTab === 'Leagues' && findOpenRoute(newState).routeName === 'Leagues') {
-                newState = Navigator.router.getStateForAction(NavigationActions.back(), newState)
-            }
-            if (newState === state) {
-                // strange android stuff to handle back press close
-                newState = { index: 0, routes: [{ routeName: 'Splash', key: 'exit' }] }
-                newState.closeApp = true
-            }
-        }
+      return nav
+  }
+  case NavigationActions.NAVIGATE: {
+      const idx = tabRoutes.indexOf(action.routeName)
+      const newAction = idx > -1 ? { ...action, routeName: `${nav.currentTab}${tabRoutes[idx]}` }
+          : { ...action }
 
+      nav = { ...nav }
 
-        return newState
-    }
-    }
+      console.tron.log(newAction)
+
+      if (action.routeName.indexOf('Drawer') === -1 && !nav.modalOpen) {
+          nav.actionStack.push(newAction)
+          nav.currentRoute = { routeName: newAction.routeName, params: newAction.params }
+      } else {
+          nav.drawerOpen = newAction.routeName === 'DrawerOpen'
+      }
+
+      if (tabs.indexOf(newAction.routeName) !== -1) {
+          nav.currentTab = newAction.routeName
+      }
+      if (Platform.OS === ANDROID && (newAction.routeName === 'League' || newAction.routeName === 'LeagueCupMatches')) {
+          nav.currentTab = 'Leagues'
+      }
+
+      nav.state = Navigator.router.getStateForAction(newAction, nav.state)
+
+      return nav
+  }
+  case NavigationActions.BACK: {
+      nav = { ...nav }
+      if (nav.actionStack.length > 0 && !nav.drawerOpen && !nav.modalOpen) {
+          const lastAction = nav.actionStack.pop()
+          const key = findRouteKey(nav.state, lastAction.routeName)
+          const currentRoute = getCurrentRoute(nav)
+
+          if (Platform.OS === ANDROID && ( lastAction.routeName === 'League' ||
+              lastAction.routeName === 'LeagueCupMatches') ) {
+
+              nav.state = Navigator.router.getStateForAction(
+                  NavigationActions.navigate(currentRoute),
+                  nav.state
+              )
+          } else {
+              nav.state = Navigator.router.getStateForAction(
+              NavigationActions.back({ key }), nav.state)
+          }
+
+          nav.currentRoute = currentRoute
+
+      } else {
+          nav.state = Navigator.router.getStateForAction(action, nav.state)
+      }
+      nav.drawerOpen = false
+
+      return nav
+  }
+  default: {
+      nav = { ...nav }
+      nav.state = Navigator.router.getStateForAction(action, nav.state)
+
+      return nav
+  }
+  }
 }
 
-const findOpenRoute = (state) => {
-    if (state.routes) {
-        return findOpenRoute(state.routes[state.index])
-    }
+const getCurrentRoute = (nav) => {
+  const idx = nav.actionStack.length - 1
 
-    return state
+  return nav.actionStack[idx] || initialRoute
 }
 
 
 const recursiveFindRoute = (route, name) => {
-    if (!route) {
-        return null
-    }
-    else if (route.routeName == name) {
-        return route
-    }
-    else if (!route.routes) {
-        return null
-    }
-    else {
-        for (let i=0; i<route.routes.length; i++) {
-            const found = recursiveFindRoute(route.routes[i], name)
+  if (!route) {
+      return null
+  }
+  else if (route.routeName == name) {
+      return route
+  }
+  else if (!route.routes) {
+      return null
+  }
+  else {
+      for (let i=0; i<route.routes.length; i++) {
+          const found = recursiveFindRoute(route.routes[i], name)
 
-            if (found) {
-                return found
-            }
-        }
-    }
+          if (found) {
+              return found
+          }
+      }
+  }
 
-    return null
+  return null
 }
 
 const findRouteKey = (state, name) => {
-    const found = recursiveFindRoute(state, name)
+  const found = recursiveFindRoute(state, name)
 
-    if (found) {
+  if (found) {
+      console.tron.log(found)
 
-        return found.key
-    }
+      return found.key
+  }
 
-    return null
+  return null
 }

@@ -6,6 +6,8 @@ import { Row, Column, ListItem, Touchable, Icon, Text } from '../components/base
 import { TeamLogo } from '../components'
 import { NavigationActions } from 'react-navigation'
 import moment from 'moment'
+import { MATCH, PREVIEW } from '../views/routes'
+
 
 class MatchItem extends Component {
 
@@ -14,7 +16,9 @@ class MatchItem extends Component {
 
         return (
             <ListItem.Group>
-                <Touchable onPress={() => {this.onPress(match)}}>
+                <Touchable
+                    onLongPress={() => this.onLongPress(match) }
+                    onPress={() => this.onPress(match) }>
 
                 <ListItem.Header title={`${match.league.name} (${match.match_day})`}>
                     { match.venue && (<Icon name='pin' />) }
@@ -52,6 +56,18 @@ class MatchItem extends Component {
     }
 
     /**
+     * just for dev if moment not working correctly
+     */
+    onLongPress(match) {
+        if (match.is_admin) {
+            this.props.pushRoute({
+                routeName: MATCH,
+                params: { id: match.id }
+            })
+        }
+    }
+
+    /**
      *
      * @param {object} match
      */
@@ -60,12 +76,12 @@ class MatchItem extends Component {
         if (match.set_points ||
             (match.is_admin && moment(match.datetime).diff(moment(), 'minutes') < 31 )) {
             this.props.pushRoute({
-                routeName: 'Match',
+                routeName: MATCH,
                 params: { id: match.id }
             })
         } else {
             this.props.pushRoute({
-                routeName: 'Preview',
+                routeName: PREVIEW,
                 params: { match }
             })
         }

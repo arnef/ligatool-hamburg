@@ -16,13 +16,16 @@ class AppContainer extends Component {
         this.props.initApp()
 
         BackAndroid.addEventListener('hardwareBackPress', () => {
-            this.props.dispatch({ type: NavigationActions.BACK })
-            console.tron.log(`close ${this.props.nav.closeApp}`)
-            if (this.props.nav.closeApp) {
+            if (this.props.nav.actionStack.length === 0 && !this.props.nav.drawerOpen) {
                 BackAndroid.exitApp()
-            }
+                this.props.dispatch({ type: NavigationActions.BACK })
 
-            return true
+                return false
+            } else {
+                this.props.dispatch({ type: NavigationActions.BACK })
+
+                return true
+            }
         })
 
     }
@@ -47,66 +50,77 @@ class AppContainer extends Component {
         }
     }
 
+    handleNotification(notif) {
+        if (!notif) {
+            return
+        }
+
+        if (Platform.OS === IOS) {
+            switch (notif._notificationType) {
+            case NotificationType.Remote:
+                notif.finish(RemoteNotificationResult.NewData)
+                break
+            case NotificationType.NotificationResponse:
+                notif.finish()
+                break
+            case NotificationType.WillPresent:
+                notif.finish(WillPresentNotificationResult.All)
+                break
+            }
+        }
+        const { nav, match, receiveNotification, dispatch, pushRoute } = this.props
+        const currentRoute = nav.currentRoute
+        const isMatchRoute = currentRoute.routeName.indexOf('Match') !== -1
+        const matchId = parseInt(notif.data ? notif.data.id : notif.id)
+
+        console.tron.log(notif)
+
+        // fire local notification on android
+        if (Platform.OS === ANDROID && notif.fcm && notif.fcm.tag) {
+            const localNotif = { ...notif.fcm }
+
+            localNotif.vibrate = 0
+            localNotif.id = notif.id
+            localNotif.data = { id: notif.id, type: notif.type }
+            localNotif.show_in_foreground = true
+            if (!(match.ignoreNextNotify && isMatchRoute && currentRoute.params.id === matchId)) {
+                FCM.presentLocalNotification(localNotif)
+            }
+        }
+
+        if (notif.type && !notif.local_notification && !notif._completionHandlerId) {
+            // send notification to redux
+            receiveNotification(notif)
+            // get match if recevied match is open
+            if (isMatchRoute && currentRoute.params.id === matchId && !match.ignoreNextNotify) {
+                dispatch(actions.getMatch(matchId))
+            }
+        }
+
+        if (notif.opened_from_tray && matchId && (!isMatchRoute || currentRoute.params.id !== matchId)) {
+            console.tron.log('open match')
+            //TODO check if user is admin for match
+            pushRoute({
+                routeName: 'OverviewMatch',
+                params: {
+                    id: matchId
+                }
+            })
+        }
+    }
+
     mountNotification() {
         FCM.requestPermissions()
+        FCM.getInitialNotification().then(notif => {
+            console.tron.log('get initial notification')
+            this.handleNotification(notif)
+        })
         FCM.getFCMToken().then( token => {
             this.syncNotifications(token)
         })
-        this.notificationListener = FCM.on(FCMEvent.Notification, (notif) => {
-            if (Platform.OS === IOS) {
-                switch (notif._notificationType) {
-                case NotificationType.Remote:
-                    notif.finish(RemoteNotificationResult.NewData)
-                    break
-                case NotificationType.NotificationResponse:
-                    notif.finish()
-                    break
-                case NotificationType.WillPresent:
-                    notif.finish(WillPresentNotificationResult.All)
-                    break
-                }
-            }
-            const openRoute = findOpenRoute(this.props.nav)
-            const isMatchRoute = openRoute.routeName.indexOf('Match') !== -1
-            const matchId = parseInt(notif.data ? notif.data.id : notif.id)
-
-            if (Platform.OS === ANDROID && notif.fcm && notif.fcm.tag) {
-                const localNotif = { ...notif.fcm }
-                // const matchId = parseInt(notif.id)
-
-                localNotif.vibrate = 0
-                localNotif.data = { id: notif.id, type: notif.type }
-                localNotif.show_in_foreground = true
-                if (!(this.props.match.ignoreNextNotify && isMatchRoute && openRoute.params.id === matchId)) {
-                    FCM.presentLocalNotification(localNotif)
-                }
-            }
-
-
-            if (notif.type && !notif.local_notification && !notif._completionHandlerId) {
-                this.props.receiveNotification(notif)
-                if (isMatchRoute && openRoute.params.id === matchId && !this.props.match.ignoreNextNotify) {
-                    this.props.dispatch(actions.getMatch(matchId))
-                }
-            }
-
-
-            if (notif.opened_from_tray) {
-                const { pushRoute } = this.props
-
-                if (matchId) {
-                    if (!isMatchRoute || openRoute.params.id !== matchId) {
-                        //TODO check if user is admin for match
-                        pushRoute({
-                            routeName: 'OverviewMatch',
-                            params: {
-                                id: matchId
-                            }
-                        })
-                    }
-                }
-
-            }
+        this.notificationListener = FCM.on(FCMEvent.Notification, notif => {
+            console.tron.log('notification listener')
+            this.handleNotification(notif)
         })
         this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
             this.syncNotifications(token)
@@ -122,7 +136,7 @@ class AppContainer extends Component {
                 <Navigator
                     navigation={ addNavigationHelpers({
                         dispatch,
-                        state: nav
+                        state: nav.state
                     })} />
             </View>
         )

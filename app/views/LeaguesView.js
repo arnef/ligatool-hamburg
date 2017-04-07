@@ -15,6 +15,7 @@ import NavHeader from '../Nav/NavHeader'
 import TeamView from './TeamView'
 import MatchView from './MatchView'
 import Preview from './MatchView/PreView'
+import { LEAGUES_NAVIGATOR, LEAGUES, MATCH, PREVIEW, TEAM, LEAGUE, LEAGUE_CUP } from './routes'
 
 
 class LeaguesView extends Component {
@@ -87,7 +88,7 @@ SelectableMatchListView.navigationOptions = {
 }
 
 export default StackNavigator({
-    Leagues: { screen: connect(
+    [LEAGUES]: { screen: connect(
         state => ({
             leagues: state.leagues
         }),
@@ -98,11 +99,11 @@ export default StackNavigator({
         })
         )(LeaguesView)
     },
-    League: { screen: LeagueView },
-    LeaguesTeam: { screen: TeamView },
-    LeaguesMatch: { screen: MatchView },
-    LeaguesPreview: { screen: Preview },
-    LeagueCupMatches: { screen: SelectableMatchListView }
+    [LEAGUE]: { screen: LeagueView },
+    [LEAGUES_NAVIGATOR + TEAM]: { screen: TeamView },
+    [LEAGUES_NAVIGATOR + MATCH]: { screen: MatchView },
+    [LEAGUES_NAVIGATOR + PREVIEW]: { screen: Preview },
+    [LEAGUE_CUP]: { screen: SelectableMatchListView }
 }, {
     ...NavHeader
 })
