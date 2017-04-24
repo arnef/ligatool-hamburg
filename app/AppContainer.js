@@ -7,6 +7,7 @@ import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult,
 import Navigator from './Navigator'
 import Loading from './modals/LoadingModal'
 import { ANDROID, IOS } from './consts'
+import { OVERVIEW_NAVIGATOR, MATCH } from './views/routes';
 
 
 class AppContainer extends Component {
@@ -44,7 +45,6 @@ class AppContainer extends Component {
       console.tron.log('received token: ' + token)
 
         if (token) {
-
             this.props.updateFCMToken(token)
             if (this.props.settings.notification.leagues) {
                 console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED')
@@ -73,7 +73,7 @@ class AppContainer extends Component {
         }
         const { nav, match, receiveNotification, dispatch, pushRoute } = this.props
         const currentRoute = nav.currentRoute
-        const isMatchRoute = currentRoute.routeName.indexOf('Match') !== -1
+        const isMatchRoute = currentRoute.routeName.indexOf('MATCH') !== -1
         const matchId = parseInt(notif.data ? notif.data.id : notif.id)
 
         console.tron.log(notif)
@@ -104,7 +104,7 @@ class AppContainer extends Component {
             console.tron.log('open match')
             //TODO check if user is admin for match
             pushRoute({
-                routeName: 'OverviewMatch',
+                routeName: OVERVIEW_NAVIGATOR + MATCH,
                 params: {
                     id: matchId
                 }

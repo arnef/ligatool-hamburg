@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import MatchListView from './MatchListView'
@@ -6,7 +7,7 @@ import NavDrawerIcon from '../Nav/NavDrawerIcon'
 import NavTabBarTop from '../Nav/NavTabBarTop'
 import { TabNavigator } from 'react-navigation'
 import strings from '../Strings'
-
+import { TAB_MATCHES_TODAY, TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes'
 class Live extends Component {
 
 
@@ -73,9 +74,9 @@ Played.propTypes = {
 }
 
 const Tabs = TabNavigator({
-    Live: { screen:  connect(state => ({ matches: state.matches }))(Live) },
-    Next: { screen: connect(state => ({ matches: state.matches }))(Next) },
-    Played: { screen: connect(state => ({ matches: state.matches }))(Played) }
+    [TAB_MATCHES_TODAY]: { screen:  connect(state => ({ matches: state.matches }))(Live) },
+    [TAB_MATCHES_NEXT]: { screen: connect(state => ({ matches: state.matches }))(Next) },
+    [TAB_MATCHES_PLAYED]: { screen: connect(state => ({ matches: state.matches }))(Played) }
 }, {
     ...NavTabBarTop,
     lazyLoad: false

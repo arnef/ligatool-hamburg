@@ -4,13 +4,14 @@ import NavTabBarTop from '../../Nav/NavTabBarTop'
 import NavIcon from '../../Nav/NavIcon'
 import TeamView from './TeamDetails'
 import TeamMatches from './TeamMatches'
+import { TAB_TEAM, TAB_MATCHES } from '../routes'
 
 TeamView.navigationOptions = { title: 'Team' }
 TeamMatches.navigationOptions = { title: 'Begegnungen' }
 
 const Team = TabNavigator({
-    TeamDetails: { screen: TeamView },
-    TeamMatches: { screen: TeamMatches }
+    [TAB_TEAM]: { screen: TeamView },
+    [TAB_MATCHES]: { screen: TeamMatches }
 }, {
     ...NavTabBarTop
 })

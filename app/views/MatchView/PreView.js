@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import TeamDetails from '../TeamView/TeamDetails'
 import NavTabBarTop from '../../Nav/NavTabBarTop'
 import { TabNavigator } from 'react-navigation'
+import { TAB_HOME, TAB_AWAY } from '../routes';
+
 
 class TeamHome extends Component {
 
@@ -40,8 +42,8 @@ TeamAway.navigationOptions = {
     }
 }
 export default TabNavigator({
-    TeamHome: { screen: TeamHome },
-    TeamAway: { screen: TeamAway }
+    [TAB_HOME]: { screen: TeamHome },
+    [TAB_AWAY]: { screen: TeamAway }
 }, {
     ...NavTabBarTop
 })

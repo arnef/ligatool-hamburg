@@ -118,8 +118,10 @@ export default (nav={
       console.tron.log(newAction)
 
       if (action.routeName.indexOf('Drawer') === -1 && !nav.modalOpen) {
-          nav.actionStack.push(newAction)
-          nav.currentRoute = { routeName: newAction.routeName, params: newAction.params }
+        if (action.routeName.indexOf('TAB_') === -1) {
+          nav.actionStack.push(newAction);
+          nav.currentRoute = { routeName: newAction.routeName, params: newAction.params };
+        }
       } else {
           nav.drawerOpen = newAction.routeName === 'DrawerOpen'
       }
@@ -127,8 +129,8 @@ export default (nav={
       if (tabs.indexOf(newAction.routeName) !== -1) {
           nav.currentTab = newAction.routeName
       }
-      if (Platform.OS === ANDROID && (newAction.routeName === 'League' || newAction.routeName === 'LeagueCupMatches')) {
-          nav.currentTab = 'Leagues'
+      if (Platform.OS === ANDROID && (newAction.routeName === Route.LEAGUE || newAction.routeName === Route.LEAGUE_CUP)) {
+          nav.currentTab = Route.LEAGUES_NAVIGATOR;
       }
 
       nav.state = Navigator.router.getStateForAction(newAction, nav.state)
@@ -142,8 +144,8 @@ export default (nav={
           const key = findRouteKey(nav.state, lastAction.routeName)
           const currentRoute = getCurrentRoute(nav)
 
-          if (Platform.OS === ANDROID && ( lastAction.routeName === 'League' ||
-              lastAction.routeName === 'LeagueCupMatches') ) {
+          if (Platform.OS === ANDROID && ( lastAction.routeName === Route.LEAGUE ||
+              lastAction.routeName === Route.LEAGUE_CUP) ) {
 
               nav.state = Navigator.router.getStateForAction(
                   NavigationActions.navigate(currentRoute),

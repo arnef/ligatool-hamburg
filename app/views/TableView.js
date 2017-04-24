@@ -4,6 +4,7 @@ import actions from '../store/actions'
 import { Container, TeamLogo } from '../components'
 import { Text, ListItem, Column } from '../components/base'
 import { NavigationActions } from 'react-navigation'
+import { TEAM } from './routes';
 
 
 class TableView extends Component {
@@ -47,7 +48,7 @@ class TableView extends Component {
 
     _onPress(team) {
         this.props.pushRoute({
-            routeName: 'Team',
+            routeName: TEAM,
             params: { team, title: team.name }
         })
     }

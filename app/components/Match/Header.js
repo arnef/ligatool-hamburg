@@ -3,6 +3,7 @@ import { StyleSheet, View, Platform } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { Touchable, Text } from '../../components/base'
+import { TEAM } from '../../views/routes'
 
 class MatchHeader extends Component {
 
@@ -39,7 +40,7 @@ class MatchHeader extends Component {
 
     onPress(team) {
         this.props.pushRoute({
-            routeName: 'Team',
+            routeName: TEAM,
             params: { team, title: team.name }
         })
     }

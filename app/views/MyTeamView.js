@@ -6,6 +6,7 @@ import NavTabBarTop from '../Nav/NavTabBarTop'
 import NavDrawerIcon from '../Nav/NavDrawerIcon'
 import { queryTeamMatches } from '../store/actions/teamActions'
 import strings from '../Strings'
+import { TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes'
 
 class Comming extends Component {
 
@@ -60,12 +61,12 @@ Played.navigationOptions = {
 
 
 const MyTeam = TabNavigator({
-    Comming: {
+    [TAB_MATCHES_NEXT]: {
         screen: connect(state => ({
             teamMatches: state.teamMatches
         }))(Comming)
     },
-    Played: {
+    [TAB_MATCHES_PLAYED]: {
         screen: connect(state => ({
             teamMatches: state.teamMatches
         }))(Played)
