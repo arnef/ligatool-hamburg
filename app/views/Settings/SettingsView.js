@@ -10,7 +10,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 import SettingsNotificationView from './SettingsNotificationView'
 import NavHeader from '../../Nav/NavHeader'
 import NavDrawerIcon from '../../Nav/NavDrawerIcon'
-import { SETTINGS, SETTINGS_NOTIFICATIONS} from '../routes'
+import { SETTINGS, SETTINGS_NOTIFICATIONS, MODAL_LOGIN } from '../routes'
 
 class SettingsView extends Component {
 
@@ -25,7 +25,7 @@ class SettingsView extends Component {
     }
     loginView() {
         this.props.pushRoute({
-            routeName: 'LoginModal',
+            routeName: MODAL_LOGIN,
             action: NavigationActions.navigate({ routeName: 'LoginView' })
         })
     }

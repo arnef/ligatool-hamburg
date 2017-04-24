@@ -45,10 +45,10 @@ class AppContainer extends Component {
 
         if (token) {
 
-            // this.props.updateFCMToken(token)
+            this.props.updateFCMToken(token)
             if (this.props.settings.notification.leagues) {
                 console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED')
-                // this.props.saveNotifications()
+                this.props.saveNotifications()
             }
         }
     }
