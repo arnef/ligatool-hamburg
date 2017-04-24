@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services'
+apply plugin: "com.google.gms.google-services"
 
 import com.android.build.OutputFile
 
@@ -81,30 +81,29 @@ def enableSeparateBuildPerCPUArchitecture = true
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = true
+def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.arnefeilligatool"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 4
-        versionName "0.10"
+        versionName "0.9"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
-  signingConfigs {
-      release {
-        storeFile file(LIGATOOL_RELEASE_STORE_FILE)
-        storePassword LIGATOOL_RELEASE_STORE_PASSWORD
-        keyAlias LIGATOOL_RELEASE_KEY_ALIAS
-        keyPassword LIGATOOL_RELEASE_KEY_PASSWORD
-      }
+    signingConfigs {
+        release {
+            storeFile file(LIGATOOL_RELEASE_STORE_FILE)
+            storePassword LIGATOOL_RELEASE_STORE_PASSWORD
+            keyAlias LIGATOOL_RELEASE_KEY_ALIAS
+            keyPassword LIGATOOL_RELEASE_KEY_PASSWORD
+        }
     }
     splits {
         abi {
@@ -137,9 +136,10 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-fcm')
-    compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-fcm')
+    compile 'com.google.firebase:firebase-core:10.0.1'
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
@@ -147,6 +147,6 @@ dependencies {
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use
 task copyDownloadableDepsToLibs(type: Copy) {
-  from configurations.compile
-  into 'libs'
+    from configurations.compile
+    into 'libs'
 }

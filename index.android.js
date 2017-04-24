@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AppRegistry, Platform, StatusBar } from 'react-native'
+import { AppRegistry, Platform, StatusBar, View, Text } from 'react-native'
 import { Provider } from 'react-redux'
 import AppContainer from './app/AppContainer'
 
@@ -16,6 +16,7 @@ class androidapp extends Component {
     }
 
     render() {
+
         return (
             <Provider store={store}>
                 <AppContainer />
