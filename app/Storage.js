@@ -2,9 +2,11 @@ import { AsyncStorage } from 'react-native'
 
 const Storage = {
     getItem: (key) => {
+      console.tron.log('get item ' + key);
         return new Promise( resolve => {
             AsyncStorage.getItem(key)
                 .then(serializedItem => {
+                  console.tron.log('item ? ' + serializedItem);
                     if (serializedItem) {
                         try {
                             const item = JSON.parse(serializedItem)
@@ -15,7 +17,8 @@ const Storage = {
                             resolve({ ok: false })
                         }
                     } else {
-                        resolve({ ok: false })
+                      console.tron.log('no item');
+                      resolve({ ok: false })
                     }
                 }).catch(ex => {
                     // console.tron.log(ex)
@@ -24,6 +27,7 @@ const Storage = {
         })
     },
     setItem:(key, value) => {
+      console.tron.log('set item ' + key)
         return new Promise( resolve => {
             try {
                 const serializedItem = JSON.stringify(value)

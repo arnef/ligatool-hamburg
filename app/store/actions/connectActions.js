@@ -17,13 +17,13 @@ import {
 /**
  * synchronize local data with server
  */
+
 export const initApp = () => {
 
     return {
         payload: new Promise(resolve => {
             const restoreSettings = new Promise(resolve => {
                 Storage.getItem(SETTINGS_KEY).then(settings => {
-                    // console.tron.log(settings)
                     if (!settings.ok) { // no settings saved
                         api.get('/leagues').then(resp => {
                             store.dispatch({
@@ -61,6 +61,8 @@ export const initApp = () => {
             const restoreAuth = new Promise(resolve => {
                 Promise.all([Storage.getItem(API_KEY), Storage.getItem(TOKEN)])
                 .then(values => {
+
+
                     const apiAccessKey = values[0]
                     const apiToken = values[1]
 
@@ -73,7 +75,7 @@ export const initApp = () => {
 
                         // console.tron.log('token expired ' + (apiToken.expires < now))
                         if (apiToken.expires < now) {
-                            api.post('/uer/auth/refresh', { access_key: apiAccessKey.data })
+                            api.post('/user/auth/refresh', { access_key: apiAccessKey.data })
                             .then(resp => {
                                 store.dispatch({
                                     payload: resp,
@@ -95,29 +97,33 @@ export const initApp = () => {
             const timeout = new Promise(resolve => {
                 setTimeout(() => {
                     resolve()
-                }, 2000)
+                }, 3000)
             })
 
             Promise.all([restoreSettings, restoreAuth, timeout]).then(values => {
                 const settings = store.getState().settings
                 const savedSettings = values[0]
 
+                console.tron.log(values)
+
                 if (settings.fcm_token && savedSettings.ok) {
-                    // console.tron.log('FCM_TOKEN SET SEND UPDATE')
+                    console.tron.log('FCM_TOKEN SET SEND UPDATE')
 
                     api.post('/notification', {
                         fcm_token: settings.fcm_token,
                         notification: savedSettings.data.notification
-                    }).then(() => {
+                    }).then(resp => {
+                      setTimeout(() => {
                         store.dispatch({
                             payload: savedSettings,
                             type: LOAD_SETTINGS + FULFILLED
                         })
                         resolve()
+                      }, 100)
                     })
 
                 } else {
-                    // console.tron.log('NO FCM TOKEN, SKIP UPDATE')
+                    console.tron.log('NO FCM TOKEN, SKIP UPDATE')
 
                     store.dispatch({
                         payload: savedSettings,
@@ -131,4 +137,3 @@ export const initApp = () => {
         type: INIT_APP
     }
 }
-

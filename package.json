@@ -24,7 +24,6 @@
     "babel-eslint": "^7.2.1",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^6.10.3",
-    "flow-bin": "^0.26.0",
     "reactotron-apisauce": "^1.9.1",
     "reactotron-react-native": "^1.9.1",
     "reactotron-redux": "^1.9.1"

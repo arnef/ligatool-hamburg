@@ -5,14 +5,24 @@ import Settings from './views/Settings/SettingsView'
 import MyTeam from './views/MyTeamNavigator'
 import Leagues from './views/LeaguesView'
 
+import {
+  OVERVIEW_NAVIGATOR,
+  MY_TEAM_NAVIGATOR,
+  LEAGUES_NAVIGATOR,
+  SETTINGS_NAVIGATOR
+} from './views/routes'
+import strings from './Strings'
+
+
 const drawerWidth = 260
 
 
+
 export default DrawerNavigator({
-    Overview: { screen: Overview },
-    MyTeam: { screen: MyTeam },
-    Settings: { screen: Settings },
-    Leagues: { screen: Leagues }
+    [OVERVIEW_NAVIGATOR]: { screen: Overview },
+    [MY_TEAM_NAVIGATOR]: { screen: MyTeam },
+    [LEAGUES_NAVIGATOR]: { screen: Leagues },
+    [SETTINGS_NAVIGATOR]: { screen: Settings }
 }, {
     contentComponent: Drawer,
     drawerWidth

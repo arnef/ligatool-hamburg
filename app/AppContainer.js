@@ -12,7 +12,7 @@ import { ANDROID, IOS } from './consts'
 class AppContainer extends Component {
 
     componentDidMount() {
-        // this.mountNotification()
+        this.mountNotification()
         this.props.initApp()
 
         BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -45,10 +45,10 @@ class AppContainer extends Component {
 
         if (token) {
 
-            this.props.updateFCMToken(token)
+            // this.props.updateFCMToken(token)
             if (this.props.settings.notification.leagues) {
-                // console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED')
-                this.props.saveNotifications()
+                console.tron.log('FCM TOKEN RECEIVED AND NOTIFICATION INITIALIZED')
+                // this.props.saveNotifications()
             }
         }
     }

@@ -6,7 +6,13 @@ import { Button, Image, ListItem, Text } from '../components/base'
 import * as theme from '../components/base/theme'
 // import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes'
 import { NavigationActions } from 'react-navigation'
-import { LEAUGE, LEAGUE_CUP } from './routes'
+import {
+  LEAGUE,
+  LEAGUE_CUP,
+  OVERVIEW_NAVIGATOR,
+  MY_TEAM_NAVIGATOR,
+  SETTINGS_NAVIGATOR
+} from './routes'
 
 class NavigationView extends Component {
 
@@ -26,7 +32,7 @@ class NavigationView extends Component {
 
         if (!state.active) {
             this.setState({ activeLeague: state.leagueID || -1 })
-            if (state.state === RANKING) {
+            if (state.state === LEAGUE) {
                 navigate({
                     routeName: LEAGUE,
                     params: {
@@ -34,7 +40,7 @@ class NavigationView extends Component {
                         title: state.title
                     }
                 })
-            } else if (state.state === LEAGUE_MATCHES) {
+            } else if (state.state === LEAGUE_CUP) {
                 navigate({
                     routeName: LEAUGE_CUP,
                     params: {
@@ -76,14 +82,14 @@ class NavigationView extends Component {
         console.tron.log(`active state ${navigation.state.index}`)
 
         return this.props.leagues.data.map( (league) => {
-            const active = navigation.state.index === 3  && league.id === this.state.activeLeague
+            const active = navigation.state.index === 2  && league.id === this.state.activeLeague
 
             return (
                 <ListItem key={league.id}
                     last
                     active={active}
                     onPress={ () => {
-                        this._handleRowPress({ leagueID: league.id, state: league.cup ? LEAGUE_MATCHES : RANKING, title: league.name, active })
+                        this._handleRowPress({ leagueID: league.id, state: league.cup ? LEAGUE_CUP : LEAGUE, title: league.name, active })
                     }}>
                     <Text bold color={active ? color : null}>
                     { league.name }
@@ -117,8 +123,8 @@ class NavigationView extends Component {
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.space} />
-                    { this._renderItem(OVERVIEW, 'Übersicht', 'football', 0) }
-                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in', 1)}
+                    { this._renderItem(OVERVIEW_NAVIGATOR, 'Übersicht', 'football', 0) }
+                    { this._renderItem(MY_TEAM_NAVIGATOR, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in', 1)}
                     { this.renderSeparator() }
                     {!this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (
                             <View style={{ alignItems: 'center', padding: 16 }}>
@@ -136,7 +142,7 @@ class NavigationView extends Component {
                     }
                     { !this.props.leagues.loading && !this.props.leagues.error && this.renderLeagues() }
                     { this.renderSeparator() }
-                    { this._renderItem(SETTINGS, 'Einstellungen', 'settings', 2) }
+                    { this._renderItem(SETTINGS_NAVIGATOR, 'Einstellungen', 'settings', 3) }
                     <View style={styles.space} />
                 </ScrollView>
             </View>
