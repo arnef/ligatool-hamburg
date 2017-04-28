@@ -20,5 +20,4 @@ export default {
   select_leagues: 'Gruppen wählen',
   information: 'Informationen',
   app_version: 'App-Version 0.10'
-
 }

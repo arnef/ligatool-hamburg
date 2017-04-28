@@ -7,7 +7,6 @@ import * as LeagueActions from './leagueActions'
 import * as AuthActions from './authActions'
 import * as FCMActions from './fcmActions'
 import * as connectActions from './connectActions'
-import * as routeActions from './routeActions'
 
 
 const actions =  Object.assign({},
@@ -19,8 +18,7 @@ const actions =  Object.assign({},
     LeagueActions,
     AuthActions,
     FCMActions,
-    connectActions,
-    routeActions
+    connectActions
 )
 
 

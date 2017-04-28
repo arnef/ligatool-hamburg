@@ -59,7 +59,7 @@ class LeaguesView extends Component {
         const { dispatch } = this.props
 
         dispatch(NavigationActions.navigate({
-            routeName: league.cup ? 'LeagueCupMatches' : 'League',
+            routeName: league.cup ? LEAGUE_CUP : LEAGUE,
             params: {
                 id: league.id,
                 title: league.name,

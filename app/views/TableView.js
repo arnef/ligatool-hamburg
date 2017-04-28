@@ -12,7 +12,6 @@ class TableView extends Component {
     componentDidMount() {
         const id = this.props.navigation.state.params.id
 
-        // console.tron.log(`LeagueID: ${id}`)
         if (!this.props.league.id[id]) {
             this._getLeagues()
         }
@@ -47,10 +46,10 @@ class TableView extends Component {
     }
 
     _onPress(team) {
-        this.props.pushRoute({
-            routeName: TEAM,
-            params: { team, title: team.name }
-        })
+      this.props.pushRoute({
+          routeName: TEAM,
+          params: { team, title: team.name }
+      });
     }
 
     _getLeagues() {

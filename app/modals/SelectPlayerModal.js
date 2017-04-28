@@ -4,7 +4,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 
 import { hidePlayerDialog } from '../store/actions/dialogActions'
-import { setPlayer } from '../store/actions/matchActions'
+import { setPlayer, updateSets } from '../store/actions/matchActions'
 import { Container } from '../components'
 import { ListItem, Text } from '../components/base'
 import NavHeader from '../Nav/NavHeader'
@@ -83,7 +83,14 @@ class SelectPlayer extends Component {
                         params: { ...state.params, team: 'away' }
                     })
                 } else {
-                    closeModal()
+                  closeModal()
+                  const set = state.params.data.sets[0];
+
+                  if (set.goals_home != null && set.goals_away != null) {
+                    const sets = matches[state.params.matchId].sets;
+
+                    this.props.updateSets(state.params.matchId, sets);
+                  }
                 }
             }, 10)
         } else if (selectionLength > state.params.data.type) {
@@ -116,7 +123,8 @@ export default StackNavigator({
         dispatch => ({
             navigate: (route) => dispatch(NavigationActions.navigate(route)),
             closeModal: () => dispatch(hidePlayerDialog()),
-            setPlayer: (id, team, player, setsIdx) => dispatch(setPlayer(id, team, player, setsIdx))
+            setPlayer: (id, team, player, setsIdx) => dispatch(setPlayer(id, team, player, setsIdx)),
+            updateSets: (matchId, sets) => dispatch(updateSets(matchId, sets))
         })
     )(SelectPlayer) }
 }, {

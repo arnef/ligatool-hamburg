@@ -1,6 +1,6 @@
 import { SET_SETTINGS, LOAD_SETTINGS, SET_NOTIFICATION, SET_GROUP_NOTIFICATION, PUT_NOTIFICATION, SET_DEVICE_TOKEN } from './types'
 import { AsyncStorage } from 'react-native'
-import api from '../../api'
+import api, { NOTIFICATION } from '../../api'
 import store from '../index'
 
 const STORAGE_KEY = 'SETTINGS_V09'
@@ -30,7 +30,7 @@ export const saveNotifications = () => {
     const settings = store.getState().settings
 
     return {
-        payload: api.post('/notification', {
+        payload: api.post(NOTIFICATION, {
             fcm_token: settings.fcm_token,
             notification: settings.notification
         }),

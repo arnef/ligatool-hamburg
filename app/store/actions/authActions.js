@@ -1,26 +1,31 @@
+/* @flow */
 import { API_KEY, TOKEN, LOAD_ACCESS_KEY, LOAD_TOKEN, LOGOUT, SET_USER_TEAM } from './types'
-import api from '../../api'
+import api, { USER_AUTH, USER_AUTH_REFRESH} from '../../api'
 import store from '../index'
 import { AsyncStorage } from 'react-native'
 
+type User = {
+  user: string,
+  pass: string
+};
 
-export const requestAPIKey = (user) => {
+export const requestAPIKey = (user: User) => {
     const accesskey = store.getState().auth.api_key
 
     if (accesskey != null) {
         return renewToken(accesskey)
     } else {
         return {
-            payload: api.post('/user/auth', user),
+            payload: api.post(USER_AUTH, user),
             type: API_KEY
         }
     }
 }
 
-export const renewToken = (apiKey) => {
+export const renewToken = (apiKey: string) => {
 
     return {
-        payload: api.post('/user/auth/refresh', { access_key: apiKey }),
+        payload: api.post(USER_AUTH_REFRESH, { access_key: apiKey }),
         type: TOKEN
     }
 }
@@ -28,7 +33,7 @@ export const renewToken = (apiKey) => {
 export const logout = () => {
 
     return {
-        payload: api.delete('/usr/auth'),
+        payload: api.delete(USER_AUTH),
         type: LOGOUT
     }
 }

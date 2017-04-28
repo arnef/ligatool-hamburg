@@ -8,6 +8,7 @@ import * as theme from '../components/base/theme'
 import { NavigationActions } from 'react-navigation'
 import {
   LEAGUE,
+  LEAGUES,
   LEAGUE_CUP,
   OVERVIEW_NAVIGATOR,
   MY_TEAM_NAVIGATOR,
@@ -32,6 +33,7 @@ class NavigationView extends Component {
 
         if (!state.active) {
             this.setState({ activeLeague: state.leagueID || -1 })
+
             if (state.state === LEAGUE) {
                 navigate({
                     routeName: LEAGUE,
@@ -42,7 +44,7 @@ class NavigationView extends Component {
                 })
             } else if (state.state === LEAGUE_CUP) {
                 navigate({
-                    routeName: LEAUGE_CUP,
+                    routeName: LEAGUE_CUP,
                     params: {
                         id: state.leagueID,
                         title: state.title,

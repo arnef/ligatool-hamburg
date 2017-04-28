@@ -117,7 +117,8 @@ class SetsView extends Component {
     }
 
     onSave(data, score) {
-        const sets = { ...this.props.match.sets }
+        const match = this.props.matches[this.props.data.id]
+        const sets = { ...match.sets }
         const idx = data.setsIdx[score.set]
         const set = { ...data.sets[score.set] }
 

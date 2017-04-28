@@ -1,5 +1,5 @@
 import Storage from '../../Storage'
-import api from '../../api'
+import api, { LEAGUES, USER_AUTH_REFRESH, NOTIFICATION } from '../../api'
 import store from '../index'
 import {
     INIT_APP,
@@ -25,7 +25,7 @@ export const initApp = () => {
             const restoreSettings = new Promise(resolve => {
                 Storage.getItem(SETTINGS_KEY).then(settings => {
                     if (!settings.ok) { // no settings saved
-                        api.get('/leagues').then(resp => {
+                        api.get(LEAGUES).then(resp => {
                             store.dispatch({
                                 payload: resp,
                                 type: QUERY_RANKINGS + FULFILLED
@@ -75,7 +75,7 @@ export const initApp = () => {
 
                         // console.tron.log('token expired ' + (apiToken.expires < now))
                         if (apiToken.expires < now) {
-                            api.post('/user/auth/refresh', { access_key: apiAccessKey.data })
+                            api.post(USER_AUTH_REFRESH, { access_key: apiAccessKey.data })
                             .then(resp => {
                                 store.dispatch({
                                     payload: resp,
@@ -109,7 +109,7 @@ export const initApp = () => {
                 if (settings.fcm_token && savedSettings.ok) {
                     console.tron.log('FCM_TOKEN SET SEND UPDATE')
 
-                    api.post('/notification', {
+                    api.post(NOTIFICATION, {
                         fcm_token: settings.fcm_token,
                         notification: savedSettings.data.notification
                     }).then(resp => {

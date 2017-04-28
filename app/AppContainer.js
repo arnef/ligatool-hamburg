@@ -17,7 +17,7 @@ class AppContainer extends Component {
         this.props.initApp()
 
         BackAndroid.addEventListener('hardwareBackPress', () => {
-            if (this.props.nav.actionStack.length === 0 && !this.props.nav.drawerOpen) {
+            if (this.props.nav.actionStacks.tabs.length === 0 && !this.props.nav.drawerOpen) {
                 BackAndroid.exitApp()
                 this.props.dispatch({ type: NavigationActions.BACK })
 
@@ -132,7 +132,6 @@ class AppContainer extends Component {
 
     render() {
         const { dispatch, nav } = this.props
-
         return (
             <View style={{ flex: 1 }}>
                 <Loading />

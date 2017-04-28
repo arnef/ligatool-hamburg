@@ -10,11 +10,10 @@ const tabs = [
   Route.MY_TEAM_NAVIGATOR,
   Route.LEAGUES_NAVIGATOR,
   Route.SETTINGS_NAVIGATOR
-]
-const tabRoutes = [ Route.MATCH, Route.PREVIEW, Route.TEAM ]
+];
+const tabRoutes = [ Route.MATCH, Route.PREVIEW, Route.TEAM ];
+const initialRoute = { routeName: Route.OVERVIEW_NAVIGATOR };
 
-const topTabRoutes = ['Live', 'Next', 'Comming', 'Played']
-const initialRoute = { routeName: Route.OVERVIEW_NAVIGATOR }
 import * as Route from '../../views/routes'
 
 export default (nav={
@@ -23,13 +22,15 @@ export default (nav={
   currentRoute: initialRoute,
   drawerOpen: false,
   modalOpen: false,
+  actionStacks: {
+    tabs: []
+  },
   currentTab: Route.OVERVIEW_NAVIGATOR //TODO rename to currentNavigator?
 }, action) => {
   switch (action.type) {
   case DIALOG_PLAYER: {
       nav = { ...nav }
       if (action.payload) {
-          console.tron.log(action.payload)
           nav.state =
               Navigator.router.getStateForAction(
                   NavigationActions.navigate({
@@ -109,61 +110,85 @@ export default (nav={
       return nav
   }
   case NavigationActions.NAVIGATE: {
-      const idx = tabRoutes.indexOf(action.routeName)
-      const newAction = idx > -1 ? { ...action, routeName: `${nav.currentTab}${tabRoutes[idx]}` }
-          : { ...action }
+    const tab = nav.currentTab.indexOf(Route.LEAGUE) === -1 ? nav.currentTab : Route.LEAGUES_NAVIGATOR;
+    const idx = tabRoutes.indexOf(action.routeName);
 
-      nav = { ...nav }
+    const newAction = idx > -1 ? { ...action, routeName: `${tab}${tabRoutes[idx]}` }
+        : { ...action }
+    console.tron.log(newAction);
+    nav = { ...nav }
+    if (Platform.OS === ANDROID && (newAction.routeName === Route.LEAGUE || newAction.routeName === Route.LEAGUE_CUP)) {
+        nav.currentTab = newAction.routeName; //Route.LEAGUES_NAVIGATOR;
+        nav.actionStacks.tabs.push(newAction);
+    } else
+    if (tabs.indexOf(newAction.routeName) !== -1) {
+        nav.currentTab = newAction.routeName;
+        nav.actionStacks.tabs.push(newAction);
 
-      console.tron.log(newAction)
-
-      if (action.routeName.indexOf('Drawer') === -1 && !nav.modalOpen) {
-        if (action.routeName.indexOf('TAB_') === -1) {
-          nav.actionStack.push(newAction);
-          nav.currentRoute = { routeName: newAction.routeName, params: newAction.params };
+    } else if (action.routeName.indexOf('Drawer') === -1 && !nav.modalOpen) {
+      if (action.routeName.indexOf('TAB_') === -1) {
+        if (!nav.actionStacks[nav.currentTab]) {
+          nav.actionStacks[nav.currentTab] = [];
         }
-      } else {
-          nav.drawerOpen = newAction.routeName === 'DrawerOpen'
+        nav.actionStacks[nav.currentTab].push(newAction);
+        nav.currentRoute = { routeName: newAction.routeName, params: newAction.params };
       }
+    } else {
+        nav.drawerOpen = newAction.routeName === 'DrawerOpen'
+    }
 
-      if (tabs.indexOf(newAction.routeName) !== -1) {
-          nav.currentTab = newAction.routeName
-      }
-      if (Platform.OS === ANDROID && (newAction.routeName === Route.LEAGUE || newAction.routeName === Route.LEAGUE_CUP)) {
-          nav.currentTab = Route.LEAGUES_NAVIGATOR;
-      }
+    nav.state = Navigator.router.getStateForAction(newAction, nav.state)
 
-      nav.state = Navigator.router.getStateForAction(newAction, nav.state)
-
-      return nav
+    return nav
   }
   case NavigationActions.BACK: {
+    if (Platform.OS === ANDROID) {
       nav = { ...nav }
-      if (nav.actionStack.length > 0 && !nav.drawerOpen && !nav.modalOpen) {
-          const lastAction = nav.actionStack.pop()
-          const key = findRouteKey(nav.state, lastAction.routeName)
-          const currentRoute = getCurrentRoute(nav)
 
-          if (Platform.OS === ANDROID && ( lastAction.routeName === Route.LEAGUE ||
-              lastAction.routeName === Route.LEAGUE_CUP) ) {
+      // if (nav.actionStack.length > 0 && !nav.drawerOpen && !nav.modalOpen) {
+      //     const lastAction = nav.actionStack.pop()
+      //     const key = findRouteKey(nav.state, lastAction.routeName)
+      //     const currentRoute = getCurrentRoute(nav)
+      //
+      //     if (Platform.OS === ANDROID && ( lastAction.routeName === Route.LEAGUE ||
+      //         lastAction.routeName === Route.LEAGUE_CUP) ) {
+      //           console.tron.log('replace route');
+      //         nav.state = Navigator.router.getStateForAction(
+      //             NavigationActions.navigate(currentRoute),
+      //             nav.state
+      //         )
+      //     } else {
+      //       console.tron.log('go back to key');
+      //         nav.state = Navigator.router.getStateForAction(
+      //         NavigationActions.back({ key }), nav.state)
+      //     }
+      //     nav.currentRoute = currentRoute
+      if (!nav.drawerOpen && !nav.modalOpen) {
+        if (nav.actionStacks[nav.currentTab] && nav.actionStacks[nav.currentTab].length > 0) {
+          console.tron.log('go back in current tab navigator');
+          nav.actionStacks[nav.currentTab].pop();
+          nav.state = Navigator.router.getStateForAction(NavigationActions.back(), nav.state);
 
-              nav.state = Navigator.router.getStateForAction(
-                  NavigationActions.navigate(currentRoute),
-                  nav.state
-              )
-          } else {
-              nav.state = Navigator.router.getStateForAction(
-              NavigationActions.back({ key }), nav.state)
+        } else {
+          console.tron.log('go back in tab stack');
+          nav.actionStacks.tabs.pop();
+          let prevTab = initialRoute;
+          if (nav.actionStacks.tabs.length > 0) {
+            prevTab = nav.actionStacks.tabs[nav.actionStacks.tabs.length - 1];
+            console.tron.log(prevTab);
+            nav.currentTab  = prevTab.routeName;
           }
 
-          nav.currentRoute = currentRoute
-
+          nav.state = Navigator.router.getStateForAction(NavigationActions.navigate(prevTab), nav.state);
+        }
       } else {
-          nav.state = Navigator.router.getStateForAction(action, nav.state)
+        console.tron.log('go default back');
+          nav.state = Navigator.router.getStateForAction(NavigationActions.back(), nav.state)
       }
       nav.drawerOpen = false
 
       return nav
+      }
   }
   default: {
       nav = { ...nav }
@@ -173,6 +198,14 @@ export default (nav={
   }
   }
 }
+
+const currentRoute = (nav) => {
+  const subState = nav.routes[nav.index];
+  if (!subState.routes) {
+    return subState;
+  }
+  return currentRoute(subState);
+};
 
 const getCurrentRoute = (nav) => {
   const idx = nav.actionStack.length - 1
@@ -204,7 +237,7 @@ const recursiveFindRoute = (route, name) => {
   return null
 }
 
-const findRouteKey = (state, name) => {
+const findRouteKey = (state: any, name: string): any => {
   const found = recursiveFindRoute(state, name)
 
   if (found) {

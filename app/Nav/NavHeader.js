@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { CardStack } from 'react-navigation'
 import { ANDROID, ANDROID_VERSION_LOLLIPOP } from '../consts'
 
+const white = 'rgba(255, 255, 255, .9)'
 
 class NavHeader extends Component {
 
@@ -52,7 +53,7 @@ export default {
     navigationOptions: {
         header: (navigation) => {
 
-            const defaultHeader = { backTitle: null, tintColor: '#fff' }
+            const defaultHeader = { backTitle: null, tintColor: '#fff', pressColor: white }
 
             if (singleHeader.indexOf(navigation.state.routeName) !== -1) {
 

@@ -1,5 +1,24 @@
-import { TOGGLE_D5, SET_PLAYER, GET_LEAGUE_MATCHES, QUERY_MATCHES, QUERY_TEAM_MATCHES, GET_TEAM_MATCHES, FULFILLED, PENDING, PUT_SETS, SUGGEST_SCORE, SCORE_CONFIRMED, SCORE, NOTIFICATION, GET_MATCH } from '../actions/types'
-import { compareDays, isAdminForMatch } from '../../Helper'
+import {
+  TOGGLE_D5,
+  SET_PLAYER,
+  GET_LEAGUE_MATCHES,
+  QUERY_MATCHES,
+  QUERY_TEAM_MATCHES,
+  GET_TEAM_MATCHES,
+  FULFILLED,
+  PENDING,
+  PUT_SETS,
+  SUGGEST_SCORE,
+  SCORE_CONFIRMED,
+  SCORE,
+  NOTIFICATION,
+  GET_MATCH
+} from '../actions/types'
+import {
+  compareDays,
+  isAdminForMatch
+} from '../../Helper'
+
 
 export default (state = {
     data: {},
@@ -18,9 +37,15 @@ export default (state = {
         if (action.payload.ok) {
             state = { ...state }
             for (let match of action.payload.data) {
-                match.type = getMatchType(match)
-                match.is_admin = isAdminForMatch(match)
-                state.data[match.id] = match
+                match.type = getMatchType(match);
+                match.is_admin = isAdminForMatch(match);
+
+                if (state.data[match.id]) {
+                    state.data[match.id] = { ...state.data[match.id], ...match };
+                } else {
+                  state.data[match.id] = match;
+                }
+
             }
         }
 
@@ -29,7 +54,7 @@ export default (state = {
     case PUT_SETS + FULFILLED:
     case GET_MATCH + FULFILLED: {
         if (action.payload.ok) {
-            state = { ...state }
+            state = { ...state };
             const match = action.payload.data
 
             if (state.data[match.id]) {
