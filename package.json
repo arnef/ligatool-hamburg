@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.1",
-    "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^6.10.3",
     "flow-bin": "0.40.0",
@@ -31,9 +30,4 @@
     "reactotron-react-native": "^1.9.1",
     "reactotron-redux": "^1.9.1"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
 }

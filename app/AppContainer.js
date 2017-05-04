@@ -85,7 +85,7 @@ class AppContainer extends Component {
             localNotif.id = notif.id
             localNotif.data = { id: notif.id, type: notif.type }
             localNotif.show_in_foreground = true
-            if (!(match.ignoreNextNotify && isMatchRoute && currentRoute.params.id === matchId)) {
+            if (isMatchRoute && currentRoute.params.id === matchId) {
                 FCM.presentLocalNotification(localNotif)
             }
         }
@@ -94,7 +94,7 @@ class AppContainer extends Component {
             // send notification to redux
             receiveNotification(notif)
             // get match if recevied match is open
-            if (isMatchRoute && currentRoute.params.id === matchId && !match.ignoreNextNotify) {
+            if (isMatchRoute && currentRoute.params.id === matchId ) {
                 dispatch(actions.getMatch(matchId))
             }
         }
