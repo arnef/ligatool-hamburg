@@ -6,37 +6,39 @@ import {
   QUERY_LEAGUE_MATCHES
 } from '../actions/types';
 
-
 const initialState: LeaguesState = {};
 
-export default function (state: LeaguesState = initialState, action: Action): LeaguesState {
+export default function(
+  state: LeaguesState = initialState,
+  action: Action
+): LeaguesState {
   switch (action.type) {
-  case QUERY_RANKINGS + FULFILLED:
-    if (action.payload.ok) {
-      state = { ...state };
-      for (let league of action.payload.data) {
-        state[league.id] = league;
+    case QUERY_RANKINGS + FULFILLED:
+      if (action.payload.ok) {
+        state = { ...state };
+        for (let league of action.payload.data) {
+          state[league.id] = league;
+        }
       }
-    }
-    return state;
+      return state;
 
-  case GET_LEAGUE + FULFILLED:
-    if (action.payload.ok) {
-      state = { ...state, [action.payload.data.id]: action.payload.data };
-    }
-    return state;
+    case GET_LEAGUE + FULFILLED:
+      if (action.payload.ok) {
+        state = { ...state, [action.payload.data.id]: action.payload.data };
+      }
+      return state;
 
-  case QUERY_LEAGUE_MATCHES + FULFILLED:
-    if (action.payload.ok && state[action.payload.config.params.id]) {
-      state = { ...state };
-      const matchDays = getMatchDays(action.payload.data);
-      state[action.payload.config.params.id].match_days = matchDays.matchdays;
-      state[action.payload.config.params.id].selected = matchDays.selected;
-    }
-    return state;
+    case QUERY_LEAGUE_MATCHES + FULFILLED:
+      if (action.payload.ok && state[action.payload.config.params.id]) {
+        state = { ...state };
+        const matchDays = getMatchDays(action.payload.data);
+        state[action.payload.config.params.id].match_days = matchDays.matchdays;
+        state[action.payload.config.params.id].selected = matchDays.selected;
+      }
+      return state;
 
-  default:
-    return state;
+    default:
+      return state;
   }
 }
 
@@ -46,11 +48,10 @@ type MatchDays = {
 };
 
 function getMatchDays(matches: Array<Match>): MatchDays {
-  const matchDays: MatchDays  = {
+  const matchDays: MatchDays = {
     matchdays: {},
     selected: null
   };
-
 
   for (let match: Match of matches) {
     if (!matchDays.matchdays[match.match_day]) {

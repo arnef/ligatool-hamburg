@@ -18,8 +18,10 @@ import { isAdminForMatch } from '../../Helper';
 
 const initialState: MatchesState = {};
 
-export default function (state: MatchesState = initialState, action: Action): MatchesState {
-
+export default function(
+  state: MatchesState = initialState,
+  action: Action
+): MatchesState {
   switch (action.type) {
     case QUERY_MATCHES + FULFILLED:
     case QUERY_TEAM_MATCHES + FULFILLED:
@@ -30,7 +32,7 @@ export default function (state: MatchesState = initialState, action: Action): Ma
         for (let match: Match of action.payload.data) {
           match.is_admin = isAdminForMatch(match);
           if (state[match.id]) {
-            state[match.id] = { ...state[match.id], ...match};
+            state[match.id] = { ...state[match.id], ...match };
           } else {
             state[match.id] = match;
           }
@@ -56,11 +58,14 @@ export default function (state: MatchesState = initialState, action: Action): Ma
     case SET_PLAYER: {
       state = { ...state };
       const match: Match = state[action.payload.id];
-      if (!match.sets) { match.sets = {}; }
+      if (!match.sets) {
+        match.sets = {};
+      }
       for (let idx: number of action.payload.setsIdx) {
         const set = match.sets[idx] || {};
         for (let i = 0; i < action.payload.player.length; i++) {
-          set[`player_${i + 1}_${action.payload.team}`] = action.payload.player[i];
+          set[`player_${i + 1}_${action.payload.team}`] =
+            action.payload.player[i];
         }
         set.number = idx;
         match.sets[idx] = set;
@@ -91,13 +96,18 @@ export default function (state: MatchesState = initialState, action: Action): Ma
 
     case SCORE + NOTIFICATION:
     case SUGGEST_SCORE + NOTIFICATION: {
-
       const id: number = parseInt(action.payload.id, 10);
       if (state[id]) {
         state = { ...state };
         state[id].set_points = true;
-        state[id].set_points_home = parseInt(action.payload.set_points_home, 10);
-        state[id].set_points_away = parseInt(action.payload.set_points_away, 10);
+        state[id].set_points_home = parseInt(
+          action.payload.set_points_home,
+          10
+        );
+        state[id].set_points_away = parseInt(
+          action.payload.set_points_away,
+          10
+        );
         state[id].live = JSON.parse(action.payload.live) ? true : false;
       }
       return state;
@@ -107,7 +117,9 @@ export default function (state: MatchesState = initialState, action: Action): Ma
       const id: number = parseInt(action.payload.id, 10);
       if (state[id]) {
         state = { ...state };
-        state[id].score_unconfirmed = parseInt(action.payload.score_unconfirmed);
+        state[id].score_unconfirmed = parseInt(
+          action.payload.score_unconfirmed
+        );
         state[id].live = false;
       }
       return state;
@@ -135,12 +147,12 @@ function compareSets(match: Match, cacheMatch: ?Match): any {
   let sets = match.sets || {};
 
   if (cacheMatch && cacheMatch.sets) {
-    for(let nr: string in cacheMatch.sets) {
+    for (let nr: string in cacheMatch.sets) {
       if (!match.sets[nr] && cacheMatch.sets[nr]) {
-          sets[nr] = cacheMatch.sets[nr]
-        }
+        sets[nr] = cacheMatch.sets[nr];
       }
     }
+  }
 
-    return sets;
+  return sets;
 }

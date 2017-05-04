@@ -1,11 +1,6 @@
 // @flow
-import {
-  FULFILLED,
-  PENDING,
-  QUERY_MATCHES
-} from '../actions/types';
+import { FULFILLED, PENDING, QUERY_MATCHES } from '../actions/types';
 import { compareDays } from '../../Helper';
-
 
 const initialState: OverviewState = {
   today: [],
@@ -15,7 +10,10 @@ const initialState: OverviewState = {
   error: null
 };
 
-export default function (state: OverviewState = initialState, action: Action): OverviewState {
+export default function(
+  state: OverviewState = initialState,
+  action: Action
+): OverviewState {
   switch (action.type) {
     case QUERY_MATCHES + PENDING: {
       return { ...state, fetching: true, error: null };
@@ -27,7 +25,6 @@ export default function (state: OverviewState = initialState, action: Action): O
 
         for (let match: Match of action.payload.data) {
           if (match.date_confirmed) {
-
             const diff: number = compareDays(match.datetime, now);
 
             if ((match.live && diff > -2) || diff === 0) {
@@ -58,6 +55,6 @@ export default function (state: OverviewState = initialState, action: Action): O
       return state;
     }
   }
-  
+
   return state;
 }

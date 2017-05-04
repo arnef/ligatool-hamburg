@@ -23,10 +23,9 @@ const defaultState: SettingState = {
 
 export default (state: SettingState = defaultState, action: Action) => {
   switch (action.type) {
-
     case LOAD_SETTINGS + FULFILLED: {
       if (action.payload.ok) {
-          state = { ...state, ...action.payload.data }
+        state = { ...state, ...action.payload.data };
       }
 
       return state;
@@ -56,7 +55,7 @@ export default (state: SettingState = defaultState, action: Action) => {
     }
 
     case SET_GROUP_NOTIFICATION: {
-      state = { ...state }
+      state = { ...state };
       if (!state.notification.leagues) {
         state.notification.leagues = {};
       }
@@ -93,9 +92,9 @@ export default (state: SettingState = defaultState, action: Action) => {
   }
 
   return state;
-}
+};
 
-function saveState (state: SettingState): void {
+function saveState(state: SettingState): void {
   const value = {
     color: state.color,
     notification: state.notification,

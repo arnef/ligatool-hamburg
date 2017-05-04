@@ -10,22 +10,24 @@ import {
 } from '../actions/types';
 
 const defaultState: DialogState = {
-    login: {
-        loading: false,
-        visible: false
-    },
-    player: {
-        data: [],
-        visible: false
-    }
+  login: {
+    loading: false,
+    visible: false
+  },
+  player: {
+    data: [],
+    visible: false
+  }
 };
 
 export default (state: DialogState = defaultState, action: Action) => {
   switch (action.type) {
-
     case DIALOG_PLAYER: {
       if (action.payload) {
-        state = { ...state, player: { data: action.payload.data, visible: true } };
+        state = {
+          ...state,
+          player: { data: action.payload.data, visible: true }
+        };
       } else {
         state = { ...state, player: { data: [], visible: false } };
       }
@@ -72,7 +74,10 @@ export default (state: DialogState = defaultState, action: Action) => {
       if (action.payload.ok) {
         state = { ...state, login: { loading: false, visible: false } };
       } else {
-        state = { ...state, login: { loading: false, visible: action.payload.status !== 200 } };
+        state = {
+          ...state,
+          login: { loading: false, visible: action.payload.status !== 200 }
+        };
       }
 
       return state;
@@ -80,4 +85,4 @@ export default (state: DialogState = defaultState, action: Action) => {
   }
 
   return state;
-}
+};

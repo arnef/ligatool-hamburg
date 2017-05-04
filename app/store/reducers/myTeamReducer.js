@@ -1,17 +1,15 @@
-// @flow 
-import {
-  FULFILLED,
-  QUERY_MY_TEAM_MATCHES
-} from '../actions/types';
-
+// @flow
+import { FULFILLED, QUERY_MY_TEAM_MATCHES } from '../actions/types';
 
 const initialState: MyTeamState = {
   next: [],
   played: []
 };
 
-export default function (state: MyTeamState = initialState, action: Action): MyTeamState {
-
+export default function(
+  state: MyTeamState = initialState,
+  action: Action
+): MyTeamState {
   switch (action.type) {
     case QUERY_MY_TEAM_MATCHES + FULFILLED: {
       state = { ...state };
