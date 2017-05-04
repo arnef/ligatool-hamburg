@@ -30,7 +30,7 @@ import NavDrawerIcon from './Nav/NavDrawerIcon';
 import NavIcon from './Nav/NavIcon';
 import NavTabBarBottom from './Nav/NavTabBarBottom';
 
-import Drawer from './views/DrawerView';
+import Drawer, { DRAWER_WIDTH } from './views/DrawerView';
 
 import Overview from './views/Overview';
 import MyTeam from './views/MyTeamView';
@@ -101,8 +101,6 @@ export const SettingStack = StackNavigator(
   NavHeader
 );
 
-//TODO export const App = Platform.OS === 'ios' ?
-// export const App =
 export const App = Platform.OS === 'android'
   ? DrawerNavigator(
       {
@@ -113,7 +111,7 @@ export const App = Platform.OS === 'android'
       },
       {
         contentComponent: Drawer,
-        drawerWidth: 260
+        drawerWidth: DRAWER_WIDTH
       }
     )
   : TabNavigator(

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Switch, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container } from '../../components';
-import { ListItem, Text } from '../../components/base';
+import { ListItem, Text, Switch } from '../../components/base';
 
 class SettingsNotificationView extends Component {
   componentWillUnmount() {

@@ -1,3 +1,4 @@
+// @flow
 import Button from './Button';
 import Row from './Grid/Row';
 import Column from './Grid/Column';
@@ -6,5 +7,6 @@ import Text from './Text';
 import Image from './Image';
 import Touchable from './Touchable';
 import Icon from './Icon';
+import Switch from './Switch';
 
-export { Button, Row, Image, Column, ListItem, Text, Touchable, Icon };
+export { Button, Row, Image, Column, ListItem, Text, Touchable, Icon, Switch };

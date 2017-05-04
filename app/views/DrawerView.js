@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { View, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ScrollView, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { Button, Image, ListItem, Text } from '../components/base';
 import * as theme from '../components/base/theme';
-// import { RANKING, LEAGUE_MATCHES, OVERVIEW, MY_TEAM, SETTINGS } from '../views/routes'
 import { NavigationActions } from 'react-navigation';
 import {
   LEAGUE,
@@ -112,7 +111,7 @@ class NavigationView extends Component {
   }
 
   render() {
-    const width = 260;
+    const width = DRAWER_WIDTH;
     const height = Math.floor(width * 0.625);
     const team = this.props.settings.team || null;
     const leagues = Object.values(this.props.leagues);
@@ -201,14 +200,7 @@ const styles = StyleSheet.create({
   }
 });
 
-NavigationView.propTypes = {
-  getRankings: PropTypes.func,
-  navigate: PropTypes.func,
-  navigation: PropTypes.object,
-  settings: PropTypes.object,
-  leagues: PropTypes.object,
-  closeDrawer: PropTypes.func
-};
+export const DRAWER_WIDTH = Dimensions.get('window').width * .8;
 
 export default connect(
   state => ({

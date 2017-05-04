@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Switch } from 'react-native';
+import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
-import { Row, Column, Text } from '../base';
+import { Row, Column, Text, Switch } from '../base';
 import Set from './Set';
 import Header from './Header';
 
@@ -135,6 +135,7 @@ Match.Header = Header;
 
 export default connect(state => ({
   loading: state.loading.nonBlocking,
+  color: state.settings.color,
   matches: state.matches
 }))(Match);
 // export default Match

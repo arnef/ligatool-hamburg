@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Switch, Platform, ActivityIndicator } from 'react-native';
+import { View, Platform, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 // import codePush from 'react-native-code-push'
-import { ListItem, Text } from '../../components/base';
+import { ListItem, Text, Switch } from '../../components/base';
 import { Container } from '../../components';
 import * as theme from '../../components/base/theme';
 import { StackNavigator, NavigationActions } from 'react-navigation';
@@ -101,9 +101,9 @@ class SettingsView extends Component {
         >
           <Text>Gruppen wählen</Text>
           <View style={{ flex: 1 }} />
-          {this.props.loading &&
+          {this.props.loading && Object.keys(this.props.leagues).length === 0 &&
             <ActivityIndicator color={theme.secondaryTextColor} />}
-          {!this.props.loading && <ListItem.Icon name="caret-forward" right />}
+          { Object.keys(this.props.leagues).length > 0 && <ListItem.Icon name="caret-forward" right />}
         </ListItem>
       </ListItem.Group>
     );
