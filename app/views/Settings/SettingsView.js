@@ -33,7 +33,7 @@ class SettingsView extends Component {
     componentDidMount() {
         const { leagues, getRankings } = this.props
 
-        if (!leagues.fetched && !leagues.loading) {
+        if (Object.keys(leagues).length === 0) {
             getRankings()
         }
     }

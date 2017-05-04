@@ -27,7 +27,8 @@ type DialogState = {
 
 type LoadingState = {
   blocking: boolean,
-  nonBlocking: boolean
+  nonBlocking: boolean,
+  error: ?string
 };
 
 // data stores

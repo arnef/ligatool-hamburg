@@ -13,22 +13,17 @@ import { TAB_MATCHES_TODAY, TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './route
 
 class Overview extends Component {
 
-
   onRefresh() {
     this.props.queryMatches();
   }
 
   render() {
-    const { refreshing, matches, refreshOnMount } = this.props;
-    // const props = {
-    //   refreshing,
-    //   matches,
-    //   onRefresh: this.onRefresh.bind(this)
-    // };
+    const { matches, refreshOnMount, error, fetching } = this.props;
 
     return (
       <MatchListView
-        refreshing={ refreshing }
+        error={ error }
+        refreshing={ fetching }
         matches={ matches }
         onRefresh={ this.onRefresh.bind(this) }
         refreshOnMount={ refreshOnMount }
@@ -39,7 +34,7 @@ class Overview extends Component {
 
 function createTab(keyName) {
   return connect(
-    state => ({ matches: state.overview[keyName], refreshing: state.overview.fetching, refreshOnMount: keyName === 'today' }),
+    state => ({ matches: state.overview[keyName], error: state.loading.error, fetching: state.loading.nonBlocking, refreshOnMount: keyName === 'today' }),
     dispatch => ({ queryMatches: () => dispatch(actions.queryMatches()) })
   )(Overview);
 }

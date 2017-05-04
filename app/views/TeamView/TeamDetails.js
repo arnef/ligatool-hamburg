@@ -30,8 +30,8 @@ class TeamView extends Component {
         return (
             <Container
                 { ...this.props }
-                error={this.props.teams.error}
-                refreshing={this.props.teams.loading}
+                error={this.props.error }
+                refreshing={this.props.fetching }
                 onRefresh={this.loadTeam.bind(this)} >
                 { this.renderTeamDetails(team) }
                 { team.player && this.renderTeamPlayer(team.player) }
@@ -233,7 +233,9 @@ TeamView.propTypes = {
 
 export default connect(
     state => ({
-        teams: state.teams
+        teams: state.teams,
+        error: state.loading.error,
+        fetching: state.loading.nonBlocking
     }),
     dispatch => ({
         getTeam: (id) => dispatch(getTeam(id)),

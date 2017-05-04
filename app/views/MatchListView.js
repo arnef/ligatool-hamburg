@@ -27,7 +27,7 @@ class MatchListView extends Component {
         )
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.matches.length === 0 && this.props.refreshOnMount) {
             this.props.onRefresh()
         }

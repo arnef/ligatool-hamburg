@@ -4,6 +4,14 @@ import api, { MATCHES, MATCHE_BY_ID} from '../../api';
 
 
 export function queryMatches (): Action {
+  // return function (dispach) {
+  //   return api.get(MATCHES).then(resp => {
+  //     dispach({
+  //       type: QUERY_MATCHES + FULFILLED,
+  //       payload: resp
+  //     });
+  //   });
+  // }
   return {
       payload: api.get(MATCHES),
       type: QUERY_MATCHES

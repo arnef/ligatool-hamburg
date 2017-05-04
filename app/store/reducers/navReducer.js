@@ -124,17 +124,18 @@ export default (nav: NavState = defaultState, action: Action) => {
       return nav
   }
   case NavigationActions.NAVIGATE: {
-    const tab = nav.currentTab.indexOf(Route.LEAGUE) === -1 ? nav.currentTab : Route.LEAGUES;
+    // const tab = nav.currentTab.indexOf(Route.LEAGUE) === -1 ? nav.currentTab : Route.LEAGUES;
+    const tab = nav.currentTab;
     const idx = tabRoutes.indexOf(action.routeName);
 
     const newAction = idx > -1 ? { ...action, routeName: `${tab}${tabRoutes[idx]}` }
         : { ...action }
     console.tron.log(newAction);
     nav = { ...nav }
-    if (Platform.OS === ANDROID && (newAction.routeName === Route.LEAGUE || newAction.routeName === Route.LEAGUE_CUP)) {
-        nav.currentTab = newAction.routeName; //Route.LEAGUES_NAVIGATOR;
-        nav.actionStacks.tabs.push(newAction);
-    } else
+    // if (Platform.OS === ANDROID && (newAction.routeName === Route.LEAGUE || newAction.routeName === Route.LEAGUE_CUP)) {
+    //     nav.currentTab = newAction.routeName; //Route.LEAGUES_NAVIGATOR;
+    //     nav.actionStacks.tabs.push(newAction);
+    // } else
     if (tabs.indexOf(newAction.routeName) !== -1) {
         nav.currentTab = newAction.routeName;
         nav.actionStacks.tabs.push(newAction);

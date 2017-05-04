@@ -12,17 +12,15 @@ import { TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes'
 class MyTeam extends Component {
 
   render() {
-    const { keyName, myTeam, loading } = this.props;
-
-    const props = {
-      error: null,
-      refreshing: loading,
-      matches: myTeam[keyName],
-      onRefresh: () => { this.props.dispatch(queryTeamMatches())},
-    }
+    const { matches, error, fetching, refreshOnMount } = this.props;
 
     return (
-      <MatchListView { ...props } refreshOnMount={keyName === 'next' && props.matches.length === 0} />
+      <MatchListView
+         error={ error }
+         matches={ matches }
+         refreshing={ fetching }
+         onRefresh={ () => this.props.dispatch(queryTeamMatches()) }
+         refreshOnMount={refreshOnMount} />
     )
   }
 }
@@ -30,11 +28,11 @@ class MyTeam extends Component {
 
 export default TabNavigator({
   [TAB_MATCHES_NEXT]: {
-    screen: connect(state => ({ keyName: 'next', myTeam: state.myTeam, loading: state.loading.nonBlocking }))(MyTeam),
+    screen: connect(state => ({ matches: state.myTeam.next, fetching: state.loading.nonBlocking, error: state.loading.error, refreshOnMount: true }))(MyTeam),
     navigationOptions: { title: strings.next }
   },
   [TAB_MATCHES_PLAYED]: {
-    screen: connect(state => ({ keyName: 'played', myTeam: state.myTeam, loading: state.loading.nonBlocking }))(MyTeam),
+    screen: connect(state => ({ matches: state.myTeam.played, fetching: state.loading.nonBlocking, error: state.loading.error, refreshOnMount: false }))(MyTeam),
     navigationOptions: { title: strings.played }
   }
 }, {

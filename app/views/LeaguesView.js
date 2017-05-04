@@ -24,7 +24,7 @@ class LeaguesView extends Component {
     componentDidMount() {
         const { leagues } = this.props
 
-        if (!leagues.fetched && !leagues.loading) {
+        if (Object.keys(leagues).length === 0) {
             this.props.getRankings()
         }
     }

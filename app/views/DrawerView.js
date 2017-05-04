@@ -124,8 +124,9 @@ class NavigationView extends Component {
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.space} />
                     { this._renderItem(OVERVIEW, 'Übersicht', 'football', 0) }
-                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in', 1)}
-                    { this.renderSeparator() }
+                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in', 1) }
+                    { this._renderItem(LEAGUES, 'Gruppen', 'trophy', 2) }
+                    {/* { this.renderSeparator() }
                     {!this.props.loading &&  leagues.length === 0  && (
                             <View style={{ alignItems: 'center', padding: 16 }}>
                                 <Button
@@ -140,7 +141,7 @@ class NavigationView extends Component {
                             <ActivityIndicator size='large' color='#666' />
                                 </View>)
                     }
-                    { !this.props.loading && leagues.length > 0 && this.renderLeagues() }
+                    { !this.props.loading && leagues.length > 0 && this.renderLeagues() } */}
                     { this.renderSeparator() }
                     { this._renderItem(SETTINGS, 'Einstellungen', 'settings', 3) }
                     <View style={styles.space} />
