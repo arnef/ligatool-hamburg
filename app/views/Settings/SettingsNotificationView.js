@@ -15,8 +15,8 @@ class SettingsNotificationView extends Component {
     }
 
     render() {
-        const leagues = this.props.leagues.data
-
+        const leagues = Object.values(this.props.leagues);
+        leagues.sort( (a, b) => a.name < b.name ? -1 : 1);
         return (
             <Container {...this.props}>
                 <ListItem.Group>
@@ -34,7 +34,7 @@ class SettingsNotificationView extends Component {
 
         return (
             <ListItem key={data.id}
-                last={idx === this.props.leagues.data.length -1}
+                last={idx === Object.keys(this.props.leagues).length -1}
                 onPress={Platform.OS === 'android' ? () => {
                     this.props.setGroupNotification(data.id, !checked)
                 } : null}>

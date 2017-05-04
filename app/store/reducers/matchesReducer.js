@@ -1,271 +1,146 @@
+// @flow
 import {
-  TOGGLE_D5,
-  SET_PLAYER,
-  GET_LEAGUE_MATCHES,
+  FULFILLED,
   QUERY_MATCHES,
   QUERY_TEAM_MATCHES,
-  GET_TEAM_MATCHES,
-  FULFILLED,
-  PENDING,
+  QUERY_MY_TEAM_MATCHES,
+  QUERY_LEAGUE_MATCHES,
+  GET_MATCH,
   PUT_SETS,
+  SET_PLAYER,
+  TOGGLE_D5,
+  SCORE,
   SUGGEST_SCORE,
   SCORE_CONFIRMED,
-  SCORE,
-  NOTIFICATION,
-  GET_MATCH
-} from '../actions/types'
-import {
-  compareDays,
-  isAdminForMatch
-} from '../../Helper'
+  NOTIFICATION
+} from '../actions/types';
+import { isAdminForMatch } from '../../Helper';
 
+const initialState: MatchesState = {};
 
-export default (state = {
-    data: {},
-    error: null,
-    fetched: false,
-    fetching: false,
-    next: [],
-    played: [],
-    today: []
-}, action) => {
+export default function (state: MatchesState = initialState, action: Action): MatchesState {
 
-    switch (action.type) {
-    case GET_LEAGUE_MATCHES + FULFILLED:
-    case GET_TEAM_MATCHES + FULFILLED:
-    case QUERY_TEAM_MATCHES + FULFILLED: {
-        if (action.payload.ok) {
-            state = { ...state }
-            for (let match of action.payload.data) {
-                match.type = getMatchType(match);
-                match.is_admin = isAdminForMatch(match);
-
-                if (state.data[match.id]) {
-                    state.data[match.id] = { ...state.data[match.id], ...match };
-                } else {
-                  state.data[match.id] = match;
-                }
-
-            }
+  switch (action.type) {
+    case QUERY_MATCHES + FULFILLED:
+    case QUERY_TEAM_MATCHES + FULFILLED:
+    case QUERY_MY_TEAM_MATCHES + FULFILLED:
+    case QUERY_LEAGUE_MATCHES + FULFILLED:
+      if (action.payload.ok) {
+        state = { ...state };
+        for (let match: Match of action.payload.data) {
+          match.is_admin = isAdminForMatch(match);
+          if (state[match.id]) {
+            state[match.id] = { ...state[match.id], ...match};
+          } else {
+            state[match.id] = match;
+          }
         }
+      }
 
-        return state
-    }
+      return state;
+
     case PUT_SETS + FULFILLED:
     case GET_MATCH + FULFILLED: {
-        if (action.payload.ok) {
-            state = { ...state };
-            const match = action.payload.data
+      if (action.payload.ok) {
+        const match: Match = action.payload.data;
 
-            if (state.data[match.id]) {
-                match.sets = compaireSets(match, state.data[match.id])
-            }
-            match.type = getMatchType(match)
-            match.is_admin = isAdminForMatch(match)
-            state.data[match.id] = match
-        }
-
-        return state
+        state = { ...state };
+        match.sets = compareSets(match, state[action.payload.data.id]);
+        match.type = getMatchType(match);
+        match.is_admin = isAdminForMatch(match);
+        state[match.id] = match;
+      }
+      return state;
     }
 
-    case QUERY_MATCHES + PENDING: {
-        state = { ...state, error: null, fetching: true  }
-
-        return state
+    case SET_PLAYER: {
+      state = { ...state };
+      const match: Match = state[action.payload.id];
+      if (!match.sets) { match.sets = {}; }
+      for (let idx: number of action.payload.setsIdx) {
+        const set = match.sets[idx] || {};
+        for (let i = 0; i < action.payload.player.length; i++) {
+          set[`player_${i + 1}_${action.payload.team}`] = action.payload.player[i];
+        }
+        set.number = idx;
+        match.sets[idx] = set;
+      }
+      return state;
     }
 
-    case QUERY_MATCHES + FULFILLED: {
-        state = { ...state, fetching: false }
-        if (action.payload.ok) {
-            const newState = reorderMatches(action.payload.data)
+    case TOGGLE_D5: {
+      const match: Match = state[action.payload.id];
 
-            state.today = newState.today
-            state.next = newState.next
-            state.played = newState.played
-            state.data = newState.data
-            state.fetched = true
-        } else {
-            state.error = action.payload.problem
+      state = { ...state };
+
+      if (match) {
+        for (let idx: number of action.payload.idx) {
+          if (match.sets && match.sets[idx]) {
+            match.sets[idx].player_1_home = null;
+            match.sets[idx].player_2_home = null;
+            match.sets[idx].player_1_away = null;
+            match.sets[idx].player_2_away = null;
+            match.sets[idx].goals_home = null;
+            match.sets[idx].goals_away = null;
+          }
         }
-
-        return state
+        match.type = action.payload.type;
+      }
+      return state;
     }
 
     case SCORE + NOTIFICATION:
     case SUGGEST_SCORE + NOTIFICATION: {
-        state = { ...state }
-        // console.tron.log(action.payload)
-        const matchId = parseInt(action.payload.id, 10)
-        const { set_points_away, set_points_home, live } = action.payload
 
-        if (!state.data[matchId]) {
-            state.data[matchId] = { id: matchId }
-        }
-        state.data[matchId].set_points_home = parseInt(set_points_home)
-        state.data[matchId].set_points_away = parseInt(set_points_away)
-        state.data[matchId].live = JSON.parse(live)
-        state.data[matchId].set_points = true
-
-
-        return state
+      const id: number = parseInt(action.payload.id, 10);
+      if (state[id]) {
+        state = { ...state };
+        state[id].set_points = true;
+        state[id].set_points_home = parseInt(action.payload.set_points_home, 10);
+        state[id].set_points_away = parseInt(action.payload.set_points_away, 10);
+        state[id].live = JSON.parse(action.payload.live) ? true : false;
+      }
+      return state;
     }
 
     case SCORE_CONFIRMED + NOTIFICATION: {
-        state = { ... state }
-        const matchId = parseInt(action.payload.id, 10)
-
-        if (state.data[matchId]) {
-            state.data[matchId].score_unconfirmed = parseInt(action.payload.score_unconfirmed)
-            state.data[matchId].live = false
-        }
-
-        return state
+      const id: number = parseInt(action.payload.id, 10);
+      if (state[id]) {
+        state = { ...state };
+        state[id].score_unconfirmed = parseInt(action.payload.score_unconfirmed);
+        state[id].live = false;
+      }
+      return state;
     }
 
-    case TOGGLE_D5: {
-        state = { ...state }
-        const match = state.data[action.payload.id]
-
-        if (match) {
-            for (let idx of action.payload.idx) {
-                if (match.sets[idx]) {
-                    match.sets[idx].player_1_home = null
-                    match.sets[idx].player_2_home = null
-                    match.sets[idx].player_1_away = null
-                    match.sets[idx].player_2_away = null
-                    match.sets[idx].goals_home = null
-                    match.sets[idx].goals_away = null
-                }
-            }
-            match.type = action.payload.type
-            // console.tron.log(action.payload)
-        }
-
-        return state
-    }
-    case SET_PLAYER: {
-        state = { ...state }
-        const match = state.data[action.payload.id]
-
-        // console.tron.log(action.payload)
-        if (!match.sets) {
-            match.sets = {}
-        }
-        for (let idx of action.payload.setsIdx) {
-            const set = match.sets[idx] || {}
-
-            for (let i = 0; i < action.payload.player.length; i++) {
-                set[`player_${i + 1}_${action.payload.team}`] = action.payload.player[i]
-            }
-            set.number = idx
-            match.sets[idx] = set
-        }
-        // state.data[action.payload.id] = match
-
-        return state
-    }
-    }
-
-    return state
+    default:
+      return state;
+  }
 }
 
-const reorderMatches = (matches) => {
-    const today = []
-    const next = []
-    const played = []
-    const data = {}
-    const now = new Date().getTime()
+function getMatchType(match: Match): string {
+  let type: string = match.league.cup ? 'cup' : 'default';
+  const sets = match && match.sets ? match.sets : {};
 
-    for (let match of matches) {
-        match.is_admin = isAdminForMatch(match)
-        match.type = getMatchType(match)
-        data[match.id] = match
-
-        if (match.date_confirmed) {
-            const diff = compareDays(match.datetime, now)
-
-            if ((match.live && diff > -2) || diff === 0) {
-                today.push(match.id)
-            } else if (diff < 0) {
-                if (match.set_points) {
-                    played.push(match.id)
-                }
-            } else if (diff > 0) {
-                if (match.set_points) {
-                    played.push(match.id)
-                } else {
-                    next.push(match.id)
-                }
-            }
-        }
+  if (sets['5'] && sets['6']) {
+    if (sets['5'].player_2_home !== null && sets['6'].player_2_away !== null) {
+      type += '_d5';
     }
+  }
 
-    return sortMatches( {
-        data,
-        next,
-        played,
-        today
-    } )
+  return type;
 }
 
-const sortMatches = (matches) => {
-    const sortDESC = (a, b) => {
-        const matchA = matches.data[a]
-        const matchB = matches.data[b]
-        let order = matchB.datetime - matchA.datetime
+function compareSets(match: Match, cacheMatch: ?Match): any {
+  let sets = match.sets || {};
 
-        if (order === 0) {
-            order = matchA.league.name < matchB.league.name ? -1 : 1
+  if (cacheMatch && cacheMatch.sets) {
+    for(let nr: string in cacheMatch.sets) {
+      if (!match.sets[nr] && cacheMatch.sets[nr]) {
+          sets[nr] = cacheMatch.sets[nr]
         }
-
-        return order
-    }
-    const sortASC = (a, b) => {
-        const matchA = matches.data[a]
-        const matchB = matches.data[b]
-        let order = (matchB.live ? 2 : matchB.set_points ? 1 : 0) - (matchA.live ? 2 : matchA.set_points ? 1 : 0)
-
-        if (order === 0) {
-            order = matchA.datetime - matchB.datetime
-        }
-
-        if (order === 0) {
-            order = matchA.league.name < matchB.league.name ? -1 : 1
-        }
-
-        return order
+      }
     }
 
-    matches.today.sort(sortASC)
-    matches.next.sort(sortASC)
-    matches.played.sort(sortDESC)
-
-    return matches
-}
-
-const getMatchType = (match) => {
-    let type = match.league.cup ? 'cup' : 'default'
-    const sets = match && match.sets ? match.sets : {}
-
-    if (sets['5'] && sets['6']) {
-        if (sets['5'].player_2_home !== null && sets['6'].player_2_away !== null) {
-            type += '_d5'
-        }
-    }
-
-    return type
-}
-
-const compaireSets = (match, cacheMatch) => {
-    let sets = match.sets
-
-    if (cacheMatch && cacheMatch.sets) {
-        for(let nr in cacheMatch.sets) {
-            if (!match.sets[nr] && cacheMatch.sets[nr]) {
-                sets[nr] = cacheMatch.sets[nr]
-            }
-        }
-    }
-
-    return sets
+    return sets;
 }

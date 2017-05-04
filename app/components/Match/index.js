@@ -10,7 +10,7 @@ class Match extends Component {
 
     renderRow(data, idx) {
         const { onPress, matches, editable, menuOpen, onSave, onSelect, adjustPosition, scoreInput, toggleMenu, toggleMatchType } = this.props
-        const match = matches.data[this.props.match.id]
+        const match = matches[this.props.match.id]
 
         return (
             <View key={idx}>
@@ -46,7 +46,7 @@ class Match extends Component {
     buildMatchData() {
         // console.tron.log('build match data')
         const id = this.props.match.id
-        const matches = this.props.matches.data
+        const matches = this.props.matches
         const editMatch = this.props.editable
         const match = matches[id] && matches[id].sets ? matches[id] : { sets: [] }
         const sets = []
@@ -103,6 +103,7 @@ Match.propTypes = {
 Match.Header = Header
 
 export default connect( (state) => ({
-    matches: state.matches
-}))(Match)
+  loading: state.loading.nonBlocking,
+  matches: state.matches
+}))(Match);
 // export default Match

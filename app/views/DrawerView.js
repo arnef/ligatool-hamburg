@@ -10,9 +10,9 @@ import {
   LEAGUE,
   LEAGUES,
   LEAGUE_CUP,
-  OVERVIEW_NAVIGATOR,
-  MY_TEAM_NAVIGATOR,
-  SETTINGS_NAVIGATOR
+  OVERVIEW,
+  MY_TEAM,
+  SETTINGS
 } from './routes'
 
 class NavigationView extends Component {
@@ -80,10 +80,8 @@ class NavigationView extends Component {
         const { navigation } = this.props
         const color = this.props.settings.color
 
-
-        console.tron.log(`active state ${navigation.state.index}`)
-
-        return this.props.leagues.data.map( (league) => {
+        const leagues = Object.values(this.props.leagues);
+        return leagues.map( (league) => {
             const active = navigation.state.index === 2  && league.id === this.state.activeLeague
 
             return (
@@ -105,7 +103,7 @@ class NavigationView extends Component {
         const width  = 260
         const height = Math.floor(width * 0.625)
         const team = this.props.settings.team || null
-
+        const leagues = Object.values(this.props.leagues);
         return (
             <View style={{ flex: 1 }}>
             <View style={[styles.imageContainer, { height, width }]}>
@@ -125,10 +123,10 @@ class NavigationView extends Component {
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.space} />
-                    { this._renderItem(OVERVIEW_NAVIGATOR, 'Übersicht', 'football', 0) }
-                    { this._renderItem(MY_TEAM_NAVIGATOR, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in', 1)}
+                    { this._renderItem(OVERVIEW, 'Übersicht', 'football', 0) }
+                    { this._renderItem(MY_TEAM, team ? 'Mein Team': 'Team wählen', team ? 'shirt': 'log-in', 1)}
                     { this.renderSeparator() }
-                    {!this.props.leagues.loading && (this.props.leagues.error || this.props.leagues.data.length === 0)  && (
+                    {!this.props.loading &&  leagues.length === 0  && (
                             <View style={{ alignItems: 'center', padding: 16 }}>
                                 <Button
                                     centered
@@ -137,14 +135,14 @@ class NavigationView extends Component {
                             </View>
                         )}
                     {
-                        this.props.leagues.loading && (
+                        this.props.loading && leagues.length === 0 && (
                             <View style={{ padding: 16 }}>
                             <ActivityIndicator size='large' color='#666' />
                                 </View>)
                     }
-                    { !this.props.leagues.loading && !this.props.leagues.error && this.renderLeagues() }
+                    { !this.props.loading && leagues.length > 0 && this.renderLeagues() }
                     { this.renderSeparator() }
-                    { this._renderItem(SETTINGS_NAVIGATOR, 'Einstellungen', 'settings', 3) }
+                    { this._renderItem(SETTINGS, 'Einstellungen', 'settings', 3) }
                     <View style={styles.space} />
                 </ScrollView>
             </View>
@@ -199,6 +197,7 @@ NavigationView.propTypes = {
 
 export default connect(
     state => ({
+      loading: state.loading.nonBlocking,
         leagues: state.leagues,
         settings: state.settings
     }),

@@ -1,14 +1,17 @@
-import { API_KEY, TOKEN, FULFILLED, LOGOUT, LOAD_ACCESS_KEY, PENDING, LOAD_TOKEN } from '../actions/types'
-import { AsyncStorage } from 'react-native'
-import api from '../../api'
-import { DEFAULT_HEADERS } from 'apisauce'
+// @flow
+import { API_KEY, TOKEN, FULFILLED, LOGOUT, LOAD_ACCESS_KEY, PENDING, LOAD_TOKEN } from '../actions/types';
+import { AsyncStorage } from 'react-native';
+import api from '../../api';
+import { DEFAULT_HEADERS } from 'apisauce';
 
-export default (state={
+const defaultState: AuthState = {
     api_key: null,
     error: null,
     loading: false,
     team: null
-}, action) => {
+};
+
+export default (state: AuthState = defaultState, action: Action) => {
     switch (action.type) {
     case TOKEN + PENDING:
     case API_KEY + PENDING: {
@@ -62,7 +65,7 @@ export default (state={
 
     case LOGOUT + FULFILLED: {
         api.setHeaders(DEFAULT_HEADERS)
-        state = { api_key: null, team: null }
+        state = { ...state, api_key: null, team: null }
         try {
             AsyncStorage.removeItem(TOKEN)
             AsyncStorage.removeItem(API_KEY)

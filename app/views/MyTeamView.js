@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+// @flow
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { TabNavigator } from 'react-navigation'
 import MatchListView from './MatchListView'
@@ -8,77 +9,35 @@ import { queryTeamMatches } from '../store/actions/teamActions'
 import strings from '../Strings'
 import { TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes'
 
-class Comming extends Component {
+class MyTeam extends Component {
 
-    render() {
-        const { error, loading, next } = this.props.teamMatches
+  render() {
+    const { keyName, myTeam, loading } = this.props;
 
-        const props = {
-            error,
-            onRefresh: () => { this.props.dispatch(queryTeamMatches())},
-            refreshing: loading
-        }
-
-        return (
-            <MatchListView { ...props } matches={next} refreshOnMount />
-        )
+    const props = {
+      error: null,
+      refreshing: loading,
+      matches: myTeam[keyName],
+      onRefresh: () => { this.props.dispatch(queryTeamMatches())},
     }
-}
-Comming.propTypes = {
-    teamMatches: PropTypes.object,
-    dispatch: PropTypes.func
-}
 
-class Played extends Component {
-
-    render() {
-        const { error, loading, played } = this.props.teamMatches
-
-        const props = {
-            error,
-            onRefresh: () => { this.props.dispatch(queryTeamMatches())},
-            refreshing: loading
-        }
-
-        return (
-            <MatchListView { ...props } matches={played}  />
-        )
-    }
-}
-Played.propTypes = {
-    teamMatches: PropTypes.object,
-    dispatch: PropTypes.func
+    return (
+      <MatchListView { ...props } refreshOnMount={keyName === 'next' && props.matches.length === 0} />
+    )
+  }
 }
 
 
-Comming.navigationOptions = {
-    title: strings.next
-}
-Played.navigationOptions = {
-    title: strings.played
-}
-
-
-
-const MyTeam = TabNavigator({
-    [TAB_MATCHES_NEXT]: {
-        screen: connect(state => ({
-            teamMatches: state.teamMatches
-        }))(Comming)
-    },
-    [TAB_MATCHES_PLAYED]: {
-        screen: connect(state => ({
-            teamMatches: state.teamMatches
-        }))(Played)
-    }
+export default TabNavigator({
+  [TAB_MATCHES_NEXT]: {
+    screen: connect(state => ({ keyName: 'next', myTeam: state.myTeam, loading: state.loading.nonBlocking }))(MyTeam),
+    navigationOptions: { title: strings.next }
+  },
+  [TAB_MATCHES_PLAYED]: {
+    screen: connect(state => ({ keyName: 'played', myTeam: state.myTeam, loading: state.loading.nonBlocking }))(MyTeam),
+    navigationOptions: { title: strings.played }
+  }
 }, {
-    ...NavTabBarTop,
-    lazyLoad: false
-})
-
-MyTeam.navigationOptions = {
-    title: strings.my_team,
-    header: NavDrawerIcon
-}
-
-export default MyTeam
+  ...NavTabBarTop,
+  lazyLoad: false
+});

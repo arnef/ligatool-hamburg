@@ -7,121 +7,85 @@ import { NavigationActions } from 'react-navigation'
 
 class SelectableMatchListView extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            matchDays: [],
-            selectedMatchDay: null,
-            showDropdown: false
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedMatchDay: null,
+      showDropdown: false
     }
+  }
 
-    componentDidMount() {
-        const id = this.props.navigation.state.params.id
-
-        if (!this.props.league.matches[`${id}`]) {
-            this.props.getLeagueMatches(id)
-        } else {
-            this.getMatchDays()
-        }
+  componentDidMount() {
+    const id = this.props.navigation.state.params.id
+    if (!this.props.leagues[id] || !this.props.leagues[id].match_days) {
+      this.props.getLeagueMatches(id);
     }
+  }
 
-    componentWillReceiveProps(nextProps) {
-        const id = nextProps.navigation.state.params.id
+  render() {
+    const { matches, leagues } = this.props;
+    const { showDropdown, selectedMatchDay } = this.state;
+    const id = this.props.navigation.state.params.id;
+    const league = leagues[id];
+    const matchDays = league.match_days || {};
+    const matchDayKeys = Object.keys(matchDays);
 
-        if (nextProps.league.matches[`${id}`]) {
-            this.getMatchDays()
-        }
-    }
+    return (
+      <Container
+        refreshing={this.props.loading}
+        onRefresh={ () => this.props.getLeagueMatches(id) }
+        getRef={ container => this.container = container }>
+        { matchDayKeys.length > 0 && (
+          <ListItem.Group>
+            <ListItem.Header
+              hideSeparator={!showDropdown}
+              menuOpen={showDropdown}
+              title='Spieltag wählen'
+              toggleMenu={this.onPress.bind(this)}
+            >
+              { selectedMatchDay || league.selected }
+            </ListItem.Header>
+            { showDropdown && matchDayKeys.map((matchday: string, idx: number) => (
+              <ListItem
+                key={ idx }
+                onPress={ () => this.onSelectMatchDay(matchday) }
+                last={ idx === matchDayKeys.length - 1 }
+              >
+                <Text>{ matchday }</Text>
+              </ListItem>
+            ))
 
-    render() {
-        const id = this.props.navigation.state.params.id
-
-        const props = {
-            error: this.props.league.error,
-            onRefresh: () => { this.props.getLeagueMatches(id)},
-            refreshing: this.props.league.loading
-        }
-
-        const matches = this.props.league.matches[`${id}`] || []
-        const matchDays = this.state.matchDays
-
-        return (
-            <Container { ...this.props} { ...props } getRef={container => { this.container = container }}>
-                { matches.length > 0 && (
-                    <ListItem.Group>
-                        <ListItem.Header
-                            hideSeparator={!this.state.showDropdown}
-                            menuOpen={this.state.showDropdown}
-                            title={'Spieltag wählen'}
-                            toggleMenu={this.onPress.bind(this)}>
-                                { this.state.selectedMatchDay }
-                            </ListItem.Header>
-                        { this.state.showDropdown && matchDays.map((matchDay, idx) => {
-                            return (
-                                <ListItem key={idx}
-                                    onPress={() => { this.onSelectMatchDay(matchDay) }}
-                                    last={idx === matchDays.length -1}><Text>{ matchDay }</Text>
-                                </ListItem>)
-                        })
-                        }
-                    </ListItem.Group>
-                )}
-                { !this.state.showDropdown && matches.map((match) => {
-                    if (match.match_day === this.state.selectedMatchDay) {
-                        return (<MatchItem key={match.id}  data={match} />)
-                    }
-                })}
-            </Container>
-        )
-    }
-
-    getMatchDays() {
-        const id = this.props.navigation.state.params.id
-        const matchDays = []
-        const matches = this.props.league.matches[`${id}`] || []
-        let selectedMatchDay = null
-
-        for (let match of matches) {
-            if (matchDays.indexOf(match.match_day) === -1) {
-                matchDays.push(match.match_day)
             }
-            if (!match.set_points && !selectedMatchDay) {
-                selectedMatchDay = match.match_day
-            }
-        }
-        if (!selectedMatchDay) {
-            selectedMatchDay = matchDays[matchDays.length-1]
-        }
-        this.setState({ matchDays, selectedMatchDay })
-    }
+          </ListItem.Group>
+        )}
+        { !showDropdown && (matchDays[selectedMatchDay || league.selected] || []).map( matchId => (
+          <MatchItem key={matchId} data={matches[matchId]} />
+        ))}
+      </Container>
+    )
+  }
 
-    onSelectMatchDay(matchDay) {
-        this.setState({ selectedMatchDay: matchDay, showDropdown: false })
-        if (this.container && this.container.scrollTo) {
-            this.container.scrollTo({ animated: true, x: 0 , y: 0 })
-        }
-    }
 
-    onPress() {
-        this.setState({ showDropdown: !this.state.showDropdown })
+  onSelectMatchDay(matchDay) {
+    this.setState({ selectedMatchDay: matchDay, showDropdown: false })
+    if (this.container && this.container.scrollTo) {
+      this.container.scrollTo({ animated: true, x: 0 , y: 0 })
     }
-}
+  }
 
-SelectableMatchListView.propTypes = {
-    navigation: PropTypes.object,
-    getLeagueMatches: PropTypes.func,
-    league: PropTypes.object,
-    pushRoute: PropTypes.func
+  onPress() {
+    this.setState({ showDropdown: !this.state.showDropdown })
+  }
 }
 
 export default connect(
-    state => ({
-        league: state.league,
-        matches: state.matches.data
-    }),
-    dispatch => ({
-        getLeagueMatches: (id) => dispatch(actions.getLeagueMatches(id)),
-        pushRoute: (route) => dispatch(NavigationActions.navigate(route))
-    })
-)(SelectableMatchListView)
+  state => ({
+    loading: state.loading.nonBlocking,
+    leagues: state.leagues,
+    matches: state.matches
+  }),
+  dispatch => ({
+    getLeagueMatches: (id) => dispatch(actions.getLeagueMatches(id)),
+    pushRoute: (route) => dispatch(NavigationActions.navigate(route))
+  })
+)(SelectableMatchListView);

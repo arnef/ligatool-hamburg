@@ -32,8 +32,11 @@ class LoadingScreen extends Component {
         return (
             <View style={style.container}>
                 <Animated.Image source={{ uri: 'loading' }} style={[style.icon, { opacity: this.state.opacity }]} />
-                <Text style={[style.text]}>powered by</Text>
+                <View style={{ position: 'absolute', bottom: 32 }}>
+                <Text style={[style.text]}>powered by&nbsp;
                 <Text style={[style.text, style.textBig]}>Arne Feil</Text>
+                </Text>
+                </View>
             </View>
         )
     }
@@ -49,17 +52,16 @@ const style = StyleSheet.create({
         justifyContent: 'center'
     },
     text: {
-      color: '#aaa',
-      fontSize: 12,
+      color: '#888',
+      fontSize: 14,
       fontFamily: Platform.OS === ANDROID ? 'monospace' : 'Courier New'
     },
     textBig: {
-      fontSize: 14
+      fontSize: 16
     },
     icon: {
         height: 64,
-        width: 64,
-        marginBottom: 10
+        width: 64
     }
 })
 

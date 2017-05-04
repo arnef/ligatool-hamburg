@@ -1,8 +1,8 @@
-import { SHOW_LOGIN } from './types'
+import { SHOW_LOGIN } from './types';
 
-export function showLogin(loginVisible) {
+export function showLogin (loginVisible: boolean): Action {
     return {
         payload: loginVisible,
         type: SHOW_LOGIN
-    }
+    };
 }

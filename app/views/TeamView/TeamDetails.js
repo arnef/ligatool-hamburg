@@ -4,7 +4,7 @@ import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { getTeam } from '../../store/actions/teamActions'
 import { Container } from '../../components'
-import { Row, Column, Button, ListItem, Image, Text } from '../../components/base'
+import { Row, Column, Button, ListItem, Image, Text, Touchable } from '../../components/base'
 
 class TeamView extends Component {
 
@@ -12,7 +12,6 @@ class TeamView extends Component {
     componentDidMount() {
         if (!this.getTeam()) {
             this.loadTeam()
-            // console.tron.log('get team')
         }
     }
 
@@ -27,7 +26,6 @@ class TeamView extends Component {
                 team = state.params.team
             }
         }
-        // this.props.navigation.state.params.team
 
         return (
             <Container
@@ -68,9 +66,14 @@ class TeamView extends Component {
                 )}
                 { !!team.club && !!team.club.id && (
                     <Row>
-                        <Column width={leftWidth}><Text bold>Verein</Text></Column>
-                        <Column><Text>{ team.club.name }</Text></Column>
-                    </Row>)}
+                        <Column width={leftWidth}>
+                          <Text bold>Verein</Text>
+                        </Column>
+                        <Column>
+                          <Text>{ team.club.name }</Text>
+                        </Column>
+                    </Row>
+                )}
                 { !!team.table && (
                     <Row>
                         <Column width={leftWidth}><Text bold>Heimtisch</Text></Column>
@@ -163,10 +166,12 @@ class TeamView extends Component {
         }
 
         return (
-            <Column center>
+
+            <View onPress={() => this.props.navigate({ routeName: 'PLAYER', params: { player }}) } style={{ flex: 1, alignItems: 'center' }}>
                 <Image url={player.image} height={120} width={90} />
                 <Text center>{ `${player.name} ${player.surname}` }</Text>
-            </Column>
+            </View>
+
         )
     }
 
@@ -174,7 +179,7 @@ class TeamView extends Component {
         const { navigation } = this.props
         const  teamID = this.getTeamId()
 
-        return this.props.teams.id[teamID] ? this.props.teams.id[teamID].details : null
+        return this.props.teams[teamID];// ? this.props.teams[teamID].details : null
     }
 
     getTeamId() {
@@ -232,7 +237,8 @@ export default connect(
     }),
     dispatch => ({
         getTeam: (id) => dispatch(getTeam(id)),
-        setTitle: (title, key) => dispatch({ type: 'SET_TITLE', title, key })
+        setTitle: (title, key) => dispatch({ type: 'SET_TITLE', title, key }),
+        navigate: (route) => dispatch(NavigationActions.navigate(route))
         // setTitle: (title, key) => dispatch(NavigationActions.setParams({ title, key }))
     })
 )(TeamView)

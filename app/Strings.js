@@ -19,5 +19,7 @@ export default {
   score_end: 'Endstand',
   select_leagues: 'Gruppen wählen',
   information: 'Informationen',
-  app_version: 'App-Version 0.10'
-}
+  app_version: 'App-Version 0.10',
+  match: 'Begegnung',
+  matches: 'Begegnungen'
+};

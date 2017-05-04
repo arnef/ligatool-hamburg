@@ -1,33 +1,29 @@
-/* @flow */
+// @flow
 import { API_KEY, TOKEN, LOAD_ACCESS_KEY, LOAD_TOKEN, LOGOUT, SET_USER_TEAM } from './types'
 import api, { USER_AUTH, USER_AUTH_REFRESH} from '../../api'
 import store from '../index'
 import { AsyncStorage } from 'react-native'
 
-type User = {
-  user: string,
-  pass: string
-};
 
-export const requestAPIKey = (user: User) => {
+export function requestAPIKey (user: User): Action {
     const accesskey = store.getState().auth.api_key
 
     if (accesskey != null) {
-        return renewToken(accesskey)
+        return renewToken(accesskey);
     } else {
         return {
             payload: api.post(USER_AUTH, user),
             type: API_KEY
-        }
+        };
     }
 }
 
-export const renewToken = (apiKey: string) => {
+export function renewToken (apiKey: string): Action {
 
     return {
         payload: api.post(USER_AUTH_REFRESH, { access_key: apiKey }),
         type: TOKEN
-    }
+    };
 }
 
 export const logout = () => {
@@ -35,14 +31,14 @@ export const logout = () => {
     return {
         payload: api.delete(USER_AUTH),
         type: LOGOUT
-    }
+    };
 }
 
-export const setUserTeam = (team) => {
+export const setUserTeam = (team: Team) => {
     return {
         payload: team,
         type: SET_USER_TEAM
-    }
+    };
 }
 
 export const loadAccessKey = () => {
@@ -70,12 +66,11 @@ export const loadAccessKey = () => {
             }
         }),
         type: LOAD_ACCESS_KEY
-    }
+    };
 }
 
 export const loadToken = () => {
     return {
-
         payload: new Promise(resolve => {
             try {
                 AsyncStorage.getItem(TOKEN).then( serializedToken => {
@@ -99,5 +94,5 @@ export const loadToken = () => {
             }
         }),
         type: LOAD_TOKEN
-    }
+    };
 }

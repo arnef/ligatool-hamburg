@@ -1,28 +1,34 @@
+// @flow
 import { DIALOG_SCORE, DIALOG_PLAYER } from './types'
 
-export const showScoreDialog = () => {
+
+export function showScoreDialog (): Action {
     return {
         payload: true,
         type: DIALOG_SCORE
-    }
+    };
 }
 
-export const hideScoreDialog = () => {
+
+export function hideScoreDialog (): Action {
     return {
         payload: false,
         type: DIALOG_SCORE
-    }
+    };
 }
 
-export const showPlayerDialog = (matchId, data) => {
+
+export function showPlayerDialog (matchId: number, data: Array<Player>): Action {
     return {
         payload: { matchId, data },
         type: DIALOG_PLAYER
-    }
+    };
 }
-export const hidePlayerDialog = () => {
+
+
+export function hidePlayerDialog (): Action {
     return {
         payload: false,
         type: DIALOG_PLAYER
-    }
+    };
 }

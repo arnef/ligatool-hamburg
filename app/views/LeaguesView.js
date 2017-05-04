@@ -14,8 +14,9 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 import NavHeader from '../Nav/NavHeader'
 import TeamView from './TeamView'
 import MatchView from './MatchView'
+import PlayerView from './PlayerView';
 import Preview from './MatchView/PreView'
-import { LEAGUES_NAVIGATOR, LEAGUES, MATCH, PREVIEW, TEAM, LEAGUE, LEAGUE_CUP } from './routes'
+import { LEAGUES_NAVIGATOR, LEAGUES, MATCH, PREVIEW, TEAM, LEAGUE, LEAGUE_CUP, PLAYER } from './routes'
 
 
 class LeaguesView extends Component {
@@ -30,30 +31,31 @@ class LeaguesView extends Component {
 
 
     render() {
-        return (
-            <Container
-                { ...this.props }
-                error={ this.props.leagues.error }
-                refreshing={this.props.leagues.loading}
-                onRefresh={this.props.getRankings.bind(this)}>
-                { this.props.leagues.data.length > 0 && (
-                <ListItem.Group>
-                { this.props.leagues.data.map( (league, idx) => {
-                    return (
-                        <View key={league.id}>
-                            <ListItem
-                                last={idx === this.props.leagues.data.length-1}
-                                onPress={() => this.onPress(league)}>
-                                <Text>{ league.name }</Text>
-                            </ListItem>
-                        </View>
-                    )
-                })}
-                </ListItem.Group>
-                )}
-            </Container>
-        )
-    }
+      const leagues = Object.values(this.props.leagues);
+      leagues.sort( (a, b) => a.name < b.name ? -1 : 1);
+      return (
+          <Container
+              error={ null }
+              refreshing={this.props.loading}
+              onRefresh={this.props.getRankings.bind(this)}>
+              { leagues.length > 0 && (
+              <ListItem.Group>
+              { leagues.map( (league, idx) => {
+                  return (
+                      <View key={league.id}>
+                          <ListItem
+                              last={idx === leagues.length-1}
+                              onPress={() => this.onPress(league)}>
+                              <Text>{ league.name }</Text>
+                          </ListItem>
+                      </View>
+                  )
+              })}
+              </ListItem.Group>
+              )}
+          </Container>
+      )
+  }
 
     onPress(league) {
         const { dispatch } = this.props
@@ -69,41 +71,14 @@ class LeaguesView extends Component {
     }
 }
 
-LeaguesView.navigationOptions = {
-    title: 'Gruppen',
-    tabBar: {
-        icon: ({ tintColor }) => NavIcon('trophy', tintColor)
-    }
-}
-
-LeaguesView.propTypes = {
-    dispatch: PropTypes.func,
-    getRankings: PropTypes.func,
-    leagues: PropTypes.object,
-    pushRoute: PropTypes.func
-}
-SelectableMatchListView.navigationOptions = {
-    title: ({ state }) => state.params.cup || 'Begegnungen',
-    header: NavDrawerIcon
-}
-
-export default StackNavigator({
-    [LEAGUES]: { screen: connect(
-        state => ({
-            leagues: state.leagues
-        }),
-        dispatch => ({
-            getRankings: () => dispatch(actions.getRankings()),
-            pushRoute: (route) => dispatch(actions.pushRoute(route)),
-            dispatch: (action) => dispatch(action)
-        })
-        )(LeaguesView)
-    },
-    [LEAGUE]: { screen: LeagueView },
-    [LEAGUES_NAVIGATOR + TEAM]: { screen: TeamView },
-    [LEAGUES_NAVIGATOR + MATCH]: { screen: MatchView },
-    [LEAGUES_NAVIGATOR + PREVIEW]: { screen: Preview },
-    [LEAGUE_CUP]: { screen: SelectableMatchListView }
-}, {
-    ...NavHeader
-})
+export default connect(
+  state => ({
+    leagues: state.leagues,
+    loading: state.loading.nonBlocking
+  }),
+  dispatch => ({
+    getRankings: () => dispatch(actions.getRankings()),
+    pushRoute: (route) => dispatch(actions.pushRoute(route)),
+    dispatch: (action) => dispatch(action)
+  })
+)(LeaguesView)

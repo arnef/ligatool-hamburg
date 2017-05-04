@@ -3,28 +3,27 @@ import { combineReducers } from 'redux'
 import settings from './settingsReducer'
 import auth from './authReducer'
 import leagues from './leaguesReducer'
-import match from './matchReducer'
 import dialog from './dialogReducer'
-import teamMatches from './teamMatchesReducer'
 import matches from './matchesReducer'
-import teams from './teamReducer'
-import league from './leagueReducer'
+import teams from './teamsReducer'
 import loading from './loadingReducer'
 import appConnected from './restoreReducer'
 import nav from './navReducer'
+
+import overview from './overviewReducer';
+import myTeam from './myTeamReducer';
 
 
 export default combineReducers({
     appConnected,
     auth,
     dialog,
-    league,
     leagues,
     loading,
-    match,
     matches,
     nav,
     settings,
-    teamMatches,
-    teams
+    teams,
+    overview,
+    myTeam
 })

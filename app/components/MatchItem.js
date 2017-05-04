@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { formatDate, formatTime } from '../Helper'
+import { formatDate, formatTime, isAdminForMatch } from '../Helper'
 import Score from './Score'
 import { Row, Column, ListItem, Touchable, Icon, Text } from '../components/base'
 import { TeamLogo } from '../components'

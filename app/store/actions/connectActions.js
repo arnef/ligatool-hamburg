@@ -1,6 +1,7 @@
-import Storage from '../../Storage'
-import api, { LEAGUES, USER_AUTH_REFRESH, NOTIFICATION } from '../../api'
-import store from '../index'
+// @flow
+import Storage from '../../Storage';
+import api, { LEAGUES, USER_AUTH_REFRESH, NOTIFICATION } from '../../api';
+import store from '../index';
 import {
     INIT_APP,
     API_KEY,
@@ -11,15 +12,14 @@ import {
     LOAD_TOKEN,
     FULFILLED,
     QUERY_RANKINGS
-} from './types'
+} from './types';
 
 
 /**
  * synchronize local data with server
  */
 
-export const initApp = () => {
-
+export function initApp (): Action {
     return {
         payload: new Promise(resolve => {
             const restoreSettings = new Promise(resolve => {
@@ -71,10 +71,11 @@ export const initApp = () => {
                             payload: apiAccessKey,
                             type: LOAD_ACCESS_KEY + FULFILLED
                         })
-                        const now = (new Date()).getMilliseconds()
-
-                        // console.tron.log('token expired ' + (apiToken.expires < now))
-                        if (apiToken.expires < now) {
+                        console.tron.log(apiToken);
+                        const now = (new Date()).getTime()
+                        console.tron.log(`${apiToken.data.expires} < ${now}`);
+                        console.tron.log('token expired ' + (apiToken.data.expires < now))
+                        if (apiToken.data.expires < now) {
                             api.post(USER_AUTH_REFRESH, { access_key: apiAccessKey.data })
                             .then(resp => {
                                 store.dispatch({
@@ -97,7 +98,7 @@ export const initApp = () => {
             const timeout = new Promise(resolve => {
                 setTimeout(() => {
                     resolve()
-                }, 3000)
+                }, 50)
             })
 
             Promise.all([restoreSettings, restoreAuth, timeout]).then(values => {
@@ -135,5 +136,5 @@ export const initApp = () => {
 
         }),
         type: INIT_APP
-    }
+    };
 }

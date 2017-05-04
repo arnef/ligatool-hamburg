@@ -11,7 +11,7 @@ class LoadingModal extends Component {
             <Modal animationType='fade'
                 onRequestClose={this.onRequestClose.bind(this)}
                 transparent={true}
-                visible={loading}>
+                visible={loading.blocking}>
                 <View style={styles.loadingContainer}>
                     <View style={styles.loading}>
                         <ActivityIndicator size='large' color='#fff' />
@@ -44,11 +44,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center'
     }
-})
+});
 
-LoadingModal.propTypes = {
-    loading: PropTypes.bool
-}
 
 export default connect(state => ({
     loading: state.loading

@@ -31,19 +31,18 @@ class SelectPlayer extends Component {
             <Container>
                 <ListItem.Group>
                     { items.map((item, idx) => {
-                        return this.renderItem(item, idx)
+                        return this.renderItem(item, idx, items.length - 1)
                     })}
                 </ListItem.Group>
             </Container>
         )
     }
 
-    renderItem(data, idx) {
+    renderItem(data, idx, length) {
         const { selected } = this.state
 
-
         return (
-            <ListItem key={data.id} icon onPress={ () => this.onPress(idx) }>
+            <ListItem key={data.id} icon last={idx===length} onPress={ () => this.onPress(idx) }>
                 <ListItem.Image url={data.image} />
                 <Text>{ `${data.name} ${data.surname}` }</Text>
                 <View style={{ flex: 1 }} />
@@ -119,7 +118,7 @@ SelectPlayer.navigationOptions = {
 
 export default StackNavigator({
     SelectPlayerView: { screen: connect(
-        state => ({ matches: state.matches.data }),
+        state => ({ matches: state.matches }),
         dispatch => ({
             navigate: (route) => dispatch(NavigationActions.navigate(route)),
             closeModal: () => dispatch(hidePlayerDialog()),

@@ -4,11 +4,10 @@ import { connect } from 'react-redux'
 import { addNavigationHelpers, NavigationActions } from 'react-navigation'
 import actions from './store/actions'
 import FCM, { FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType } from 'react-native-fcm'
-import Navigator from './Navigator'
 import Loading from './modals/LoadingModal'
 import { ANDROID, IOS } from './consts'
-import { OVERVIEW_NAVIGATOR, MATCH } from './views/routes';
-
+import { OVERVIEW, MATCH } from './views/routes';
+import { Root } from './router';
 
 class AppContainer extends Component {
 
@@ -104,7 +103,7 @@ class AppContainer extends Component {
             console.tron.log('open match')
             //TODO check if user is admin for match
             pushRoute({
-                routeName: OVERVIEW_NAVIGATOR + MATCH,
+                routeName: OVERVIEW + MATCH,
                 params: {
                     id: matchId
                 }
@@ -135,7 +134,7 @@ class AppContainer extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Loading />
-                <Navigator
+                <Root
                     navigation={ addNavigationHelpers({
                         dispatch,
                         state: nav.state

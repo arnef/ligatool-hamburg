@@ -1,22 +1,36 @@
-import { PUT_SETS, LOGOUT, PENDING, FULFILLED } from '../actions/types'
+// @flow
+import {
+  PUT_SETS,
+  LOGOUT,
+  PENDING,
+  FULFILLED
+} from '../actions/types';
 
-export default (state=false, action) => {
-    switch (action.type) {
+const initialState: LoadingState = {
+  blocking: false,
+  nonBlocking: false
+};
 
-    case LOGOUT + PENDING:
-    case PUT_SETS + PENDING: {
-        state = true
+export default function (state: LoadingState = initialState, action: Action): LoadingState {
 
-        return state
-    }
+  switch (action.type) {
+  // case LOGOUT + PENDING:
+  // case PUT_SETS + PENDING:
+  //   return { ...state, blocking: true };
+  //
+  //
+  // case LOGOUT + FULFILLED:
+  // case PUT_SETS + FULFILLED:
+  //   return { ...state, blocking: false };
 
-    case LOGOUT + FULFILLED:
-    case PUT_SETS + FULFILLED: {
-        state = false
-
-        return state
-    }
-    }
-
-    return state
+  // default:
+  //   if (action.type.indexOf(PENDING) !== -1 && !state.blocking) {
+  //     state = { ...state, nonBlocking: true };
+  //   }
+  //   if (action.type.indexOf(FULFILLED) !== -1) {
+  //     state = { ...state, nonBlocking: false };
+  //   }
+  //   return state;
+  }
+  return state;
 }

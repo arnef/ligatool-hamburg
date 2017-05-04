@@ -73,12 +73,12 @@ class SettingsView extends Component {
             { this._renderCheckbox('Live-Zwischenergebnis', notification.live, 'live', disabled) }
             { this._renderCheckbox('Endstand', notification.ended, 'ended', disabled) }
             <ListItem last
-                disabled={disabled || this.props.leagues.data.length === 0}
+                disabled={disabled || Object.keys(this.props.leagues).length === 0}
                 onPress={this._toggleGroups.bind(this)}>
                 <Text>Gruppen wählen</Text>
                 <View style={{ flex:1 }} />
-                { this.props.leagues.loading && (<ActivityIndicator color={theme.secondaryTextColor} />)}
-                { !this.props.leagues.loading && (<ListItem.Icon name='caret-forward' right />) }
+                { this.props.loading && (<ActivityIndicator color={theme.secondaryTextColor} />)}
+                { !this.props.loading && (<ListItem.Icon name='caret-forward' right />) }
             </ListItem>
         </ListItem.Group>)
     }
@@ -131,9 +131,6 @@ class SettingsView extends Component {
         )
     }
 
-    // _checkForUpdate() {
-    //     codePush.sync({ installMode: codePush.InstallMode.IMMEDIATE, updateDialog: true })
-    // }
 }
 
 
@@ -149,17 +146,9 @@ SettingsView.propTypes = {
     showLogin: PropTypes.func
 }
 
-SettingsView.navigationOptions = {
-    title: 'Einstellungen',
-    header: NavDrawerIcon
-}
-SettingsNotificationView.navigationOptions = { title: 'Benachrichtigungen' }
-
-
-export default StackNavigator({
-    [SETTINGS]: { screen:
-    connect(
+export default connect(
     state => ({
+      loading: state.loading.nonBlocking,
         auth: state.auth,
         dialog: state.dialog,
         leagues: state.leagues,
@@ -173,8 +162,4 @@ export default StackNavigator({
         setNotification: (key, value) => dispatch(actions.setNotification(key, value)),
         showLogin: (show) => dispatch(actions.showLogin(show))
     })
-    )(SettingsView) },
-    [SETTINGS_NOTIFICATIONS]: { screen: SettingsNotificationView }
-}, {
-    ...NavHeader
-})
+    )(SettingsView)

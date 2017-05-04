@@ -1,90 +1,64 @@
 /* @flow */
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import MatchListView from './MatchListView'
-import actions from '../store/actions'
-import NavDrawerIcon from '../Nav/NavDrawerIcon'
-import NavTabBarTop from '../Nav/NavTabBarTop'
-import { TabNavigator } from 'react-navigation'
-import strings from '../Strings'
-import { TAB_MATCHES_TODAY, TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes'
-class Live extends Component {
+import React, { Component } from 'react';
+import { FlatList, Text } from 'react-native';
+import { connect } from 'react-redux';
+import MatchListView from './MatchListView';
+import actions from '../store/actions';
+import NavDrawerIcon from '../Nav/NavDrawerIcon';
+import NavTabBarTop from '../Nav/NavTabBarTop';
+import { TabNavigator } from 'react-navigation';
+import strings from '../Strings';
+import { TAB_MATCHES_TODAY, TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes';
 
 
-    render() {
-        const { error, fetched, fetching, today } = this.props.matches
-        const props = {
-            error,
-            fetched,
-            refreshing: fetching,
-            onRefresh: () => { this.props.dispatch(actions.queryMatches())}
-        }
+class Overview extends Component {
 
-        return (<MatchListView { ...props } matches={today} refreshOnMount />)
-    }
-}
-Live.navigationOptions = {
-    title: strings.today
-}
-Live.propTypes = {
-    matches: PropTypes.object,
-    dispatch: PropTypes.func
-}
 
-class Next extends Component {
-    render() {
-        const { error, fetched, fetching, next } = this.props.matches
-        const props = {
-            error,
-            fetched,
-            refreshing: fetching,
-            onRefresh: () => { this.props.dispatch(actions.queryMatches())}
-        }
+  onRefresh() {
+    this.props.queryMatches();
+  }
 
-        return (<MatchListView { ...props } matches={next} />)
-    }
-}
-Next.navigationOptions = {
-    title: strings.next
-}
-Next.propTypes = {
-    matches: PropTypes.object,
-    dispatch: PropTypes.func
-}
-class Played extends Component {
+  render() {
+    const { refreshing, matches, refreshOnMount } = this.props;
+    // const props = {
+    //   refreshing,
+    //   matches,
+    //   onRefresh: this.onRefresh.bind(this)
+    // };
 
-    render() {
-        const { error, fetched, fetching, played } = this.props.matches
-        const props = {
-            error,
-            fetched,
-            refreshing: fetching,
-            onRefresh: () => { this.props.dispatch(actions.queryMatches())}
-        }
-
-        return (<MatchListView { ...props } matches={played} />)
-    }
-}
-Played.navigationOptions = {
-    title: strings.played
-}
-Played.propTypes = {
-    matches: PropTypes.object,
-    dispatch: PropTypes.func
+    return (
+      <MatchListView
+        refreshing={ refreshing }
+        matches={ matches }
+        onRefresh={ this.onRefresh.bind(this) }
+        refreshOnMount={ refreshOnMount }
+      />
+    );
+  }
 }
 
-const Tabs = TabNavigator({
-    [TAB_MATCHES_TODAY]: { screen:  connect(state => ({ matches: state.matches }))(Live) },
-    [TAB_MATCHES_NEXT]: { screen: connect(state => ({ matches: state.matches }))(Next) },
-    [TAB_MATCHES_PLAYED]: { screen: connect(state => ({ matches: state.matches }))(Played) }
+function createTab(keyName) {
+  return connect(
+    state => ({ matches: state.overview[keyName], refreshing: state.overview.fetching, refreshOnMount: keyName === 'today' }),
+    dispatch => ({ queryMatches: () => dispatch(actions.queryMatches()) })
+  )(Overview);
+}
+
+
+export default TabNavigator({
+  [TAB_MATCHES_TODAY]: {
+    screen: createTab('today'),
+    navigationOptions: { title: strings.today }
+  },
+  [TAB_MATCHES_NEXT]: {
+    screen: createTab('next'),
+    navigationOptions: { title: strings.next }
+  },
+  [TAB_MATCHES_PLAYED]: {
+    screen: createTab('played'),
+    navigationOptions: { title: strings.played }
+  }
 }, {
-    ...NavTabBarTop,
-    lazyLoad: false
-})
-
-Tabs.navigationOptions = {
-    title: strings.overview,
-    header: NavDrawerIcon
-}
-
-export default Tabs
+  ...NavTabBarTop,
+  lazyLoad: false
+});

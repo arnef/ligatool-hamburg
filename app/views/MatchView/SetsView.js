@@ -24,7 +24,7 @@ class SetsView extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.match.loading) {
+        if (!this.props.loading) {
             this.getMatch()
         }
         if (!this.keyboardDidShowListener) {
@@ -147,7 +147,7 @@ class SetsView extends Component {
     showButton() {
         const match = this.props.matches[this.props.data.id]
 
-        if (match) {
+        if (match && !this.props.loading) {
             if (match.league && match.league.name.indexOf('pokal') !== -1) {
                 return match.score_unconfirmed && (match.set_points_home !== match.set_points_away &&  (match.set_points_home > 16 || match.set_points_away > 16)) ? true : false
             } else {
@@ -182,17 +182,16 @@ class SetsView extends Component {
     render() {
         const data = this.props.matches[this.props.data.id] || {}
         const showButton =  this.showButton()
-        const editable = data.is_admin
+        const editable =  (!this.props.loading && data.is_admin && data.type) ? true : false;
 
         return (
             <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
                 <Match.Header data={data} />
                 <Container
-                    { ...this.props }
                     getRef={scrollView => { this.scrollView = scrollView}}
                     onScroll={this.onScroll.bind(this)}
-                    error={this.props.match.error}
-                    refreshing={this.props.match.loading}
+                    error={null}
+                    refreshing={this.props.loading}
                     onRefresh={this.getMatch.bind(this)}>
                     <Match editable={editable}
                         match={data}
@@ -269,10 +268,11 @@ SetsView.propTypes = {
 
 export default connect(
     state => ({
+      loading: state.loading.nonBlocking,
         auth: state.auth,
         dialog: state.dialog,
         match: state.match,
-        matches: state.matches.data
+        matches: state.matches
     }),
     dispatch => ({
         getMatch: (id) => dispatch(actions.getMatch(id)),

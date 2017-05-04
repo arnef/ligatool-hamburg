@@ -23,6 +23,7 @@ export const PREVIEW: string = 'PREVIEW';
 export const TEAM: string = 'TEAM';
 export const LEAGUE: string = 'LEAGUE';
 export const LEAGUE_CUP: string = 'LEAGUE_CUP';
+export const PLAYER: string = 'PLAYER';
 
 // top tabs
 export const TAB_TABLE: string = 'TAB_TABLE';

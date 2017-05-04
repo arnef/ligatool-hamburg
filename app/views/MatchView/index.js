@@ -17,19 +17,7 @@ class MatchView extends Component {
     }
 
 }
-MatchView.navigationOptions = {
-    title: 'Begegnung',
-    tabBar: {
-        label: 'Mein Team',
-        icon: ({ tintColor }) => NavIcon('shirt', tintColor)
-    }
-}
-
-MatchView.propTypes = {
-    id: PropTypes.number,
-    matches: PropTypes.object
-}
 
 export default connect(state => ({
-    matches: state.matches.data
+    matches: state.matches
 }))(MatchView)

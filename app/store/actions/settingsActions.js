@@ -1,32 +1,33 @@
-import { SET_SETTINGS, LOAD_SETTINGS, SET_NOTIFICATION, SET_GROUP_NOTIFICATION, PUT_NOTIFICATION, SET_DEVICE_TOKEN } from './types'
-import { AsyncStorage } from 'react-native'
-import api, { NOTIFICATION } from '../../api'
-import store from '../index'
+// @flow
+import { SET_SETTINGS, LOAD_SETTINGS, SET_NOTIFICATION, SET_GROUP_NOTIFICATION, PUT_NOTIFICATION, SET_DEVICE_TOKEN } from './types';
+import { AsyncStorage } from 'react-native';
+import api, { NOTIFICATION } from '../../api';
+import store from '../index';
 
 const STORAGE_KEY = 'SETTINGS_V09'
 
-export const setSettings = (settings) => {
+export function setSettings (settings: any): Action {
     return {
         payload: settings,
         type: SET_SETTINGS
-    }
+    };
 }
 
-export const setNotification = (key, value) => {
+export function setNotification (key: string, value: boolean): Action {
     return {
         payload: { key, value },
         type: SET_NOTIFICATION
-    }
+    };
 }
 
-export const setGroupNotification = (key, value) => {
+export function setGroupNotification (key: string, value: boolean): Action {
     return {
         payload: { key, value },
         type: SET_GROUP_NOTIFICATION
-    }
+    };
 }
 
-export const saveNotifications = () => {
+export function saveNotifications (): Action {
     const settings = store.getState().settings
 
     return {
@@ -35,18 +36,18 @@ export const saveNotifications = () => {
             notification: settings.notification
         }),
         type: PUT_NOTIFICATION
-    }
+    };
 }
 
+// unused?
+// export const setDeviceToken = (token) => {
+//     return {
+//         payload: token,
+//         type: SET_DEVICE_TOKEN
+//     }
+// }
 
-export const setDeviceToken = (token) => {
-    return {
-        payload: token,
-        type: SET_DEVICE_TOKEN
-    }
-}
-
-export const loadSettings = () => {
+export function loadSettings (): Action {
     return {
 
         payload: new Promise(resolve => {
@@ -72,5 +73,5 @@ export const loadSettings = () => {
             }
         }),
         type: LOAD_SETTINGS
-    }
+    };
 }

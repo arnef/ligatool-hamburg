@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Container, MatchItem  } from '../components'
 import { Row, Column, Button, Text } from '../components/base'
+import { sortMatches } from '../Helper';
 
 
 class MatchListView extends Component {
@@ -51,7 +52,7 @@ class MatchListView extends Component {
                 </Container>
             )
         }
-        if (this.props.fetched && this.props.matches.length === 0) {
+        if (this.props.matches.length === 0 && !this.props.refreshing) {
             return (
                 <Container
                     { ...this.props }
@@ -62,7 +63,8 @@ class MatchListView extends Component {
                 </Container>
             )
         }
-
+        const matches = this.props.matches;
+        matches.sort(sortMatches(this.props.data));
         return (
             <Container
                 { ...this.props }
@@ -88,6 +90,6 @@ MatchListView.propTypes = {
 
 export default connect(
     state => ({
-        data: state.matches.data
+        data: state.matches
     })
 )(MatchListView)

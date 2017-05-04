@@ -1,28 +1,26 @@
-import { QUERY_RANKINGS, GET_LEAGUE, GET_LEAGUE_MATCHES } from './types'
-import api, { LEAGUES, LEAGUE_BY_ID, LEAGUE_MATCHES} from '../../api'
+// @flow
+import { QUERY_RANKINGS, GET_LEAGUE, QUERY_LEAGUE_MATCHES } from './types';
+import api, { LEAGUES, LEAGUE_BY_ID, LEAGUE_MATCHES} from '../../api';
 
-export const getRankings = () => {
+export function getRankings (): Action {
     return {
         payload: api.get(LEAGUES),
         type: QUERY_RANKINGS
-    }
+    };
 }
 
 
-export const getLeague = (id) => {
+export function getLeague (id: number): Action {
     return {
         payload: api.get(LEAGUE_BY_ID(id)),
         type: GET_LEAGUE
-    }
+    };
 }
 
 
-export const getLeagueMatches = (id) => {
+export function getLeagueMatches (id: number): Action {
     return {
-        payload: {
-            data: id,
-            promise: api.get(LEAGUE_MATCHES(id))
-        },
-        type: GET_LEAGUE_MATCHES
-    }
+        payload: api.get(LEAGUE_MATCHES(id), { id }),
+        type: QUERY_LEAGUE_MATCHES
+    };
 }

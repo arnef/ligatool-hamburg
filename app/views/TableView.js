@@ -12,7 +12,7 @@ class TableView extends Component {
     componentDidMount() {
         const id = this.props.navigation.state.params.id
 
-        if (!this.props.league.id[id]) {
+        if (!this.props.leagues[id].table) {
             this._getLeagues()
         }
     }
@@ -59,18 +59,18 @@ class TableView extends Component {
     }
 
     render() {
+      const { leagues } = this.props;
         const id = this.props.navigation.state.params.id
-        const table = this.props.league.id[id] ? this.props.league.id[id].table : []
-
+        const table = leagues[id].table || []
+// { ...this.props }
         return (
         <Container
-            { ...this.props }
-            error={this.props.league.error}
-            refreshing={this.props.league.loading}
+            error={null}
+            refreshing={this.props.loading}
             onRefresh={this._getLeagues.bind(this)}>
             { table.length > 0 && (
             <ListItem.Group>
-                { !this.props.league.error && this._renderTeam({
+                { this._renderTeam({
                     goals_diff: 'Tore',
                     matches: 'Sp.',
                     points: 'Pkt.',
@@ -87,20 +87,15 @@ class TableView extends Component {
     }
 }
 
-TableView.propTypes = {
-    getLeague: PropTypes.func,
-    league: PropTypes.object,
-    leagueID: PropTypes.number,
-    pushRoute: PropTypes.func
-}
 
 
 export default connect(
-    state => ({
-        league: state.league
-    }),
-    dispatch => ({
-        getLeague: (id) => dispatch(actions.getLeague(id)),
-        pushRoute: (route) => dispatch(NavigationActions.navigate(route))
-    })
+  state => ({
+    loading: state.loading.nonBlocking,
+    leagues: state.leagues
+  }),
+  dispatch => ({
+    getLeague: (id) => dispatch(actions.getLeague(id)),
+    pushRoute: (route) => dispatch(NavigationActions.navigate(route))
+  })
 )(TableView)

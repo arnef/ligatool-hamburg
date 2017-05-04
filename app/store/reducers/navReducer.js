@@ -1,22 +1,33 @@
-/* @flow */
-import { TOKEN, FULFILLED, SHOW_LOGIN, DIALOG_PLAYER, INIT_APP } from '../actions/types'
-import { Platform } from 'react-native'
-import { ANDROID } from '../../consts'
-import Navigator from '../../Navigator'
-import { NavigationActions } from 'react-navigation'
+// @flow
+import {
+  TOKEN,
+  FULFILLED,
+  SHOW_LOGIN,
+  DIALOG_PLAYER,
+  INIT_APP
+} from '../actions/types';
+import { Platform } from 'react-native';
+import { ANDROID } from '../../consts';
+import { Root as Navigator } from '../../router';
+import { NavigationActions } from 'react-navigation';
+import * as Route from '../../views/routes';
 
-const tabs = [
-  Route.OVERVIEW_NAVIGATOR,
-  Route.MY_TEAM_NAVIGATOR,
-  Route.LEAGUES_NAVIGATOR,
-  Route.SETTINGS_NAVIGATOR
+
+const tabs: Array<string> = [
+  Route.OVERVIEW,
+  Route.MY_TEAM,
+  Route.LEAGUES,
+  Route.SETTINGS
 ];
-const tabRoutes = [ Route.MATCH, Route.PREVIEW, Route.TEAM ];
-const initialRoute = { routeName: Route.OVERVIEW_NAVIGATOR };
+const tabRoutes: Array<string> = [
+  Route.MATCH,
+  Route.PREVIEW,
+  Route.TEAM,
+  Route.PLAYER
+];
+const initialRoute = { routeName: Route.OVERVIEW };
 
-import * as Route from '../../views/routes'
-
-export default (nav={
+const defaultState: NavState = {
   state: null,
   actionStack: [],
   currentRoute: initialRoute,
@@ -25,8 +36,10 @@ export default (nav={
   actionStacks: {
     tabs: []
   },
-  currentTab: Route.OVERVIEW_NAVIGATOR //TODO rename to currentNavigator?
-}, action) => {
+  currentTab: Route.OVERVIEW //TODO rename to currentNavigator?
+};
+
+export default (nav: NavState = defaultState, action: Action) => {
   switch (action.type) {
   case DIALOG_PLAYER: {
       nav = { ...nav }
@@ -75,6 +88,7 @@ export default (nav={
   }
   case INIT_APP + FULFILLED: {
       nav = { ...nav }
+
       const action = Platform.OS === ANDROID ?
           NavigationActions.navigate({ routeName: Route.APP })
       :   NavigationActions.reset({
@@ -110,7 +124,7 @@ export default (nav={
       return nav
   }
   case NavigationActions.NAVIGATE: {
-    const tab = nav.currentTab.indexOf(Route.LEAGUE) === -1 ? nav.currentTab : Route.LEAGUES_NAVIGATOR;
+    const tab = nav.currentTab.indexOf(Route.LEAGUE) === -1 ? nav.currentTab : Route.LEAGUES;
     const idx = tabRoutes.indexOf(action.routeName);
 
     const newAction = idx > -1 ? { ...action, routeName: `${tab}${tabRoutes[idx]}` }
@@ -144,25 +158,6 @@ export default (nav={
   case NavigationActions.BACK: {
     if (Platform.OS === ANDROID) {
       nav = { ...nav }
-
-      // if (nav.actionStack.length > 0 && !nav.drawerOpen && !nav.modalOpen) {
-      //     const lastAction = nav.actionStack.pop()
-      //     const key = findRouteKey(nav.state, lastAction.routeName)
-      //     const currentRoute = getCurrentRoute(nav)
-      //
-      //     if (Platform.OS === ANDROID && ( lastAction.routeName === Route.LEAGUE ||
-      //         lastAction.routeName === Route.LEAGUE_CUP) ) {
-      //           console.tron.log('replace route');
-      //         nav.state = Navigator.router.getStateForAction(
-      //             NavigationActions.navigate(currentRoute),
-      //             nav.state
-      //         )
-      //     } else {
-      //       console.tron.log('go back to key');
-      //         nav.state = Navigator.router.getStateForAction(
-      //         NavigationActions.back({ key }), nav.state)
-      //     }
-      //     nav.currentRoute = currentRoute
       if (!nav.drawerOpen && !nav.modalOpen) {
         if (nav.actionStacks[nav.currentTab] && nav.actionStacks[nav.currentTab].length > 0) {
           console.tron.log('go back in current tab navigator');

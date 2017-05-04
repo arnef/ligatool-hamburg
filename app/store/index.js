@@ -12,7 +12,7 @@ if (__DEV__) {
 
     Reactotron.configure({
         // host: '192.168.1.9',
-        host: '192.168.0.164',
+        // host: '192.168.0.164',
         name: 'LigaTool'
     })
     .use(reactotronRedux())
