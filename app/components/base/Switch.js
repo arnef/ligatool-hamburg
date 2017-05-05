@@ -9,7 +9,7 @@ class Switch extends Component {
     const { color, ...rest } = this.props;
     if (Platform.OS === 'android') {
       return (
-        <RNSwitch { ...rest } onTintColor='#ccc' thumbTintColor={color} />
+        <RNSwitch { ...rest } /> // onTintColor='#ccc' thumbTintColor={color} />
       );
     } else {
       return (
