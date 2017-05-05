@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { TextInput, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -22,7 +22,7 @@ class LoginView extends Component {
   }
 
   render() {
-    const loading = this.props.dialog.login.loading;
+    const { loading, error } = this.props;
 
     return (
       <Container>
@@ -42,7 +42,7 @@ class LoginView extends Component {
                 ref="UserInput"
                 autoCapitalize="none"
                 style={styles.input}
-                editable={!this.props.auth.loading}
+                editable={!loading}
                 blurOnSubmit={false}
                 underlineColorAndroid="#fff"
                 autoCorrect={false}
@@ -62,7 +62,7 @@ class LoginView extends Component {
                 style={styles.input}
                 selectTextOnFocus={true}
                 underlineColorAndroid="#fff"
-                editable={!this.props.auth.loading}
+                editable={!loading}
                 secureTextEntry={true}
                 keyboardAppearance="dark"
                 onChangeText={text => {
@@ -96,11 +96,11 @@ class LoginView extends Component {
         {loading &&
           <Row center>
             <Column style={{ marginVertical: 16 }}>
-              <ActivityIndicator color={this.props.settings.color} />
+              <ActivityIndicator color={this.props.color} />
             </Column>
           </Row>}
 
-        {this.props.auth.error === CLIENT_ERROR &&
+        {error === CLIENT_ERROR &&
           <Row style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
             <Text color="red">
               Fehler beim Anmelden. Überprüfe deine Zugangsdaten.
@@ -138,16 +138,6 @@ const styles = StyleSheet.create({
   }
 });
 
-LoginView.propTypes = {
-  auth: PropTypes.object,
-  dialog: PropTypes.object,
-  init: PropTypes.bool,
-  renewToken: PropTypes.func,
-  requestAPIKey: PropTypes.func,
-  settings: PropTypes.object,
-  showLogin: PropTypes.func
-};
-
 LoginView.navigationOptions = {
   title: 'Login',
   header: (navigation, defaultHeader) => {
@@ -162,8 +152,9 @@ LoginView.navigationOptions = {
 export default connect(
   state => ({
     auth: state.auth,
-    dialog: state.dialog,
-    settings: state.settings
+    error: state.loading.error,
+    loading: state.loading.nonBlocking,
+    color: state.settings.color
   }),
   dispatch => ({
     renewToken: apiKey => dispatch(actions.renewToken(apiKey)),

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import Score from '../Score';
 import ScoreInput from './ScoreInput';
@@ -106,17 +106,5 @@ class ListItemSet extends Component {
       : this.props.editable ? 'Bitte wählen' : '';
   }
 }
-
-ListItemSet.propTypes = {
-  adjustPosition: PropTypes.func,
-  data: PropTypes.object,
-  editable: PropTypes.bool,
-  menuOpen: PropTypes.bool,
-  onPress: PropTypes.func,
-  onSave: PropTypes.func,
-  onSelect: PropTypes.func,
-  scoreInput: PropTypes.bool,
-  toggleMenu: PropTypes.func
-};
 
 export default ListItemSet;

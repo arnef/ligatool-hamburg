@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import ListItem from './Item';
 import ListItemGroup from './Group';
 import Header from './Header';
@@ -20,9 +20,6 @@ ListItem.Icon = props => (
     {...props}
   />
 );
-ListItem.Icon.propTypes = {
-  right: PropTypes.bool
-};
 
 ListItem.Group = ListItemGroup;
 

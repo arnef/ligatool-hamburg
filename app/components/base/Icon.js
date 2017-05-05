@@ -50,15 +50,4 @@ const styles = StyleSheet.create({
   }
 });
 
-Icon.propTypes = {
-  color: React.PropTypes.string,
-  name: React.PropTypes.string.isRequired,
-  size: React.PropTypes.number,
-  style: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.object,
-    React.PropTypes.number
-  ])
-};
-
 export default Icon;

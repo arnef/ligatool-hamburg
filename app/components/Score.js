@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 
 class Score extends Component {
@@ -64,11 +64,5 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
-
-Score.propTypes = {
-  goals: PropTypes.object,
-  setPoints: PropTypes.object,
-  style: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
-};
 
 export default Score;

@@ -26,9 +26,6 @@ class NavTabBarTop extends Component {
     );
   }
 }
-NavTabBarTop.propTypes = {
-  color: PropTypes.string
-};
 
 export default {
   tabBarComponent: connect(state => ({ color: state.settings.color }))(

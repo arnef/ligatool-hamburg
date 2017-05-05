@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
   View,
   TouchableNativeFeedback,
@@ -39,21 +39,5 @@ class Touchable extends Component {
     }
   }
 }
-
-Touchable.defaultProps = {
-  pressColor: 'rgba(0, 0, 0, .32)'
-};
-Touchable.propTypes = {
-  borderless: PropTypes.bool,
-  pressColor: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  color: PropTypes.bool,
-  onPress: PropTypes.func.isRequired,
-  style: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.number,
-    PropTypes.object
-  ])
-};
 
 export default Touchable;

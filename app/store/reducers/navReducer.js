@@ -1,18 +1,12 @@
 // @flow
-import {
-  FULFILLED,
-  TOKEN,
-  SHOW_LOGIN,
-  DIALOG_PLAYER
-} from '../actions/types';
+import { FULFILLED, TOKEN, SHOW_LOGIN, DIALOG_PLAYER } from '../actions/types';
 import { Root } from '../../router';
 import { NavigationActions } from 'react-navigation';
 import { MODAL_LOGIN, MODAL_SELECT_PLAYER } from '../../views/routes';
 
-export default function (state, action: Action) {
+export default function(state, action: Action) {
   let nextState = null;
   switch (action.type) {
-
     case SHOW_LOGIN:
       if (action.payload) {
         nextState = Root.router.getStateForAction(
@@ -44,13 +38,15 @@ export default function (state, action: Action) {
         nextState = Root.router.getStateForAction(
           NavigationActions.navigate({
             routeName: MODAL_SELECT_PLAYER,
-            params: { ...action.payload, team: 'home'}
+            params: { ...action.payload, team: 'home' }
           }),
           state
         );
       } else {
         nextState = Root.router.getStateForAction(
-          NavigationActions.back({ key: findRouteKey(state, MODAL_SELECT_PLAYER)}),
+          NavigationActions.back({
+            key: findRouteKey(state, MODAL_SELECT_PLAYER)
+          }),
           state
         );
       }
@@ -63,7 +59,6 @@ export default function (state, action: Action) {
 
   return nextState || state;
 }
-
 
 const recursiveFindRoute = (route, name) => {
   if (!route) {

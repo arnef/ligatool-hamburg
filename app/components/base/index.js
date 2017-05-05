@@ -1,7 +1,7 @@
 // @flow
 import Button from './Button';
-import Row from './Grid/Row';
-import Column from './Grid/Column';
+import Row from './Row';
+import Column from './Column';
 import ListItem from './ListItem';
 import Text from './Text';
 import Image from './Image';

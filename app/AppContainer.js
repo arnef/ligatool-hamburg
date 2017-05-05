@@ -1,9 +1,8 @@
-import React, { Component, PropTypes } from 'react';
-import { View, Platform, BackAndroid, AsyncStorage } from 'react-native';
+import React, { Component } from 'react';
+import { View, Platform, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import actions from './store/actions';
-import LaunchScreen from './components/LoadingScreen';
 import FCM, {
   FCMEvent,
   RemoteNotificationResult,
@@ -13,7 +12,7 @@ import FCM, {
 import Loading from './modals/LoadingModal';
 import { ANDROID, IOS } from './consts';
 import { currentRoute } from './Helper';
-import { OVERVIEW, MATCH } from './views/routes';
+import { MATCH } from './views/routes';
 import { Root } from './router';
 
 class AppContainer extends Component {

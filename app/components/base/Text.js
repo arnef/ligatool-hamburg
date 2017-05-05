@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Text as RNText, StyleSheet } from 'react-native';
 import * as theme from './theme';
 
@@ -33,16 +33,6 @@ class Text extends Component {
   }
 }
 
-Text.propTypes = {
-  bold: PropTypes.bool,
-  center: PropTypes.bool,
-  children: PropTypes.any,
-  color: PropTypes.string,
-  secondary: PropTypes.bool,
-  size: PropTypes.number,
-  style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
-  upperCase: PropTypes.bool
-};
 
 const styles = StyleSheet.create({
   text: {

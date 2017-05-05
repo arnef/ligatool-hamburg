@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, MatchItem } from '../components';
 import { Row, Column, Button, Text } from '../components/base';
@@ -80,16 +80,6 @@ class MatchListView extends Component {
     );
   }
 }
-
-MatchListView.propTypes = {
-  data: PropTypes.object,
-  error: PropTypes.string,
-  fetched: PropTypes.bool,
-  matches: PropTypes.array,
-  onRefresh: PropTypes.func,
-  refreshOnMount: PropTypes.bool,
-  refreshing: PropTypes.bool
-};
 
 export default connect(state => ({
   data: state.matches

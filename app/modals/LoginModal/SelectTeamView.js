@@ -12,7 +12,6 @@ class SelectTeamView extends Component {
     if (!this.props.leagues[id].table) {
       this.getTeams();
     }
-    // console.tron.log(this.props.navigation)
   }
 
   render() {
@@ -66,7 +65,6 @@ class SelectTeamView extends Component {
     this.props.navigate({
       routeName: 'LoginView'
     });
-    // this.props.navigator.push({ state: MODAL_LOGIN, title: 'Login' })
   }
 }
 

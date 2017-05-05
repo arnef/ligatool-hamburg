@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { View, Keyboard, Dimensions, Platform, StyleSheet } from 'react-native';
+import React, { Component } from 'react';
+import { View, Keyboard, Dimensions, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container, Match } from '../../components';
@@ -13,7 +13,6 @@ class SetsView extends Component {
     super(props);
     this.state = {
       btnIdx: 0,
-      // editable: true,
       keyboardSpace: 0,
       menuOpen: -1,
       offsetY: 0,
@@ -241,23 +240,14 @@ class SetsView extends Component {
 }
 
 const styles = StyleSheet.create({
-  // Platform.select({
-  //     android: {
-  //         margin: 0,
-  //         minHeight: 52,
-  //         paddingHorizontal: 8
-  //     },
-  //     ios:
   submitRow: {
     position: 'absolute',
     bottom: 0,
     width: Dimensions.get('window').width,
     marginBottom: 40,
-    // height: 54,
     paddingHorizontal: 8,
     backgroundColor: 'rgba(221, 221, 221, .9)'
   }
-  // })
 });
 
 const btnText = [
@@ -266,20 +256,6 @@ const btnText = [
   'Ergebnis akzeptieren'
 ];
 
-SetsView.propTypes = {
-  auth: PropTypes.object,
-  dialog: PropTypes.object,
-  getMatch: PropTypes.func,
-  hasTabbar: PropTypes.bool,
-  hidePlayerDialog: PropTypes.func,
-  match: PropTypes.object,
-  pushRoute: PropTypes.func,
-  setPlayer: PropTypes.func,
-  showPlayerDialog: PropTypes.func,
-  suggestScore: PropTypes.func,
-  toggleMatchType: PropTypes.func,
-  updateSets: PropTypes.func
-};
 
 export default connect(
   state => ({

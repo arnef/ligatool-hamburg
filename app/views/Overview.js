@@ -1,10 +1,8 @@
 /* @flow */
 import React, { Component } from 'react';
-import { FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
 import MatchListView from './MatchListView';
 import actions from '../store/actions';
-import NavDrawerIcon from '../Nav/NavDrawerIcon';
 import NavTabBarTop from '../Nav/NavTabBarTop';
 import { TabNavigator } from 'react-navigation';
 import strings from '../Strings';

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -110,12 +110,6 @@ const style = StyleSheet.create({
     paddingHorizontal: 4
   }
 });
-
-MatchHeader.propTypes = {
-  color: PropTypes.string,
-  data: PropTypes.object,
-  pushRoute: PropTypes.func
-};
 
 export default connect(
   state => ({

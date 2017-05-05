@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { Container, TeamLogo } from '../components';
@@ -69,7 +69,7 @@ class TableView extends Component {
     const { leagues } = this.props;
     const id = this.props.navigation.state.params.id;
     const table = leagues[id].table || [];
-    // { ...this.props }
+
     return (
       <Container
         error={null}

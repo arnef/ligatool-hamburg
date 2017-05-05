@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { Icon, Image } from '../components/base';
 import * as theme from '../components/base/theme';
@@ -26,15 +26,5 @@ class TeamLogo extends Component {
     }
   }
 }
-
-TeamLogo.defaultProps = {
-  big: false,
-  url: {}
-};
-
-TeamLogo.propTypes = {
-  big: PropTypes.bool,
-  team: PropTypes.object.isRequired
-};
 
 export default TeamLogo;

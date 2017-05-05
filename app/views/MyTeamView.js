@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { TabNavigator } from 'react-navigation';
 import MatchListView from './MatchListView';
 import NavTabBarTop from '../Nav/NavTabBarTop';
-import NavDrawerIcon from '../Nav/NavDrawerIcon';
 import { queryTeamMatches } from '../store/actions/teamActions';
 import strings from '../Strings';
 import { TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes';

@@ -5,11 +5,9 @@ import {
   SET_USER_TEAM,
   PUT_NOTIFICATION,
   LOGOUT,
-  LOAD_SETTINGS,
   FULFILLED,
   UPDATE_FCM_TOKEN
 } from '../actions/types';
-import { AsyncStorage } from 'react-native';
 
 const defaultColor = '#ef473a';
 
@@ -21,9 +19,9 @@ const defaultState: SettingState = {
   team: null
 };
 
-export default (state: SettingState = defaultState, action: Action) => {
+export default function(state: SettingState = defaultState, action: Action): SettingState {
   switch (action.type) {
-    case LOAD_SETTINGS + FULFILLED: {
+    case 'LOAD_SETTINGS_FULFILLED': {
       if (action.payload.ok) {
         state = { ...state, ...action.payload.data };
       }
@@ -41,8 +39,6 @@ export default (state: SettingState = defaultState, action: Action) => {
 
     case LOGOUT + FULFILLED: {
       state = { ...state, color: defaultColor, team: null };
-      saveState(state);
-
       return state;
     }
 
@@ -69,7 +65,6 @@ export default (state: SettingState = defaultState, action: Action) => {
       if (action.payload.ok) {
         state = { ...state };
         state.changed = false;
-        saveState(state);
       }
 
       return state;
@@ -85,25 +80,10 @@ export default (state: SettingState = defaultState, action: Action) => {
         image: action.payload.image,
         name: action.payload.name
       };
-      saveState(state);
 
       return state;
     }
   }
 
   return state;
-};
-
-function saveState(state: SettingState): void {
-  const value = {
-    color: state.color,
-    notification: state.notification,
-    team: state.team
-  };
-
-  try {
-    AsyncStorage.setItem('SETTINGS_V09', JSON.stringify(value));
-  } catch (ex) {
-    console.tron.warn('Error store settings');
-  }
 }

@@ -1,10 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
   View,
   ScrollView,
   RefreshControl,
-  ListView,
-  Platform
+  ListView
 } from 'react-native';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
@@ -90,18 +89,6 @@ class Container extends Component {
     return <View style={{ height: 4 }} />;
   }
 }
-
-Container.propTypes = {
-  children: PropTypes.any,
-  color: PropTypes.string,
-  dataSource: PropTypes.array,
-  error: PropTypes.string,
-  getRef: PropTypes.func,
-  onRefresh: PropTypes.func,
-  onScroll: PropTypes.func,
-  refreshing: PropTypes.bool,
-  renderRow: PropTypes.func
-};
 
 export default connect(state => ({
   color: state.settings.color

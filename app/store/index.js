@@ -14,8 +14,6 @@ const middleware = [promise(), thunk];
 
 if (__DEV__) {
   Reactotron.configure({
-    // host: '192.168.1.9',
-    // host: '192.168.0.164',
     name: 'LigaTool'
   })
     .use(reactotronRedux())
@@ -41,16 +39,11 @@ const cs = __DEV__ ? console.tron.createStore : createStore;
 const migration = createMigration(manifest, APP_KEY);
 const store = cs(
   reducer,
-
   compose(
     migration,
     autoRehydrate(),
     applyMiddleware(...middleware)
   )
 );
-
-// persistStore(store, { storage: AsyncStorage }, () => {
-//   console.tron.log('store restored');
-// });
 
 export default store;

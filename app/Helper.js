@@ -107,13 +107,14 @@ export function sortMatches(matches: MatchesState): Function {
   };
 }
 
-export function currentRoute () {
-  const recursiveFindRoute = nav => {
+export function currentRoute(): NavigationRoute {
+  const recursiveFindRoute = (nav) => {
     const subState = nav.routes[nav.index];
     if (!subState.routes) {
       return subState;
     }
     return recursiveFindRoute(subState);
   };
+
   return recursiveFindRoute(store.getState().nav);
 }

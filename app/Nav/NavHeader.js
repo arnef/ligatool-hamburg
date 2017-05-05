@@ -29,11 +29,6 @@ class NavHeader extends Component {
   }
 }
 
-NavHeader.propTypes = {
-  color: PropTypes.string,
-  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number])
-};
-
 const singleHeader = [
   'Leagues',
   'Settings',

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Platform } from 'react-native';
 import { Row, Column, Touchable, Text } from '../../components/base';
 import * as theme from '../../components/base/theme';
@@ -22,7 +22,6 @@ class ScoreInput extends Component {
         idx = i + 1;
       }
     }
-    // TODO Don't use setState in componentDidMount
     this.setState({
       set: idx
     });
@@ -141,10 +140,8 @@ class ScoreInput extends Component {
     const input = this.inputField;
 
     input.measure((fx, fy, width, height, px, py) => {
-      // console.tron.log(`position: ${py}`)
       this.props.adjustPosition(py);
     });
-    // console.tron.log(input.measureLayout)
   }
 
   onSave() {
@@ -211,12 +208,5 @@ const styles = StyleSheet.create({
     borderRightWidth: 1
   }
 });
-
-ScoreInput.propTypes = {
-  adjustPosition: PropTypes.func,
-  data: PropTypes.object,
-  onSave: PropTypes.func,
-  toggleMenu: PropTypes.func
-};
 
 export default ScoreInput;

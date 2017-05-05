@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDate, formatTime, isAdminForMatch } from '../Helper';
+import { formatDate, formatTime } from '../Helper';
 import Score from './Score';
 import {
   Row,
@@ -68,12 +68,10 @@ class MatchItem extends Component {
      * just for dev if moment not working correctly
      */
   onLongPress(match) {
-    if (match.is_admin) {
-      this.props.pushRoute({
-        routeName: MATCH,
-        params: { id: match.id }
-      });
-    }
+    this.props.pushRoute({
+      routeName: MATCH,
+      params: { id: match.id }
+    });
   }
 
   /**
@@ -97,12 +95,6 @@ class MatchItem extends Component {
     }
   }
 }
-
-MatchItem.propTypes = {
-  data: PropTypes.object,
-  pushRoute: PropTypes.func,
-  settings: PropTypes.object
-};
 
 export default connect(
   state => ({

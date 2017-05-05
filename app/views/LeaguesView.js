@@ -1,30 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { View } from 'react-native';
 import { Container } from '../components';
-import NavDrawerIcon from '../Nav/NavDrawerIcon';
-
 import { ListItem, Text } from '../components/base';
-import NavIcon from '../Nav/NavIcon';
-import LeagueView from './LeagueView';
-import SelectableMatchListView from './SelectableMatchListView';
-
-import { StackNavigator, NavigationActions } from 'react-navigation';
-import NavHeader from '../Nav/NavHeader';
-import TeamView from './TeamView';
-import MatchView from './MatchView';
-import PlayerView from './PlayerView';
-import Preview from './MatchView/PreView';
+import { NavigationActions } from 'react-navigation';
 import {
-  LEAGUES_NAVIGATOR,
-  LEAGUES,
-  MATCH,
-  PREVIEW,
-  TEAM,
   LEAGUE,
-  LEAGUE_CUP,
-  PLAYER
+  LEAGUE_CUP
 } from './routes';
 
 class LeaguesView extends Component {

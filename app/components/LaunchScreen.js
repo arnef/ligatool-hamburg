@@ -1,36 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Animated, Text, Platform } from 'react-native';
+import { View, StyleSheet, Image, Text, Platform } from 'react-native';
 import { ANDROID } from '../consts';
 
-class LoadingScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opacity: new Animated.Value(0)
-    };
-  }
-
-  componentDidMount() {
-    this.animation();
-  }
-
-  animation() {
-    Animated.sequence([
-      Animated.timing(this.state.opacity, { duration: 700, toValue: 1 }),
-      Animated.timing(this.state.opacity, { duration: 700, toValue: 0.3 })
-    ]).start(event => {
-      if (event.finished) {
-        this.animation();
-      }
-    });
-  }
-
+class LaunchScreen extends Component {
   render() {
     return (
       <View style={style.container}>
-        <Animated.Image
+        <Image
           source={{ uri: 'loading' }}
-          style={[style.icon, { opacity: this.state.opacity }]}
+          style={style.icon}
         />
         <View style={{ position: 'absolute', bottom: 32 }}>
           <Text style={[style.text]}>
@@ -65,4 +43,4 @@ const style = StyleSheet.create({
   }
 });
 
-export default LoadingScreen;
+export default LaunchScreen;

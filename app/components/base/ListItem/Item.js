@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
 import Touchable from '../Touchable';
 import * as theme from '../theme.js';
@@ -77,15 +77,5 @@ const styles = StyleSheet.create({
     color: theme.primaryTextColor
   }
 });
-
-Item.propTypes = {
-  active: PropTypes.bool,
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  disabled: PropTypes.bool,
-  icon: PropTypes.bool,
-  last: PropTypes.bool,
-  maxHeight: PropTypes.number,
-  onPress: PropTypes.func
-};
 
 export default Item;

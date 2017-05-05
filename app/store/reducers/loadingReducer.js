@@ -1,5 +1,13 @@
 // @flow
-import { PUT_SETS, LOGOUT, PENDING, FULFILLED, TOKEN, UPDATE_FCM_TOKEN, PUT_NOTIFICATION } from '../actions/types';
+import {
+  PUT_SETS,
+  LOGOUT,
+  PENDING,
+  FULFILLED,
+  TOKEN,
+  UPDATE_FCM_TOKEN,
+  PUT_NOTIFICATION
+} from '../actions/types';
 
 const initialState: LoadingState = {
   blocking: false,

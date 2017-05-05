@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Column, Text } from '../components/base';
 import { CLIENT_ERROR, NETWORK_ERROR, SERVER_ERROR } from 'apisauce';
 
@@ -47,9 +47,5 @@ class ErrorFlash extends Component {
     return error;
   }
 }
-
-ErrorFlash.propTypes = {
-  error: PropTypes.string
-};
 
 export default ErrorFlash;

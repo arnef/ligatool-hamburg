@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Image as RNImage, StyleSheet } from 'react-native';
 import { baseUrl } from '../../api';
 
@@ -22,15 +22,6 @@ class Image extends Component {
     return <RNImage source={source} style={imageStyle} />;
   }
 }
-
-Image.propTypes = {
-  height: PropTypes.number,
-  size: PropTypes.number,
-  source: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
-  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
-  url: PropTypes.string,
-  width: PropTypes.number
-};
 
 const styles = StyleSheet.create({
   image: {

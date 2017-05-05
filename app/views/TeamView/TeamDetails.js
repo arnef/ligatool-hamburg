@@ -10,8 +10,7 @@ import {
   Button,
   ListItem,
   Image,
-  Text,
-  Touchable
+  Text
 } from '../../components/base';
 
 class TeamView extends Component {
@@ -189,11 +188,7 @@ class TeamView extends Component {
     }
 
     return (
-      <View
-        onPress={() =>
-          this.props.navigate({ routeName: 'PLAYER', params: { player } })}
-        style={{ flex: 1, alignItems: 'center' }}
-      >
+      <View style={{ flex: 1, alignItems: 'center' }}>
         <Image url={player.image} height={120} width={90} />
         <Text center>{`${player.name} ${player.surname}`}</Text>
       </View>
@@ -204,7 +199,7 @@ class TeamView extends Component {
     const { navigation } = this.props;
     const teamID = this.getTeamId();
 
-    return this.props.teams[teamID]; // ? this.props.teams[teamID].details : null
+    return this.props.teams[teamID];
   }
 
   getTeamId() {
@@ -218,8 +213,6 @@ class TeamView extends Component {
   }
 
   loadTeam() {
-    // const teamID = this.props.navigation.state.params.team.id
-
     this.props.getTeam(this.getTeamId());
   }
 
@@ -257,12 +250,6 @@ const weekdays = [
   'Samstag'
 ];
 
-TeamView.propTypes = {
-  getTeam: React.PropTypes.func,
-  team: React.PropTypes.object,
-  teams: React.PropTypes.object
-};
-
 export default connect(
   state => ({
     teams: state.teams,
@@ -273,6 +260,5 @@ export default connect(
     getTeam: id => dispatch(getTeam(id)),
     setTitle: (title, key) => dispatch({ type: 'SET_TITLE', title, key }),
     navigate: route => dispatch(NavigationActions.navigate(route))
-    // setTitle: (title, key) => dispatch(NavigationActions.setParams({ title, key }))
   })
 )(TeamView);

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';

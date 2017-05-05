@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import TeamDetails from '../TeamView/TeamDetails';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
 import { TabNavigator } from 'react-navigation';
@@ -15,12 +15,6 @@ class TeamAway extends Component {
     return <TeamDetails navigation={this.props.navigation} teamKey="away" />;
   }
 }
-TeamHome.propTypes = {
-  navigation: PropTypes.object
-};
-TeamAway.propTypes = {
-  navigation: PropTypes.object
-};
 
 TeamHome.navigationOptions = {
   title: ({ state }) => state.params.match.team_home.name,

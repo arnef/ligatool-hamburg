@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { Touchable, Text } from '../base';
 import { connect } from 'react-redux';
@@ -47,15 +47,6 @@ const styles = StyleSheet.create({
     opacity: 0.5
   }
 });
-
-Button.propTypes = {
-  children: PropTypes.string,
-  color: PropTypes.string,
-  disabled: PropTypes.bool,
-  loading: PropTypes.bool,
-  onPress: PropTypes.func,
-  style: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
-};
 
 export default connect(state => ({
   color: state.settings.color

@@ -1,99 +1,48 @@
 // @flow
-import {
-  API_KEY,
-  TOKEN,
-  FULFILLED,
-  LOGOUT,
-  LOAD_ACCESS_KEY,
-  PENDING,
-  LOAD_TOKEN
-} from '../actions/types';
-import { AsyncStorage } from 'react-native';
-import api from '../../api';
+import { API_KEY, TOKEN, FULFILLED, LOGOUT, PENDING } from '../actions/types';
 import { DEFAULT_HEADERS } from 'apisauce';
+import { REHYDRATE } from 'redux-persist/constants';
+import api from '../../api';
 
 const defaultState: AuthState = {
   api_key: null,
-  error: null,
-  loading: false,
   team: null
 };
 
-export default (state: AuthState = defaultState, action: Action) => {
+export default function(
+  state: AuthState = defaultState,
+  action: Action
+): AuthState {
   switch (action.type) {
-    case TOKEN + PENDING:
-    case API_KEY + PENDING: {
-      state = { ...state, error: null, loading: true };
-
-      return state;
-    }
-
-    case API_KEY + FULFILLED: {
-      state = { ...state };
+    case API_KEY + FULFILLED:
       if (action.payload.ok) {
-        state.api_key = action.payload.data.access_key;
-        save(API_KEY, state.api_key);
-      } else {
-        state.loading = false;
-        state.error = action.payload.problem;
+        state = { ...state, api_key: action.payload.data.access_key };
       }
+      break;
 
-      return state;
-    }
-
-    case TOKEN + FULFILLED: {
-      state = { ...state, loading: false };
-      if (action.payload.ok) {
-        state.team = action.payload.data;
-        api.setHeader('Secret', state.team.token);
-        save(TOKEN, state.team);
-      } else {
-        state.error = action.payload.problem;
-      }
-
-      return state;
-    }
-
-    case LOAD_ACCESS_KEY + FULFILLED: {
-      if (action.payload.ok) {
-        state = { ...state, api_key: action.payload.data };
-      }
-
-      return state;
-    }
-
-    case LOAD_TOKEN + FULFILLED: {
+    case TOKEN + FULFILLED:
       if (action.payload.ok) {
         state = { ...state, team: action.payload.data };
         api.setHeader('Secret', state.team.token);
       }
+      break;
 
-      return state;
-    }
-
-    case LOGOUT + FULFILLED: {
+    case LOGOUT + FULFILLED:
       api.setHeaders(DEFAULT_HEADERS);
       state = { ...state, api_key: null, team: null };
-      try {
-        AsyncStorage.removeItem(TOKEN);
-        AsyncStorage.removeItem(API_KEY);
-      } catch (ex) {
-        console.tron.error(ex);
-      }
+      break;
 
-      return state;
-    }
+    case REHYDRATE:
+      if (
+        action.payload &&
+        action.payload.auth &&
+        action.payload.auth.team &&
+        action.payload.auth.team.token
+      ) {
+        api.setHeader('Secret', action.payload.auth.team.token);
+      }
+      break;
   }
 
   return state;
-};
-
-const save = (key, value) => {
-  try {
-    if (value !== null) {
-      AsyncStorage.setItem(key, JSON.stringify(value));
-    }
-  } catch (ex) {
-    console.tron.warn(ex);
-  }
-};
+}

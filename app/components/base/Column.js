@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 class Column extends Component {
@@ -36,21 +36,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   }
 });
-
-Column.defaultProps = {
-  center: false,
-  children: [],
-  fluid: false,
-  style: {},
-  width: 10
-};
-
-Column.propTypes = {
-  center: PropTypes.bool,
-  children: PropTypes.any,
-  fluid: PropTypes.bool,
-  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
-  width: PropTypes.number
-};
 
 export default Column;

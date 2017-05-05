@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
@@ -70,7 +70,6 @@ class Match extends Component {
   }
 
   buildMatchData() {
-    // console.tron.log('build match data')
     const id = this.props.match.id;
     const matches = this.props.matches;
     const editMatch = this.props.editable;
@@ -117,20 +116,6 @@ class Match extends Component {
   }
 }
 
-Match.propTypes = {
-  adjustPosition: PropTypes.func,
-  editable: PropTypes.bool,
-  match: PropTypes.object,
-  menuOpen: PropTypes.number,
-  onPress: PropTypes.func,
-  onSave: PropTypes.func,
-  onSelect: PropTypes.func,
-  scoreInput: PropTypes.number,
-  toggleMatchType: PropTypes.func,
-  toggleMenu: PropTypes.func,
-  type: PropTypes.string
-};
-
 Match.Header = Header;
 
 export default connect(state => ({
@@ -138,4 +123,3 @@ export default connect(state => ({
   color: state.settings.color,
   matches: state.matches
 }))(Match);
-// export default Match

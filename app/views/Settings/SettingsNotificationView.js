@@ -8,7 +8,6 @@ import { ListItem, Text, Switch } from '../../components/base';
 class SettingsNotificationView extends Component {
   componentWillUnmount() {
     if (this.props.settings.changed) {
-      // console.tron.log('save group settings')
       this.props.saveNotifications();
     }
   }
@@ -55,13 +54,6 @@ class SettingsNotificationView extends Component {
     );
   }
 }
-
-SettingsNotificationView.propTypes = {
-  leagues: React.PropTypes.object,
-  saveNotifications: React.PropTypes.func,
-  setGroupNotification: React.PropTypes.func,
-  settings: React.PropTypes.object
-};
 
 export default connect(
   state => ({

@@ -1,16 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, Platform, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
-// import codePush from 'react-native-code-push'
 import { ListItem, Text, Switch } from '../../components/base';
 import { Container } from '../../components';
 import * as theme from '../../components/base/theme';
-import { StackNavigator, NavigationActions } from 'react-navigation';
-import SettingsNotificationView from './SettingsNotificationView';
-import NavHeader from '../../Nav/NavHeader';
-import NavDrawerIcon from '../../Nav/NavDrawerIcon';
-import { SETTINGS, SETTINGS_NOTIFICATIONS, MODAL_LOGIN } from '../routes';
+import { NavigationActions } from 'react-navigation';
+import { SETTINGS_NOTIFICATIONS, MODAL_LOGIN } from '../routes';
 
 class SettingsView extends Component {
   _logout() {
@@ -164,18 +160,6 @@ class SettingsView extends Component {
     );
   }
 }
-
-SettingsView.propTypes = {
-  auth: PropTypes.object,
-  getRankings: PropTypes.func,
-  leagues: PropTypes.object,
-  logout: PropTypes.func,
-  pushRoute: PropTypes.func,
-  saveNotifications: PropTypes.func,
-  setNotification: PropTypes.func,
-  settings: PropTypes.object,
-  showLogin: PropTypes.func
-};
 
 export default connect(
   state => ({

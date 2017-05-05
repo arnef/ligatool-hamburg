@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getRankings } from '../../store/actions/leagueActions';
 import { Container } from '../../components';
@@ -46,11 +46,6 @@ class SelectGroupView extends Component {
       routeName: 'SelectTeam',
       params: { id: league.id }
     });
-    // this.props.navigator.push({
-    //     id: league.id,
-    //     state: MODAL_SELECT_TEAM,
-    //     title: 'Team wählen'
-    // })
   }
 }
 

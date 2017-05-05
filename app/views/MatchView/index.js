@@ -1,10 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import SetsView from './SetsView';
-import PreView from './PreView';
-import moment from 'moment';
-import NavIcon from '../../Nav/NavIcon';
 
 class MatchView extends Component {
   render() {

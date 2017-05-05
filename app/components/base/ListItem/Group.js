@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 
 class ListItemGroup extends Component {
@@ -12,10 +12,6 @@ class ListItemGroup extends Component {
     );
   }
 }
-
-ListItemGroup.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-};
 
 const styles = StyleSheet.create({
   group: Platform.select({

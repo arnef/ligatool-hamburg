@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { migrateFromStorage } from './store/manifest';
 import AppContainer from './AppContainer';
-import LaunchScreen from './components/LoadingScreen';
+import LaunchScreen from './components/LaunchScreen';
 import store from './store';
 
 

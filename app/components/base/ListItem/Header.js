@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Text from '../Text';
@@ -75,15 +75,6 @@ const styles = StyleSheet.create({
   }
 });
 
-ListItemHeader.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-  closeIcon: PropTypes.string,
-  color: PropTypes.string,
-  hideSeparator: PropTypes.bool,
-  menuOpen: PropTypes.bool,
-  title: PropTypes.string.isRequired,
-  toggleMenu: PropTypes.func
-};
 
 export default connect(state => ({
   color: state.settings.color

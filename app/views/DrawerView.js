@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
-import { View, ScrollView, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import React, { Component } from 'react';
+import { View, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
-import { Button, Image, ListItem, Text } from '../components/base';
+import { Image, ListItem, Text } from '../components/base';
 import * as theme from '../components/base/theme';
 import { NavigationActions } from 'react-navigation';
 import {
@@ -20,10 +20,6 @@ class NavigationView extends Component {
     this.state = {
       activeLeague: -1
     };
-  }
-
-  componentDidMount() {
-    // this.props.getRankings();
   }
 
   _handleRowPress(state) {
@@ -140,22 +136,6 @@ class NavigationView extends Component {
             1
           )}
           {this._renderItem(LEAGUES, 'Gruppen', 'trophy', 2)}
-          {/* { this.renderSeparator() }
-                    {!this.props.loading &&  leagues.length === 0  && (
-                            <View style={{ alignItems: 'center', padding: 16 }}>
-                                <Button
-                                    centered
-                                    style={{ backgroundColor: '#ddd', margin: 8 }}
-                                    onPress={() => { this.props.getRankings() }}>Erneut laden</Button>
-                            </View>
-                        )}
-                    {
-                        this.props.loading && leagues.length === 0 && (
-                            <View style={{ padding: 16 }}>
-                            <ActivityIndicator size='large' color='#666' />
-                                </View>)
-                    }
-                    { !this.props.loading && leagues.length > 0 && this.renderLeagues() } */}
           {this.renderSeparator()}
           {this._renderItem(SETTINGS, 'Einstellungen', 'settings', 3)}
           <View style={styles.space} />

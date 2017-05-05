@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 class Row extends Component {
@@ -40,18 +40,5 @@ const styles = StyleSheet.create({
   }
 });
 
-Row.defaultProps = {
-  center: false,
-  children: [],
-  fluid: false,
-  style: {}
-};
-
-Row.propTypes = {
-  center: PropTypes.bool,
-  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  fluid: PropTypes.bool,
-  style: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
-};
 
 export default Row;

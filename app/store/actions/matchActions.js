@@ -11,14 +11,6 @@ import {
 import api, { MATCHES, MATCHE_BY_ID } from '../../api';
 
 export function queryMatches(): Action {
-  // return function (dispach) {
-  //   return api.get(MATCHES).then(resp => {
-  //     dispach({
-  //       type: QUERY_MATCHES + FULFILLED,
-  //       payload: resp
-  //     });
-  //   });
-  // }
   return {
     payload: api.get(MATCHES),
     type: QUERY_MATCHES
@@ -70,13 +62,13 @@ export const suggestScore = (matchId: number, sets: any, type: number) => {
   };
 };
 
-export const toggleMatchType = (
+export function toggleMatchType(
   id: number,
   setsIdx: Array<number>,
   type: string
-) => {
+): Action {
   return {
     payload: { id, idx: setsIdx, type },
     type: TOGGLE_D5
   };
-};
+}

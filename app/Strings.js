@@ -1,4 +1,5 @@
-export default {
+// @flow
+const strings: {[string]: string } = {
   overview: 'Übersicht',
   my_team: 'Mein Team',
   leagues: 'Gruppen',
@@ -23,3 +24,5 @@ export default {
   match: 'Begegnung',
   matches: 'Begegnungen'
 };
+
+export default strings;

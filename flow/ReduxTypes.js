@@ -7,9 +7,7 @@ type Action = {
 
 
 type AuthState = {
-  loading: boolean,
   api_key: ?string,
-  error: ?string,
   team: ?Team
 };
 
@@ -83,9 +81,18 @@ type TeamMatchesState = {
   played: Array<number>
 };
 
-// type TeamState = {
-//   id: { [teamId: string]: { details: Team, matches: Array<number>} },
-//   loading: boolean,
-//   pendingID: number,
-//   error: ?string
-// };
+// nav
+
+export type NavigationRoute = NavigationLeafRoute | NavigationStateRoute;
+
+export type NavigationLeafRoute = {
+  key: string,
+  routeName: string,
+  path?: string,
+  params?: NavigationParams,
+};
+
+export type NavigationStateRoute = NavigationLeafRoute & {
+  index: number,
+  routes: Array<NavigationRoute>,
+};
