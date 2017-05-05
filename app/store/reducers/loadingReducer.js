@@ -1,5 +1,5 @@
 // @flow
-import { PUT_SETS, LOGOUT, PENDING, FULFILLED } from '../actions/types';
+import { PUT_SETS, LOGOUT, PENDING, FULFILLED, TOKEN } from '../actions/types';
 
 const initialState: LoadingState = {
   blocking: false,
@@ -14,15 +14,17 @@ export default function(
   switch (action.type) {
     case LOGOUT + PENDING:
     case PUT_SETS + PENDING:
-      return { ...state, blocking: true };
+    case TOKEN + PENDING:
+      return { ...state, blocking: true, error: null };
 
     case LOGOUT + FULFILLED:
     case PUT_SETS + FULFILLED:
+    case TOKEN + FULFILLED:
       return { ...state, blocking: false, error: action.payload.problem };
 
     default:
       if (action.type.indexOf(PENDING) !== -1 && !state.blocking) {
-        state = { ...state, nonBlocking: true };
+        state = { ...state, nonBlocking: true, error: null };
       }
       if (action.type.indexOf(FULFILLED) !== -1) {
         state = {

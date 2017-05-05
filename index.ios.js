@@ -1,26 +1,17 @@
 // @flow
 import React, { Component } from 'react';
 import { AppRegistry, StatusBar } from 'react-native';
-import { Provider } from 'react-redux';
-import AppContainer from './app/AppContainer';
-import store from './app/store';
-
-
+import App from './app/App';
 
 class androidapp extends Component {
 
-  componentDidMount() {
-    StatusBar.setBarStyle('light-content')
+  componentWillMount() {
+    StatusBar.setBarStyle('light-content');
   }
 
-    render() {
-        return (
-            <Provider store={store}>
-                <AppContainer />
-            </Provider>
-        )
-    }
+  render() {
+    return (<App />);
+  }
 }
 
-
-AppRegistry.registerComponent('arnefeilligatool', () => androidapp)
+AppRegistry.registerComponent('arnefeilligatool', () => androidapp);

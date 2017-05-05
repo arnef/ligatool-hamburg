@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Platform, BackAndroid } from 'react-native';
+import { View, Platform, BackAndroid, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import actions from './store/actions';
+import LaunchScreen from './components/LoadingScreen';
 import FCM, {
   FCMEvent,
   RemoteNotificationResult,
@@ -11,29 +12,27 @@ import FCM, {
 } from 'react-native-fcm';
 import Loading from './modals/LoadingModal';
 import { ANDROID, IOS } from './consts';
+import { currentRoute } from './Helper';
 import { OVERVIEW, MATCH } from './views/routes';
 import { Root } from './router';
 
 class AppContainer extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.mountNotification();
-    this.props.initApp();
-
+    this.checkToken();
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      if (
-        this.props.nav.actionStacks.tabs.length === 0 &&
-        !this.props.nav.drawerOpen
-      ) {
-        BackAndroid.exitApp();
-        this.props.dispatch({ type: NavigationActions.BACK });
+      const oldnav = this.props.nav;
+      this.props.dispatch({ type: NavigationActions.BACK });
 
-        return false;
-      } else {
-        this.props.dispatch({ type: NavigationActions.BACK });
-
-        return true;
-      }
+      return this.props.nav !== oldnav;
     });
+  }
+
+  checkToken() {
+    const { auth, renewToken } = this.props;
+    if (auth.api_key && auth.team.expires < new Date().getTime()) {
+      renewToken(auth.api_key);
+    }
   }
 
   componentWillUnmount() {
@@ -48,7 +47,6 @@ class AppContainer extends Component {
 
   syncNotifications(token) {
     console.tron.log('received token: ' + token);
-
     if (token) {
       this.props.updateFCMToken(token);
       if (this.props.settings.notification.leagues) {
@@ -76,51 +74,46 @@ class AppContainer extends Component {
           break;
       }
     }
-    const { nav, match, receiveNotification, dispatch, pushRoute } = this.props;
-    const currentRoute = nav.currentRoute;
-    const isMatchRoute = currentRoute.routeName.indexOf('MATCH') !== -1;
+    console.log(currentRoute());
+
+    const route = currentRoute();
     const matchId = parseInt(notif.data ? notif.data.id : notif.id);
 
-    console.tron.log(notif);
-
-    // fire local notification on android
-    if (Platform.OS === ANDROID && notif.fcm && notif.fcm.tag) {
-      const localNotif = { ...notif.fcm };
-
-      localNotif.vibrate = 0;
-      localNotif.id = notif.id;
-      localNotif.data = { id: notif.id, type: notif.type };
-      localNotif.show_in_foreground = true;
-      if (isMatchRoute && currentRoute.params.id === matchId) {
-        FCM.presentLocalNotification(localNotif);
-      }
+    // file local notification on android if match is not open
+    if (
+      Platform.OS === ANDROID &&
+      notif.fcm &&
+      notif.fcm.tag &&
+      !(route.routeName === MATCH && route.params.id === matchId)
+    ) {
+      const localNotif = {
+        ...notif.fcm,
+        id: notif.id,
+        data: { id: notif.id, type: notif.type },
+        show_in_foreground: true
+      };
+      FCM.presentLocalNotification(localNotif);
     }
 
+    // dispatch notification action
     if (
       notif.type &&
       !notif.local_notification &&
       !notif._completionHandlerId
     ) {
-      // send notification to redux
-      receiveNotification(notif);
-      // get match if recevied match is open
-      if (isMatchRoute && currentRoute.params.id === matchId) {
-        dispatch(actions.getMatch(matchId));
-      }
+      this.props.receiveNotification(notif);
+      //TODO update open match
     }
 
+    // open match after click on notification
     if (
+      !isNaN(matchId) &&
       notif.opened_from_tray &&
-      matchId &&
-      (!isMatchRoute || currentRoute.params.id !== matchId)
+      !(route.routeName === MATCH && route.params.id === matchId)
     ) {
-      console.tron.log('open match');
-      //TODO check if user is admin for match
-      pushRoute({
-        routeName: OVERVIEW + MATCH,
-        params: {
-          id: matchId
-        }
+      this.props.pushRoute({
+        routeName: MATCH,
+        params: { id: matchId }
       });
     }
   }
@@ -151,7 +144,7 @@ class AppContainer extends Component {
         <Root
           navigation={addNavigationHelpers({
             dispatch,
-            state: nav.state
+            state: nav
           })}
         />
       </View>
@@ -159,39 +152,15 @@ class AppContainer extends Component {
   }
 }
 
-const findOpenRoute = state => {
-  if (state.routes) {
-    return findOpenRoute(state.routes[state.index]);
-  }
-
-  return state;
-};
-
-AppContainer.propTypes = {
-  appConnected: PropTypes.bool,
-  dispatch: PropTypes.func,
-  initApp: PropTypes.func,
-  match: PropTypes.object,
-  nav: PropTypes.object,
-  pushRoute: PropTypes.func,
-  receiveNotification: PropTypes.func,
-  route: PropTypes.object,
-  saveNotifications: PropTypes.func,
-  setTab: PropTypes.func,
-  settings: PropTypes.object,
-  updateFCMToken: PropTypes.func
-};
-
 export default connect(
   state => ({
-    appConnected: state.appConnected,
-    match: state.match,
+    auth: state.auth,
     nav: state.nav,
     settings: state.settings
   }),
   dispatch => ({
     dispatch: action => dispatch(action),
-    initApp: () => dispatch(actions.initApp()),
+    renewToken: token => dispatch(actions.renewToken(token)),
     pushRoute: route => dispatch(NavigationActions.navigate(route)),
     receiveNotification: notif => dispatch(actions.receiveNotification(notif)),
     saveNotifications: () => dispatch(actions.saveNotifications()),

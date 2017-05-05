@@ -1,6 +1,10 @@
-import { createStore, applyMiddleware } from 'redux';
+import { AsyncStorage } from 'react-native';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { persistStore, autoRehydrate } from 'redux-persist';
+import createMigration from 'redux-persist-migrate';
 import thunk from 'redux-thunk';
 import Reactotron from 'reactotron-react-native';
+import manifest, { APP_KEY } from './manifest';
 import reducer from './reducers';
 import { reactotronRedux } from 'reactotron-redux';
 import promise from 'redux-promise-middleware';
@@ -19,6 +23,8 @@ if (__DEV__) {
     .connect();
 
   console.tron = Reactotron;
+  console.tron.clear();
+
 } else {
   // a mock version should you decide to leave console.tron in your codebase
   console.tron = {
@@ -32,6 +38,19 @@ if (__DEV__) {
 
 // use reactron createsore in dev mode
 const cs = __DEV__ ? console.tron.createStore : createStore;
-const store = cs(reducer, applyMiddleware(...middleware));
+const migration = createMigration(manifest, APP_KEY);
+const store = cs(
+  reducer,
+
+  compose(
+    migration,
+    autoRehydrate(),
+    applyMiddleware(...middleware)
+  )
+);
+
+// persistStore(store, { storage: AsyncStorage }, () => {
+//   console.tron.log('store restored');
+// });
 
 export default store;

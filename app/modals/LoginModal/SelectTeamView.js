@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Container } from '../../components';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -7,9 +7,9 @@ import { NavigationActions } from 'react-navigation';
 
 class SelectTeamView extends Component {
   componentDidMount() {
-    const lid = this.props.navigation.state.params.id;
+    const id = this.props.navigation.state.params.id;
 
-    if (!this.props.league.id[lid]) {
+    if (!this.props.leagues[id].table) {
       this.getTeams();
     }
     // console.tron.log(this.props.navigation)
@@ -17,8 +17,9 @@ class SelectTeamView extends Component {
 
   render() {
     const lid = this.props.navigation.state.params.id;
-    const teams = this.props.league.id[lid]
-      ? JSON.parse(JSON.stringify(this.props.league.id[lid].table))
+    console.log(this.props.leagues[lid]);
+    const teams = this.props.leagues[lid].table
+      ? JSON.parse(JSON.stringify(this.props.leagues[lid].table))
       : [];
 
     // sort teams alphabetically
@@ -28,8 +29,8 @@ class SelectTeamView extends Component {
 
     return (
       <Container
-        error={this.props.league.error}
-        refreshing={this.props.league.loading}
+        error={this.props.error}
+        refreshing={this.props.fetching}
         onRefresh={this.getTeams.bind(this)}
       >
         {teams.length > 0 &&
@@ -73,17 +74,11 @@ SelectTeamView.navigationOptions = {
   title: 'Team wählen'
 };
 
-SelectTeamView.propTypes = {
-  getLeague: PropTypes.func,
-  id: PropTypes.number,
-  league: PropTypes.object,
-  navigator: PropTypes.object,
-  setUserTeam: PropTypes.func
-};
-
 export default connect(
   state => ({
-    league: state.league
+    error: state.loading.error,
+    fetching: state.loading.nonBlocking,
+    leagues: state.leagues
   }),
   dispatch => ({
     getLeague: id => dispatch(actions.getLeague(id)),

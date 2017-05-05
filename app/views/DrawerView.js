@@ -23,7 +23,7 @@ class NavigationView extends Component {
   }
 
   componentDidMount() {
-    this.props.getRankings();
+    // this.props.getRankings();
   }
 
   _handleRowPress(state) {

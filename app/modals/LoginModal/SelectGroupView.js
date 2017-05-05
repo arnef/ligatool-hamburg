@@ -9,7 +9,7 @@ import NavCloseIcon from '../../Nav/NavCloseIcon';
 class SelectGroupView extends Component {
   componentDidMount() {
     // console.tron.log(this.props.navigation.state.key)
-    if (this.props.leagues.data.length === 0) {
+    if (this.props.leagues.length === 0) {
       this.props.getRankings();
     }
   }
@@ -17,18 +17,18 @@ class SelectGroupView extends Component {
   render() {
     return (
       <Container
-        error={this.props.leagues.error}
-        refreshing={this.props.leagues.loading}
+        error={this.props.error}
+        refreshing={this.props.fetching}
         onRefresh={this.props.getRankings.bind(this)}
       >
-        {this.props.leagues.data.length > 0 &&
+        {this.props.leagues.length > 0 &&
           <ListItem.Group>
-            {this.props.leagues.data.map((league, idx) => {
+            {this.props.leagues.map((league, idx) => {
               if (!league.cup) {
                 return (
                   <ListItem
                     key={league.id}
-                    last={idx >= this.props.leagues.data.length - 2}
+                    last={idx >= this.props.leagues.length - 2}
                     onPress={() => this.onPress(league)}
                   >
                     <Text>{league.name}</Text>
@@ -54,11 +54,6 @@ class SelectGroupView extends Component {
   }
 }
 
-SelectGroupView.propTypes = {
-  getRankings: PropTypes.func,
-  leagues: PropTypes.object,
-  navigator: PropTypes.object
-};
 
 SelectGroupView.navigationOptions = {
   title: 'Gruppe wählen',
@@ -67,7 +62,9 @@ SelectGroupView.navigationOptions = {
 
 export default connect(
   state => ({
-    leagues: state.leagues
+    error: state.loading.error,
+    fetching: state.loading.nonBlocking,
+    leagues: Object.values(state.leagues)
   }),
   dispatch => ({
     getRankings: () => dispatch(getRankings()),

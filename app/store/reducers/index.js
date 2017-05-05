@@ -7,14 +7,13 @@ import dialog from './dialogReducer';
 import matches from './matchesReducer';
 import teams from './teamsReducer';
 import loading from './loadingReducer';
-import appConnected from './restoreReducer';
 import nav from './navReducer';
 
 import overview from './overviewReducer';
 import myTeam from './myTeamReducer';
 
 export default combineReducers({
-  appConnected,
+  app: (state = {}, action) => state,
   auth,
   dialog,
   leagues,

@@ -6,7 +6,6 @@ import {
   DrawerNavigator
 } from 'react-navigation';
 import {
-  SPLASH,
   APP,
   MODAL_LOGIN,
   MODAL_SELECT_PLAYER,
@@ -22,7 +21,6 @@ import {
   TEAM
 } from './views/routes';
 import { backgroundColor } from './components/base/theme';
-import Loading from './components/LoadingScreen';
 import ModalLogin from './modals/LoginModal';
 import ModalSelectPlayer from './modals/SelectPlayerModal';
 import NavHeader from './Nav/NavHeader';
@@ -51,12 +49,12 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
       screen,
       navigationOptions: { title: strings[key.toLowerCase()] }
     },
-    [key + MATCH]: {
+    [MATCH]: {
       screen: Match,
       navigationOptions: { title: strings.match }
     },
-    [key + PREVIEW]: { screen: Preview },
-    [key + TEAM]: {
+    [PREVIEW]: { screen: Preview },
+    [TEAM]: {
       screen: Team,
       navigationOptions: { title: ({ state }) => state.params.title }
     }
@@ -164,7 +162,6 @@ export const App = Platform.OS === 'android'
 
 export const Root: StackNavigator = StackNavigator(
   {
-    [SPLASH]: { screen: Loading },
     [APP]: { screen: App },
     [MODAL_LOGIN]: { screen: ModalLogin },
     [MODAL_SELECT_PLAYER]: { screen: ModalSelectPlayer }
@@ -173,6 +170,6 @@ export const Root: StackNavigator = StackNavigator(
     cardStyle: { backgroundColor },
     headerMode: 'none',
     mode: 'modal',
-    initialRouteName: SPLASH
+    initialRouteName: APP
   }
 );
