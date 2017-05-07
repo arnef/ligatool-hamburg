@@ -133,6 +133,9 @@ export const App = Platform.OS === 'android'
             screen: Team,
             navigationOptions: { title: ({ state }) => state.params.title }
           },
+          [PREVIEW]: {
+            screen: Preview
+          },
           [SETTINGS]: {
             screen: Settings,
             navigationOptions: { title: strings.settings, header: NavDrawerIcon }
