@@ -64,17 +64,17 @@ class NavigationView extends Component {
         last
       >
         <ListItem.Icon
-          color={theme.secondaryTextColor}
+          color={active ? color : theme.secondaryTextColor}
           name={icon}
         />
-        <Text bold>{text}</Text>
+        <Text bold color={active ? color : null}>{text}</Text>
       </ListItem>
     );
   }
 
   renderLeagues() {
     // const { navigation } = this.props;
-
+    const color = this.props.settings.color;
     return this.props.leagues.map((league, idx) => {
       const active = league.cup
         ? `${LEAGUE_CUP}_${league.id}` === this.props.activeItem
@@ -93,7 +93,7 @@ class NavigationView extends Component {
             });
           }}
         >
-          <Text bold>
+          <Text bold color={active ? color : null }>
             {league.name}
           </Text>
         </ListItem>

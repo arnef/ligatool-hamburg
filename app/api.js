@@ -18,23 +18,26 @@ if (__DEV__) {
   });
 }
 
+api.addRequestTransform(request => {
+  if (request.params) {
+    console.tron.log(request.params);
+    if (request.params.id) {
+      request.url = `${request.url}/${request.params.id}`;
+    }
+    if (request.params.route) {
+      request.url = request.params.route.indexOf('/') === -1
+        ? `${request.url}/${request.params.route}`
+        : `${request.url}${request.params.route}`;
+    }
+  }
+});
+
 export default api;
 
 // export routes
-//TODO use apisauce params transform
 export const USER_AUTH: string = '/user/auth';
 export const USER_AUTH_REFRESH: string = USER_AUTH + '/refresh';
 export const NOTIFICATION: string = '/notification';
 export const LEAGUES: string = '/leagues';
-export const LEAGUE_BY_ID: (id: number) => string = (id: number) =>
-  LEAGUES + '/' + id;
-export const LEAGUE_MATCHES: (id: number) => string = (id: number) =>
-  LEAGUES + '/' + id + '/matches';
 export const MATCHES: string = '/matches';
-export const MATCHE_BY_ID: (id: number) => string = (id: number) =>
-  MATCHES + '/' + id;
 export const TEAMS: string = '/teams';
-export const TEAM_BY_ID: (id: number) => string = (id: number) =>
-  TEAMS + '/' + id;
-export const TEAM_MATCHES: (id: number) => string = (id: number) =>
-  TEAMS + '/' + id + '/matches';

@@ -1,6 +1,6 @@
 // @flow
 import { QUERY_RANKINGS, GET_LEAGUE, QUERY_LEAGUE_MATCHES } from './types';
-import api, { LEAGUES, LEAGUE_BY_ID, LEAGUE_MATCHES } from '../../api';
+import api, { LEAGUES, MATCHES } from '../../api';
 
 export function getRankings(): Action {
   return {
@@ -11,14 +11,14 @@ export function getRankings(): Action {
 
 export function getLeague(id: number): Action {
   return {
-    payload: api.get(LEAGUE_BY_ID(id)),
+    payload: api.get(LEAGUES, { id }),
     type: GET_LEAGUE
   };
 }
 
 export function getLeagueMatches(id: number): Action {
   return {
-    payload: api.get(LEAGUE_MATCHES(id), { id }),
+    payload: api.get(LEAGUES, { id, route: MATCHES }),
     type: QUERY_LEAGUE_MATCHES
   };
 }

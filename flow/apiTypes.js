@@ -7,5 +7,6 @@ type API = {
   delete: (uri: string) => Promise<*>,
   addMonitor(callback: Function): void,
   setHeader(name: string, value: string): void,
-  setHeaders(headers: any): void
+  setHeaders(headers: any): void,
+  addRequestTransform(any): void
 };

@@ -8,7 +8,7 @@ import {
   PENDING,
   FULFILLED
 } from './types';
-import api, { MATCHES, MATCHE_BY_ID } from '../../api';
+import api, { MATCHES } from '../../api';
 
 export function queryMatches(): Action {
   return {
@@ -21,7 +21,7 @@ export function getMatch(id: number): Action {
   return {
     payload: {
       data: id,
-      promise: api.get(MATCHE_BY_ID(id))
+      promise: api.get(MATCHES, { id })
     },
     type: GET_MATCH
   };
@@ -40,9 +40,8 @@ export function setPlayer(
 }
 
 export function updateSets(matchId: number, sets: any): Action {
-  console.tron.log(sets);
   return {
-    payload: api.put(MATCHE_BY_ID(matchId), { sets }),
+    payload: api.put(`${MATCHES}/${matchId}`, { sets }),
     type: PUT_SETS
   };
 }
@@ -57,7 +56,7 @@ export const suggestScore = (matchId: number, sets: any, type: number) => {
   const body = { sets, ...action };
 
   return {
-    payload: api.put(MATCHE_BY_ID(matchId), body),
+    payload: api.put(`${MATCHES}/${matchId}`, body),
     type: PUT_SETS
   };
 };

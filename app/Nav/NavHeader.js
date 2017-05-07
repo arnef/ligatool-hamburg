@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { CardStack } from 'react-navigation';
 import { ANDROID, ANDROID_VERSION_LOLLIPOP } from '../consts';
+import * as routes from '../views/routes';
 
 const white = 'rgba(255, 255, 255, .9)';
 
@@ -30,14 +31,14 @@ class NavHeader extends Component {
 }
 
 const singleHeader = [
-  'Leagues',
-  'Settings',
-  'SettingsNotification',
+  routes.LEAGUES,
+  routes.SETTINGS,
+  routes.SETTINGS_NOTIFICATIONS,
+  routes.LEAGUE_CUP,
   'SelectGroup',
   'SelectTeam',
   'LoginView',
-  'SelectPlayerView',
-  'LeagueCupMatches'
+  'SelectPlayerView'
 ];
 
 export default {
