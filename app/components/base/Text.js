@@ -5,28 +5,29 @@ import * as theme from './theme';
 class Text extends Component {
   render() {
     const textStyle = [styles.text];
+    const { color, secondary, bold, size, center, style, ...rest} = this.props;
 
-    if (this.props.color) {
-      textStyle.push({ color: this.props.color });
+    if (color) {
+      textStyle.push({ color });
     }
-    if (this.props.secondary) {
+    if (secondary) {
       textStyle.push({ color: theme.secondaryTextColor });
     }
-    if (this.props.bold) {
+    if (bold) {
       textStyle.push({ fontWeight: 'bold' });
     }
-    if (this.props.size) {
-      textStyle.push({ fontSize: this.props.size });
+    if (size) {
+      textStyle.push({ fontSize: size });
     }
-    if (this.props.center) {
+    if (center) {
       textStyle.push({ textAlign: 'center' });
     }
-    if (this.props.style) {
-      textStyle.push(this.props.style);
+    if (style) {
+      textStyle.push(style);
     }
 
     return (
-      <RNText {...this.props} style={textStyle}>
+      <RNText {...rest} style={textStyle}>
         {this.props.children}
       </RNText>
     );

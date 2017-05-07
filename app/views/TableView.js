@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { Container, TeamLogo } from '../components';
 import { Text, ListItem, Column } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import { TEAM } from './routes';
+
+const width = Dimensions.get('window').width - (5*40) - 32;
 
 class TableView extends Component {
   componentDidMount() {
@@ -33,19 +36,19 @@ class TableView extends Component {
           <Text bold>{data.position}</Text>
         </Column>
         {idx !== -1 && <TeamLogo team={data} />}
-        <Column style={{ paddingLeft: 4 }}>
-          <Text numberOfLines={1} ellipsizeMode="tail">{data.name}</Text>
+        <Column style={{ paddingLeft: 4, width }}>
+          <Text numberOfLines={1} ellipsizeMode='tail'>{data.name}</Text>
         </Column>
-        <Column center fluid style={{ minWidth: 35 }}>
+        <Column center fluid style={{ width: 35 }}>
           <Text>{data.matches}</Text>
         </Column>
-        <Column center fluid style={{ minWidth: 35 }}>
+        <Column center fluid style={{ width: 40 }}>
           <Text>{data.set_points_diff}</Text>
         </Column>
-        <Column center fluid style={{ minWidth: 35 }}>
+        <Column center fluid style={{ width: 35 }}>
           <Text>{data.goals_diff}</Text>
         </Column>
-        <Column center fluid style={{ minWidth: 35 }}>
+        <Column center fluid style={{ width: 35 }}>
           <Text bold>{data.points}</Text>
         </Column>
       </ListItem>
