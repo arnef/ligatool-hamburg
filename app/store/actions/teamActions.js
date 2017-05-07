@@ -1,11 +1,13 @@
+import { Platform } from 'react-native';
 import {
   GET_TEAM,
   QUERY_MY_TEAM_MATCHES,
   QUERY_TEAM_MATCHES,
   SHOW_LOGIN
 } from './types';
-import store from '../index';
+import store from '../../store';
 import api, { TEAMS, MATCHES } from '../../api';
+import { ANDROID } from '../../consts';
 
 // queryTeamMatches und getTeamMatches zu einer function machen?
 export function queryTeamMatches(): Action {
@@ -18,7 +20,8 @@ export function queryTeamMatches(): Action {
   }
    else {
     return {
-      type: 'IGNORE'
+      type: Platform.OS === ANDROID ? SHOW_LOGIN : 'IGNORE',
+      payload: true
     };
   }
 }

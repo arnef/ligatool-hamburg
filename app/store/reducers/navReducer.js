@@ -1,10 +1,11 @@
 // @flow
+import { Platform } from 'react-native';
+import { IOS } from '../../consts';
 import { FULFILLED, TOKEN, SHOW_LOGIN, DIALOG_PLAYER } from '../actions/types';
 import { Root } from '../../router';
 import { NavigationActions } from 'react-navigation';
 import { MODAL_LOGIN, MODAL_SELECT_PLAYER, MY_TEAM } from '../../views/routes';
 import store from '../../store';
-
 
 export default function(state, action: Action) {
   let nextState = null;
@@ -54,7 +55,11 @@ export default function(state, action: Action) {
       }
       break;
     case NavigationActions.NAVIGATE:
-      if (action.routeName === MY_TEAM && !store.getState().settings.team) {
+      if (
+        Platform.OS === IOS &&
+        action.routeName === MY_TEAM &&
+        !store.getState().settings.team
+      ) {
         action = { ...action, routeName: MODAL_LOGIN };
         console.tron.log('open login modal');
       }
@@ -77,7 +82,6 @@ const recursiveFindRoute = (route, name) => {
   } else {
     for (let i = 0; i < route.routes.length; i++) {
       const found = recursiveFindRoute(route.routes[i], name);
-
       if (found) {
         return found;
       }
