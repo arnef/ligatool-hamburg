@@ -1,8 +1,9 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, MatchItem } from '../components';
 import { Row, Column, Button, Text } from '../components/base';
-import { sortMatches } from '../Helper';
+import { sortMatches, compareDays } from '../Helper';
 
 class MatchListView extends Component {
   constructor(props) {
@@ -29,8 +30,16 @@ class MatchListView extends Component {
   }
 
   componentWillMount() {
-    if (this.props.matches.length === 0 && this.props.refreshOnMount) {
-      this.props.onRefresh();
+    if (this.props.refreshOnMount) {
+      if (this.props.matches.length === 0) {
+        this.props.onRefresh();
+      } else {
+          const id: number = this.props.matches[0];
+          const match: Match = this.props.data[id];
+          if (compareDays(match.datetime, new Date().getTime()) < 0) {
+            this.props.onRefresh();
+          }
+      }
     }
   }
 

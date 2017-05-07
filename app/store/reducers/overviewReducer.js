@@ -16,28 +16,20 @@ export default function(
     case QUERY_MATCHES + FULFILLED: {
       if (action.payload.ok) {
         const now = new Date().getTime();
-        state = { ...state };
+        state = { ...state, today: [], next: [], played: [] };
         for (let match: Match of action.payload.data) {
           if (match.date_confirmed) {
             const diff: number = compareDays(match.datetime, now);
 
             if ((match.live && diff > -2) || diff === 0) {
-              if (state.today.indexOf(match.id) === -1) {
-                state.today.push(match.id);
-              }
+              state.today.push(match.id);
             } else if (diff < 0 && match.set_points) {
-              if (state.played.indexOf(match.id) === -1) {
-                state.played.push(match.id);
-              }
+              state.played.push(match.id);
             } else if (diff > 0) {
               if (match.set_points) {
-                if (state.played.indexOf(match.id) === -1) {
-                  state.played.push(match.id);
-                }
+                state.played.push(match.id);
               } else {
-                if (state.next.indexOf(match.id) === -1) {
-                  state.next.push(match.id);
-                }
+                state.next.push(match.id);
               }
             }
           }

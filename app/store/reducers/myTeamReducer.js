@@ -12,17 +12,13 @@ export default function(
 ): MyTeamState {
   switch (action.type) {
     case QUERY_MY_TEAM_MATCHES + FULFILLED: {
-      state = { ...state };
+      state = { ...state, next: [], played: [] };
       if (action.payload.ok) {
         for (let match: Match of action.payload.data) {
           if (match.set_points && !match.score_unconfirmed) {
-            if (state.played.indexOf(match.id) === -1) {
-              state.played.push(match.id);
-            }
+            state.played.push(match.id);
           } else {
-            if (state.next.indexOf(match.id) === -1) {
-              state.next.push(match.id);
-            }
+            state.next.push(match.id);
           }
         }
       }
