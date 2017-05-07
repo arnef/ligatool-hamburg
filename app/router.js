@@ -86,7 +86,8 @@ export const SettingStack = StackNavigator(
     [SETTINGS]: {
       screen: Settings,
       navigationOptions: {
-        title: strings.settings
+        title: strings.settings,
+        header: NavDrawerIcon
       }
     },
     [SETTINGS_NOTIFICATIONS]: {
@@ -95,17 +96,52 @@ export const SettingStack = StackNavigator(
         title: strings.notifications
       }
     }
-  },
-  NavHeader
+  }, NavHeader
 );
 
 export const App = Platform.OS === 'android'
   ? DrawerNavigator(
       {
-        [OVERVIEW]: { screen: OverviewStack },
-        [MY_TEAM]: { screen: MyTeamStack },
-        [LEAGUES]: { screen: LeaguesStack },
-        [SETTINGS]: { screen: SettingStack }
+        [OVERVIEW]: { screen: StackNavigator({
+          [OVERVIEW]: {
+            screen: Overview,
+            navigationOptions: { title: strings.overview, header: NavDrawerIcon }
+          },
+          [MY_TEAM]: {
+            screen: MyTeam,
+            navigationOptions: { title: strings.my_team, header: NavDrawerIcon }
+          },
+          [LEAGUE]: {
+            screen: League,
+            navigationOptions: {
+              title: ({ state }) => state.params.title,
+              header: NavDrawerIcon
+            }
+          },
+          [LEAGUE_CUP]: {
+            screen: LeagueCup,
+            navigationOptions: {
+              title: ({ state }) => state.params.title,
+              header: NavDrawerIcon
+            }
+          },
+          [MATCH]: {
+            screen: Match,
+            navigationOptions: { title: strings.match }
+          },
+          [TEAM]: {
+            screen: Team,
+            navigationOptions: { title: ({ state }) => state.params.title }
+          },
+          [SETTINGS]: {
+            screen: Settings,
+            navigationOptions: { title: strings.settings, header: NavDrawerIcon }
+          },
+          [SETTINGS_NOTIFICATIONS]: {
+            screen: SettingsNotification,
+            navigationOptions: { title: strings.notifications }
+          }
+        }, NavHeader) },
       },
       {
         contentComponent: Drawer,

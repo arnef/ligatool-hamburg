@@ -15,19 +15,16 @@ import {
 } from './routes';
 
 class NavigationView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeLeague: -1
-    };
+
+  componentWillMount() {
+    if (this.props.leagues.length === 0) {
+      this.props.getRankings();
+    }
   }
 
   _handleRowPress(state) {
     const { navigate, closeDrawer } = this.props;
-
     if (!state.active) {
-      this.setState({ activeLeague: state.leagueID || -1 });
-
       if (state.state === LEAGUE) {
         navigate({
           routeName: LEAGUE,
@@ -42,21 +39,21 @@ class NavigationView extends Component {
           params: {
             id: state.leagueID,
             title: state.title,
-            cup: state.title
+            cup: true // why?
           }
         });
       } else {
         navigate({ routeName: state.state });
       }
+    } else {
+      closeDrawer();
     }
-    closeDrawer();
   }
 
   _renderItem(state, text, icon, idx) {
     const { navigation } = this.props;
-
-    const active = navigation.state.index === idx;
     const color = this.props.settings.color;
+    const active = state === this.props.activeItem;
 
     return (
       <ListItem
@@ -67,28 +64,26 @@ class NavigationView extends Component {
         last
       >
         <ListItem.Icon
-          color={active ? color : theme.secondaryTextColor}
+          color={theme.secondaryTextColor}
           name={icon}
         />
-        <Text bold color={active ? color : null}>{text}</Text>
+        <Text bold>{text}</Text>
       </ListItem>
     );
   }
 
   renderLeagues() {
-    const { navigation } = this.props;
-    const color = this.props.settings.color;
+    // const { navigation } = this.props;
 
-    const leagues = Object.values(this.props.leagues);
-    return leagues.map(league => {
-      const active =
-        navigation.state.index === 2 && league.id === this.state.activeLeague;
-
+    return this.props.leagues.map((league, idx) => {
+      const active = league.cup
+        ? `${LEAGUE_CUP}_${league.id}` === this.props.activeItem
+        : `${LEAGUE}_${league.id}` === this.props.activeItem;
       return (
         <ListItem
           key={league.id}
-          last
           active={active}
+          last
           onPress={() => {
             this._handleRowPress({
               leagueID: league.id,
@@ -98,7 +93,7 @@ class NavigationView extends Component {
             });
           }}
         >
-          <Text bold color={active ? color : null}>
+          <Text bold>
             {league.name}
           </Text>
         </ListItem>
@@ -110,7 +105,7 @@ class NavigationView extends Component {
     const width = DRAWER_WIDTH;
     const height = Math.floor(width * 0.625);
     const team = this.props.settings.team || null;
-    const leagues = Object.values(this.props.leagues);
+    const leagues = this.props.leagues;
     return (
       <View style={{ flex: 1 }}>
         <View style={[styles.imageContainer, { height, width }]}>
@@ -135,9 +130,10 @@ class NavigationView extends Component {
             team ? 'shirt' : 'log-in',
             1
           )}
-          {this._renderItem(LEAGUES, 'Gruppen', 'trophy', 2)}
           {this.renderSeparator()}
-          {this._renderItem(SETTINGS, 'Einstellungen', 'settings', 3)}
+          {leagues.length > 0 && this.renderLeagues()}
+          {this.renderSeparator()}
+          {this._renderItem(SETTINGS, 'Einstellungen', 'settings', 2)}
           <View style={styles.space} />
         </ScrollView>
       </View>
@@ -184,8 +180,9 @@ export const DRAWER_WIDTH = Dimensions.get('window').width * .8;
 
 export default connect(
   state => ({
+    activeItem: state.drawer,
     loading: state.loading.nonBlocking,
-    leagues: state.leagues,
+    leagues: Object.values(state.leagues).sort((a, b) => a.name < b.name ? -1 : 1),
     settings: state.settings
   }),
   dispatch => ({
