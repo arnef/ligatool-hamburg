@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { View, Platform, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ import { ANDROID, IOS } from './consts';
 import { currentRoute } from './Helper';
 import { MATCH } from './views/routes';
 import { Root } from './router';
+import { backgroundColor } from './components/base/theme';
 
 class AppContainer extends Component {
   componentWillMount() {
@@ -134,7 +136,7 @@ class AppContainer extends Component {
   render() {
     const { dispatch, nav } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor }}>
         <Loading />
         <Root
           navigation={addNavigationHelpers({

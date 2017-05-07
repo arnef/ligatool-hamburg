@@ -28,7 +28,7 @@ class Container extends Component {
         onRefresh={this.props.onRefresh}
       />
     );
-    const style = { backgroundColor: theme.backgroundColor, flex: 1 };
+    const style = { flex: 1 };
 
     if (this.props.renderRow) {
       return (

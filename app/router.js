@@ -20,7 +20,7 @@ import {
   PREVIEW,
   TEAM
 } from './views/routes';
-import { backgroundColor } from './components/base/theme';
+
 import ModalLogin from './modals/LoginModal';
 import ModalSelectPlayer from './modals/SelectPlayerModal';
 import NavHeader from './Nav/NavHeader';
@@ -40,7 +40,6 @@ import Match from './views/MatchView';
 import Preview from './views/MatchView/PreView';
 import Team from './views/TeamView';
 import LeagueCup from './views/SelectableMatchListView';
-
 import strings from './Strings';
 
 function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
@@ -62,9 +61,7 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
   const routes = optionalRoutes
     ? { ...defaultRoutes, ...optionalRoutes }
     : defaultRoutes;
-  if (Platform.OS === 'android') {
-    routes[key].navigationOptions.header = NavDrawerIcon;
-  }
+
   return StackNavigator(routes, NavHeader);
 }
 
@@ -206,7 +203,6 @@ export const Root: StackNavigator = StackNavigator(
     [MODAL_SELECT_PLAYER]: { screen: ModalSelectPlayer }
   },
   {
-    cardStyle: { backgroundColor },
     headerMode: 'none',
     mode: 'modal',
     initialRouteName: APP

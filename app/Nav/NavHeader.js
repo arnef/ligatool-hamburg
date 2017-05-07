@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { CardStack } from 'react-navigation';
 import { ANDROID, ANDROID_VERSION_LOLLIPOP } from '../consts';
 import * as routes from '../views/routes';
+import { backgroundColor } from '../components/base/theme';
 
 const white = 'rgba(255, 255, 255, .9)';
 
@@ -42,10 +43,12 @@ const singleHeader = [
 ];
 
 export default {
+  cardStyle: { backgroundColor },
   headerComponent: connect(state => ({
     color: state.settings.color
   }))(NavHeader),
   navigationOptions: {
+
     header: navigation => {
       const defaultHeader = {
         backTitle: null,
