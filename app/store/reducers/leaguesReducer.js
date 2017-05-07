@@ -62,6 +62,9 @@ function getMatchDays(matches: Array<Match>): MatchDays {
       matchDays.selected = match.match_day;
     }
   }
+  if (!matchDays.selected) {
+    matchDays.selected = matches[matches.length-1].match_day;
+  }
 
   return matchDays;
 }
