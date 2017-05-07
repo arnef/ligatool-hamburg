@@ -22,7 +22,9 @@ const strings: {[string]: string } = {
   information: 'Informationen',
   app_version: 'App-Version 0.10',
   match: 'Begegnung',
-  matches: 'Begegnungen'
+  matches: 'Begegnungen',
+  login_info: 'Zugangsdaten für das Liga-Tool.\nWenn diese nicht eingetragen werden, können keine Spiele eingetragen werden.',
+  login_error: 'Fehler beim Anmelden. Überprüfe deine Zugangsdaten.'
 };
 
 export default strings;

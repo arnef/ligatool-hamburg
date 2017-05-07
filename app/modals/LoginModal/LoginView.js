@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, View, ActivityIndicator } from 'react-native';
+import {
+  TextInput,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Platform
+} from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container } from '../../components';
@@ -7,6 +13,7 @@ import { ListItem, Row, Column, Button, Text } from '../../components/base';
 import * as theme from '../../components/base/theme';
 import { CLIENT_ERROR } from 'apisauce';
 import NavCloseIcon from '../../Nav/NavCloseIcon';
+import strings from '../../Strings';
 
 class LoginView extends Component {
   constructor(props) {
@@ -31,25 +38,22 @@ class LoginView extends Component {
 
     return (
       <Container>
-        <Row style={{ paddingTop: 8 }}>
-          <Column>
-            <Text>Zugangsdaten für das Liga-Tool.</Text>
-            <Text>
-              Wenn diese nicht eingetragen werden, können keine Spiele eingetragen werden.
-            </Text>
-          </Column>
-        </Row>
         <ListItem.Group>
-          <Row style={{ paddingBottom: 0 }}>
+          <Row style={{ paddingTop: 6 }}>
+            <Text>
+              {strings.login_info}
+            </Text>
+          </Row>
+          <Row>
             <Column>
               <TextInput
                 placeholder="Username"
                 ref="UserInput"
                 autoCapitalize="none"
                 style={styles.input}
+                underlineColorAndroid={theme.backgroundColor}
                 editable={!loading}
                 blurOnSubmit={false}
-                underlineColorAndroid="#fff"
                 autoCorrect={false}
                 selectTextOnFocus={true}
                 onChangeText={text => {
@@ -66,7 +70,7 @@ class LoginView extends Component {
                 ref="PassInput"
                 style={styles.input}
                 selectTextOnFocus={true}
-                underlineColorAndroid="#fff"
+                underlineColorAndroid={theme.backgroundColor}
                 editable={!loading}
                 secureTextEntry={true}
                 keyboardAppearance="dark"
@@ -78,44 +82,43 @@ class LoginView extends Component {
               />
             </Column>
           </Row>
+          {!loading &&
+            <Row style={{ paddingBottom: 0 }}>
+              <Column>
+                <Button
+                  onPress={() => {
+                    this.props.showLogin(false);
+                    if (!init) {
+                      this.props.queryTeamMatches();
+                    }
+                  }}
+                >
+                  {init ? 'Abbrechen' : 'Überspringen'}
+                </Button>
+              </Column>
+              <Column fluid style={{ width: 8 }} />
+              <Column>
+                <Button
+                  disabled={!this.state.user || !this.state.pass}
+                  onPress={this.login.bind(this)}
+                >
+                  Anmelden
+                </Button>
+              </Column>
+            </Row>}
+          {!loading && error === CLIENT_ERROR &&
+            <Row>
+              <Text color="red">
+                {strings.login_error}
+              </Text>
+            </Row>}
+          {loading &&
+            <Row center>
+              <Column style={{ marginVertical: 16 }}>
+                <ActivityIndicator color={this.props.color} />
+              </Column>
+            </Row>}
         </ListItem.Group>
-
-        {!loading &&
-          <Row center>
-            <Column>
-              <Button onPress={() => {
-                this.props.showLogin(false);
-                if (!init) {
-                  this.props.queryTeamMatches();
-                }
-              }}>
-                {init ? 'Abbrechen' : 'Überspringen'}
-              </Button>
-            </Column>
-            <Column fluid style={{ width: 8 }} />
-            <Column>
-              <Button
-                disabled={!this.state.user || !this.state.pass}
-                onPress={this.login.bind(this)}
-              >
-                Anmelden
-              </Button>
-            </Column>
-          </Row>}
-
-        {loading &&
-          <Row center>
-            <Column style={{ marginVertical: 16 }}>
-              <ActivityIndicator color={this.props.color} />
-            </Column>
-          </Row>}
-
-        {error === CLIENT_ERROR &&
-          <Row style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-            <Text color="red">
-              Fehler beim Anmelden. Überprüfe deine Zugangsdaten.
-            </Text>
-          </Row>}
       </Container>
     );
   }
@@ -140,13 +143,22 @@ class LoginView extends Component {
 }
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40
-  },
-  separator: {
-    backgroundColor: theme.backgroundColor,
-    height: 1
-  }
+  input: Platform.select({
+    ios: {
+      height: 40
+    },
+    android: {
+      marginLeft: -2,
+      marginRight: -2
+    }
+  }),
+  separator: Platform.select({
+    ios: {
+      backgroundColor: theme.backgroundColor,
+      height: 1
+    },
+    android: { height: 0 }
+  })
 });
 
 LoginView.navigationOptions = {

@@ -26,7 +26,11 @@ class App extends Component<void, Props, State> {
   }
 
   componentWillMount() {
-    persistStore(store, { storage: AsyncStorage }, (err: any, localStore: any) => {
+    const config = { storage: AsyncStorage }
+    // if (!__DEV__) {
+      config.blacklist = ['nav', 'drawer'];
+    // }
+    persistStore(store, config, (err: any, localStore: any) => {
       console.log('store rehydrated', localStore);
       if (localStore.app.version === 1 && !localStore.settings) {
         // first start or old version of app
