@@ -1,5 +1,5 @@
 // @flow
-import { FULFILLED, QUERY_MY_TEAM_MATCHES } from '../actions/types';
+import { FULFILLED, QUERY_MY_TEAM_MATCHES, LOGOUT } from '../actions/types';
 
 const initialState: MyTeamState = {
   next: [],
@@ -26,6 +26,10 @@ export default function(
           }
         }
       }
+      return state;
+    }
+    case LOGOUT + FULFILLED: {
+      state = { next: [], played: [] };
       return state;
     }
   }

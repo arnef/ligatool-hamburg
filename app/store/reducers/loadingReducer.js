@@ -34,7 +34,13 @@ export default function(
     case LOGOUT + FULFILLED:
     case PUT_SETS + FULFILLED:
     case TOKEN + FULFILLED:
-      return { ...state, blocking: false, error: action.payload.problem };
+      return {
+        ...state,
+        blocking: false,
+        error: action.type === LOGOUT + FULFILLED
+          ? null
+          : action.payload.problem
+      };
 
     default:
       if (action.type.indexOf(PENDING) !== -1 && !state.blocking) {

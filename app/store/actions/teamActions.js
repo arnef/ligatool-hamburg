@@ -15,10 +15,10 @@ export function queryTeamMatches(): Action {
       payload: api.get(TEAMS, { id: team.id, route: MATCHES }),
       type: QUERY_MY_TEAM_MATCHES
     };
-  } else {
+  }
+   else {
     return {
-      payload: true,
-      type: SHOW_LOGIN
+      type: 'IGNORE'
     };
   }
 }

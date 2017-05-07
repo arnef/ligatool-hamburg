@@ -17,12 +17,17 @@ class LoginView extends Component {
     };
   }
 
+  componentDidMount() {
+    console.tron.log(this.props.navigation.state);
+  }
+
   componentWillReceiveProps(nextProps) {
     this.apiKeyFullfilled(nextProps);
   }
 
   render() {
     const { loading, error } = this.props;
+    const init = this.props.navigation.state.key === 'Init';
 
     return (
       <Container>
@@ -78,8 +83,13 @@ class LoginView extends Component {
         {!loading &&
           <Row center>
             <Column>
-              <Button onPress={() => this.props.showLogin(false)}>
-                {!!this.props.init ? 'Abbrechen' : 'Überspringen'}
+              <Button onPress={() => {
+                this.props.showLogin(false);
+                if (!init) {
+                  this.props.queryTeamMatches();
+                }
+              }}>
+                {init ? 'Abbrechen' : 'Überspringen'}
               </Button>
             </Column>
             <Column fluid style={{ width: 8 }} />
@@ -124,6 +134,7 @@ class LoginView extends Component {
   apiKeyFullfilled(nextProps) {
     if (this.props.auth.api_key === null && nextProps.auth.api_key !== null) {
       nextProps.renewToken(nextProps.auth.api_key);
+      nextProps.queryTeamMatches();
     }
   }
 }
@@ -157,6 +168,7 @@ export default connect(
     color: state.settings.color
   }),
   dispatch => ({
+    queryTeamMatches: () => dispatch(actions.queryTeamMatches()),
     renewToken: apiKey => dispatch(actions.renewToken(apiKey)),
     requestAPIKey: user => dispatch(actions.requestAPIKey(user)),
     showLogin: show => dispatch(actions.showLogin(show))
