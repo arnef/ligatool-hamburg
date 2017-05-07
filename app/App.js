@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
-import { migrateFromStorage } from './store/manifest';
+import { migrateFromStorage, setDefaultSettings, checkToken } from './store/manifest';
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
+import * as actions from './store/actions'
 import store from './store';
 
 
@@ -40,7 +41,11 @@ class App extends Component<void, Props, State> {
   }
 
   rehydrateDone() {
-    this.setState({ rehydrated: true });
+    setDefaultSettings(store).then(resp => {
+      checkToken(store).then(() => {
+        this.setState({ rehydrated: true });
+      });
+    });
   }
 
   render() {

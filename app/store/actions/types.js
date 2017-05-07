@@ -35,6 +35,7 @@ export const GET_TEAM: string = 'GET_TEAM';
 export const SET_NOTIFICATION: string = 'SET_NOTIFICATION';
 export const SET_GROUP_NOTIFICATION: string = 'SET_GROUP_NOTIFICATION';
 export const PUT_NOTIFICATION: string = 'PUT_NOTIFICATION';
+export const LOAD_SETTINGS_FULFILLED = 'LOAD_SETTINGS_FULFILLED';
 
 // leagues
 export const GET_LEAGUE: string = 'GET_LEAGUE';

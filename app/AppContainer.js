@@ -18,7 +18,6 @@ import { Root } from './router';
 class AppContainer extends Component {
   componentWillMount() {
     this.mountNotification();
-    this.checkToken();
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const oldnav = this.props.nav;
       this.props.dispatch({ type: NavigationActions.BACK });
@@ -30,12 +29,6 @@ class AppContainer extends Component {
     });
   }
 
-  checkToken() {
-    const { auth, renewToken } = this.props;
-    if (auth.api_key && auth.team.expires < new Date().getTime()) {
-      renewToken(auth.api_key);
-    }
-  }
 
   componentWillUnmount() {
     if (this.refreshTokenListener) {

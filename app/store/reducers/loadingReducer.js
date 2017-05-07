@@ -28,12 +28,10 @@ export default function(
       return state;
     case LOGOUT + PENDING:
     case PUT_SETS + PENDING:
-    case TOKEN + PENDING:
       return { ...state, blocking: true, error: null };
 
     case LOGOUT + FULFILLED:
     case PUT_SETS + FULFILLED:
-    case TOKEN + FULFILLED:
       return {
         ...state,
         blocking: false,
