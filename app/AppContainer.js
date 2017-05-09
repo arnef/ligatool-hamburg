@@ -87,7 +87,8 @@ class AppContainer extends Component {
         ...notif.fcm,
         id: notif.id,
         data: { id: notif.id, type: notif.type },
-        show_in_foreground: true
+        show_in_foreground: true,
+        priority: 'high'
       };
       FCM.presentLocalNotification(localNotif);
     }
