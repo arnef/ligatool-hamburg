@@ -19,7 +19,6 @@ class Touchable extends Component {
         <TouchableNativeFeedback
           {...rest}
           style={null}
-          delayPressIn={50}
           background={TouchableNativeFeedback.Ripple(
             this.props.pressColor,
             this.props.borderless

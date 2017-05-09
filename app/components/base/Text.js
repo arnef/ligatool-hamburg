@@ -25,10 +25,13 @@ class Text extends Component {
     if (style) {
       textStyle.push(style);
     }
+    const children = typeof this.props.children === 'number'
+      ? `${this.props.children}`
+      : this.props.children;
 
     return (
       <RNText {...rest} style={textStyle}>
-        {this.props.children}
+        {children}
       </RNText>
     );
   }

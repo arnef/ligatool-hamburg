@@ -100,6 +100,9 @@ class AppContainer extends Component {
     ) {
       this.props.receiveNotification(notif);
       //TODO update open match
+      if (route.routeName === MATCH && route.params.id === matchId) {
+        this.props.dispatch(actions.getMatch(matchId));
+      }
     }
 
     // open match after click on notification
@@ -125,7 +128,7 @@ class AppContainer extends Component {
       this.syncNotifications(token);
     });
     this.notificationListener = FCM.on(FCMEvent.Notification, notif => {
-      console.tron.log('notification listener');
+      console.tron.log('notification listener ' + Platform.OS);
       this.handleNotification(notif);
     });
     this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, token => {

@@ -18,6 +18,7 @@ const defaultState: SettingState = {
   notification: {},
   team: null
 };
+import api from '../../api';
 
 export default function(state: SettingState = defaultState, action: Action): SettingState {
   switch (action.type) {
@@ -32,6 +33,9 @@ export default function(state: SettingState = defaultState, action: Action): Set
     case UPDATE_FCM_TOKEN + FULFILLED: {
       if (action.payload.ok) {
         state = { ...state, fcm_token: action.payload.data.fcm_token };
+        if (state.fcm_token) {
+          api.setHeader('x-fcm', state.fcm_token);
+        }
       }
 
       return state;

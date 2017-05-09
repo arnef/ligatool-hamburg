@@ -19,10 +19,7 @@ export function queryMatches(): Action {
 
 export function getMatch(id: number): Action {
   return {
-    payload: {
-      data: id,
-      promise: api.get(MATCHES, { id })
-    },
+    payload:  api.get(MATCHES, { id }),
     type: GET_MATCH
   };
 }
