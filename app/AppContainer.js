@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { View, BackAndroid } from 'react-native';
+import { View, Platform, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
+import actions from './store/actions'; // why?
 import Loading from './modals/LoadingModal';
 import { Root } from './router';
 import { backgroundColor } from './components/base/theme';
@@ -58,9 +59,5 @@ export default connect(
   state => ({
     auth: state.auth,
     nav: state.nav,
-    settings: state.settings
-  }),
-  dispatch => ({
-    dispatch: action => dispatch(action),
   })
 )(AppContainer);

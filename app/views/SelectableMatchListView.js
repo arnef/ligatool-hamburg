@@ -4,6 +4,7 @@ import actions from '../store/actions';
 import { ListItem, Text } from '../components/base';
 import { Container, MatchItem } from '../components';
 import { NavigationActions } from 'react-navigation';
+import { sortMatches } from '../Helper';
 
 class SelectableMatchListView extends Component {
   constructor(props) {
@@ -28,6 +29,9 @@ class SelectableMatchListView extends Component {
     const league = leagues[id];
     const matchDays = league.match_days || {};
     const matchDayKeys = Object.keys(matchDays);
+    const matchList = matchDays[selectedMatchDay || league.selected] || [];
+
+    matchList.sort(sortMatches(matches));
 
     return (
       <Container
@@ -57,8 +61,7 @@ class SelectableMatchListView extends Component {
               ))}
           </ListItem.Group>}
         {!showDropdown &&
-          (matchDays[selectedMatchDay || league.selected] || [])
-            .map(matchId => (
+          matchList.map(matchId => (
               <MatchItem key={matchId} data={matches[matchId]} />
             ))}
       </Container>
