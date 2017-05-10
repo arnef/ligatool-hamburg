@@ -43,24 +43,30 @@ class ScoreInput extends Component {
 
     return (
       <View>
-        <Row center style={{ margin: 10 }}>
+        <Row center style={{ marginTop: 10 }}>
           <Column center>
             <Text center>
               {this.getName(playerHome1)}
-              {playerHome2 && '\n-\n' + this.getName(playerHome2)}
+              {playerHome2 && `\n-\n${this.getName(playerHome2)}`}
             </Text>
-            <Column style={styles.score}>
-              {this.renderInputField('goals_home')}
-            </Column>
           </Column>
           <Column center>
             <Text center>
               {this.getName(playerAway1)}
-              {playerAway2 && '\n-\n' + this.getName(playerAway2)}
+              {playerAway2 && `\n-\n${this.getName(playerAway2)}`}
             </Text>
-            <Column style={styles.score}>
+          </Column>
+        </Row>
+        <Row center style={{ marginBottom: 10 }}>
+          <Column center>
+            <View style={styles.score}>
+              {this.renderInputField('goals_home')}
+            </View>
+          </Column>
+          <Column center>
+            <View style={styles.score}>
               {this.renderInputField('goals_away')}
-            </Column>
+            </View>
           </Column>
         </Row>
         <Row style={styles.buttonRow}>
