@@ -14,6 +14,7 @@ import {
   SCORE_CONFIRMED,
   NOTIFICATION
 } from '../actions/types';
+import NotificationManager from '../../NotificationManager';
 import { isAdminForMatch } from '../../Helper';
 
 const initialState: MatchesState = {};
@@ -24,6 +25,7 @@ export default function(
 ): MatchesState {
   switch (action.type) {
     case QUERY_MATCHES + FULFILLED:
+      NotificationManager.removeAllNotifications();
     case QUERY_TEAM_MATCHES + FULFILLED:
     case QUERY_MY_TEAM_MATCHES + FULFILLED:
     case QUERY_LEAGUE_MATCHES + FULFILLED:

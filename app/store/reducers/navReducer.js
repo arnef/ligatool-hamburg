@@ -1,10 +1,11 @@
 // @flow
 import { Platform } from 'react-native';
+import NotificationManager from '../../NotificationManager';
 import { IOS } from '../../consts';
 import { FULFILLED, TOKEN, SHOW_LOGIN, DIALOG_PLAYER } from '../actions/types';
 import { Root } from '../../router';
 import { NavigationActions } from 'react-navigation';
-import { MODAL_LOGIN, MODAL_SELECT_PLAYER, MY_TEAM } from '../../views/routes';
+import { MODAL_LOGIN, MODAL_SELECT_PLAYER, MY_TEAM, MATCH } from '../../views/routes';
 import store from '../../store';
 
 export default function(state, action: Action) {
@@ -62,6 +63,9 @@ export default function(state, action: Action) {
       ) {
         action = { ...action, routeName: MODAL_LOGIN };
         console.tron.log('open login modal');
+      }
+      if (action.routeName === MATCH) {
+        NotificationManager.removeNotification(action.params.id);
       }
 
     default:

@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:arnefeilligatool.xcodeproj">
+      location = "group:/Users/arne/repos/arnef/ligatool-hamburg/ios/arnefeilligatool.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:arnefeilligatool.xcodeproj">
    </FileRef>
 </Workspace>

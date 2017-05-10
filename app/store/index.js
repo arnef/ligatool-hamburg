@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import createMigration from 'redux-persist-migrate';
@@ -14,13 +14,26 @@ const middleware = [promise(), thunk];
 
 if (__DEV__) {
   Reactotron.configure({
+    host: '192.168.0.164',
     name: 'LigaTool'
   })
     .use(reactotronRedux())
     .use(apisaucePlugin())
     .connect();
 
-  console.tron = Reactotron;
+  console.tron = {
+    clear: Reactotron.clear,
+    log: (data) => {
+      Reactotron.log({
+        platform: Platform.OS,
+        message: data
+      });
+    },
+    error: Reactotron.error,
+    display: Reactotron.display,
+    warn: Reactotron.warn,
+    createStore: Reactotron.createStore
+  };
   console.tron.clear();
 
 } else {

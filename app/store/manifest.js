@@ -13,7 +13,6 @@ export function migrateFromStorage(store, AsyncStorage) {
   return new Promise(resolve => {
     AsyncStorage.getAllKeys((err, keys) => {
       if (!err && keys.length === 3) {
-        console.log(keys);
         Promise.all([
           AsyncStorage.getItem('API_KEY'),
           AsyncStorage.getItem('TOKEN'),
@@ -24,7 +23,6 @@ export function migrateFromStorage(store, AsyncStorage) {
               values[0] = JSON.parse(values[0]);
               values[1] = JSON.parse(values[1]);
               values[2] = JSON.parse(values[2]);
-              console.log(values);
               store.dispatch({
                 payload: { ok: true, data: values[2] },
                 type: 'LOAD_SETTINGS_FULFILLED'
@@ -38,7 +36,7 @@ export function migrateFromStorage(store, AsyncStorage) {
                 type: 'API_KEY_FULFILLED'
               });
             } catch (ex) {
-              console.warn(ex);
+              console.tron.warn(ex);
             }
             resolve();
           })

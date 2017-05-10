@@ -97,9 +97,11 @@ class SettingsView extends Component {
         >
           <Text>Gruppen wählen</Text>
           <View style={{ flex: 1 }} />
-          {this.props.loading && Object.keys(this.props.leagues).length === 0 &&
+          {this.props.loading &&
+            Object.keys(this.props.leagues).length === 0 &&
             <ActivityIndicator color={theme.secondaryTextColor} />}
-          { Object.keys(this.props.leagues).length > 0 && <ListItem.Icon name="caret-forward" right />}
+          {Object.keys(this.props.leagues).length > 0 &&
+            <ListItem.Icon name="caret-forward" right />}
         </ListItem>
       </ListItem.Group>
     );

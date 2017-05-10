@@ -21,13 +21,17 @@ export function setGroupNotification(key: string, value: boolean): Action {
   };
 }
 
-export function saveNotifications(): Action {
-  const settings = store.getState().settings;
-
+export function saveNotifications(fcm_token: string, notification: any): Action {
+  //
+  if (!fcm_token || !notification) {
+    const settings = store.getState().settings;
+    fcm_token = settings.fcm_token;
+    notification = settings.notification
+  }
   return {
     payload: api.post(NOTIFICATION, {
-      fcm_token: settings.fcm_token,
-      notification: settings.notification
+      fcm_token,
+      notification,
     }),
     type: PUT_NOTIFICATION
   };

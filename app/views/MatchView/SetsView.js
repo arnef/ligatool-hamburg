@@ -96,9 +96,6 @@ class SetsView extends Component {
   }
 
   onPress(data, idx) {
-    console.tron.log('SetView onPress');
-    console.tron.log(data);
-
     if (data.sets[0].player_1_home && data.sets[0].player_1_away) {
       this.toggleScoreInput(idx);
     } else {
