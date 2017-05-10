@@ -186,7 +186,7 @@ class SetsView extends Component {
   render() {
     const data = this.props.matches[this.props.data.id] || {};
     const showButton = this.showButton();
-    const editable = !this.props.loading && data.is_admin && data.type
+    const editable = data.is_admin && data.type
       ? true
       : false;
 
