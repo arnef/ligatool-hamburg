@@ -1,19 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Platform, BackAndroid } from 'react-native';
+import { View, BackAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
-import actions from './store/actions';
-import FCM, {
-  FCMEvent,
-  RemoteNotificationResult,
-  WillPresentNotificationResult,
-  NotificationType
-} from 'react-native-fcm';
 import Loading from './modals/LoadingModal';
-import { ANDROID, IOS } from './consts';
-import { currentRoute } from './Helper';
-import { MATCH } from './views/routes';
 import { Root } from './router';
 import { backgroundColor } from './components/base/theme';
 import NotificationManager from './NotificationManager';
