@@ -26,7 +26,7 @@ class App extends Component<void, Props, State> {
   }
 
   componentWillMount() { //
-    const config = { storage: AsyncStorage, blacklist: ['nav', 'drawer'] }
+    const config = { storage: AsyncStorage, blacklist: ['nav', 'drawer', 'loading'] }
     persistStore(store, config, (err: any, localStore: any) => {
       if (localStore.app.version === 1 && !localStore.settings) {
         // first start or old version of app
