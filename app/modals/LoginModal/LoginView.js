@@ -24,10 +24,6 @@ class LoginView extends Component {
     };
   }
 
-  componentDidMount() {
-    console.tron.log(this.props.navigation.state);
-  }
-
   componentWillReceiveProps(nextProps) {
     this.apiKeyFullfilled(nextProps);
   }

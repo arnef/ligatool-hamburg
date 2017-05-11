@@ -62,7 +62,6 @@ export function setDefaultSettings(store) {
           });
           const notification = { on: true, live: true, ended: true, leagues: {} };
           for (let league of resp.data) {
-            console.tron.log(league);
             notification.leagues[league.id] = true;
           }
           store.dispatch({

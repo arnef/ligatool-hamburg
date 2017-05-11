@@ -29,6 +29,7 @@ if (__DEV__) {
         message: data
       });
     },
+    apisauce: Reactotron.apisauce,
     error: Reactotron.error,
     display: Reactotron.display,
     warn: Reactotron.warn,

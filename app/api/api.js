@@ -21,7 +21,6 @@ if (__DEV__) {
 
 api.addRequestTransform(request => {
   if (request.params) {
-    console.tron.log(request.params);
     if (request.params.id) {
       request.url = `${request.url}/${request.params.id}`;
     }

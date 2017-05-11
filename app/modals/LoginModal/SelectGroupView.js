@@ -7,8 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import NavCloseIcon from '../../Nav/NavCloseIcon';
 
 class SelectGroupView extends Component {
-  componentDidMount() {
-    // console.tron.log(this.props.navigation.state.key)
+  componentWillMount() {
     if (this.props.leagues.length === 0) {
       this.props.getRankings();
     }

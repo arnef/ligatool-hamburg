@@ -42,11 +42,9 @@ export default function(
 
     default:
       if (action.type.indexOf(PENDING) !== -1 && !state.blocking) {
-        console.tron.log(action.type + ' true');
         state = { ...state, nonBlocking: true, error: null };
       }
       if (action.type.indexOf(FULFILLED) !== -1) {
-        console.tron.log(action.type + ' false');
         state = {
           ...state,
           nonBlocking: false,

@@ -70,7 +70,6 @@ class SelectPlayer extends Component {
     this.setState({ selected });
     const selectionLength = Object.values(selected).length;
 
-    console.tron.log(`items selected ${selectionLength}`);
     if (selectionLength === state.params.data.type) {
       const result = [];
       const player =

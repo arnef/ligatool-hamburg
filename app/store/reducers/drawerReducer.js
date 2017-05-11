@@ -15,7 +15,6 @@ export default function(state=OVERVIEW, action: Action) {
   switch (action.type) {
     case 'UPDATE_DRAWER_ITEM':
     case NavigationActions.NAVIGATE:
-      // console.tron.log(action);
       const route = action.type === NavigationActions.NAVIGATE
         ? action
         : currentRoute();

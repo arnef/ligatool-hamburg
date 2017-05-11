@@ -62,7 +62,6 @@ export default function(state, action: Action) {
         !store.getState().settings.team
       ) {
         action = { ...action, routeName: MODAL_LOGIN };
-        console.tron.log('open login modal');
       }
       if (action.routeName === MATCH) {
         NotificationManager.removeNotification(action.params.id);
