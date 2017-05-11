@@ -76,7 +76,7 @@ function receiveNotification(notif) {
       }
     }
 
-    if (notif.opened_from_tray && !matchOpen) {
+    if (notif.opened_from_tray && !matchOpen && notif.type && id) {
       console.tron.log('open match');
       store.dispatch(
         NavigationActions.navigate({
@@ -111,6 +111,8 @@ function getInitialNotification(notif) {
       notif.opened_from_tray = true;
     }
     if (notif.type) {
+      console.tron.log('get initial notification');
+      console.tron.log(notif);
       receiveNotification(notif);
     }
   }

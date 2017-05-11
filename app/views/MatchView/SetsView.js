@@ -3,7 +3,6 @@ import { View, Keyboard, Dimensions, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container, Match } from '../../components';
-import MatchHeader from '../../components/Match/Header';
 import { Button, Row } from '../../components/base';
 import * as theme from '../../components/base/theme';
 
@@ -137,11 +136,11 @@ class SetsView extends Component {
 
   render() {
     const data = this.props.matches[this.props.data.id] || {};
-    const editable = data.is_admin;
+    const editable = data.is_admin && data.type;
 
     return (
       <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
-        <MatchHeader matchId={this.props.data.id} />
+        <Match.Header matchId={this.props.data.id} />
         { data.showButton && this.renderSubmitButton() }
         <Container
           getRef={scrollView => {

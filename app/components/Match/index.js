@@ -4,7 +4,7 @@ import formats from './formats';
 import { connect } from 'react-redux';
 import { Row, Column, Text, Switch } from '../base';
 import Set from './Set';
-// import Header from './Header';
+import Header from './Header';
 
 class Match extends Component {
   renderRow(data, idx) {
@@ -116,7 +116,7 @@ class Match extends Component {
   }
 }
 
-// Match.Header = Header;
+Match.Header = Header;
 
 export default connect(state => ({
   loading: state.loading.nonBlocking,
