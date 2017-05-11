@@ -52,8 +52,27 @@ export default function(
         match.sets = compareSets(match, state[action.payload.data.id]);
         match.type = getMatchType(match);
         match.is_admin = isAdminForMatch(match);
+        match.showButton = false;
+        if (match.is_admin && match.score_unconfirmed) {
+          if (match.league.cup) {
+            match.showButton = match.score_unconfirmed &&
+              (match.set_points_home !== match.set_points_away &&
+                (match.set_points_home > 16 || match.set_points_away > 16));
+          } else {
+            match.showButton = match.score_unconfirmed &&
+              match.set_points_home + match.set_points_away === 32;
+          }
+
+        }
         state[match.id] = match;
       }
+      return state;
+    }
+
+    case 'TOGGLE_MATCH': {
+      state = { ...state };
+      state[action.payload].showButton = !state[action.payload].showButton;
+      state[action.payload].is_admin = !state[action.payload].is_admin;
       return state;
     }
 

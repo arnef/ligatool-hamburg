@@ -9,7 +9,8 @@ const white = 'rgba(255, 255, 255, .9)';
 
 class MatchHeader extends Component {
   render() {
-    const match = this.props.matches[this.props.data.id] || {};
+    const match = this.props.matches[this.props.matchId] || {};
+    // const match = this.props.match;
     const home = match.team_home ? match.team_home.name : '';
     const away = match.team_away ? match.team_away.name : '';
     const goalsHome = match.goals_home != null ? match.goals_home : '-';
@@ -26,7 +27,7 @@ class MatchHeader extends Component {
     const isAndroid = Platform.OS === 'android';
 
     return (
-      <View style={[{ backgroundColor: this.props.color }, style.header]}>
+      <View style={[style.header, { backgroundColor: this.props.color }, ]}>
         <Touchable
           pressColor={white}
           borderless
@@ -35,7 +36,7 @@ class MatchHeader extends Component {
         >
           <Text
             center
-            bold={isAndroid}
+            // bold={isAndroid}
             color="#fff"
             numberOfLines={2}
             ellipsizeMode="tail"
@@ -55,7 +56,7 @@ class MatchHeader extends Component {
         >
           <Text
             center
-            bold={isAndroid}
+            // bold={isAndroid}
             color="#fff"
             numberOfLines={2}
             ellipsizeMode="tail"
@@ -110,6 +111,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 4
   }
 });
+
 
 export default connect(
   state => ({

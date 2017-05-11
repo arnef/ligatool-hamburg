@@ -25,7 +25,7 @@ class App extends Component<void, Props, State> {
     };
   }
 
-  componentWillMount() {
+  componentWillMount() { //
     const config = { storage: AsyncStorage, blacklist: ['nav', 'drawer'] }
     persistStore(store, config, (err: any, localStore: any) => {
       if (localStore.app.version === 1 && !localStore.settings) {

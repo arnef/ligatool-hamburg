@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Keyboard, Dimensions, StyleSheet } from 'react-native';
+import { View, Keyboard, Dimensions, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container, Match } from '../../components';
-import { Button } from '../../components/base';
+import MatchHeader from '../../components/Match/Header';
+import { Button, Row } from '../../components/base';
 import * as theme from '../../components/base/theme';
 
 const height = Dimensions.get('window').height;
@@ -12,7 +13,6 @@ class SetsView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      btnIdx: 0,
       keyboardSpace: 0,
       menuOpen: -1,
       offsetY: 0,
@@ -21,7 +21,7 @@ class SetsView extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (!this.props.loading) {
       this.getMatch();
     }
@@ -59,25 +59,6 @@ class SetsView extends Component {
     if (this.state.keyboardSpace === 0) {
       this.setState({ keyboardSpace: frames.endCoordinates.height });
       this.scrollToInput();
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const match = nextProps.matches[nextProps.data.id];
-
-    if (match) {
-      let idx = 0;
-
-      //TODO check submit action in reducer
-      if (match.is_admin && match.score_unconfirmed && !match.live) {
-        idx = nextProps.auth.team.ids.indexOf(match.score_suggest) !== -1
-          ? 1
-          : 2;
-      }
-
-      this.setState({
-        btnIdx: idx
-      });
     }
   }
 
@@ -133,35 +114,6 @@ class SetsView extends Component {
     this.setState({ scoreInput: -1 });
   }
 
-  confirmScore() {
-    const match = this.props.matches[this.props.data.id];
-
-    if (this.state.btnIdx !== 1) {
-      this.props.suggestScore(match.id, match.sets, this.state.btnIdx);
-    }
-  }
-
-  showButton() {
-    const match = this.props.matches[this.props.data.id];
-
-    if (match && !this.props.loading) {
-      if (match.league && match.league.name.indexOf('pokal') !== -1) {
-        return match.score_unconfirmed &&
-          (match.set_points_home !== match.set_points_away &&
-            (match.set_points_home > 16 || match.set_points_away > 16))
-          ? true
-          : false;
-      } else {
-        return match.score_unconfirmed &&
-          match.set_points_home + match.set_points_away === 32
-          ? true
-          : false;
-      }
-    }
-
-    return false;
-  }
-
   toggleScoreInput(idx) {
     if (this.state.scoreInput === idx) {
       this.setState({ menuOpen: -1, scoreInput: -1 });
@@ -185,20 +137,18 @@ class SetsView extends Component {
 
   render() {
     const data = this.props.matches[this.props.data.id] || {};
-    const showButton = this.showButton();
-    const editable = data.is_admin && data.type
-      ? true
-      : false;
+    const editable = data.is_admin;
 
     return (
       <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
-        <Match.Header data={data} />
+        <MatchHeader matchId={this.props.data.id} />
+        { data.showButton && this.renderSubmitButton() }
         <Container
           getRef={scrollView => {
             this.scrollView = scrollView;
           }}
           onScroll={this.onScroll.bind(this)}
-          error={null}
+          error={this.props.error}
           refreshing={this.props.loading}
           onRefresh={this.getMatch.bind(this)}
         >
@@ -214,22 +164,31 @@ class SetsView extends Component {
             adjustPosition={this.adjustPosition.bind(this)}
             onSelect={this.onSelect.bind(this)}
           />
-          {showButton && editable && <View style={{ height: 48 }} />}
+          {data.showButton && <View style={{ height: 48 }} />}
         </Container>
-
-        {showButton && editable && this.renderSubmitButton()}
       </View>
     );
   }
 
   renderSubmitButton() {
+
+    const match = this.props.matches[this.props.data.id] || {};
+
+
+    const idx = match.live
+      ? 0
+      : this.props.auth.team.ids.indexOf(match.score_suggest) !== -1
+      ? 1
+      : 2;
     return (
       <View style={styles.submitRow}>
         <Button
-          disabled={this.state.btnIdx === 1}
-          onPress={this.confirmScore.bind(this)}
+          disabled={this.props.loading || idx === 1}
+          onPress={() => {
+            this.props.suggestScore(match.id, match.sets, idx);
+          }}
         >
-          {`${btnText[this.state.btnIdx]}`}
+          {`${btnText[idx]}`}
         </Button>
       </View>
     );
@@ -241,9 +200,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: Dimensions.get('window').width,
-    marginBottom: 40,
     paddingHorizontal: 8,
-    backgroundColor: 'rgba(221, 221, 221, .9)'
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(0, 0, 0, .2)',
+    backgroundColor: Platform.OS === 'ios'
+      ? 'rgba(244, 244, 244, .9)'
+      : 'rgba(221, 221, 221, .9)',
+    zIndex: 99
   }
 });
 
@@ -253,19 +216,16 @@ const btnText = [
   'Ergebnis akzeptieren'
 ];
 
-
 export default connect(
   state => ({
     loading: state.loading.nonBlocking,
+    error: state.loading.error,
     auth: state.auth,
-    dialog: state.dialog,
-    match: state.match,
     matches: state.matches
   }),
   dispatch => ({
     getMatch: id => dispatch(actions.getMatch(id)),
     hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
-    pushRoute: route => dispatch(actions.pushRoute(route)),
     setPlayer: (team, result, setsIdx) =>
       dispatch(actions.setPlayer(team, result, setsIdx)),
     showPlayerDialog: (id, data) =>
