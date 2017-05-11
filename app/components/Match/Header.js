@@ -36,7 +36,7 @@ class MatchHeader extends Component {
         >
           <Text
             center
-            // bold={isAndroid}
+            bold={isAndroid}
             color="#fff"
             numberOfLines={2}
             ellipsizeMode="tail"
@@ -56,7 +56,7 @@ class MatchHeader extends Component {
         >
           <Text
             center
-            // bold={isAndroid}
+            bold={isAndroid}
             color="#fff"
             numberOfLines={2}
             ellipsizeMode="tail"

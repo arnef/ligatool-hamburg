@@ -46,16 +46,20 @@ class MatchItem extends Component {
 
           <Row>
             <Column center>
-              <Text center>{match.team_home.name}</Text>
+              <Text center numberOfLines={3} ellipsizeMode="tail">
+                {match.team_home.name}
+              </Text>
             </Column>
             <Column fluid center style={{ width: 60 }}>
               {match.live &&
-                <Text color={this.props.settings.color} size={12} bold>
+                <Text center color={this.props.settings.color} size={12} bold>
                   LIVE
                 </Text>}
             </Column>
             <Column center>
-              <Text center>{match.team_away.name}</Text>
+              <Text center numberOfLines={3} ellipsizeMode="tail">
+                {match.team_away.name}
+              </Text>
             </Column>
           </Row>
 

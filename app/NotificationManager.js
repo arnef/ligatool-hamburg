@@ -10,7 +10,7 @@ import { NavigationActions } from 'react-navigation';
 import store from './store';
 import actions from './store/actions';
 import { PUT_NOTIFICATION, NOTIFICATION } from './store/actions/types';
-import { MATCH } from './views/routes';
+import { MATCH, OVERVIEW } from './views/routes';
 import { IOS } from './consts';
 import { currentRoute } from './Helper';
 
@@ -77,6 +77,13 @@ function receiveNotification(notif) {
     }
 
     if (notif.opened_from_tray && !matchOpen && notif.type && id) {
+      if (Platform.OS === IOS) {
+        store.dispatch(
+          NavigationActions.navigate({
+            routeName: OVERVIEW
+          })
+        );
+      }
       store.dispatch(
         NavigationActions.navigate({
           routeName: MATCH,
