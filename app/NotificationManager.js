@@ -75,7 +75,7 @@ function receiveNotification(notif) {
         store.dispatch(actions.receiveNotification(notif));
       }
     }
-    
+
     if (notif.opened_from_tray && !matchOpen && id) {
       if (Platform.OS === IOS) {
         store.dispatch(
