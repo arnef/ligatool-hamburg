@@ -62,17 +62,10 @@ export default function(
             match.showButton = match.score_unconfirmed &&
               match.set_points_home + match.set_points_away === 32;
           }
-
+          match.lineUp = checkLineUp(match);
         }
         state[match.id] = match;
       }
-      return state;
-    }
-
-    case 'TOGGLE_MATCH': {
-      state = { ...state };
-      state[action.payload].showButton = !state[action.payload].showButton;
-      state[action.payload].is_admin = !state[action.payload].is_admin;
       return state;
     }
 
@@ -91,6 +84,7 @@ export default function(
         set.number = idx;
         match.sets[idx] = set;
       }
+      match.lineUp = checkLineUp(match);
       return state;
     }
 
@@ -156,7 +150,7 @@ function getMatchType(match: Match): string {
   const sets = match && match.sets ? match.sets : {};
 
   if (sets['5'] && sets['6']) {
-    if (sets['5'].player_2_home !== null && sets['6'].player_2_away !== null) {
+    if (sets['5'].player_2_home != null && sets['6'].player_2_away != null) {
       type += '_d5';
     }
   }
@@ -176,4 +170,40 @@ function compareSets(match: Match, cacheMatch: ?Match): any {
   }
 
   return sets;
+}
+
+function checkLineUp(match: Match) {
+  let count: number = 0;
+  const playerCount = {};
+  const errors = [];
+
+  const addPlayerCount = (idx, player, doubles = false) => {
+    if (!playerCount[player.id]) {
+      playerCount[player.id] = { singles: 0, doubles: 0};
+    }
+    playerCount[player.id][doubles ? 'doubles' : 'singles'] += 1;
+    if (playerCount[player.id][doubles ? 'doubles' : 'singles'] > 4) {
+      errors.push(parseInt(idx));
+    }
+  };
+
+  for (let idx: number in match.sets) {
+    const set = match.sets[idx];
+    if (set.player_1_home && set.player_1_away) {
+        count += 1;
+        if (set.player_2_home != null && set.player_2_away != null) {
+          addPlayerCount(idx, set.player_1_home, true);
+          addPlayerCount(idx, set.player_2_home, true);
+          addPlayerCount(idx, set.player_1_away, true);
+          addPlayerCount(idx, set.player_2_away, true);
+        } else {
+          addPlayerCount(idx, set.player_1_home);
+          addPlayerCount(idx, set.player_1_away);
+        }
+    }
+  }
+  return {
+    update: count >= 16 && errors.length === 0,
+    errors,
+  };
 }

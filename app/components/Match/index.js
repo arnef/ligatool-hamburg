@@ -21,7 +21,10 @@ class Match extends Component {
       toggleMatchType
     } = this.props;
     const match = matches[this.props.match.id];
-
+    const error =
+      editable &&
+      match.lineUp &&
+      match.lineUp.errors.indexOf(data.setsIdx[0]) !== -1;
     return (
       <View key={idx}>
         {data.toggle &&
@@ -45,6 +48,7 @@ class Match extends Component {
               : null
           }
           editable={editable}
+          error={error}
           toggleMenu={
             editable
               ? () => {

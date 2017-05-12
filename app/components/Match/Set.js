@@ -78,11 +78,11 @@ class ListItemSet extends Component {
   renderRow(set, idx) {
     const playerHome = set[`player_${idx + 1}_home`];
     const playerAway = set[`player_${idx + 1}_away`];
-
+    const color = this.props.error ? 'red' : null;
     return (
       <Row center key={idx}>
         <Column>
-          <Text center>{this.getName(playerHome)}</Text>
+          <Text center color={color}>{this.getName(playerHome)}</Text>
         </Column>
         <Column fluid>
           {playerHome && <Image url={playerHome.image} size={32} />}
@@ -94,7 +94,7 @@ class ListItemSet extends Component {
           {playerAway && <Image url={playerAway.image} size={32} />}
         </Column>
         <Column>
-          <Text center>{this.getName(playerAway)}</Text>
+          <Text center color={color}>{this.getName(playerAway)}</Text>
         </Column>
       </Row>
     );

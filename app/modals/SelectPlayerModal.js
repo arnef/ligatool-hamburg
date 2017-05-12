@@ -95,11 +95,9 @@ class SelectPlayer extends Component {
         } else {
           closeModal();
           const set = state.params.data.sets[0];
-
-          if (set.goals_home != null && set.goals_away != null) {
-            const sets = matches[state.params.matchId].sets;
-
-            this.props.updateSets(state.params.matchId, sets);
+          const match = matches[state.params.matchId];
+          if (match.lineUp && match.lineUp.update) {
+            this.props.updateSets(state.params.matchId, match.sets);
           }
         }
       }, 10);
