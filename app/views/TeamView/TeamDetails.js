@@ -4,13 +4,15 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { getTeam } from '../../store/actions/teamActions';
 import { Container } from '../../components';
+import { PLAYER } from '../routes';
 import {
   Row,
   Column,
   Button,
   ListItem,
   Image,
-  Text
+  Text,
+  Touchable
 } from '../../components/base';
 
 class TeamView extends Component {
@@ -188,10 +190,10 @@ class TeamView extends Component {
     }
 
     return (
-      <View style={{ flex: 1, alignItems: 'center' }}>
+      <Touchable onPress={ () => this.props.navigation.navigate(PLAYER, player) } style={{ flex: 1, alignItems: 'center' }}>
         <Image url={player.image} height={120} width={90} />
         <Text center>{`${player.name} ${player.surname}`}</Text>
-      </View>
+      </Touchable>
     );
   }
 

@@ -33,7 +33,9 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    borderWidth: 0, //StyleSheet.hairlineWidth,
+    borderColor: 'grey'
   }
 });
 

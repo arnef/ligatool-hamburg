@@ -6,6 +6,7 @@ import * as DialogActions from './dialogActions';
 import * as LeagueActions from './leagueActions';
 import * as AuthActions from './authActions';
 import * as FCMActions from './fcmActions';
+import * as PlayerActions from './playersActions';
 
 const actions = Object.assign(
   {},
@@ -16,7 +17,8 @@ const actions = Object.assign(
   DialogActions,
   LeagueActions,
   AuthActions,
-  FCMActions
+  FCMActions,
+  PlayerActions
 );
 
 export default actions;

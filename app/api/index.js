@@ -6,5 +6,6 @@ export const NOTIFICATION: string = '/notification';
 export const LEAGUES: string = '/leagues';
 export const MATCHES: string = '/matches';
 export const TEAMS: string = '/teams';
+export const PLAYER: string = '/players';
 
 export default api;

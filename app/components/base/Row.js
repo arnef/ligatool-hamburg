@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    paddingBottom: 8,
+    // paddingBottom: 8,
+    paddingVertical: 4,
     paddingHorizontal: 8
   }
 });

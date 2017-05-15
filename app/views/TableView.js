@@ -75,7 +75,7 @@ class TableView extends Component {
 
     return (
       <Container
-        error={null}
+        error={this.props.error}
         refreshing={this.props.loading}
         onRefresh={this._getLeagues.bind(this)}
       >
@@ -103,6 +103,7 @@ class TableView extends Component {
 
 export default connect(
   state => ({
+    error: state.loading.error,
     loading: state.loading.nonBlocking,
     leagues: state.leagues
   }),

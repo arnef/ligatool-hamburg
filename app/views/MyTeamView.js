@@ -49,6 +49,7 @@ export default TabNavigator(
   },
   {
     ...NavTabBarTop,
-    lazyLoad: false
+    lazyLoad: false,
+    tabBarOptions: { scrollEnabled: false }
   }
 );

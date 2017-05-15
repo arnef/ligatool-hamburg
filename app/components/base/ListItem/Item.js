@@ -31,7 +31,7 @@ class Item extends Component {
     }
 
     return (
-      <View style={active ? { backgroundColor: theme.backgroundColor } : {}}>
+      <View style={active ? { backgroundColor: theme.backgroundColor } : { backgroundColor: '#fff'}}>
         <Container onPress={onPress} style={itemStyle}>
           {children}
         </Container>

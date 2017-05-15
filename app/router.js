@@ -18,7 +18,8 @@ import {
   LEAGUE,
   MATCH,
   PREVIEW,
-  TEAM
+  TEAM,
+  PLAYER
 } from './views/routes';
 
 import ModalLogin from './modals/LoginModal';
@@ -39,7 +40,8 @@ import SettingsNotification from './views/Settings/SettingsNotificationView';
 import Match from './views/MatchView';
 import Preview from './views/MatchView/PreView';
 import Team from './views/TeamView';
-import LeagueCup from './views/SelectableMatchListView';
+import LeagueCup from './views/LeagueCupView';
+import PlayerView from './views/PlayerView';
 import strings from './Strings';
 
 function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
@@ -56,6 +58,10 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
     [TEAM]: {
       screen: Team,
       navigationOptions: { title: ({ state }) => state.params.title }
+    },
+    [PLAYER]: {
+      screen: PlayerView,
+      navigationOptions: { title: ({ state }) => `${state.params.name} ${state.params.surname}`}
     }
   };
   const routes = optionalRoutes
@@ -132,6 +138,10 @@ export const App = Platform.OS === 'android'
           },
           [PREVIEW]: {
             screen: Preview
+          },
+          [PLAYER]: {
+            screen: PlayerView,
+            navigationOptions: { title: ({ state}) => `${state.params.name} ${state.params.surname}` }
           },
           [SETTINGS]: {
             screen: Settings,

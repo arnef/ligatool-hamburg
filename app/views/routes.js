@@ -28,3 +28,4 @@ export const TAB_MATCHES_PLAYED: string = 'TAB_MATCHES_PLAYED';
 export const TAB_MATCHES_NEXT: string = 'TAB_MATCHES_NEXT';
 export const TAB_HOME: string = 'TAB_HOME';
 export const TAB_AWAY: string = 'TAB_AWAY';
+export const TAB_PLAYER_STATS: string = 'TAB_PLAYER_STATS';

@@ -34,6 +34,6 @@ export default TabNavigator(
     [TAB_AWAY]: { screen: TeamAway }
   },
   {
-    ...NavTabBarTop
+    ...NavTabBarTop, tabBarOptions: { scrollEnabled: false }
   }
 );

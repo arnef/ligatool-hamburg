@@ -3,7 +3,8 @@ import {
   FULFILLED,
   QUERY_RANKINGS,
   GET_LEAGUE,
-  QUERY_LEAGUE_MATCHES
+  QUERY_LEAGUE_MATCHES,
+  GET_PLAYERS_STATS
 } from '../actions/types';
 
 const initialState: LeaguesState = {};
@@ -34,6 +35,13 @@ export default function(
         const matchDays = getMatchDays(action.payload.data);
         state[action.payload.config.params.id].match_days = matchDays.matchdays;
         state[action.payload.config.params.id].selected = matchDays.selected;
+      }
+      return state;
+
+    case GET_PLAYERS_STATS + FULFILLED:
+      if (action.payload.ok) {
+        state = { ...state };
+        state[action.payload.config.params.id].players = action.payload.data;
       }
       return state;
 

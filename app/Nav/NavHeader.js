@@ -35,7 +35,7 @@ const singleHeader = [
   routes.LEAGUES,
   routes.SETTINGS,
   routes.SETTINGS_NOTIFICATIONS,
-  routes.LEAGUE_CUP,
+  routes.PLAYER,
   'SelectGroup',
   'SelectTeam',
   'LoginView',

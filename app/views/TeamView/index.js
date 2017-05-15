@@ -20,6 +20,6 @@ export default TabNavigator(
     }
   },
   {
-    ...NavTabBarTop
+    ...NavTabBarTop, tabBarOptions: { scrollEnabled: false }
   }
 );

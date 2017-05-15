@@ -35,5 +35,8 @@ export default {
   swipeEnabled: true,
   animationEnabled: true,
   lazyLoad: true,
-  backBehavior: 'none'
+  backBehavior: 'none',
+  tabBarOptions: {
+    scrollEnabled: true
+  }
 };

@@ -1,10 +1,4 @@
 // @flow
-// navigation
-// export const PUSH_ROUTE: string = 'PUSH_ROUTE';
-// export const POP_ROUTE: string = 'POP_ROUTE';
-// export const RESET_TO_ROUTE: string = 'RESET_TO_ROUTE';
-// export const SET_TAB: string = 'SET_TAB';
-// export const SET_TITLE: string = 'SET_TITLE';
 
 // matches
 export const QUERY_MATCHES: string = 'QUERY_MATCHES';
@@ -31,6 +25,9 @@ export const LOGOUT: string = 'LOGOUT';
 // team
 export const GET_TEAM: string = 'GET_TEAM';
 
+// player
+export const GET_PLAYER: string = 'GET_PLAYER';
+
 // settings
 export const SET_NOTIFICATION: string = 'SET_NOTIFICATION';
 export const SET_GROUP_NOTIFICATION: string = 'SET_GROUP_NOTIFICATION';
@@ -40,6 +37,7 @@ export const LOAD_SETTINGS_FULFILLED = 'LOAD_SETTINGS_FULFILLED';
 // leagues
 export const GET_LEAGUE: string = 'GET_LEAGUE';
 export const QUERY_LEAGUE_MATCHES: string = 'QUERY_LEAGUE_MATCHES';
+export const GET_PLAYERS_STATS: string = 'GET_PLAYERS_STATS';
 
 // global app states
 export const QUERY_RANKINGS: string = 'QUERY_RANKINGS';

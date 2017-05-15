@@ -24,7 +24,8 @@ const strings: {[string]: string } = {
   match: 'Begegnung',
   matches: 'Begegnungen',
   login_info: 'Zugangsdaten für das Liga-Tool.\nWenn diese nicht eingetragen werden, können keine Spiele eingetragen werden.',
-  login_error: 'Fehler beim Anmelden. Überprüfe deine Zugangsdaten.'
+  login_error: 'Fehler beim Anmelden. Überprüfe deine Zugangsdaten.',
+  player_statistics: 'Statistiken'
 };
 
 export default strings;
