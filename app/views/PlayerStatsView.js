@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, MatchStatsBar } from '../components';
+import { Container, MatchStatsBar, StaticListHeader } from '../components';
 import { ListItem, Text, Row, Column, Image } from '../components/base';
 import { getPlayersStats } from '../store/actions/leagueActions';
 import { PLAYER } from './routes';
@@ -15,43 +15,41 @@ class PlayerStatsView extends Component {
     }
   }
 
-
-
   render() {
     const { error, loading } = this.props;
-    const bestlist = this.props.leagues[this.props.navigation.state.params.id].players;
-    return (
-      <Container
-        error={error}
-        refreshing={loading}
-        onRefresh={this.getPlayersStats.bind(this)}>
-        { bestlist && (
-          <ListItem.Group>
-            <ListItem maxHeight={30}>
-              <Column fluid style={{ width: 30 }}>
+    const bestlist = this.props.leagues[this.props.navigation.state.params.id].players || [];
 
-              </Column>
-              <Column>
-                <Text bold size={12}>Name</Text>
-              </Column>
-              <Column fluid style={{ width: 38 }} center>
-                <Text bold size={12}>LI</Text>
-              </Column>
-              <Column fluid style={{ width: 36 }} center>
-                <Text bold size={12}>Q</Text>
-              </Column>
-              <Column fluid style={{ width: 38, alignItems: 'flex-end' }}>
-                <Text bold size={12}>Spiele</Text>
-              </Column>
-            </ListItem>
-            { bestlist.map(item => {
-              return this.renderRow(item, item.position === bestlist.length);
-            }
-            ) }
-          </ListItem.Group>
-        )}
-      </Container>
+    return (
+      <View style={{flex: 1}}>
+        <StaticListHeader>
+          <Column fluid style={{ width: 30 }}>
+          </Column>
+          <Column>
+            <Text size={12}>Name</Text>
+          </Column>
+          <Column fluid style={{ width: 38 }} center>
+            <Text bold size={12}>LI</Text>
+          </Column>
+          <Column fluid style={{ width: 36 }} center>
+            <Text size={12}>Q</Text>
+          </Column>
+          <Column fluid style={{ width: 38, alignItems: 'flex-end' }}>
+            <Text size={12}>Spiele</Text>
+          </Column>
+        </StaticListHeader>
+        <Container
+          error={error}
+          refreshing={loading}
+          onRefresh={this.getPlayersStats.bind(this)}
+          renderRow={({item}) => this.renderRow(item, item.position === bestlist.length)}
+          dataSource={bestlist}
+          keyExtractor={this.keyExtractor.bind(this)}
+        />
+      </View>
     )
+  }
+  keyExtractor(item) {
+    return `${item.position}`;
   }
 
   renderRow(item, last) {

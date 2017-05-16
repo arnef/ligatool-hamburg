@@ -14,15 +14,14 @@ class MatchListView extends Component {
     };
   }
 
-  _renderMatch(id, sec, idx) {
-    const match = this.props.data[id];
+  _renderMatch({ item, index }) {
+    const match = this.props.data[item];
 
     return (
       <MatchItem
-        key={idx}
-        menuOpen={this.state.openMenu === idx}
+        menuOpen={this.state.openMenu === index}
         toggleMenu={() => {
-          this.toggleMenu(idx);
+          this.toggleMenu(index);
         }}
         data={match}
       />
@@ -52,7 +51,7 @@ class MatchListView extends Component {
   render() {
     if (this.props.error) {
       return (
-        <Container {...this.props}>
+        <Container>
           <Row style={{ marginTop: 16 }}>
             <Column center>
               <Button onPress={this.props.onRefresh}>Erneut Laden</Button>
@@ -64,7 +63,6 @@ class MatchListView extends Component {
     if (this.props.matches.length === 0 && !this.props.refreshing) {
       return (
         <Container
-          {...this.props}
           error={this.props.error}
           refreshing={this.props.refreshing}
           onRefresh={this.props.onRefresh}
@@ -79,11 +77,11 @@ class MatchListView extends Component {
     matches.sort(sortMatches(this.props.data));
     return (
       <Container
-        {...this.props}
         error={this.props.error}
         refreshing={this.props.refreshing}
         onRefresh={this.props.onRefresh}
         dataSource={this.props.matches}
+        keyExtractor={ item => { return `${item}`} }
         renderRow={this._renderMatch.bind(this)}
       />
     );

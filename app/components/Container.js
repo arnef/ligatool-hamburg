@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   View,
   ScrollView,
+  FlatList,
   RefreshControl,
   ListView
 } from 'react-native';
@@ -34,18 +35,13 @@ class Container extends Component {
       return (
         <View style={style}>
           <ErrorFlash error={this.props.error} />
-          <ListView
+          <FlatList
+            style={{flex: 1}}
             keyboardShouldPersistTaps="handled"
             refreshControl={!!this.props.onRefresh ? refreshControl : null}
-            style={{ flex: 1 }}
-            renderRow={this.props.renderRow}
-            initialListSize={3}
-            pageSize={4}
-            enableEmptySections={true}
-            automaticallyAdjustContentInsets={true}
-            renderFooter={this.renderFooter.bind(this)}
-            renderHeader={this.renderHeader.bind(this)}
-            dataSource={this.state.data.cloneWithRows(this.props.dataSource)}
+            renderItem={this.props.renderRow}
+            keyExtractor={this.props.keyExtractor}
+            data={this.props.dataSource}
           />
         </View>
       );
@@ -86,7 +82,7 @@ class Container extends Component {
   }
 
   renderHeader() {
-    return <View style={{ height: 4 }} />;
+    return <View style={{ height: 0 }} />;
   }
 }
 

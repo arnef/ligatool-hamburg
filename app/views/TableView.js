@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
-import { Container, TeamLogo } from '../components';
+import { Container, TeamLogo, StaticListHeader } from '../components';
 import { Text, ListItem, Column } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import { TEAM } from './routes';
@@ -10,6 +10,7 @@ import { TEAM } from './routes';
 const width = Dimensions.get('window').width - (5*40) - 32;
 
 class TableView extends Component {
+
   componentDidMount() {
     const id = this.props.navigation.state.params.id;
 
@@ -22,20 +23,12 @@ class TableView extends Component {
     return (
       <ListItem
         last={last}
-        key={idx}
-        maxHeight={idx === -1 ? 30 : 0}
-        onPress={
-          idx !== -1
-            ? () => {
-                this._onPress(data);
-              }
-            : null
-        }
+        onPress={() => this._onPress(data)}
       >
         <Column center fluid style={{ width: 24 }}>
           <Text bold>{data.position}</Text>
         </Column>
-        {idx !== -1 && <TeamLogo team={data} />}
+        <TeamLogo team={data} />
         <Column style={{ paddingLeft: 4, width }}>
           <Text numberOfLines={1} ellipsizeMode='tail'>{data.name}</Text>
         </Column>
@@ -70,34 +63,38 @@ class TableView extends Component {
 
   render() {
     const { leagues } = this.props;
-    const id = this.props.navigation.state.params.id;
-    const table = leagues[id].table || [];
+    const table = leagues[this.props.navigation.state.params.id].table || [];
 
     return (
-      <Container
-        error={this.props.error}
-        refreshing={this.props.loading}
-        onRefresh={this._getLeagues.bind(this)}
-      >
-        {table.length > 0 &&
-          <ListItem.Group>
-            {this._renderTeam(
-              {
-                goals_diff: 'Tore',
-                matches: 'Sp.',
-                points: 'Pkt.',
-                position: '',
-                set_points_diff: 'Sätze',
-                team: ''
-              },
-              -1
-            )}
-            {table.map((team, idx) => {
-              return this._renderTeam(team, idx, idx === table.length - 1);
-            })}
-          </ListItem.Group>}
-      </Container>
-    );
+      <View style={{ flex: 1 }}>
+        <StaticListHeader>
+          <Column center fluid style={{ width: 24 }}>
+          </Column>
+          <Column style={{ paddingLeft: 4, width }}>
+          </Column>
+          <Column center fluid style={{ width: 35 }}>
+            <Text size={12}>Sp.</Text>
+          </Column>
+          <Column center fluid style={{ width: 40 }}>
+            <Text size={12}>Sätze</Text>
+          </Column>
+          <Column center fluid style={{ width: 35 }}>
+            <Text size={12}>Tore</Text>
+          </Column>
+          <Column center fluid style={{ width: 35 }}>
+            <Text bold size={12}>Pkt.</Text>
+          </Column>
+        </StaticListHeader>
+        <Container
+          error={this.props.error}
+          refreshing={this.props.loading}
+          onRefresh={this._getLeagues.bind(this)}
+          renderRow={({ item, index }) => this._renderTeam(item, index, false)}
+          keyExtractor={item => `${item.position}` }
+          dataSource={table}
+        />
+      </View>
+    )
   }
 }
 
