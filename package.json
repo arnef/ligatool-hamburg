@@ -1,6 +1,6 @@
 {
   "name": "arnefeilligatool",
-  "version": "0.11.0",
+  "version": "0.10.1",
   "private": true,
   "scripts": {
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
@@ -12,6 +12,7 @@
     "react": "16.0.0-alpha.6",
     "react-native": "^0.43.3",
     "react-native-fcm": "^6.2.0",
+    "react-native-http-cache": "git+https://github.com/arnef/react-native-http-cache.git",
     "react-native-vector-icons": "^4.0.0",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git#7edd9a7",
     "react-redux": "^5.0.3",

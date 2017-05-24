@@ -6,7 +6,8 @@ import {
   FULFILLED,
   TOKEN,
   UPDATE_FCM_TOKEN,
-  PUT_NOTIFICATION
+  PUT_NOTIFICATION,
+  CLEAR_IMAGE_CACHE
 } from '../actions/types';
 import { NavigationActions } from 'react-navigation';
 
@@ -29,21 +30,23 @@ export default function(
       return state;
     case LOGOUT + PENDING:
     case PUT_SETS + PENDING:
+    case CLEAR_IMAGE_CACHE + PENDING:
       return { ...state, blocking: true, error: null };
 
     case LOGOUT + FULFILLED:
     case PUT_SETS + FULFILLED:
+    case CLEAR_IMAGE_CACHE + FULFILLED:
       return {
         ...state,
         blocking: false,
-        error: action.type === LOGOUT + FULFILLED
+        error: action.type === LOGOUT + FULFILLED || !action.payload
           ? null
           : action.payload.problem
       };
     case NavigationActions.NAVIGATE:
     case NavigationActions.BACK:
       return { ...state, error: null };
-      
+
     default:
       if (action.type.indexOf(PENDING) !== -1 && !state.blocking) {
         state = { ...state, nonBlocking: true, error: null };

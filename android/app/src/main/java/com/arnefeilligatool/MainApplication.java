@@ -3,6 +3,7 @@ package com.arnefeilligatool;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import cn.reactnative.httpcache.HttpCachePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new HttpCachePackage(),
           new FIRMessagingPackage(),
           new VectorIconsPackage()
       );

@@ -2,10 +2,12 @@
 import {
   SET_NOTIFICATION,
   SET_GROUP_NOTIFICATION,
-  PUT_NOTIFICATION
+  PUT_NOTIFICATION,
+  CLEAR_IMAGE_CACHE
 } from './types';
 import api, { NOTIFICATION } from '../../api';
 import store from '../index';
+import { clearCache } from 'react-native-http-cache';
 
 export function setNotification(key: string, value: boolean): Action {
   return {
@@ -19,6 +21,13 @@ export function setGroupNotification(key: string, value: boolean): Action {
     payload: { key, value },
     type: SET_GROUP_NOTIFICATION
   };
+}
+
+export function clearImageCache() {
+  return {
+    type: CLEAR_IMAGE_CACHE,
+    payload: clearCache()
+  }
 }
 
 export function saveNotifications(fcm_token: string, notification: any): Action {

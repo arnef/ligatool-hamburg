@@ -1,4 +1,3 @@
-import Lightbox from 'react-native-lightbox'
 // @flow
 import React, { Component } from 'react';
 import {

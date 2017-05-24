@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { View, Platform, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
-import { ListItem, Text, Switch, Separator } from '../../components/base';
+import { ListItem, Text, Switch, Separator, Column } from '../../components/base';
 import { Container } from '../../components';
 import * as theme from '../../components/base/theme';
 import { NavigationActions } from 'react-navigation';
 import { SETTINGS_NOTIFICATIONS, MODAL_LOGIN } from '../routes';
+import strings from '../../Strings';
+
 
 class SettingsView extends Component {
   _logout() {
@@ -22,6 +24,7 @@ class SettingsView extends Component {
       action: NavigationActions.navigate({ routeName: 'LoginView' })
     });
   }
+
 
   componentDidMount() {
     const { leagues, getRankings } = this.props;
@@ -153,14 +156,23 @@ class SettingsView extends Component {
         <Separator group />
         <ListItem.Group>
           <ListItem.Header title="Informationen" />
-          <ListItem last>
+          <ListItem onPress={this.props.clearImageCache.bind(this)}>
+            <ListItem.Icon name='trash' color={this.props.settings.color} />
+              <Text style={{ paddingTop: 8, paddingBottom: 8}}>{ strings.clear_image_cache }</Text>
+          </ListItem>
+          <ListItem multiline>
+            <Text small secondary>
+              { strings.cache_information }
+            </Text>
+          </ListItem>
+          <Separator />
+          <ListItem>
             <ListItem.Icon
               name="information-circle"
               color={this.props.settings.color}
             />
-            <Text>App-Version 0.10</Text>
+            <Text>{strings.app_version}</Text>
           </ListItem>
-
         </ListItem.Group>
       </Container>
     );
@@ -178,6 +190,7 @@ export default connect(
   dispatch => ({
     getRankings: () => dispatch(actions.getRankings()),
     logout: () => dispatch(actions.logout()),
+    clearImageCache: () => dispatch(actions.clearImageCache()),
     pushRoute: route => dispatch(NavigationActions.navigate(route)),
     saveNotifications: () => dispatch(actions.saveNotifications()),
     setNotification: (key, value) =>

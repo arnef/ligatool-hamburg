@@ -1,4 +1,6 @@
 rootProject.name = 'arnefeil.ligatool'
+include ':react-native-http-cache'
+project(':react-native-http-cache').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-http-cache/android')
 
 include ':app'
 include ':react-native-fcm'
