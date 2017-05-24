@@ -25,7 +25,13 @@ export default function(
 
     case GET_LEAGUE + FULFILLED:
       if (action.payload.ok) {
-        state = { ...state, [action.payload.data.id]: action.payload.data };
+        let league = state[action.payload.data.id];
+        if (league) {
+          league = { ...league, ...action.payload.data };
+        } else {
+          league = action.payload.data;
+        }
+        state = { ...state, [action.payload.data.id]: league };
       }
       return state;
 
