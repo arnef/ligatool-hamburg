@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { View, ScrollView, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
-import { Image, ListItem, Text } from '../components/base';
+import { Image, ListItem, Text, Button } from '../components/base';
 import * as theme from '../components/base/theme';
 import { NavigationActions } from 'react-navigation';
 import {
@@ -133,6 +133,16 @@ class NavigationView extends Component {
             1
           )}
           {this.renderSeparator()}
+          { this.props.loading && (
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flex: 1, padding: 16 }}>
+              <ActivityIndicator size={'large'} color={this.props.settings.color} />
+            </View>
+          )}
+          { !this.props.loading && leagues.length === 0 && (
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flex: 1, padding: 16 }}>
+              <Button title='Erneut laden' onPress={this.props.getRankings.bind(this)} />
+            </View>
+          )}
           {leagues.length > 0 && this.renderLeagues()}
           {this.renderSeparator()}
           {this._renderItem(SETTINGS, 'Einstellungen', 'settings', 2)}
