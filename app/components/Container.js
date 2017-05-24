@@ -77,7 +77,11 @@ class Container extends Component {
   scrollTo(params) {
     if (this.scrollView) {
       setTimeout(() => {
-        this.scrollView.scrollToOffset(params);
+        if (this.scrollView.scrollToOffset) {
+          this.scrollView.scrollToOffset(params);
+        } else if (this.scrollView.scrollTo) {
+          this.scrollView.scrollTo(params);
+        }
       }, 100);
     }
   }
