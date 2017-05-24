@@ -5,6 +5,7 @@ import {
   SET_PLAYER,
   PUT_SETS,
   TOGGLE_D5,
+  RESET_SETS,
   PENDING,
   FULFILLED
 } from './types';
@@ -40,6 +41,13 @@ export function updateSets(matchId: number, sets: any): Action {
   return {
     payload: api.put(`${MATCHES}/${matchId}`, { sets }),
     type: PUT_SETS
+  };
+}
+
+export function resetSets(matchId: number, setsIdx: Array<number>): Action {
+  return {
+    type: RESET_SETS,
+    payload: { id: matchId, setsIdx }
   };
 }
 

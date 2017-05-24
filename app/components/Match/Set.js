@@ -22,8 +22,9 @@ class ListItemSet extends Component {
   showMenu() {
     ActionSheet.show({
       options: ['Spieler wählen', 'Ergebnis eintragen']
+      //, `${this.props.data.name} zurücksetzen`]
     }, (val) => {
-      if (val < 2) {
+      if (val < 3) {
         this.props.onSelect(this.props.index, this.props.data, val);
       }
     });

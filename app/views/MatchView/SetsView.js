@@ -103,6 +103,10 @@ class SetsView extends Component {
     if (value === 1) {
       this.setState({ scoreInput: idx });
     }
+    if (value === 2) {
+      this.props.resetSets(this.props.data.id, data.setsIdx)
+      // alert(JSON.stringify(data));
+    }
   }
 
   onSave(data, score) {
@@ -247,6 +251,7 @@ export default connect(
     toggleMatchType: (id, setsIdx, type) =>
       dispatch(actions.toggleMatchType(id, setsIdx, type)),
     updateSets: (id, sets) => dispatch(actions.updateSets(id, sets)),
-    navigate: (routeName, params) => dispatch(NavigationActions.navigate({ routeName, params }))
+    navigate: (routeName, params) => dispatch(NavigationActions.navigate({ routeName, params })),
+    resetSets: (matchId, setsIdx) => dispatch(actions.resetSets(matchId, setsIdx))
   })
 )(SetsView);

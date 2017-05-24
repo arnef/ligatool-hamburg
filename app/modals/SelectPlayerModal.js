@@ -23,7 +23,8 @@ class SelectPlayer extends Component {
     const { state } = this.props.navigation;
     const match = matches[state.params.matchId];
     const teamKey = `team_${state.params.team}`;
-    const items = match[teamKey] ? match[teamKey].player : [];
+    let items = match[teamKey] ? match[teamKey].player : [];
+
 
     return (
       <Container
@@ -36,8 +37,14 @@ class SelectPlayer extends Component {
   }
 
   renderItem({ item, index }) {
+    const { state } = this.props.navigation;
+    const disabled = item.disabled ?
+      state.params.data.type === 1
+        ? item.disabled.singles
+        : item.disabled.doubles
+      : false;
     return (
-      <ListItem onPress={() => this.onPress(index) }>
+      <ListItem onPress={() => this.onPress(index) } disabled={disabled}>
         <ListItem.Image url={item.image} />
         <Text>{ `${item.name} ${item.surname}`}</Text>
         <View style={{ flex: 1 }} />

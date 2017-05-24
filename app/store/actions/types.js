@@ -9,6 +9,7 @@ export const QUERY_MY_TEAM_MATCHES: string = 'QUERY_MY_TEAM_MATCHES';
 // match
 export const TOGGLE_D5: string = 'TOGGLE_D5';
 export const SET_PLAYER: string = 'SET_PLAYER';
+export const RESET_SETS: string = 'RESET_SETS';
 export const CONFIRM_RESULT: string = 'CONFIRM_RESULT';
 export const PUT_SETS: string = 'PUT_SETS';
 

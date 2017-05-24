@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Platform } from 'react-native';
-import { Row, Column, Touchable, Text } from '../../components/base';
+import { Row, Column, Touchable, Text, Icon } from '../../components/base';
 import * as theme from '../../components/base/theme';
 
 class ScoreInput extends Component {
@@ -75,12 +75,15 @@ class ScoreInput extends Component {
           <Column>
             {this.state.set > 0 &&
               <Touchable onPress={this.goBack.bind(this)}>
+                <Row center>
+                <Icon color={theme.secondaryTextColor} name='arrow-back' size={20} />
                 <Text
                   style={styles.buttonText}
                   upperCase={Platform.OS === 'android'}
                 >
                   1. Satz
                 </Text>
+                </Row>
               </Touchable>}
           </Column>
           <Column style={styles.vSeparator}>

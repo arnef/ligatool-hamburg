@@ -10,6 +10,7 @@ import {
   SET_PLAYER,
   TOGGLE_D5,
   SCORE,
+  RESET_SETS,
   SUGGEST_SCORE,
   SCORE_CONFIRMED,
   NOTIFICATION
@@ -63,6 +64,7 @@ export default function(
               match.set_points_home + match.set_points_away === 32;
           }
           match.lineUp = checkLineUp(match);
+          console.tron.log(match.team_home.player);
         }
         state[match.id] = match;
       }
@@ -106,6 +108,25 @@ export default function(
         }
         match.type = action.payload.type;
       }
+      return state;
+    }
+
+    case RESET_SETS: {
+      const match: Match = state[action.payload.id];
+      if (match) {
+        state = { ...state };
+        for (let idx of action.payload.setsIdx) {
+          if (match.sets && match.sets[idx]) {
+            match.sets[idx].player_1_home = null;
+            match.sets[idx].player_2_home = null;
+            match.sets[idx].player_1_away = null;
+            match.sets[idx].player_2_away = null;
+            match.sets[idx].goals_home = null;
+            match.sets[idx].goals_away = null;
+          }
+        }
+      }
+
       return state;
     }
 
@@ -175,15 +196,28 @@ function compareSets(match: Match, cacheMatch: ?Match): any {
 function checkLineUp(match: Match) {
   let count: number = 0;
   const playerCount = {};
+  const playerDisabled = {};
   const errors = [];
 
   const addPlayerCount = (idx, player, doubles = false) => {
     if (!playerCount[player.id]) {
       playerCount[player.id] = { singles: 0, doubles: 0};
     }
+    if (!playerDisabled[player.id]) {
+      playerDisabled[player.id] = { singles: false, doubles: false };
+    }
     playerCount[player.id][doubles ? 'doubles' : 'singles'] += 1;
-    if (playerCount[player.id][doubles ? 'doubles' : 'singles'] > 4) {
-      errors.push(parseInt(idx));
+    // playerDisabled[player.id][doubles ? 'doubles' : 'singles'] = false;
+    console.tron.log(playerCount[player.id][doubles ? 'doubles' : 'singles'] + ' > ' + (doubles ? (match.league.cup ? 6 : 4) : 2))
+    if (playerCount[player.id][doubles ? 'doubles' : 'singles'] > (doubles ? (match.league.cup ? 6 : 4) : 2)) {
+      console.tron.log(player);
+      if (errors.indexOf(parseInt(idx)) === -1) {
+        errors.push(parseInt(idx));
+      }
+
+    }
+    if (playerCount[player.id][doubles ? 'doubles' : 'singles'] > (doubles ? (match.league.cup ? 5 : 3) : 1)) {
+      playerDisabled[player.id][doubles ? 'doubles' : 'singles'] = true;
     }
   };
 
@@ -202,8 +236,17 @@ function checkLineUp(match: Match) {
         }
     }
   }
+  let i;
+  for (i = 0; i < match.team_home.player.length; i++) {
+    match.team_home.player[i].disabled = playerDisabled[match.team_home.player[i].id];
+  }
+  for (i = 0; i < match.team_away.player.length; i++) {
+    match.team_away.player[i].disabled = playerDisabled[match.team_away.player[i].id];
+  }
+
   return {
     update: count >= 16 && errors.length === 0,
     errors,
+    playerDisabled
   };
 }
