@@ -85,8 +85,9 @@ class SelectPlayer extends Component {
           closeModal();
           const set = state.params.data.sets[0];
           const match = matches[state.params.matchId];
+          console.tron.log(set);
           console.tron.log(match.lineUp);
-          if (match.lineUp && match.lineUp.update) {
+          if ((set.goals_home != null && set.goals_away != null) || (match.lineUp && match.lineUp.update)) {
             this.props.updateSets(state.params.matchId, match.sets);
           }
         }
