@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text as RNText, StyleSheet } from 'react-native';
+import { Text as RNText, StyleSheet, Platform } from 'react-native';
 import * as theme from './theme';
 
 class Text extends Component {
   render() {
     const textStyle = [styles.text];
-    const { color, secondary, bold, size, center, style, ...rest} = this.props;
+    const { small, color, secondary, bold, size, center, style, ...rest} = this.props;
 
     if (color) {
       textStyle.push({ color });
@@ -21,6 +21,9 @@ class Text extends Component {
     }
     if (center) {
       textStyle.push({ textAlign: 'center' });
+    }
+    if (small) {
+      textStyle.push({ fontSize: 12 });
     }
     if (style) {
       textStyle.push(style);
@@ -40,7 +43,8 @@ class Text extends Component {
 
 const styles = StyleSheet.create({
   text: {
-    borderWidth: 0,
+    fontSize: 14,
+    fontWeight: '400',
     color: theme.primaryTextColor
   }
 });

@@ -6,12 +6,13 @@ import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import actions from './store/actions'; // why?
 import Loading from './modals/LoadingModal';
 import { Root } from './router';
+import { ActionSheet } from './components/base';
 import { backgroundColor } from './components/base/theme';
 import NotificationManager from './NotificationManager';
 
 class AppContainer extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     NotificationManager.requestPermissions();
     this.notificationListener = NotificationManager.notificationListener();
     this.refreshTokenListener = NotificationManager.refreshTokenListener();
@@ -44,6 +45,7 @@ class AppContainer extends Component {
     return (
       <View style={{ flex: 1, backgroundColor }}>
         <Loading />
+        <ActionSheet ref={ (c) => {ActionSheet.actionsheetInstance = c;}} />
         <Root
           navigation={addNavigationHelpers({
             dispatch,

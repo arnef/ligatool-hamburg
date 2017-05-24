@@ -8,5 +8,9 @@ import Image from './Image';
 import Touchable from './Touchable';
 import Icon from './Icon';
 import Switch from './Switch';
+import Separator from './Separator';
+import Card from './Card';
+import Content from './Content';
+import ActionSheet from './ActionSheet';
 
-export { Button, Row, Image, Column, ListItem, Text, Touchable, Icon, Switch };
+export { ActionSheet, Card, Content, Separator, Button, Row, Image, Column, ListItem, Text, Touchable, Icon, Switch };

@@ -9,7 +9,16 @@ import {
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container } from '../../components';
-import { ListItem, Row, Column, Button, Text } from '../../components/base';
+import {
+  Card,
+  ListItem,
+  Row,
+  Column,
+  Button,
+  Text,
+  Content,
+  Separator
+} from '../../components/base';
 import * as theme from '../../components/base/theme';
 import { CLIENT_ERROR } from 'apisauce';
 import NavCloseIcon from '../../Nav/NavCloseIcon';
@@ -31,90 +40,97 @@ class LoginView extends Component {
   render() {
     const { loading, error } = this.props;
     const init = this.props.navigation.state.key === 'Init';
-
+    const isIOS = Platform.OS === 'ios';
+    const Wrapper = isIOS ? View : Content;
     return (
       <Container>
         <ListItem.Group>
-          <Row style={{ paddingTop: 6 }}>
+          <Content>
             <Text>
               {strings.login_info}
             </Text>
-          </Row>
-          <Row>
-            <Column>
-              <TextInput
-                placeholder="Username"
-                ref="UserInput"
-                autoCapitalize="none"
-                style={styles.input}
-                underlineColorAndroid={theme.backgroundColor}
-                editable={!loading}
-                blurOnSubmit={false}
-                autoCorrect={false}
-                selectTextOnFocus={true}
-                onChangeText={text => {
-                  this.setState({ user: text });
-                }}
-                onSubmitEditing={() => {
-                  this.refs.PassInput.focus();
-                }}
-                returnKeyLabel="next"
-              />
-              <View style={styles.separator} />
-              <TextInput
-                placeholder="Passwort"
-                ref="PassInput"
-                style={styles.input}
-                selectTextOnFocus={true}
-                underlineColorAndroid={theme.backgroundColor}
-                editable={!loading}
-                secureTextEntry={true}
-                keyboardAppearance="dark"
-                onChangeText={text => {
-                  this.setState({ pass: text });
-                }}
-                onSubmitEditing={this.login.bind(this)}
-                returnKeyType="send"
-              />
-            </Column>
-          </Row>
+
+          </Content>
+          <Wrapper>
+          {isIOS && <Separator full />}
+          <TextInput
+            placeholder="Username"
+            ref="UserInput"
+            autoCapitalize="none"
+            style={styles.input}
+            underlineColorAndroid={theme.backgroundColor}
+            editable={!loading}
+            blurOnSubmit={false}
+            autoCorrect={false}
+            selectTextOnFocus={true}
+            onChangeText={text => {
+              this.setState({ user: text });
+            }}
+            onSubmitEditing={() => {
+              this.refs.PassInput.focus();
+            }}
+            returnKeyLabel="next"
+          />
+          {isIOS && <Separator />}
+          <TextInput
+            placeholder="Passwort"
+            ref="PassInput"
+            style={styles.input}
+            selectTextOnFocus={true}
+            underlineColorAndroid={theme.backgroundColor}
+            editable={!loading}
+            secureTextEntry={true}
+            keyboardAppearance="dark"
+            onChangeText={text => {
+              this.setState({ pass: text });
+            }}
+            onSubmitEditing={this.login.bind(this)}
+            returnKeyType="send"
+          />
+          {isIOS && <Separator full />}
+          </Wrapper>
           {!loading &&
-            <Row style={{ paddingBottom: 0 }}>
-              <Column>
-                <Button
-                  onPress={() => {
-                    this.props.showLogin(false);
-                    if (!init) {
-                      this.props.queryTeamMatches();
-                    }
-                  }}
-                >
-                  {init ? 'Abbrechen' : 'Überspringen'}
-                </Button>
-              </Column>
-              <Column fluid style={{ width: 8 }} />
-              <Column>
-                <Button
-                  disabled={!this.state.user || !this.state.pass}
-                  onPress={this.login.bind(this)}
-                >
-                  Anmelden
-                </Button>
-              </Column>
-            </Row>}
-          {!loading && error === CLIENT_ERROR &&
-            <Row>
-              <Text color="red">
-                {strings.login_error}
-              </Text>
-            </Row>}
+            <Content>
+              <Row>
+                <Column>
+                  <Button
+                    outline
+                    onPress={() => {
+                      this.props.showLogin(false);
+                      if (!init) {
+                        this.props.queryTeamMatches();
+                      }
+                    }}
+                    title={init ? 'Abbrechen' : 'Überspringen'}
+                  />
+
+                </Column>
+                <Column fluid style={{ width: 8 }} />
+                <Column>
+                  <Button
+                    disabled={!this.state.user || !this.state.pass}
+                    onPress={this.login.bind(this)}
+                    title="Anmelden"
+                  />
+                </Column>
+              </Row>
+            </Content>}
           {loading &&
-            <Row center>
-              <Column style={{ marginVertical: 16 }}>
-                <ActivityIndicator color={this.props.color} />
-              </Column>
-            </Row>}
+            <Content>
+              <Row center>
+
+                <ActivityIndicator color={this.props.color} size={'large'} />
+
+              </Row>
+            </Content>}
         </ListItem.Group>
+        {!loading &&
+          error === CLIENT_ERROR &&
+          <Content>
+            <Text color="red" center>
+              {strings.login_error}
+            </Text>
+          </Content>}
       </Container>
     );
   }
@@ -141,19 +157,13 @@ class LoginView extends Component {
 const styles = StyleSheet.create({
   input: Platform.select({
     ios: {
-      height: 40
+      height: 40,
+      marginLeft: 16
     },
     android: {
       marginLeft: -2,
       marginRight: -2
     }
-  }),
-  separator: Platform.select({
-    ios: {
-      backgroundColor: theme.backgroundColor,
-      height: 1
-    },
-    android: { height: 0 }
   })
 });
 

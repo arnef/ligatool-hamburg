@@ -3,7 +3,7 @@ import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container } from '../../components';
-import { ListItem, Text, Switch } from '../../components/base';
+import { ListItem, Text, Switch, Separator } from '../../components/base';
 
 class SettingsNotificationView extends Component {
   componentWillUnmount() {
@@ -12,42 +12,50 @@ class SettingsNotificationView extends Component {
     }
   }
 
+  // render() {
+  //   const leagues = Object.values(this.props.leagues);
+  //   leagues.sort((a, b) => (a.name < b.name ? -1 : 1));
+  //   return (
+  //     <Container {...this.props}>
+  //       <ListItem.Group>
+  //         {leagues.map((league, idx) => {
+  //           return this.renderRow(league, idx);
+  //         })}
+  //       </ListItem.Group>
+  //     </Container>
+  //   );
+  // }
   render() {
-    const leagues = Object.values(this.props.leagues);
-    leagues.sort((a, b) => (a.name < b.name ? -1 : 1));
     return (
-      <Container {...this.props}>
-        <ListItem.Group>
-          {leagues.map((league, idx) => {
-            return this.renderRow(league, idx);
-          })}
-        </ListItem.Group>
-      </Container>
+      <Container
+        dataSource={this.props.leagues}
+        renderRow={this.renderRow.bind(this)}
+        keyExtractor={item => item.id}
+        ItemSeparatorComponent={Separator} />
     );
   }
 
-  renderRow(data, idx) {
+  renderRow({item}) {
     const groups = this.props.settings.notification.leagues || {};
-    const checked = groups[data.id];
+    const checked = groups[item.id];
 
     return (
       <ListItem
-        key={data.id}
-        last={idx === Object.keys(this.props.leagues).length - 1}
+        key={item.id}
         onPress={
           Platform.OS === 'android'
             ? () => {
-                this.props.setGroupNotification(data.id, !checked);
+                this.props.setGroupNotification(item.id, !checked);
               }
             : null
         }
       >
-        <Text>{data.name}</Text>
+        <Text>{item.name}</Text>
         <View style={{ flex: 1 }} />
         <Switch
           value={checked}
           onValueChange={newValue => {
-            this.props.setGroupNotification(data.id, newValue);
+            this.props.setGroupNotification(item.id, newValue);
           }}
         />
       </ListItem>
@@ -57,7 +65,7 @@ class SettingsNotificationView extends Component {
 
 export default connect(
   state => ({
-    leagues: state.leagues,
+    leagues: Object.values(state.leagues).sort((a, b) => (a.name < b.name ? -1 : 1)),
     settings: state.settings
   }),
   dispatch => ({

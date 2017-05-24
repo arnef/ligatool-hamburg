@@ -1,6 +1,11 @@
+import Lightbox from 'react-native-lightbox'
 // @flow
 import React, { Component } from 'react';
-import { AsyncStorage, Alert } from 'react-native';
+import {
+  AsyncStorage,
+  Alert,
+  Image,
+} from 'react-native'
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { migrateFromStorage, setDefaultSettings, checkToken } from './store/manifest';
@@ -25,8 +30,8 @@ class App extends Component<void, Props, State> {
     };
   }
 
-  componentWillMount() { //
-    const config = { storage: AsyncStorage, blacklist: ['nav', 'drawer', 'loading'] }
+  componentDidMount() {
+    const config = { storage: AsyncStorage, whitelist: ['app', 'settings', 'auth', 'matches'] }
     persistStore(store, config, (err: any, localStore: any) => {
       if (localStore.app.version === 1 && !localStore.settings) {
         // first start or old version of app

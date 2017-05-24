@@ -30,10 +30,10 @@ class ScoreInput extends Component {
   render() {
     const playerHome1 = this.props.data.sets
       ? this.props.data.sets[0].player_1_home
-      : {};
+      : null;
     const playerAway1 = this.props.data.sets
       ? this.props.data.sets[0].player_1_away
-      : {};
+      : null;
     const playerHome2 = this.props.data.sets
       ? this.props.data.sets[0].player_2_home
       : null;
@@ -43,10 +43,11 @@ class ScoreInput extends Component {
 
     return (
       <View>
+        { playerHome1 && playerAway1 && (
         <Row center style={{ marginTop: 10 }}>
           <Column center>
             <Text center>
-              {this.getName(playerHome1)}
+              { this.getName(playerHome1)}
               {playerHome2 && `\n-\n${this.getName(playerHome2)}`}
             </Text>
           </Column>
@@ -57,6 +58,7 @@ class ScoreInput extends Component {
             </Text>
           </Column>
         </Row>
+        )}
         <Row center style={{ marginBottom: 10 }}>
           <Column center>
             <View style={styles.score}>
@@ -201,7 +203,7 @@ const styles = StyleSheet.create({
   }),
   score: {
     backgroundColor: '#666',
-    borderRadius: 6,
+    borderRadius: 3,
     margin: 16,
     marginBottom: 0,
     marginTop: 10,

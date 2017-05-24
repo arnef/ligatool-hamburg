@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Column, Text } from '../components/base';
+import { View } from 'react-native';
+import { Column, Text, Content, Touchable, Icon, Row } from '../components/base';
 import { CLIENT_ERROR, NETWORK_ERROR, SERVER_ERROR } from 'apisauce';
 
 class ErrorFlash extends Component {
@@ -8,17 +9,20 @@ class ErrorFlash extends Component {
       const error = this.error();
 
       return (
-        <Column
-          center
-          style={{
-            backgroundColor: error.color,
-            flex: 0,
-            height: 30,
-            padding: 6
-          }}
-        >
-          <Text color="#fff">{error.message}</Text>
-        </Column>
+        <View style={{ backgroundColor: error.color }}>
+        <Touchable onPress={this.props.onRefresh}>
+          <Content>
+            <Row center>
+              <Column>
+                <Text color="#fff">{error.message}</Text>
+              </Column>
+              <Column fluid>
+                <Icon color='#fff' name='refresh' size={22} />
+              </Column>
+            </Row>
+          </Content>
+        </Touchable>
+        </View>
       );
     } else {
       return <Column style={{ flex: 0 }} />;

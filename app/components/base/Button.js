@@ -1,30 +1,36 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { Touchable, Text } from '../base';
+import { Text, Content, Touchable } from '../base';
 import { connect } from 'react-redux';
 
 class Button extends Component {
   render() {
-    const { style, onPress, disabled, color, loading } = this.props;
+    const { style, onPress, disabled, color, loading, outline } = this.props;
     const buttonStyle = [styles.button];
 
-    buttonStyle.push({ backgroundColor: color });
 
-    if (style) {
-      buttonStyle.push(style);
+    // if (outline) {
+      buttonStyle.push({ borderColor: color, borderWidth: 1 });
+    if (!outline) {
+      buttonStyle.push({ backgroundColor: color });
     }
+
     if (disabled) {
       buttonStyle.push(styles.disabled);
     }
-    const Touch = disabled || loading ? View : Touchable;
     const android = Platform.OS === 'android';
+    const Container = disabled || loading
+      ? View
+      : Touchable;
+
 
     return (
-      <Touch onPress={onPress} style={buttonStyle} color>
-        <Text color="#fff" bold={android}>
-          {android ? this.props.children.toUpperCase() : this.props.children}
+      <Container onPress={onPress} style={buttonStyle} pressColor={outline ? color : 'rgba(255,255,255,0.7)'}>
+        <Text color={outline ? color : '#fff'} bold={android}>
+          {android ? this.props.title.toUpperCase() : this.props.title}
         </Text>
-      </Touch>
+
+      </Container>
     );
   }
 }
@@ -32,16 +38,17 @@ class Button extends Component {
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    borderRadius: 4,
-    flex: 1,
+    borderRadius: 2,
+    // flex: 1,
+    padding: 8,
     justifyContent: 'center',
-    marginVertical: 8,
-    minHeight: Platform.select({
-      android: 20,
-      ios: 26
-    }),
-    paddingHorizontal: 16,
-    paddingVertical: 8
+    // marginVertical: 8,
+    // minHeight: Platform.select({
+    //   android: 20,
+    //   ios: 26
+    // }),
+    // paddingHorizontal: 16,
+    // paddingVertical: 8
   },
   disabled: {
     opacity: 0.5

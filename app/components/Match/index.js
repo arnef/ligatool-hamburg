@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
-import { Row, Column, Text, Switch } from '../base';
+import { Row, Column, Text, Switch, Separator, Content } from '../base';
 import Set from './Set';
 import Header from './Header';
 
 class Match extends Component {
-  renderRow(data, idx) {
+  renderRow(data, idx, separator) {
     const {
       onPress,
       matches,
@@ -29,7 +29,8 @@ class Match extends Component {
       <View key={idx}>
         {data.toggle &&
           editable &&
-          <Row center style={{ paddingTop: 8 }}>
+          <Content>
+          <Row center>
             <Text>{data.toggle.title}</Text>
             <Column />
             <Switch
@@ -38,7 +39,8 @@ class Match extends Component {
               }}
               value={match.type.indexOf('d5') !== -1}
             />
-          </Row>}
+          </Row>
+        </Content>}
         <Set
           onPress={
             onPress
@@ -47,8 +49,10 @@ class Match extends Component {
                 }
               : null
           }
+          openPlayer={this.props.openPlayer}
           editable={editable}
           error={error}
+          index={idx}
           toggleMenu={
             editable
               ? () => {
@@ -113,7 +117,7 @@ class Match extends Component {
     return (
       <View>
         {sets.map((set, idx) => {
-          return this.renderRow(set, idx);
+          return this.renderRow(set, idx, idx < sets.length - 1);
         })}
       </View>
     );

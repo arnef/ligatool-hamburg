@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
 import { Icon, Image } from '../components/base';
 import * as theme from '../components/base/theme';
 
-const iconSize = Platform.OS === 'ios' ? 29 : 24;
+const iconSize = 32;
 const bigIconSize = 42;
 
 class TeamLogo extends Component {
@@ -13,6 +12,7 @@ class TeamLogo extends Component {
         <Image
           url={this.props.team.image}
           size={this.props.big ? bigIconSize : iconSize}
+          style={{ marginHorizontal: 8}}
         />
       );
     } else {
@@ -20,6 +20,7 @@ class TeamLogo extends Component {
         <Icon
           size={this.props.big ? bigIconSize : iconSize}
           name="shirt"
+          style={{ marginHorizontal: 8}}
           color={theme.secondaryTextColor}
         />
       );

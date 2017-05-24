@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { View } from 'react-native';
 import { Container } from '../components';
-import { ListItem, Text } from '../components/base';
+import { ListItem, Text, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import {
   LEAGUE,
@@ -19,32 +19,26 @@ class LeaguesView extends Component {
     }
   }
 
+  renderItem({ item }) {
+    return (
+      <ListItem onPress={ () => this.onPress(item)}>
+        <Text>{ item.name }</Text>
+      </ListItem>
+    )
+  }
+
   render() {
-    const leagues = Object.values(this.props.leagues);
-    leagues.sort((a, b) => (a.name < b.name ? -1 : 1));
     return (
       <Container
-        error={null}
+        error={this.props.error}
         refreshing={this.props.loading}
         onRefresh={this.props.getRankings.bind(this)}
-      >
-        {leagues.length > 0 &&
-          <ListItem.Group>
-            {leagues.map((league, idx) => {
-              return (
-                <View key={league.id}>
-                  <ListItem
-                    last={idx === leagues.length - 1}
-                    onPress={() => this.onPress(league)}
-                  >
-                    <Text>{league.name}</Text>
-                  </ListItem>
-                </View>
-              );
-            })}
-          </ListItem.Group>}
-      </Container>
-    );
+        keyExtractor={item => item.id }
+        renderRow={this.renderItem.bind(this)}
+        dataSource={this.props.leagues}
+        getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
+        ItemSeparatorComponent={Separator} />
+    )
   }
 
   onPress(league) {
@@ -65,8 +59,9 @@ class LeaguesView extends Component {
 
 export default connect(
   state => ({
-    leagues: state.leagues,
-    loading: state.loading.nonBlocking
+    leagues: Object.values(state.leagues).sort((a, b) => (a.name < b.name ? -1 : 1)),
+    loading: state.loading.nonBlocking,
+    error: state.loading.error
   }),
   dispatch => ({
     getRankings: () => dispatch(actions.getRankings()),

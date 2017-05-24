@@ -1,15 +1,19 @@
+import Lightbox from 'react-native-lightbox'
 // @flow
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import {
+  View
+} from 'react-native'
 import { connect } from 'react-redux';
 import { getPlayer } from '../store/actions/playersActions';
-import { Container, MatchStatsBar } from '../components';
-import { Text, Image, Row, Column, ListItem } from '../components/base';
+import { Container, MatchStatsBar, StaticListHeader } from '../components';
+import { Text, Image, Row, Column, ListItem, Separator } from '../components/base';
 import { formatDate } from '../Helper';
+import strings from '../Strings';
 
 class PlayerView extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.players[this.props.navigation.state.params.id]) {
       this.getPlayer();
     }
@@ -17,10 +21,12 @@ class PlayerView extends Component {
 
   renderItem(name, value) {
     return (
-      <View style={{marginVertical: 2}}>
-        <Text bold size={12}>{ name }</Text>
-        <Text>{ value ? value : '-'}</Text>
-      </View>
+      <ListItem multiline>
+        <View>
+          <Text bold>{ name }</Text>
+          <Text>{ value ? value : '-'}</Text>
+        </View>
+      </ListItem>
     )
   }
 
@@ -37,9 +43,10 @@ class PlayerView extends Component {
         { player && (
           <View>
           { this.renderInformation(player) }
+          <Separator group />
           { this.renderStats(player.statistics) }
           { this.renderRanglists(player.ranglists) }
-          { this.renderTournaments(player.tournament_participations)}
+          { this.renderTournaments(player.tournament_participations) }
           { this.renderTeams(player.teams) }
           </View>
         )}
@@ -50,68 +57,78 @@ class PlayerView extends Component {
   renderInformation(player) {
     return (
       <ListItem.Group>
-        <ListItem.Header title='Information' />
+        <ListItem.Header title={strings.player_info} />
         <Row>
-          <Image url={player.image} height={120} width={90} style={{marginRight: 8}} />
-          <Column>
-            { this.renderItem('Name', `${player.name} ${player.surname}`)}
-            { this.renderItem('Einstufung', player.classification) }
-            { this.renderItem('Nationale Spielernr.', player.number) }
-            { this.renderItem('Internationale Spielernr.', player.international_number) }
-            { player.teams.length > 0 && this.renderItem('Team', player.teams[0].name)}
-            { this.renderItem('Verein', player.club.name )}
-            { this.renderItem('Verband', player.association.name)}
+          <Column center>
+            <Image url={player.image} height={240} width={180}/>
           </Column>
         </Row>
+        { this.renderItem('Name', `${player.name} ${player.surname}`)}
+        <Separator />
+        { this.renderItem('Einstufung', player.classification) }
+        <Separator />
+        { this.renderItem('Nationale Spielernr.', player.number) }
+        <Separator />
+        { this.renderItem('Internationale Spielernr.', player.international_number) }
+        <Separator />
+        { player.teams.length > 0 && this.renderItem('Team', player.teams[0].name)}
+        { player.teams.length > 0 && <Separator />}
+        { this.renderItem('Verein', player.club.name )}
+        <Separator />
+        { this.renderItem('Verband', player.association.name, true)}
       </ListItem.Group>
     );
   }
 
   renderStats(stats) {
     if (stats.length > 0) {
-      return (
+      return stats.sort((a, b) => a.name < b.name ? -1 : 1).map((stat, idx) => (
+        <View key={idx}>
         <ListItem.Group>
-          <ListItem.Header title={`Statistik ${stats[0].name}`} />
-          <Row>
+          <ListItem.Header title={`Statistik ${stat.name}`} />
+          <ListItem multiline>
             <Column width={2} center>
-              <Text bold size={12}>Platz</Text>
+              <Text bold size={12} numberOfLines={1}>Platz</Text>
             </Column>
-            <Column width={4} center>
-              <Text bold size={12}>Leistungsindex</Text>
+            <Column width={2} center>
+              <Text size={12} numberOfLines={1}>Spiele</Text>
             </Column>
             <Column width={3} center>
-              <Text center bold size={12}>Spielpunkte Quote</Text>
-            </Column>
-            <Column width={2} center>
-              <Text bold size={12}>Spiele</Text>
-            </Column>
-          </Row>
-          <Row>
-            <Column width={2} center>
-              <Text center>{ `${stats[0].position}`}</Text>
-            </Column>
-            <Column width={4} center>
-              <Text center>{ `${stats[0].competitive_index}`}</Text>
+              <Text center size={12} numberOfLines={1}>Spielpunkte Quote</Text>
             </Column>
             <Column width={3} center>
-              <Text center>{ `${stats[0].rate}`}</Text>
+              <Text bold size={12} numberOfLines={1}>Leistungsindex</Text>
+            </Column>
+          </ListItem>
+          <Separator full />
+          <ListItem multiline>
+            <Column width={2} center>
+              <Text bold center>{ `${stat.position}`}</Text>
             </Column>
             <Column width={2} center>
-              <Text center>{ `${stats[0].matches}`}</Text>
+              <Text center>{ `${stat.matches}`}</Text>
             </Column>
-          </Row>
-          <Row>
+            <Column width={3} center>
+              <Text center>{ `${stat.rate}`}</Text>
+            </Column>
+            <Column width={3} center>
+              <Text center bold>{ `${stat.competitive_index}`}</Text>
+            </Column>
+          </ListItem>
+          <ListItem multiline>
           <Column>
-              <MatchStatsBar stats={stats[0]} />
+              <MatchStatsBar stats={stat} />
               <Row>
-                <Text style={{ flex: 1, fontSize: 10 }}>{ `${stats[0].wins} Sieg${stats[0].wins !== 1 ? 'e' : ''}`}</Text>
-                <Text style={{ flex: 1, fontSize: 10, textAlign: 'center' }}>{ `${stats[0].draws} Unentschieden`}</Text>
-                <Text style={{ flex: 1, fontSize: 10, textAlign: 'right' }}>{ `${stats[0].lost} Niederlage${stats[0].lost !== 1 ? 'n' : ''}`}</Text>
+                <Text style={{ flex: 1, fontSize: 10 }}>{ `${stat.wins} Sieg${stat.wins !== 1 ? 'e' : ''}`}</Text>
+                <Text style={{ flex: 1, fontSize: 10, textAlign: 'center' }}>{ `${stat.draws} Unentschieden`}</Text>
+                <Text style={{ flex: 1, fontSize: 10, textAlign: 'right' }}>{ `${stat.lost} Niederlage${stat.lost !== 1 ? 'n' : ''}`}</Text>
               </Row>
             </Column>
-          </Row>
+          </ListItem>
         </ListItem.Group>
-      );
+        <Separator group />
+        </View>
+      ));
     }
     return (<View />)
   }
@@ -119,23 +136,25 @@ class PlayerView extends Component {
   renderRanglists(ranglists) {
     if (ranglists.length > 0) {
       return (
+        <View>
         <ListItem.Group>
           <ListItem.Header title={`Ranglistenplatzierungen ${ranglists[0].season}`} />
-          <Row>
+          <ListItem multiline>
             <Column width={6}>
-              <Text bold size={12}>Rangliste</Text>
+              <Text bold size={12} numberOfLines={1}>Rangliste</Text>
             </Column>
             <Column width={1} center>
-              <Text bold size={12}>Platz</Text>
+              <Text bold size={12} numberOfLines={1}>Platz</Text>
             </Column>
             <Column width={3} center>
-              <Text bold size={12}>Meldungen</Text>
+              <Text bold size={12} numberOfLines={1}>Meldungen</Text>
             </Column>
-          </Row>
+          </ListItem>
+          <Separator full />
           { ranglists.map((ranglist, idx) => {
-            const backgroundColor = idx % 2 === 0 ? rowBackground : null;
             return (
-              <Row key={ranglist.id} style={{ backgroundColor }}>
+              <View key={ranglist.id}>
+              <ListItem multiline>
                 <Column width={6}>
                   <Text>{ `${ranglist.name}`}</Text>
                 </Column>
@@ -145,9 +164,12 @@ class PlayerView extends Component {
                 <Column width={3} center>
                   <Text>{ `${ranglist.participants}` }</Text>
                 </Column>
-              </Row>);
+              </ListItem>
+              { idx < ranglists.length - 1 && <Separator /> }
+            </View>);
           })}
         </ListItem.Group>
+        <Separator group /></View>
       )
     } else {
       return (<View />);
@@ -157,24 +179,25 @@ class PlayerView extends Component {
   renderTeams(teams) {
     if (teams.length > 0) {
       return (
+        <View>
         <ListItem.Group>
           <ListItem.Header title='Teams' />
-          <Row>
+          <ListItem multiline>
             <Column width={2}>
-              <Text bold size={12}>Saison</Text>
+              <Text bold size={12} numberOfLines={1}>Saison</Text>
             </Column>
             <Column width={4}>
-              <Text bold size={12}>Name</Text>
+              <Text bold size={12} numberOfLines={1}>Name</Text>
             </Column>
-
             <Column width={4}>
-              <Text bold size={12}>Wettbewerbe</Text>
+              <Text bold size={12} numberOfLines={1}>Wettbewerbe</Text>
             </Column>
-          </Row>
+          </ListItem>
+          <Separator full />
           { teams.map((team, idx) => {
-            const backgroundColor = idx % 2 === 0 ? rowBackground : null;
             return (
-              <Row key={team.id} style={{backgroundColor}}>
+              <View key={team.id} >
+              <ListItem multiline>
                 <Column width={2}>
                   <Text>{ `${team.season}` }</Text>
                 </Column>
@@ -185,10 +208,13 @@ class PlayerView extends Component {
                 <Column width={4}>
                   <Text>{ team.competitions.join('\n') }</Text>
                 </Column>
-              </Row>
+              </ListItem>
+              { idx < teams.length - 1 && <Separator />}
+              </View>
             )
           })}
         </ListItem.Group>
+        <Separator group /></View>
       )
     } else {
       return (<View />);
@@ -198,26 +224,27 @@ class PlayerView extends Component {
   renderTournaments(tournaments) {
     if (tournaments.length > 0) {
       return (
+        <View>
         <ListItem.Group>
           <ListItem.Header title='Turniermeldungen' />
-          <Row>
+          <ListItem  multiline>
             <Column width={6}>
-              <Text bold size={12}>Turnier</Text>
+              <Text bold size={12} numberOfLines={1}>Turnier</Text>
             </Column>
             <Column width={1} center>
-              <Text bold size={12}>Platz</Text>
+              <Text bold size={12} numberOfLines={1}>Platz</Text>
             </Column>
             <Column width={3} center>
-              <Text bold size={12}>Meldungen</Text>
+              <Text bold size={12} numberOfLines={1}>Meldungen</Text>
             </Column>
-          </Row>
+          </ListItem>
+          <Separator full />
           { tournaments.map((tournament, idx) => {
-            const backgroundColor = idx % 2 === 0 ? rowBackground : null;
-            return (
-              <Row key={tournament.id} style={{ backgroundColor}}>
+            return (<View key={tournament.id}>
+              <ListItem multiline>
                 <Column width={6}>
-                  <Text>{ `${tournament.name}` }</Text>
-                  <Text size={12}>{ `${tournament.discipline}\n${tournament.location} ${formatDate(tournament.date)}`}</Text>
+                  <Text>{ `${tournament.name} - ${tournament.discipline}` }</Text>
+                  <Text>{ `${tournament.location} ${formatDate(tournament.date)}`}</Text>
                 </Column>
                 <Column width={1} center>
                   <Text>{ `${tournament.position}`}</Text>
@@ -225,10 +252,12 @@ class PlayerView extends Component {
                 <Column width={3} center>
                   <Text>{ `${tournament.participants}`}</Text>
                 </Column>
-              </Row>
+              </ListItem>
+              { idx < tournaments.length - 1 && <Separator />}
+              </View>
             )
           })}
-        </ListItem.Group>
+        </ListItem.Group><Separator group /></View>
       );
     } else {
       return (<View />);

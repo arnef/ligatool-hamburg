@@ -10,7 +10,7 @@ class Column extends Component {
       columnStyle.push(styles.center);
     }
     if (width) {
-      columnStyle.push({ flex: this.props.width / 10 });
+      columnStyle.push({ flex: this.props.width });
     }
     if (fluid) {
       columnStyle.push({ flex: 0 });

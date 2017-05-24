@@ -12,8 +12,11 @@ import {
   ListItem,
   Image,
   Text,
+  Icon,
+  Separator,
   Touchable
 } from '../../components/base';
+import strings from '../../Strings';
 
 class TeamView extends Component {
   componentDidMount() {
@@ -42,9 +45,29 @@ class TeamView extends Component {
         onRefresh={this.loadTeam.bind(this)}
       >
         {this.renderTeamDetails(team)}
+        <Separator group />
+        { this.renderVenue(team.venue)}
+        <Separator group />
+        { team.contact && this.renderContacts(team.contact)}
+        { team.contact && (<Separator group />)}
         {team.player && this.renderTeamPlayer(team.player)}
+        { team.player && (<Separator group />)}
       </Container>
     );
+  }
+
+  renderItem(name, value, last, childs) {
+    return (
+      <View key={name}>
+      <ListItem multiline>
+        <View>
+          <Text bold>{ name }</Text>
+          <Text>{ value ? value : '-'}</Text>
+        </View>
+      </ListItem>
+      { !last && <Separator />}
+      </View>
+    )
   }
 
   renderTeamDetails(team) {
@@ -52,150 +75,107 @@ class TeamView extends Component {
 
     return (
       <ListItem.Group>
-        <ListItem.Header title="Details" />
-        <View style={{ height: 10 }} />
+        <ListItem.Header title={strings.team_info} />
         {!!team.image &&
-          <Row center>
-            <Image url={team.image} size={240} />
+          <Row>
+            <Column center>
+              <Image url={team.image} size={240} />
+            </Column>
           </Row>}
         {!!team.league &&
-          <Row>
-            <Column width={leftWidth}>
-              <Text bold>Gruppe</Text>
-            </Column>
-            <Column>
-              <Text>{team.league.name}</Text>
-              {!!team.position && <Text>{team.position}. Platz</Text>}
-            </Column>
-          </Row>}
+          this.renderItem('Gruppe', `${team.league.name} - ${team.position}. Platz`)
+        }
         {!!team.club &&
           !!team.club.id &&
-          <Row>
-            <Column width={leftWidth}>
-              <Text bold>Verein</Text>
-            </Column>
-            <Column>
-              <Text>{team.club.name}</Text>
-            </Column>
-          </Row>}
+          this.renderItem('Verein', team.club.name)
+        }
         {!!team.table &&
-          <Row>
-            <Column width={leftWidth}><Text bold>Heimtisch</Text></Column>
-            <Column><Text>{team.table}</Text></Column>
-          </Row>}
-        {!!team.contact &&
-          <Row>
-            <Column width={leftWidth}><Text bold>Kontakt</Text></Column>
-            <Column>
-              {team.contact.map(contact => {
-                return (
-                  <View key={contact.id}>
-                    <Text>{`${contact.name} ${contact.surname}`}</Text>
-                    <Row style={{ paddingHorizontal: 0 }}>
-                      <Column>
-                        <Button
-                          onPress={() => {
-                            this.openTel(contact.phone_number);
-                          }}
-                        >
-                          Anrufen
-                        </Button>
-                      </Column>
-                      <Column fluid style={{ width: 8 }} />
-                      <Column>
-                        <Button
-                          onPress={() => {
-                            this.openMail(contact.email);
-                          }}
-                        >
-                          E-Mail
-                        </Button>
-                      </Column>
-                    </Row>
-                  </View>
-                );
-              })}
-            </Column>
-          </Row>}
+          this.renderItem('Heimtisch', team.table)
+        }
         {!isNaN(parseInt(team.home_match_day, 10)) &&
-          <Row>
-            <Column width={leftWidth}><Text bold>Heimspielzeit</Text></Column>
-            <Column>
-              <Text>
-                {weekdays[team.home_match_day]}
-                {!!team.home_match_time &&
-                  <Text> um {team.home_match_time}</Text>}
-              </Text>
-            </Column>
-          </Row>}
-        {!!team.venue &&
-          !!team.venue.id &&
-          <Row>
-            <Column width={leftWidth}>
-              <Text bold>Heimspielort</Text>
-            </Column>
-            <Column>
-              <Text>{team.venue.name}</Text>
-              <Text>{team.venue.street}</Text>
-              <Text>{team.venue.zip_code} {team.venue.city}</Text>
-
-              <Button
-                icon="map"
-                onPress={() => {
-                  this.openMaps(team.venue);
-                }}
-              >
-                Karte
-              </Button>
-
-            </Column>
-          </Row>}
+          this.renderItem('Heimspielzeit',
+          `${weekdays[team.home_match_day]} um ${team.home_match_time || '-'}`,
+          true)
+        }
       </ListItem.Group>
     );
+  }
+
+  renderVenue(venue) {
+    if (venue && venue.id) {
+      return (
+        <ListItem.Group>
+          <ListItem.Header title='Heimspielort' />
+          <ListItem multiline onPress={() => this.openMaps(venue)}>
+            <Text>{`${venue.name}\n${venue.street}, ${venue.zip_code} ${venue.city}`}</Text>
+            <Column />
+            <ListItem.Icon right name='pin' color={this.props.color} />
+          </ListItem>
+
+        </ListItem.Group>
+      )
+    } else {
+      return (<View />);
+    }
+  }
+
+  renderContacts(contacts) {
+    if (contacts) {
+      return (
+        <ListItem.Group>
+          <ListItem.Header title='Kontakt' />
+          { contacts.map((item, index) => (
+            <View key={`${index}`}>
+              <ListItem>
+                <Touchable style={{ flex: 1 }} onPress={() => item.phone_number ? this.openTel(item.phone_number) : this.openMail(item.email)}>
+                  <Row fluid center>
+                    <Text>{ `${item.name} ${item.surname}`}</Text>
+                    <Column />
+                  <Column fluid>
+                    <Icon color={this.props.color} name={item.phone_number ? 'call' : 'mail'} size={32} />
+                  </Column>
+                </Row>
+                </Touchable>
+                { !!item.phone_number && (<Touchable onPress={() => this.openMail(item.email)} style={{ flex: 0, marginLeft: 16 }}>
+                <Column fluid>
+                  <Icon color={this.props.color} name='mail' size={32} />
+                </Column>
+
+                </Touchable>
+                )}
+              </ListItem>
+              { index < contacts.length - 1 && <Separator />}
+            </View>
+          ))}
+        </ListItem.Group>
+      );
+    } else {
+      return (<View />);
+    }
+
   }
 
   renderTeamPlayer(players) {
-    const rows = [];
-
-    for (let i = 0; i < players.length; i += 2) {
-      const row = [];
-
-      row.push(players[i]);
-      if (i + 1 < players.length) {
-        row.push(players[i + 1]);
-      }
-      rows.push(row);
-    }
-
     return (
       <ListItem.Group>
-        <ListItem.Header title="Spieler" />
-        <View style={{ margin: 10 }}>
-          {rows.map((row, idx) => {
-            return (
-              <Row key={idx} style={{ paddingVertical: 8 }}>
-                {this.renderPlayer(row[0])}
-                {this.renderPlayer(row.length === 2 ? row[1] : null)}
-              </Row>
-            );
-          })}
-        </View>
+        <ListItem.Header title='Spieler' />
+        { players.map((player, idx) => (
+          <View key={player.id}>
+          <ListItem
+
+            onPress={() => this.props.navigation.navigate(PLAYER, player)}
+            >
+              <ListItem.Image url={player.image}  />
+              <Text>{ `${player.name} ${player.surname}`}</Text>
+            </ListItem>
+            { idx < players.length - 1 && <Separator image />}
+            </View>
+        ))}
       </ListItem.Group>
-    );
+    )
   }
 
-  renderPlayer(player) {
-    if (player === null) {
-      return <Column center />;
-    }
 
-    return (
-      <Touchable onPress={ () => this.props.navigation.navigate(PLAYER, player) } style={{ flex: 1, alignItems: 'center' }}>
-        <Image url={player.image} height={120} width={90} />
-        <Text center>{`${player.name} ${player.surname}`}</Text>
-      </Touchable>
-    );
-  }
 
   getTeam() {
     const { navigation } = this.props;
@@ -256,7 +236,8 @@ export default connect(
   state => ({
     teams: state.teams,
     error: state.loading.error,
-    fetching: state.loading.nonBlocking
+    fetching: state.loading.nonBlocking,
+    color: state.settings.color
   }),
   dispatch => ({
     getTeam: id => dispatch(getTeam(id)),

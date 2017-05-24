@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { formatDate, formatTime } from '../Helper';
 import Score from './Score';
 import {
+  Card,
+  Content,
   Row,
   Column,
-  ListItem,
-  Touchable,
   Icon,
   Text
 } from '../components/base';
@@ -16,72 +16,33 @@ import moment from 'moment';
 import { MATCH, PREVIEW } from '../views/routes';
 
 class MatchItem extends Component {
+
   render() {
-    const match = this.props.data;
+    const { data, color } = this.props;
 
     return (
-      <ListItem.Group>
-        <Touchable
-          onLongPress={() => this.onLongPress(match)}
-          onPress={() => this.onPress(match)}
-        >
-
-          <ListItem.Header title={`${match.league.name} (${match.match_day})`}>
-            {match.venue && <Icon name="pin" />}
-            {match.venue ? ` ${match.venue.name} · ` : ''}
-            {`${formatDate(match.datetime)} ${formatTime(match.datetime)}`}
-          </ListItem.Header>
-
-          <Row center style={{ marginTop: 8 }}>
-            <Column center>
-              <TeamLogo team={match.team_home} big />
-            </Column>
-            <Column fluid center>
-              <Score setPoints={match} />
-            </Column>
-            <Column center>
-              <TeamLogo team={match.team_away} big />
-            </Column>
-          </Row>
-
-          <Row>
-            <Column center>
-              <Text center numberOfLines={3} ellipsizeMode="tail">
-                {match.team_home.name}
-              </Text>
-            </Column>
-            <Column fluid center style={{ width: 60 }}>
-              {match.live &&
-                <Text center color={this.props.settings.color} size={12} bold>
-                  LIVE
-                </Text>}
-            </Column>
-            <Column center>
-              <Text center numberOfLines={3} ellipsizeMode="tail">
-                {match.team_away.name}
-              </Text>
-            </Column>
-          </Row>
-
-        </Touchable>
-      </ListItem.Group>
+      <Card onPress={() => this.onPress(data)}>
+        <Content>
+          <Text bold color={color}>{ `${data.league.name} (${data.match_day})`}</Text>
+          { data.venue && (<Text secondary small><Icon name='pin' />{ ` ${data.venue.name} ${formatDate(data.datetime)} ${formatTime(data.datetime)}` }</Text>)}
+        </Content>
+        <Row>
+          <Column center>
+            <TeamLogo team={data.team_home} big />
+            <Content><Text center small>{`${data.team_home.name}`}</Text></Content>
+          </Column>
+          <Column center fluid>
+            <Score setPoints={data} />
+          </Column>
+          <Column center>
+            <TeamLogo team={data.team_away} big />
+            <Content><Text center small>{`${data.team_away.name}`}</Text></Content>
+          </Column>
+        </Row>
+      </Card>
     );
   }
 
-  /**
-     * just for dev if moment not working correctly
-     */
-  onLongPress(match) {
-    this.props.pushRoute({
-      routeName: MATCH,
-      params: { id: match.id }
-    });
-  }
-
-  /**
-     *
-     * @param {object} match
-     */
   onPress(match) {
     if (
       match.set_points ||
@@ -100,9 +61,11 @@ class MatchItem extends Component {
   }
 }
 
+MatchItem.ITEM_HEIGHT = 152;
+
 export default connect(
   state => ({
-    settings: state.settings
+    color: state.settings.color
   }),
   dispatch => ({
     pushRoute: route => dispatch(NavigationActions.navigate(route))

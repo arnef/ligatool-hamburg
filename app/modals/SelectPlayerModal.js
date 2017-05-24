@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { hidePlayerDialog } from '../store/actions/dialogActions';
 import { setPlayer, updateSets } from '../store/actions/matchActions';
 import { Container } from '../components';
-import { ListItem, Text } from '../components/base';
+import { ListItem, Text, Separator } from '../components/base';
 import NavHeader from '../Nav/NavHeader';
 import NavCloseIcon from '../Nav/NavCloseIcon';
 
@@ -26,35 +26,24 @@ class SelectPlayer extends Component {
     const items = match[teamKey] ? match[teamKey].player : [];
 
     return (
-      <Container>
-        <ListItem.Group>
-          {items.map((item, idx) => {
-            return this.renderItem(item, idx, items.length - 1);
-          })}
-        </ListItem.Group>
-      </Container>
+      <Container
+        dataSource={items}
+        renderRow={this.renderItem.bind(this)}
+        ItemSeparatorComponent={() => (<Separator image />)}
+        keyExtractor={item => item.id}
+      />
     );
   }
 
-  renderItem(data, idx, length) {
-    const { selected } = this.state;
-
+  renderItem({ item, index }) {
     return (
-      <ListItem
-        key={data.id}
-        icon
-        last={idx === length}
-        onPress={() => this.onPress(idx)}
-      >
-        <ListItem.Image url={data.image} />
-        <Text>{`${data.name} ${data.surname}`}</Text>
+      <ListItem onPress={() => this.onPress(index) }>
+        <ListItem.Image url={item.image} />
+        <Text>{ `${item.name} ${item.surname}`}</Text>
         <View style={{ flex: 1 }} />
-        <ListItem.Icon
-          right
-          name={selected[idx] ? 'checkbox' : 'square-outline'}
-        />
+        <ListItem.Icon right size={24} name={this.state.selected[index] ? 'checkbox' : 'square-outline' } />
       </ListItem>
-    );
+    )
   }
 
   onPress(idx) {
@@ -96,6 +85,7 @@ class SelectPlayer extends Component {
           closeModal();
           const set = state.params.data.sets[0];
           const match = matches[state.params.matchId];
+          console.tron.log(match.lineUp);
           if (match.lineUp && match.lineUp.update) {
             this.props.updateSets(state.params.matchId, match.sets);
           }

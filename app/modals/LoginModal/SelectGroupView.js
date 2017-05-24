@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getRankings } from '../../store/actions/leagueActions';
 import { Container } from '../../components';
-import { ListItem, Text } from '../../components/base';
+import { ListItem, Text, Separator } from '../../components/base';
 import { NavigationActions } from 'react-navigation';
 import NavCloseIcon from '../../Nav/NavCloseIcon';
 
 class SelectGroupView extends Component {
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.leagues.length === 0) {
       this.props.getRankings();
     }
@@ -19,25 +19,21 @@ class SelectGroupView extends Component {
         error={this.props.error}
         refreshing={this.props.fetching}
         onRefresh={this.props.getRankings.bind(this)}
-      >
-        {this.props.leagues.length > 0 &&
-          <ListItem.Group>
-            {this.props.leagues.map((league, idx) => {
-              if (!league.cup) {
-                return (
-                  <ListItem
-                    key={league.id}
-                    last={idx >= this.props.leagues.length - 2}
-                    onPress={() => this.onPress(league)}
-                  >
-                    <Text>{league.name}</Text>
-                  </ListItem>
-                );
-              }
-            })}
-          </ListItem.Group>}
-      </Container>
+        renderRow={this.renderItem.bind(this)}
+        dataSource={this.props.leagues}
+        ItemSeparatorComponent={Separator}
+        getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
+        keyExtractor={item => item.id}
+      />
     );
+  }
+
+  renderItem({ item }) {
+    return (
+      <ListItem onPress={() => this.onPress(item)}>
+        <Text>{ `${item.name}`}</Text>
+      </ListItem>
+    )
   }
 
   onPress(league) {

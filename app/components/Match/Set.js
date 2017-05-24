@@ -3,29 +3,53 @@ import { View } from 'react-native';
 import Score from '../Score';
 import ScoreInput from './ScoreInput';
 import {
+  ActionSheet,
+  Card,
+  Content,
   Row,
   Column,
   ListItem,
   Touchable,
   Text,
-  Image
+  Icon,
+  Image,
+  Separator,
+  Picker
 } from '../../components/base';
 
 class ListItemSet extends Component {
+
+  showMenu() {
+    ActionSheet.show({
+      options: ['Spieler wählen', 'Ergebnis eintragen']
+    }, (val) => {
+      if (val < 2) {
+        this.props.onSelect(this.props.index, this.props.data, val);
+      }
+    });
+  }
+
   render() {
     const data = this.props.data;
-    const Container = this.props.editable ? Touchable : View;
+    const Container = this.props.editable && !this.props.scoreInput ? Touchable : View;
 
     return (
-      <ListItem.Group>
-        <ListItem.Header
-          title={data.name}
-          toggleMenu={this.props.toggleMenu}
-          closeIcon={this.props.scoreInput ? 'close' : 'caret-up'}
-          menuOpen={this.props.menuOpen || this.props.scoreInput}
-        />
-        {!this.props.menuOpen &&
-          !this.props.scoreInput &&
+      <Card>
+        <Container onPress={this.showMenu.bind(this)}>
+        <Content>
+          <Row center>
+            <Column>
+              <Text bold secondary>{ `${data.name}`}</Text>
+            </Column>
+            { this.props.editable && !this.props.scoreInput && (
+              <Column fluid>
+                <Icon name='more' size={16} />
+              </Column>
+            )}
+          </Row>
+        </Content>
+      </Container>
+        {  !this.props.scoreInput &&
           <Container
             onPress={
               this.props.onPress
@@ -35,67 +59,56 @@ class ListItemSet extends Component {
                 : null
             }
           >
-            <View style={{ marginTop: 8 }}>
+
               {data.sets.map((set, idx) => {
                 return this.renderRow(set, idx);
               })}
-            </View>
+
           </Container>}
-        {this.props.menuOpen && this.renderOptions()}
-        {this.props.scoreInput &&
+        {this.props.scoreInput && (
           <ScoreInput
             data={data}
             adjustPosition={this.props.adjustPosition}
             onSave={this.props.onSave}
             toggleMenu={this.props.toggleMenu}
-          />}
-      </ListItem.Group>
+          />
+        )
+        }
+      </Card>
     );
   }
 
-  renderOptions() {
-    return (
-      <View>
-        <ListItem
-          onPress={() => {
-            this.props.onSelect(this.props.data, 0);
-          }}
-        >
-          <Text>Spieler wählen</Text>
-        </ListItem>
-        <ListItem
-          onPress={() => {
-            this.props.onSelect(this.props.data, 1);
-          }}
-          last
-        >
-          <Text>Ergebnis eintragen</Text>
-        </ListItem>
-      </View>
-    );
-  }
 
   renderRow(set, idx) {
     const playerHome = set[`player_${idx + 1}_home`];
     const playerAway = set[`player_${idx + 1}_away`];
     const color = this.props.error ? 'red' : null;
+    const Container = this.props.editable ? View : Touchable;
     return (
       <Row center key={idx}>
-        <Column>
-          <Text center color={color}>{this.getName(playerHome)}</Text>
-        </Column>
-        <Column fluid>
-          {playerHome && <Image url={playerHome.image} size={32} />}
-        </Column>
-        <Column fluid center style={{ opacity: this.props.scoreInput ? 0 : 1 }}>
+        <Container
+          onPress={() => this.props.openPlayer(playerHome)}
+          style={{ flexDirection: 'row', flex: 2, paddingBottom: 12, paddingLeft: 12, alignItems: 'center' }}>
+          <Column>
+            <Text center color={color}>{this.getName(playerHome)}</Text>
+          </Column>
+          <Column fluid>
+            {playerHome && <Image url={playerHome.image} size={32} />}
+          </Column>
+        </Container>
+        <Column fluid center style={{ opacity: this.props.scoreInput ? 0 : 1, paddingBottom: 12 }}>
           <Score goals={set} />
         </Column>
-        <Column fluid>
-          {playerAway && <Image url={playerAway.image} size={32} />}
-        </Column>
-        <Column>
-          <Text center color={color}>{this.getName(playerAway)}</Text>
-        </Column>
+        <Container
+          onPress={() => this.props.openPlayer(playerAway)}
+          style={{ flexDirection: 'row', flex: 2, paddingBottom: 12, paddingRight: 12, alignItems: 'center'}}>
+          <Column fluid>
+            {playerAway && <Image url={playerAway.image} size={32} />}
+          </Column>
+          <Column>
+            <Text center color={color}>{this.getName(playerAway)}</Text>
+          </Column>
+        </Container>
       </Row>
     );
   }

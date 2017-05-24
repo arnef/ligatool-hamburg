@@ -16,7 +16,7 @@ import {
 
 class NavigationView extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.leagues.length === 0) {
       this.props.getRankings();
     }
@@ -58,6 +58,7 @@ class NavigationView extends Component {
     return (
       <ListItem
         active={active}
+        maxHeight={48}
         onPress={() => {
           this._handleRowPress({ state: state, title: text, active });
         }}
@@ -83,6 +84,7 @@ class NavigationView extends Component {
         <ListItem
           key={league.id}
           active={active}
+          maxHeight={48}
           last
           onPress={() => {
             this._handleRowPress({

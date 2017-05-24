@@ -1,17 +1,18 @@
 import React, { Component, PropTypes } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 
 import { TabView } from 'react-navigation';
 
 const white = 'rgba(255, 255, 255, .9)';
 
+
 class NavTabBarTop extends Component {
   render() {
     return (
       <TabView.TabBarTop
         {...this.props}
-        activeTintColor={white}
+        activeTintColor='#fff'
         inactiveTintColor={white}
         indicatorStyle={{
           backgroundColor: white
@@ -19,7 +20,7 @@ class NavTabBarTop extends Component {
         style={{ backgroundColor: this.props.color, elevation: 4 }}
         labelStyle={{
           marginHorizontal: 0,
-          marginVertical: 8,
+          marginVertical: 4,
           fontWeight: Platform.OS === 'android' ? '500' : '600'
         }}
       />
@@ -37,6 +38,6 @@ export default {
   lazyLoad: true,
   backBehavior: 'none',
   tabBarOptions: {
-    scrollEnabled: true
+    scrollEnabled: Dimensions.get('window').width < 321
   }
 };

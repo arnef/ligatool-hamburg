@@ -3,7 +3,7 @@ import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { Container, TeamLogo, StaticListHeader } from '../components';
-import { Text, ListItem, Column } from '../components/base';
+import { Text, ListItem, Column, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import { TEAM } from './routes';
 
@@ -22,11 +22,11 @@ class TableView extends Component {
   _renderTeam(data, idx, last) {
     return (
       <ListItem
-        last={last}
+        last
         onPress={() => this._onPress(data)}
       >
-        <Column center fluid style={{ width: 24 }}>
-          <Text bold>{data.position}</Text>
+        <Column center fluid style={{ width: 20 }}>
+          <Text bold >{data.position}</Text>
         </Column>
         <TeamLogo team={data} />
         <Column style={{ paddingLeft: 4, width }}>
@@ -73,25 +73,30 @@ class TableView extends Component {
           <Column style={{ paddingLeft: 4, width }}>
           </Column>
           <Column center fluid style={{ width: 35 }}>
-            <Text size={12}>Sp.</Text>
+            <Text size={12} color='#fff'>Sp.</Text>
           </Column>
           <Column center fluid style={{ width: 40 }}>
-            <Text size={12}>Sätze</Text>
+            <Text size={12} color='#fff'>Sätze</Text>
           </Column>
           <Column center fluid style={{ width: 35 }}>
-            <Text size={12}>Tore</Text>
+            <Text size={12} color='#fff'>Tore</Text>
           </Column>
           <Column center fluid style={{ width: 35 }}>
-            <Text bold size={12}>Pkt.</Text>
+            <Text bold size={12} color='#fff'>Pkt.</Text>
           </Column>
         </StaticListHeader>
+
         <Container
+          hasHeader
           error={this.props.error}
           refreshing={this.props.loading}
           onRefresh={this._getLeagues.bind(this)}
           renderRow={({ item, index }) => this._renderTeam(item, index, false)}
           keyExtractor={item => `${item.position}` }
+          ItemSeparatorComponent={props => <Separator table image />}
+          getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
           dataSource={table}
+
         />
       </View>
     )

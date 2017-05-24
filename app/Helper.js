@@ -122,3 +122,10 @@ export function currentRoute(): NavigationRoute {
 
   return recursiveFindRoute(store.getState().nav);
 }
+
+export function darken(color, amt) {
+  amt = Math.round(2.55 * amt);
+  const colorVal = parseInt(color.replace('#', ''), 16);
+  const darkColor = ((( colorVal & 0x0000FF) - amt) | (((( colorVal>> 8) & 0x00FF) - amt) << 8) | (((colorVal >> 16) - amt) << 16)).toString(16);
+  return `#${darkColor}`;
+}

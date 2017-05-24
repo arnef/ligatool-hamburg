@@ -34,21 +34,26 @@ class Container extends Component {
     if (this.props.renderRow) {
       return (
         <View style={style}>
-          <ErrorFlash error={this.props.error} />
+          <ErrorFlash error={this.props.error} onRefresh={this.props.onRefresh} />
           <FlatList
             style={{flex: 1}}
             keyboardShouldPersistTaps="handled"
+            ItemSeparatorComponent={this.props.ItemSeparatorComponent}
             refreshControl={!!this.props.onRefresh ? refreshControl : null}
             renderItem={this.props.renderRow}
             keyExtractor={this.props.keyExtractor}
             data={this.props.dataSource}
+            ref={scrollview => {
+              this.scrollView = scrollview;
+            }}
+            getItemLayout={this.props.getItemLayout}
           />
         </View>
       );
     } else {
       return (
         <View style={style}>
-          <ErrorFlash error={this.props.error} />
+          <ErrorFlash error={this.props.error} onRefresh={this.props.onRefresh} />
           <ScrollView
             keyboardShouldPersistTaps="handled"
             automaticallyAdjustContentInsets={false}
@@ -60,9 +65,9 @@ class Container extends Component {
             }}
             style={{ flex: 1 }}
           >
-            <View style={{ paddingVertical: 4 }}>
+
               {this.props.children}
-            </View>
+
           </ScrollView>
         </View>
       );
@@ -72,7 +77,7 @@ class Container extends Component {
   scrollTo(params) {
     if (this.scrollView) {
       setTimeout(() => {
-        this.scrollView.scrollTo(params);
+        this.scrollView.scrollToOffset(params);
       }, 100);
     }
   }

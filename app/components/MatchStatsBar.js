@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 class MatchStatsBar extends Component {
 
   render() {
-    const height = this.props.small ? 12 : 20;
+    const height = this.props.small ? 14 : 14;
     const wins = [style.wins, {
       flex: (this.props.stats.wins / this.props.stats.matches),
       height
@@ -17,6 +17,26 @@ class MatchStatsBar extends Component {
       flex: (this.props.stats.lost / this.props.stats.matches),
       height
     }];
+
+    if (this.props.stats.wins === 0) {
+      draws.push({
+        borderTopLeftRadius: 8,
+        borderBottomLeftRadius: 8
+      });
+      if (this.props.stats.draws === 0) {
+        lost.push({
+          borderTopLeftRadius: 8,
+          borderBottomLeftRadius: 8
+        })
+      }
+    }
+
+    if (this.props.stats.lost === 0) {
+      draws.push({
+        borderTopRightRadius: 8,
+        borderBottomRightRadius: 8
+      });
+    }
     return (
       <View style={style.barContainer}>
         <View style={wins}>
@@ -52,17 +72,21 @@ const style = StyleSheet.create({
   wins: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(136, 168, 37, .8)'
+    backgroundColor: 'rgba(136, 168, 37, .7)',
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8
   },
   draws: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(237, 140, 42, .8)'
+    backgroundColor: 'rgba(237, 140, 42, .7)'
   },
   lost: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(207, 74, 48, .8)'
+    backgroundColor: 'rgba(207, 74, 48, .7)',
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8
   }
 });
 

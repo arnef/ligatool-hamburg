@@ -9,19 +9,20 @@ import { ANDROID_VERSION_LOLLIPOP } from '../../consts';
 
 class Touchable extends Component {
   render() {
+    const { style, ...rest } = this.props;
     if (
       Platform.OS === 'android' &&
       Platform.Version >= ANDROID_VERSION_LOLLIPOP
     ) {
-      const { style, ...rest } = this.props;
-
+      const useForeground = TouchableNativeFeedback.canUseNativeForeground() ? { useForeground: true } : {};
       return (
         <TouchableNativeFeedback
           {...rest}
           style={null}
+          delayPressIn={30}
           background={TouchableNativeFeedback.Ripple(
-            this.props.pressColor,
-            this.props.borderless
+            this.props.pressColor || 'rgba(0,0,0,.2)',
+            true
           )}
         >
           <View style={style}>
@@ -31,8 +32,10 @@ class Touchable extends Component {
       );
     } else {
       return (
-        <TouchableOpacity {...this.props}>
-          {this.props.children}
+        <TouchableOpacity {...rest} style={style}>
+
+            {this.props.children}
+
         </TouchableOpacity>
       );
     }

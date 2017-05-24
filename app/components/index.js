@@ -7,4 +7,12 @@ import TeamLogo from './TeamLogo';
 import MatchStatsBar from './MatchStatsBar';
 import StaticListHeader from './StaticListHeader';
 
-export { Match, MatchStatsBar, Container, LaunchScreen, MatchItem, TeamLogo, StaticListHeader };
+export {
+  Match,
+  MatchStatsBar,
+  Container,
+  LaunchScreen,
+  MatchItem,
+  TeamLogo,
+  StaticListHeader
+};

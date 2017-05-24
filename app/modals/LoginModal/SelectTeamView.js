@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Container } from '../../components';
+import { Container, TeamLogo } from '../../components';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
-import { ListItem, Text } from '../../components/base';
+import { ListItem, Text, Separator } from '../../components/base';
 import { NavigationActions } from 'react-navigation';
 
 class SelectTeamView extends Component {
@@ -31,27 +31,21 @@ class SelectTeamView extends Component {
         error={this.props.error}
         refreshing={this.props.fetching}
         onRefresh={this.getTeams.bind(this)}
-      >
-        {teams.length > 0 &&
-          <ListItem.Group>
-            {teams.map((team, idx) => {
-              return (
-                <ListItem
-                  onPress={() => {
-                    this.onPress(team);
-                  }}
-                  key={team.id}
-                  last={idx === teams.length - 1}
-                  icon={true}
-                >
-                  {team.image && <ListItem.Image url={team.image} />}
-                  {!team.image && <ListItem.Icon name="shirt" />}
-                  <Text>{team.name}</Text>
-                </ListItem>
-              );
-            })}
-          </ListItem.Group>}
-      </Container>
+        dataSource={teams}
+        renderRow={this.renderItem.bind(this)}
+        getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
+        ItemSeparatorComponent={() => (<Separator image />)}
+        keyExtractor={item => item.id}
+      />
+    );
+  }
+
+  renderItem({ item }) {
+    return (
+      <ListItem onPress={() => this.onPress(item) }>
+        <TeamLogo team={item} />
+        <Text>{ `${item.name}` }</Text>
+      </ListItem>
     );
   }
 

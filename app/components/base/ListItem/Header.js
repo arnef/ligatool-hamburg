@@ -11,6 +11,7 @@ class ListItemHeader extends Component {
     const {
       toggleMenu,
       title,
+      subtitle,
       menuOpen,
       closeIcon,
       children,
@@ -19,20 +20,18 @@ class ListItemHeader extends Component {
     const Container = !!toggleMenu ? Touchable : View;
 
     return (
-      <View
-        style={[styles.separator, { borderBottomWidth: hideSeparator ? 0 : 1 }]}
-      >
-        <Container onPress={toggleMenu}>
-          <View style={styles.header}>
+
+        <View style={styles.header}>
+          {/* <View style={styles.header}> */}
             <Text
               bold
-              size={14}
               style={styles.headerText}
               color={this.props.color}
             >
               {title}
             </Text>
-            <View style={{ flex: 1 }} />
+
+            {/* <View style={{ flex: 1 }} />
             {!!toggleMenu &&
               <Icon
                 name={
@@ -42,14 +41,14 @@ class ListItemHeader extends Component {
                 style={{ marginRight: 10, textAlign: 'right' }}
                 color={theme.secondaryTextColor}
               />}
-          </View>
-
-          {!!children &&
+          </View> */}
+          {/* {!!children &&
             <Text secondary size={12} style={styles.subHeaderText}>
               {children}
-            </Text>}
-        </Container>
-      </View>
+            </Text>} */}
+
+        </View>
+
     );
   }
 }
@@ -57,21 +56,22 @@ class ListItemHeader extends Component {
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingBottom: 12
   },
   headerText: {
-    marginBottom: 9,
-    marginHorizontal: 10,
-    marginTop: 10
+    marginBottom: 0,
+    marginHorizontal: 16,
+    marginTop: 0
   },
   separator: {
     borderBottomColor: theme.backgroundColor,
     borderBottomWidth: 1
   },
   subHeaderText: {
-    marginBottom: 10,
-    marginHorizontal: 10,
-    marginTop: -8
+    marginBottom: 0,
+    marginHorizontal: 16,
+    marginTop: 0
   }
 });
 

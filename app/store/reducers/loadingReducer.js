@@ -8,6 +8,7 @@ import {
   UPDATE_FCM_TOKEN,
   PUT_NOTIFICATION
 } from '../actions/types';
+import { NavigationActions } from 'react-navigation';
 
 const initialState: LoadingState = {
   blocking: false,
@@ -39,7 +40,10 @@ export default function(
           ? null
           : action.payload.problem
       };
-
+    case NavigationActions.NAVIGATE:
+    case NavigationActions.BACK:
+      return { ...state, error: null };
+      
     default:
       if (action.type.indexOf(PENDING) !== -1 && !state.blocking) {
         state = { ...state, nonBlocking: true, error: null };

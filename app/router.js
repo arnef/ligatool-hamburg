@@ -76,11 +76,15 @@ export const MyTeamStack = createTabStack(MY_TEAM, MyTeam);
 export const LeaguesStack = createTabStack(LEAGUES, Leagues, {
   [LEAGUE]: {
     screen: League,
-    navigationOptions: { title: ({ state }) => state.params.title }
+    navigationOptions: {
+      title: ({ state }) => state.params.title,
+    }
   },
   [LEAGUE_CUP]: {
     screen: LeagueCup,
-    navigationOptions: { title: ({ state }) => state.params.title }
+    navigationOptions: {
+      title: ({ state }) => state.params.title,
+    }
   }
 });
 

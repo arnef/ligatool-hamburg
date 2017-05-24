@@ -37,7 +37,7 @@ class MatchHeader extends Component {
           <Text
             center
             bold={isAndroid}
-            color="#fff"
+            color='#fff'
             numberOfLines={2}
             ellipsizeMode="tail"
           >
@@ -45,8 +45,8 @@ class MatchHeader extends Component {
           </Text>
         </Touchable>
         <View style={style.score}>
-          <Text style={style.points}>{score}</Text>
-          <Text style={style.points} size={12}>({goals})</Text>
+          <Text style={style.points} color={this.props.color}>{score}</Text>
+          <Text style={style.points} size={12} color={this.props.color}>({goals})</Text>
         </View>
         <Touchable
           pressColor={white}
@@ -57,7 +57,7 @@ class MatchHeader extends Component {
           <Text
             center
             bold={isAndroid}
-            color="#fff"
+            color='#fff'
             numberOfLines={2}
             ellipsizeMode="tail"
           >
@@ -80,9 +80,9 @@ const style = StyleSheet.create({
   header: {
     elevation: 4,
     flexDirection: 'row',
-    height: 46,
+    height: 42,
     justifyContent: 'space-around',
-    maxHeight: 46,
+    maxHeight: 42,
     shadowColor: 'black',
     shadowOffset: { height: StyleSheet.hairlineWidth },
     shadowOpacity: 0.1,

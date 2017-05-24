@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-
+import { View, StyleSheet, Platform } from 'react-native';
+import { Text } from './base';
 class Score extends Component {
   renderScore() {
     const match = this.props.setPoints;
@@ -13,10 +13,21 @@ class Score extends Component {
   render() {
     if (this.props.setPoints) {
       return (
-        <View style={styles.score}>
+        <View>
+        <View style={[styles.score, { marginTop: 8 }]}>
           <Text style={styles.scoreText}>
             {this.renderScore()}
           </Text>
+        </View>
+        <Text
+          bold
+          center
+          small
+          style={{marginTop: 2}}
+          color={this.props.setPoints.live ? '#555' : 'transparent'}
+        >
+          LIVE
+        </Text>
         </View>
       );
     } else if (this.props.goals) {

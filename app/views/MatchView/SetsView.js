@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { View, Keyboard, Dimensions, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 import actions from '../../store/actions';
 import { Container, Match } from '../../components';
-import { Button, Row } from '../../components/base';
+import { Button, Row, ActionSheet, Content } from '../../components/base';
 import * as theme from '../../components/base/theme';
-
+import { PLAYER } from '../routes';
 const height = Dimensions.get('window').height;
 
 class SetsView extends Component {
@@ -20,7 +21,7 @@ class SetsView extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.props.loading) {
       this.getMatch();
     }
@@ -62,13 +63,20 @@ class SetsView extends Component {
   }
 
   toggleMenu(idx) {
-    if (this.state.menuOpen === idx) {
-      this.setState({ menuOpen: -1, scoreInput: -1 });
-    } else if (this.state.scoreInput === idx) {
-      this.setState({ menuOpen: -1, scoreInput: -1 });
-    } else {
-      this.setState({ menuOpen: idx, scoreInput: -1 });
+    if (this.state.scoreInput !== idx) {
+    ActionSheet.show({
+      options: ['Spieler wählen', 'Ergebnis eintragen', 'Abbrechen'],
+      cancelButtonIndex: 2
+    }, (val) => {
+      if (val === 0) {
+
+      }
+      if (val === 1) {
+        this.toggleScoreInput(idx);
+      }
+    });
     }
+    this.setState({ scoreInput: -1 });
   }
 
   getMatch() {
@@ -83,13 +91,17 @@ class SetsView extends Component {
     }
   }
 
-  onSelect(data, value) {
-    this.toggleMenu(-1);
+  openPlayer(player) {
+    this.props.navigate(PLAYER, player);
+  }
+
+  onSelect(idx, data, value) {
+    // this.toggleMenu(-1);
     if (value === 0) {
       this.props.showPlayerDialog(this.props.data.id, data);
     }
     if (value === 1) {
-      this.setState({ scoreInput: this.state.menuOpen });
+      this.setState({ scoreInput: idx });
     }
   }
 
@@ -156,6 +168,7 @@ class SetsView extends Component {
             match={data}
             toggleMatchType={this.props.toggleMatchType.bind(this)}
             onPress={this.onPress.bind(this)}
+            openPlayer={this.openPlayer.bind(this)}
             scoreInput={this.state.scoreInput}
             toggleMenu={this.toggleMenu.bind(this)}
             menuOpen={this.state.menuOpen}
@@ -186,9 +199,8 @@ class SetsView extends Component {
           onPress={() => {
             this.props.suggestScore(match.id, match.sets, idx);
           }}
-        >
-          {`${btnText[idx]}`}
-        </Button>
+          title={`${btnText[idx]}`}
+        />
       </View>
     );
   }
@@ -200,6 +212,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: Dimensions.get('window').width,
     paddingHorizontal: 8,
+    paddingVertical: 8,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: 'rgba(0, 0, 0, .2)',
     backgroundColor: Platform.OS === 'ios'
@@ -233,6 +246,7 @@ export default connect(
       dispatch(actions.suggestScore(id, sets, btnIdx)),
     toggleMatchType: (id, setsIdx, type) =>
       dispatch(actions.toggleMatchType(id, setsIdx, type)),
-    updateSets: (id, sets) => dispatch(actions.updateSets(id, sets))
+    updateSets: (id, sets) => dispatch(actions.updateSets(id, sets)),
+    navigate: (routeName, params) => dispatch(NavigationActions.navigate({ routeName, params }))
   })
 )(SetsView);

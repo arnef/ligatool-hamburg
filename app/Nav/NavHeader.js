@@ -6,7 +6,7 @@ import { ANDROID, ANDROID_VERSION_LOLLIPOP } from '../consts';
 import * as routes from '../views/routes';
 import { backgroundColor } from '../components/base/theme';
 
-const white = 'rgba(255, 255, 255, .9)';
+const white = 'rgba(255, 255, 255, .8)';
 
 class NavHeader extends Component {
   render() {

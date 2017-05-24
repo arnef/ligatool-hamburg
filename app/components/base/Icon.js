@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-
+import { primaryTextColor } from './theme';
 class Icon extends Component {
   render() {
     let iconName = Platform.OS === 'android'
