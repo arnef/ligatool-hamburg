@@ -5,7 +5,14 @@
   "scripts": {
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'"
+    "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote --trailing-comma=all --bracket-spacing",
+      "git add"
+    ]
   },
   "dependencies": {
     "apisauce": "^0.12.0",
@@ -29,6 +36,8 @@
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^6.10.3",
     "flow-bin": "0.40.0",
+    "husky": "^0.13.3",
+    "lint-staged": "^3.5.0",
     "prettier": "^1.3.1",
     "reactotron-apisauce": "^1.9.1",
     "reactotron-react-native": "^1.9.1",
