@@ -4,14 +4,14 @@ import {
   MY_TEAM,
   LEAGUE,
   LEAGUE_CUP,
-  SETTINGS
+  SETTINGS,
 } from '../../views/routes';
 import { NavigationActions } from 'react-navigation';
 import { currentRoute } from '../../Helper';
 
 const routes = [OVERVIEW, MY_TEAM, LEAGUE, LEAGUE_CUP, SETTINGS];
 
-export default function(state=OVERVIEW, action: Action) {
+export default function(state = OVERVIEW, action: Action) {
   switch (action.type) {
     case 'UPDATE_DRAWER_ITEM':
     case NavigationActions.NAVIGATE:

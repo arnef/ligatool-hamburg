@@ -7,7 +7,7 @@ class MatchView extends Component {
   render() {
     const { navigation, matches } = this.props;
     const match = matches[navigation.state.params.id] || {
-      id: navigation.state.params.id
+      id: navigation.state.params.id,
     };
 
     return <SetsView data={match} />;
@@ -15,5 +15,5 @@ class MatchView extends Component {
 }
 
 export default connect(state => ({
-  matches: state.matches
+  matches: state.matches,
 }))(MatchView);

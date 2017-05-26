@@ -9,7 +9,6 @@ import strings from '../Strings';
 import { TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes';
 
 class MyTeam extends Component {
-
   render() {
     const { matches, error, fetching, refreshOnMount } = this.props;
 
@@ -32,9 +31,9 @@ export default TabNavigator(
         matches: state.myTeam.next,
         fetching: state.loading.nonBlocking,
         error: state.loading.error,
-        refreshOnMount: true
+        refreshOnMount: true,
       }))(MyTeam),
-      navigationOptions: { title: strings.next }
+      navigationOptions: { title: strings.next },
     },
     [TAB_MATCHES_PLAYED]: {
       screen: connect(state => ({
@@ -42,14 +41,14 @@ export default TabNavigator(
         fetching: state.loading.nonBlocking,
         error: state.loading.error,
         refreshOnMount: false,
-        team: state.settings.team
+        team: state.settings.team,
       }))(MyTeam),
-      navigationOptions: { title: strings.played }
-    }
+      navigationOptions: { title: strings.played },
+    },
   },
   {
     ...NavTabBarTop,
     lazyLoad: false,
-    tabBarOptions: { scrollEnabled: false }
-  }
+    tabBarOptions: { scrollEnabled: false },
+  },
 );

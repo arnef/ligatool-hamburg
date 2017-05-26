@@ -3,19 +3,15 @@ import { View, StyleSheet } from 'react-native';
 import { Touchable } from '../base';
 
 class Card extends Component {
-
   render() {
-    const {
-      onPress,
-      children
-    } = this.props;
+    const { onPress, children } = this.props;
 
     const Container = onPress ? Touchable : View;
 
     return (
       <View style={style.container}>
         <Container onPress={onPress}>
-        { this.props.children }
+          {this.props.children}
         </Container>
       </View>
     );
@@ -30,8 +26,8 @@ const style = StyleSheet.create({
     marginVertical: 8,
     shadowOffset: { height: 0, width: 0 },
     shadowOpacity: 0.25,
-    elevation: 2
-  }
+    elevation: 2,
+  },
 });
 
 export default Card;

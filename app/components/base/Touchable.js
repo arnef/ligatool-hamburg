@@ -3,7 +3,7 @@ import {
   View,
   TouchableNativeFeedback,
   TouchableOpacity,
-  Platform
+  Platform,
 } from 'react-native';
 import { ANDROID_VERSION_LOLLIPOP } from '../../consts';
 
@@ -14,7 +14,9 @@ class Touchable extends Component {
       Platform.OS === 'android' &&
       Platform.Version >= ANDROID_VERSION_LOLLIPOP
     ) {
-      const useForeground = TouchableNativeFeedback.canUseNativeForeground() ? { useForeground: true } : {};
+      const useForeground = TouchableNativeFeedback.canUseNativeForeground()
+        ? { useForeground: true }
+        : {};
       return (
         <TouchableNativeFeedback
           {...rest}
@@ -22,7 +24,7 @@ class Touchable extends Component {
           delayPressIn={30}
           background={TouchableNativeFeedback.Ripple(
             this.props.pressColor || 'rgba(0,0,0,.2)',
-            true
+            true,
           )}
         >
           <View style={style}>
@@ -34,7 +36,7 @@ class Touchable extends Component {
       return (
         <TouchableOpacity {...rest} style={style}>
 
-            {this.props.children}
+          {this.props.children}
 
         </TouchableOpacity>
       );

@@ -25,8 +25,8 @@ class Image extends Component {
 
 const styles = StyleSheet.create({
   image: {
-    resizeMode: 'contain'
-  }
+    resizeMode: 'contain',
+  },
 });
 
 export default Image;

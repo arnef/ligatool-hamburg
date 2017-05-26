@@ -12,14 +12,15 @@ export default TabNavigator(
   {
     [TAB_TEAM]: {
       screen: TeamView,
-      navigationOptions: { title: strings.team }
+      navigationOptions: { title: strings.team },
     },
     [TAB_MATCHES]: {
       screen: TeamMatches,
-      navigationOptions: { title: strings.matches }
-    }
+      navigationOptions: { title: strings.matches },
+    },
   },
   {
-    ...NavTabBarTop, tabBarOptions: { scrollEnabled: false }
-  }
+    ...NavTabBarTop,
+    tabBarOptions: { scrollEnabled: false },
+  },
 );

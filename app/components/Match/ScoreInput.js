@@ -9,7 +9,7 @@ class ScoreInput extends Component {
     this.state = {
       goals_away: null,
       goals_home: null,
-      set: 0
+      set: 0,
     };
   }
 
@@ -23,7 +23,7 @@ class ScoreInput extends Component {
       }
     }
     this.setState({
-      set: idx
+      set: idx,
     });
   }
 
@@ -43,22 +43,22 @@ class ScoreInput extends Component {
 
     return (
       <View>
-        { playerHome1 && playerAway1 && (
-        <Row center style={{ marginTop: 10 }}>
-          <Column center>
-            <Text center>
-              { this.getName(playerHome1)}
-              {playerHome2 && `\n-\n${this.getName(playerHome2)}`}
-            </Text>
-          </Column>
-          <Column center>
-            <Text center>
-              {this.getName(playerAway1)}
-              {playerAway2 && `\n-\n${this.getName(playerAway2)}`}
-            </Text>
-          </Column>
-        </Row>
-        )}
+        {playerHome1 &&
+          playerAway1 &&
+          <Row center style={{ marginTop: 10 }}>
+            <Column center>
+              <Text center>
+                {this.getName(playerHome1)}
+                {playerHome2 && `\n-\n${this.getName(playerHome2)}`}
+              </Text>
+            </Column>
+            <Column center>
+              <Text center>
+                {this.getName(playerAway1)}
+                {playerAway2 && `\n-\n${this.getName(playerAway2)}`}
+              </Text>
+            </Column>
+          </Row>}
         <Row center style={{ marginBottom: 10 }}>
           <Column center>
             <View style={styles.score}>
@@ -76,13 +76,17 @@ class ScoreInput extends Component {
             {this.state.set > 0 &&
               <Touchable onPress={this.goBack.bind(this)}>
                 <Row center>
-                <Icon color={theme.secondaryTextColor} name='arrow-back' size={20} />
-                <Text
-                  style={styles.buttonText}
-                  upperCase={Platform.OS === 'android'}
-                >
-                  1. Satz
-                </Text>
+                  <Icon
+                    color={theme.secondaryTextColor}
+                    name="arrow-back"
+                    size={20}
+                  />
+                  <Text
+                    style={styles.buttonText}
+                    upperCase={Platform.OS === 'android'}
+                  >
+                    1. Satz
+                  </Text>
                 </Row>
               </Touchable>}
           </Column>
@@ -159,13 +163,13 @@ class ScoreInput extends Component {
     this.props.onSave(this.props.data, {
       goals_away: parseInt(this.state.goals_away, 10),
       goals_home: parseInt(this.state.goals_home, 10),
-      set: this.state.set
+      set: this.state.set,
     });
   }
 
   goBack() {
     this.setState({
-      set: this.state.set - 1
+      set: this.state.set - 1,
     });
   }
 
@@ -178,13 +182,13 @@ const styles = StyleSheet.create({
   buttonRow: {
     borderTopColor: theme.backgroundColor,
     borderTopWidth: 1,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   buttonText: {
     color: theme.secondaryTextColor,
     fontWeight: 'bold',
     marginVertical: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   input: Platform.select({
     android: {
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
       fontFamily: 'monospace',
       fontSize: 24,
       padding: 6,
-      textAlign: 'center'
+      textAlign: 'center',
     },
     ios: {
       color: '#fff',
@@ -201,8 +205,8 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       height: 30,
       margin: 8,
-      textAlign: 'center'
-    }
+      textAlign: 'center',
+    },
   }),
   score: {
     backgroundColor: '#666',
@@ -210,14 +214,14 @@ const styles = StyleSheet.create({
     margin: 16,
     marginBottom: 0,
     marginTop: 10,
-    width: 60
+    width: 60,
   },
   vSeparator: {
     borderLeftColor: theme.backgroundColor,
     borderLeftWidth: 1,
     borderRightColor: theme.backgroundColor,
-    borderRightWidth: 1
-  }
+    borderRightWidth: 1,
+  },
 });
 
 export default ScoreInput;

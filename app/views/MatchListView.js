@@ -10,7 +10,7 @@ class MatchListView extends Component {
     super(props);
     this._renderMatch.bind(this);
     this.state = {
-      openMenu: -1
+      openMenu: -1,
     };
   }
 
@@ -33,11 +33,11 @@ class MatchListView extends Component {
       if (this.props.matches.length === 0) {
         this.props.onRefresh();
       } else {
-          const id: number = this.props.matches[0];
-          const match: Match = this.props.data[id];
-          if (compareDays(match.datetime, new Date().getTime()) < 0) {
-            this.props.onRefresh();
-          }
+        const id: number = this.props.matches[0];
+        const match: Match = this.props.data[id];
+        if (compareDays(match.datetime, new Date().getTime()) < 0) {
+          this.props.onRefresh();
+        }
       }
     }
   }
@@ -81,7 +81,9 @@ class MatchListView extends Component {
         refreshing={this.props.refreshing}
         onRefresh={this.props.onRefresh}
         dataSource={this.props.matches}
-        keyExtractor={ item => { return `${item}`} }
+        keyExtractor={item => {
+          return `${item}`;
+        }}
         // getItemLayout={(data, index) => ( {length: MatchItem.ITEM_HEIGHT, offset: MatchItem.ITEM_HEIGHT * index, index} )}
         // ItemSeparatorComponent={() => (<Separator group />)}
         renderRow={this._renderMatch.bind(this)}
@@ -91,5 +93,5 @@ class MatchListView extends Component {
 }
 
 export default connect(state => ({
-  data: state.matches
+  data: state.matches,
 }))(MatchListView);

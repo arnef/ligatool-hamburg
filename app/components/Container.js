@@ -4,7 +4,7 @@ import {
   ScrollView,
   FlatList,
   RefreshControl,
-  ListView
+  ListView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
@@ -14,7 +14,7 @@ class Container extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+      data: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),
     };
     if (this.props.getRef) {
       this.props.getRef(this);
@@ -34,9 +34,12 @@ class Container extends Component {
     if (this.props.renderRow) {
       return (
         <View style={style}>
-          <ErrorFlash error={this.props.error} onRefresh={this.props.onRefresh} />
+          <ErrorFlash
+            error={this.props.error}
+            onRefresh={this.props.onRefresh}
+          />
           <FlatList
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             keyboardShouldPersistTaps="handled"
             ItemSeparatorComponent={this.props.ItemSeparatorComponent}
             refreshControl={!!this.props.onRefresh ? refreshControl : null}
@@ -53,7 +56,10 @@ class Container extends Component {
     } else {
       return (
         <View style={style}>
-          <ErrorFlash error={this.props.error} onRefresh={this.props.onRefresh} />
+          <ErrorFlash
+            error={this.props.error}
+            onRefresh={this.props.onRefresh}
+          />
           <ScrollView
             keyboardShouldPersistTaps="handled"
             automaticallyAdjustContentInsets={false}
@@ -66,7 +72,7 @@ class Container extends Component {
             style={{ flex: 1 }}
           >
 
-              {this.props.children}
+            {this.props.children}
 
           </ScrollView>
         </View>
@@ -96,5 +102,5 @@ class Container extends Component {
 }
 
 export default connect(state => ({
-  color: state.settings.color
+  color: state.settings.color,
 }))(Container);

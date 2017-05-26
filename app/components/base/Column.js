@@ -29,14 +29,14 @@ class Column extends Component {
 
 const styles = StyleSheet.create({
   center: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   item: {
     flex: 1,
     flexDirection: 'column',
     borderWidth: 0, //StyleSheet.hairlineWidth,
-    borderColor: 'grey'
-  }
+    borderColor: 'grey',
+  },
 });
 
 export default Column;

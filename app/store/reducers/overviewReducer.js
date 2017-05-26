@@ -5,12 +5,12 @@ import { compareDays } from '../../Helper';
 const initialState: OverviewState = {
   today: [],
   next: [],
-  played: []
+  played: [],
 };
 
 export default function(
   state: OverviewState = initialState,
-  action: Action
+  action: Action,
 ): OverviewState {
   switch (action.type) {
     case QUERY_MATCHES + FULFILLED: {

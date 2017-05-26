@@ -18,7 +18,7 @@ class Match extends Component {
       adjustPosition,
       scoreInput,
       toggleMenu,
-      toggleMatchType
+      toggleMatchType,
     } = this.props;
     const match = matches[this.props.match.id];
     const error =
@@ -30,17 +30,17 @@ class Match extends Component {
         {data.toggle &&
           editable &&
           <Content>
-          <Row center>
-            <Text>{data.toggle.title}</Text>
-            <Column />
-            <Switch
-              onValueChange={() => {
-                toggleMatchType(match.id, data.setsIdx, data.toggle.type);
-              }}
-              value={match.type.indexOf('d5') !== -1}
-            />
-          </Row>
-        </Content>}
+            <Row center>
+              <Text>{data.toggle.title}</Text>
+              <Column />
+              <Switch
+                onValueChange={() => {
+                  toggleMatchType(match.id, data.setsIdx, data.toggle.type);
+                }}
+                value={match.type.indexOf('d5') !== -1}
+              />
+            </Row>
+          </Content>}
         <Set
           onPress={
             onPress
@@ -129,5 +129,5 @@ Match.Header = Header;
 export default connect(state => ({
   loading: state.loading.nonBlocking,
   color: state.settings.color,
-  matches: state.matches
+  matches: state.matches,
 }))(Match);

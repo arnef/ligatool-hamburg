@@ -4,7 +4,7 @@ import FCM, {
   FCMEvent,
   RemoteNotificationResult,
   WillPresentNotificationResult,
-  NotificationType
+  NotificationType,
 } from 'react-native-fcm';
 import { NavigationActions } from 'react-navigation';
 import store from './store';
@@ -15,7 +15,7 @@ import { IOS } from './consts';
 import { currentRoute } from './Helper';
 
 type Listener = {
-  remove: Function
+  remove: Function,
 };
 
 /**
@@ -52,7 +52,7 @@ function receiveNotification(notif) {
           notif.finish(
             matchOpen
               ? WillPresentNotificationResult.None
-              : WillPresentNotificationResult.All
+              : WillPresentNotificationResult.All,
           );
           break;
       }
@@ -63,7 +63,7 @@ function receiveNotification(notif) {
           ...notif.fcm,
           id: notif.id,
           show_in_foreground: true,
-          priority: 'high'
+          priority: 'high',
         });
       }
     }
@@ -80,15 +80,15 @@ function receiveNotification(notif) {
       if (Platform.OS === IOS) {
         store.dispatch(
           NavigationActions.navigate({
-            routeName: OVERVIEW
-          })
+            routeName: OVERVIEW,
+          }),
         );
       }
       store.dispatch(
         NavigationActions.navigate({
           routeName: MATCH,
-          params: { id }
-        })
+          params: { id },
+        }),
       );
     }
   }
@@ -152,5 +152,5 @@ export default {
   notificationListener,
   refreshTokenListener,
   removeNotification,
-  removeAllNotifications
+  removeAllNotifications,
 };

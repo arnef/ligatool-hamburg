@@ -1,19 +1,28 @@
 // @flow
 import React, { Component } from 'react';
-import { ActionSheetIOS, Animated, Modal, Platform, TouchableOpacity, StyleSheet, FlatList, View, Dimensions } from 'react-native';
+import {
+  ActionSheetIOS,
+  Animated,
+  Modal,
+  Platform,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  View,
+  Dimensions,
+} from 'react-native';
 import { ListItem, Text } from '../base';
 
 const DEVICE_HEIGHT = Math.round(Dimensions.get('window').height * 0.8);
 const DURATION = 250;
 class ActionSheet extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       modalVisible: false,
       items: [],
-      y: new Animated.Value(DEVICE_HEIGHT)
-    }
+      y: new Animated.Value(DEVICE_HEIGHT),
+    };
   }
 
   static actionsheetInstance;
@@ -27,19 +36,22 @@ class ActionSheet extends Component {
       let iosConfig = JSON.parse(JSON.stringify(config));
       iosConfig.options.push('Abbrechen');
       iosConfig.cancelButtonIndex = iosConfig.options.length - 1;
-      ActionSheetIOS.showActionSheetWithOptions(iosConfig, this.callbackWrapper(iosConfig.cancelButtonIndex, callback));
+      ActionSheetIOS.showActionSheetWithOptions(
+        iosConfig,
+        this.callbackWrapper(iosConfig.cancelButtonIndex, callback),
+      );
     } else {
       this.setState({
         items: config.options,
         modalVisible: true,
-        callback
+        callback,
       });
       this.slideIn();
     }
   }
 
   callbackWrapper(cancelIdx, callback) {
-    return (val) => {
+    return val => {
       if (val < cancelIdx) {
         callback(val);
       }
@@ -53,8 +65,9 @@ class ActionSheet extends Component {
         duration: DURATION,
         toValue: 0,
         // useNativeDriver: true,
-      })]).start();
-  };
+      }),
+    ]).start();
+  }
 
   hide() {
     Animated.timing(this.state.y, {
@@ -77,30 +90,44 @@ class ActionSheet extends Component {
           activeOpacity={1}
           onPress={this.hide.bind(this)}
         >
-          <Animated.View style={[style.container, {
-            transform: [ { translateY: this.state.y }]
-          } ]}>
-          {/* shadow emulation....elevation not working in modal?! */}
-          <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.04)'}} />
-          <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.06)'}} />
-          <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.08)'}} />
-          <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.1)'}} />
-          <View style={{ backgroundColor: '#fff'}}>
-            <FlatList
-              data={this.state.items}
-              keyExtractor={(item, index) => `${index}`}
-              getItemLayout={(data, index) => ({length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index})}
-              renderItem={({ item, index }) => (
-                <ListItem onPress={() => { this.state.callback(index); this.hide(); }}>
-                  <Text>{ `${item}` }</Text>
-                </ListItem>
-              )}
-            />
+          <Animated.View
+            style={[
+              style.container,
+              {
+                transform: [{ translateY: this.state.y }],
+              },
+            ]}
+          >
+            {/* shadow emulation....elevation not working in modal?! */}
+            <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.04)' }} />
+            <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.06)' }} />
+            <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.08)' }} />
+            <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.1)' }} />
+            <View style={{ backgroundColor: '#fff' }}>
+              <FlatList
+                data={this.state.items}
+                keyExtractor={(item, index) => `${index}`}
+                getItemLayout={(data, index) => ({
+                  length: ListItem.ITEM_HEIGHT,
+                  offset: ListItem.ITEM_HEIGHT * index,
+                  index,
+                })}
+                renderItem={({ item, index }) => (
+                  <ListItem
+                    onPress={() => {
+                      this.state.callback(index);
+                      this.hide();
+                    }}
+                  >
+                    <Text>{`${item}`}</Text>
+                  </ListItem>
+                )}
+              />
             </View>
           </Animated.View>
         </TouchableOpacity>
       </Modal>
-    )
+    );
   }
 }
 
@@ -113,8 +140,8 @@ const style = StyleSheet.create({
   container: {
     // backgroundColor: '#fff',
 
-    marginTop: Math.round(Dimensions.get('window').height * 0.25)
-  }
-})
+    marginTop: Math.round(Dimensions.get('window').height * 0.25),
+  },
+});
 
 export default ActionSheet;

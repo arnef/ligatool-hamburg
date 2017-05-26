@@ -5,7 +5,12 @@ import { IOS } from '../../consts';
 import { FULFILLED, TOKEN, SHOW_LOGIN, DIALOG_PLAYER } from '../actions/types';
 import { Root } from '../../router';
 import { NavigationActions } from 'react-navigation';
-import { MODAL_LOGIN, MODAL_SELECT_PLAYER, MY_TEAM, MATCH } from '../../views/routes';
+import {
+  MODAL_LOGIN,
+  MODAL_SELECT_PLAYER,
+  MY_TEAM,
+  MATCH,
+} from '../../views/routes';
 import store from '../../store';
 
 export default function(state, action: Action) {
@@ -15,12 +20,12 @@ export default function(state, action: Action) {
       if (action.payload) {
         nextState = Root.router.getStateForAction(
           NavigationActions.navigate({ routeName: MODAL_LOGIN }),
-          state
+          state,
         );
       } else {
         nextState = Root.router.getStateForAction(
           NavigationActions.back({ key: findRouteKey(state, MODAL_LOGIN) }),
-          state
+          state,
         );
       }
       break;
@@ -31,7 +36,7 @@ export default function(state, action: Action) {
         if (key) {
           nextState = Root.router.getStateForAction(
             NavigationActions.back({ key }),
-            state
+            state,
           );
         }
       }
@@ -42,16 +47,16 @@ export default function(state, action: Action) {
         nextState = Root.router.getStateForAction(
           NavigationActions.navigate({
             routeName: MODAL_SELECT_PLAYER,
-            params: { ...action.payload, team: 'home' }
+            params: { ...action.payload, team: 'home' },
           }),
-          state
+          state,
         );
       } else {
         nextState = Root.router.getStateForAction(
           NavigationActions.back({
-            key: findRouteKey(state, MODAL_SELECT_PLAYER)
+            key: findRouteKey(state, MODAL_SELECT_PLAYER),
           }),
-          state
+          state,
         );
       }
       break;

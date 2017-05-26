@@ -12,7 +12,7 @@ class TeamLogo extends Component {
         <Image
           url={this.props.team.image}
           size={this.props.big ? bigIconSize : iconSize}
-          style={{ marginHorizontal: 8}}
+          style={{ marginHorizontal: 8 }}
         />
       );
     } else {
@@ -20,7 +20,7 @@ class TeamLogo extends Component {
         <Icon
           size={this.props.big ? bigIconSize : iconSize}
           name="shirt"
-          style={{ marginHorizontal: 8}}
+          style={{ marginHorizontal: 8 }}
           color={theme.secondaryTextColor}
         />
       );

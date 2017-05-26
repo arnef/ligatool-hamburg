@@ -27,7 +27,7 @@ class MatchHeader extends Component {
     const isAndroid = Platform.OS === 'android';
 
     return (
-      <View style={[style.header, { backgroundColor: this.props.color }, ]}>
+      <View style={[style.header, { backgroundColor: this.props.color }]}>
         <Touchable
           pressColor={white}
           borderless
@@ -37,7 +37,7 @@ class MatchHeader extends Component {
           <Text
             center
             bold={isAndroid}
-            color='#fff'
+            color="#fff"
             numberOfLines={2}
             ellipsizeMode="tail"
           >
@@ -46,7 +46,9 @@ class MatchHeader extends Component {
         </Touchable>
         <View style={style.score}>
           <Text style={style.points} color={this.props.color}>{score}</Text>
-          <Text style={style.points} size={12} color={this.props.color}>({goals})</Text>
+          <Text style={style.points} size={12} color={this.props.color}>
+            ({goals})
+          </Text>
         </View>
         <Touchable
           pressColor={white}
@@ -57,7 +59,7 @@ class MatchHeader extends Component {
           <Text
             center
             bold={isAndroid}
-            color='#fff'
+            color="#fff"
             numberOfLines={2}
             ellipsizeMode="tail"
           >
@@ -71,7 +73,7 @@ class MatchHeader extends Component {
   onPress(team) {
     this.props.pushRoute({
       routeName: TEAM,
-      params: { team, title: team.name }
+      params: { team, title: team.name },
     });
   }
 }
@@ -87,38 +89,37 @@ const style = StyleSheet.create({
     shadowOffset: { height: StyleSheet.hairlineWidth },
     shadowOpacity: 0.1,
     shadowRadius: StyleSheet.hairlineWidth,
-    zIndex: 999
+    zIndex: 999,
   },
   points: {
     alignItems: 'center',
     color: '#FFF',
     fontFamily: Platform.select({
       android: 'monospace',
-      ios: 'Courier New'
+      ios: 'Courier New',
     }),
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   score: {
     alignItems: 'center',
     flex: 0,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   teamContainer: {
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 4
-  }
+    paddingHorizontal: 4,
+  },
 });
-
 
 export default connect(
   state => ({
     color: state.settings.color,
-    matches: state.matches
+    matches: state.matches,
   }),
   dispatch => ({
-    pushRoute: route => dispatch(NavigationActions.navigate(route))
-  })
+    pushRoute: route => dispatch(NavigationActions.navigate(route)),
+  }),
 )(MatchHeader);

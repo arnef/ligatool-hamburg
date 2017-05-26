@@ -13,4 +13,18 @@ import Card from './Card';
 import Content from './Content';
 import ActionSheet from './ActionSheet';
 
-export { ActionSheet, Card, Content, Separator, Button, Row, Image, Column, ListItem, Text, Touchable, Icon, Switch };
+export {
+  ActionSheet,
+  Card,
+  Content,
+  Separator,
+  Button,
+  Row,
+  Image,
+  Column,
+  ListItem,
+  Text,
+  Touchable,
+  Icon,
+  Switch,
+};

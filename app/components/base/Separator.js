@@ -4,7 +4,6 @@ import { View, StyleSheet } from 'react-native';
 import { backgroundColor } from './theme';
 
 class Separator extends Component {
-
   render() {
     const separatorStyle = [style.separator];
     let marginLeft = 16;
@@ -36,13 +35,13 @@ class Separator extends Component {
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   separator: {
     height: 1, //StyleSheet.hairlineWidth,
     backgroundColor,
     // marginLeft: 16
-  }
+  },
 });
 
 export default Separator;

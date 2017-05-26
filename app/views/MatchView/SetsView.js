@@ -17,7 +17,7 @@ class SetsView extends Component {
       menuOpen: -1,
       offsetY: 0,
       py: 0,
-      scoreInput: -1
+      scoreInput: -1,
     };
   }
 
@@ -28,7 +28,7 @@ class SetsView extends Component {
     if (!this.keyboardDidShowListener) {
       this.keyboardDidShowListener = Keyboard.addListener(
         'keyboardDidShow',
-        this.keyboardDidShow.bind(this)
+        this.keyboardDidShow.bind(this),
       );
     }
   }
@@ -46,7 +46,7 @@ class SetsView extends Component {
       this.scrollView.scrollTo({
         animated: true,
         x: 0,
-        y: this.state.offsetY + keyboardDistance
+        y: this.state.offsetY + keyboardDistance,
       });
       this.setState({ py: this.state.py - keyboardDistance });
     }
@@ -64,17 +64,19 @@ class SetsView extends Component {
 
   toggleMenu(idx) {
     if (this.state.scoreInput !== idx) {
-    ActionSheet.show({
-      options: ['Spieler wählen', 'Ergebnis eintragen', 'Abbrechen'],
-      cancelButtonIndex: 2
-    }, (val) => {
-      if (val === 0) {
-
-      }
-      if (val === 1) {
-        this.toggleScoreInput(idx);
-      }
-    });
+      ActionSheet.show(
+        {
+          options: ['Spieler wählen', 'Ergebnis eintragen', 'Abbrechen'],
+          cancelButtonIndex: 2,
+        },
+        val => {
+          if (val === 0) {
+          }
+          if (val === 1) {
+            this.toggleScoreInput(idx);
+          }
+        },
+      );
     }
     this.setState({ scoreInput: -1 });
   }
@@ -104,7 +106,7 @@ class SetsView extends Component {
       this.setState({ scoreInput: idx });
     }
     if (value === 2) {
-      this.props.resetSets(this.props.data.id, data.setsIdx)
+      this.props.resetSets(this.props.data.id, data.setsIdx);
       // alert(JSON.stringify(data));
     }
   }
@@ -157,7 +159,7 @@ class SetsView extends Component {
     return (
       <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
         <Match.Header matchId={this.props.data.id} />
-        { data.showButton && this.renderSubmitButton() }
+        {data.showButton && this.renderSubmitButton()}
         <Container
           getRef={scrollView => {
             this.scrollView = scrollView;
@@ -187,15 +189,11 @@ class SetsView extends Component {
   }
 
   renderSubmitButton() {
-
     const match = this.props.matches[this.props.data.id] || {};
-
 
     const idx = match.live
       ? 0
-      : this.props.auth.team.ids.indexOf(match.score_suggest) !== -1
-      ? 1
-      : 2;
+      : this.props.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2;
     return (
       <View style={styles.submitRow}>
         <Button
@@ -222,14 +220,14 @@ const styles = StyleSheet.create({
     backgroundColor: Platform.OS === 'ios'
       ? 'rgba(244, 244, 244, .9)'
       : 'rgba(221, 221, 221, .9)',
-    zIndex: 99
-  }
+    zIndex: 99,
+  },
 });
 
 const btnText = [
   'Ergebnis vorschlagen',
   'Ergebnis vorgeschlagen',
-  'Ergebnis akzeptieren'
+  'Ergebnis akzeptieren',
 ];
 
 export default connect(
@@ -237,7 +235,7 @@ export default connect(
     loading: state.loading.nonBlocking,
     error: state.loading.error,
     auth: state.auth,
-    matches: state.matches
+    matches: state.matches,
   }),
   dispatch => ({
     getMatch: id => dispatch(actions.getMatch(id)),
@@ -251,7 +249,9 @@ export default connect(
     toggleMatchType: (id, setsIdx, type) =>
       dispatch(actions.toggleMatchType(id, setsIdx, type)),
     updateSets: (id, sets) => dispatch(actions.updateSets(id, sets)),
-    navigate: (routeName, params) => dispatch(NavigationActions.navigate({ routeName, params })),
-    resetSets: (matchId, setsIdx) => dispatch(actions.resetSets(matchId, setsIdx))
-  })
+    navigate: (routeName, params) =>
+      dispatch(NavigationActions.navigate({ routeName, params })),
+    resetSets: (matchId, setsIdx) =>
+      dispatch(actions.resetSets(matchId, setsIdx)),
+  }),
 )(SetsView);

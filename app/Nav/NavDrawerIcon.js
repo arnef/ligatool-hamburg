@@ -11,7 +11,7 @@ export default (navigation, defaultHeader) => {
         <Touchable borderless onPress={() => navigation.navigate('DrawerOpen')}>
           <Icon name="menu" style={styles.icon} color="#fff" size={24} />
         </Touchable>
-      )
+      ),
     };
   } else {
     return defaultHeader;
@@ -22,6 +22,6 @@ const styles = StyleSheet.create({
   icon: {
     height: 24,
     width: 24,
-    margin: 16
-  }
+    margin: 16,
+  },
 });

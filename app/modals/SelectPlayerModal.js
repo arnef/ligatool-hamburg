@@ -14,7 +14,7 @@ class SelectPlayer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: {}
+      selected: {},
     };
   }
 
@@ -25,12 +25,11 @@ class SelectPlayer extends Component {
     const teamKey = `team_${state.params.team}`;
     let items = match[teamKey] ? match[teamKey].player : [];
 
-
     return (
       <Container
         dataSource={items}
         renderRow={this.renderItem.bind(this)}
-        ItemSeparatorComponent={() => (<Separator image />)}
+        ItemSeparatorComponent={() => <Separator image />}
         keyExtractor={item => item.id}
       />
     );
@@ -38,19 +37,23 @@ class SelectPlayer extends Component {
 
   renderItem({ item, index }) {
     const { state } = this.props.navigation;
-    const disabled = item.disabled ?
-      state.params.data.type === 1
-        ? item.disabled.singles
-        : item.disabled.doubles
+    const disabled = item.disabled
+      ? state.params.data.type === 1
+          ? item.disabled.singles
+          : item.disabled.doubles
       : false;
     return (
-      <ListItem onPress={() => this.onPress(index) } disabled={disabled}>
+      <ListItem onPress={() => this.onPress(index)} disabled={disabled}>
         <ListItem.Image url={item.image} />
-        <Text>{ `${item.name} ${item.surname}`}</Text>
+        <Text>{`${item.name} ${item.surname}`}</Text>
         <View style={{ flex: 1 }} />
-        <ListItem.Icon right size={24} name={this.state.selected[index] ? 'checkbox' : 'square-outline' } />
+        <ListItem.Icon
+          right
+          size={24}
+          name={this.state.selected[index] ? 'checkbox' : 'square-outline'}
+        />
       </ListItem>
-    )
+    );
   }
 
   onPress(idx) {
@@ -79,14 +82,14 @@ class SelectPlayer extends Component {
         state.params.matchId,
         state.params.team,
         result,
-        state.params.data.setsIdx
+        state.params.data.setsIdx,
       );
       // wait animation done
       setTimeout(() => {
         if (state.params.team === 'home') {
           navigate({
             routeName: 'SelectPlayerView',
-            params: { ...state.params, team: 'away' }
+            params: { ...state.params, team: 'away' },
           });
         } else {
           closeModal();
@@ -94,14 +97,17 @@ class SelectPlayer extends Component {
           const match = matches[state.params.matchId];
           console.tron.log(set);
           console.tron.log(match.lineUp);
-          if ((set.goals_home != null && set.goals_away != null) || (match.lineUp && match.lineUp.update)) {
+          if (
+            (set.goals_home != null && set.goals_away != null) ||
+            (match.lineUp && match.lineUp.update)
+          ) {
             this.props.updateSets(state.params.matchId, match.sets);
           }
         }
       }, 10);
     } else if (selectionLength > state.params.data.type) {
       this.setState({
-        selected: { [idx]: true }
+        selected: { [idx]: true },
       });
     }
   }
@@ -120,7 +126,7 @@ SelectPlayer.navigationOptions = {
     } else {
       return defaulHeader;
     }
-  }
+  },
 };
 
 export default StackNavigator(
@@ -133,12 +139,12 @@ export default StackNavigator(
           closeModal: () => dispatch(hidePlayerDialog()),
           setPlayer: (id, team, player, setsIdx) =>
             dispatch(setPlayer(id, team, player, setsIdx)),
-          updateSets: (matchId, sets) => dispatch(updateSets(matchId, sets))
-        })
-      )(SelectPlayer)
-    }
+          updateSets: (matchId, sets) => dispatch(updateSets(matchId, sets)),
+        }),
+      )(SelectPlayer),
+    },
   },
   {
-    ...NavHeader
-  }
+    ...NavHeader,
+  },
 );

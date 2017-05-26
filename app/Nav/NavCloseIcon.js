@@ -15,7 +15,7 @@ export default (navigation, defaultHeader) => {
       >
         <Icon name="close" color="#fff" style={styles.icon} size={iconSize} />
       </Touchable>
-    )
+    ),
   };
 };
 
@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
   icon: {
     height: iconSize,
     width: iconSize,
-    margin: Platform.OS === ANDROID ? 16 : 12
-  }
+    margin: Platform.OS === ANDROID ? 16 : 12,
+  },
 });
