@@ -23,6 +23,10 @@ api.addRequestTransform(request => {
         : `${request.url}${request.params.route}`;
     }
   }
+  if (request.method === 'get') {
+      request.url += `&timestamp=${new Date().getTime()}`;
+  }
+
 });
 
 export default api;
