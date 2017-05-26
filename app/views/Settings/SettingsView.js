@@ -160,26 +160,11 @@ class SettingsView extends Component {
         <Separator group />
         <ListItem.Group>
           <ListItem.Header title="Informationen" />
-<<<<<<< HEAD
           <ListItem onPress={this.clearImageCache.bind(this)}>
             <ListItem.Icon name='trash' color={this.props.settings.color} />
               <Text style={{ paddingTop: 8, paddingBottom: 8}}>{ strings.clear_image_cache }</Text>
           </ListItem>
           <Separator image />
-=======
-          <ListItem onPress={this.props.clearImageCache.bind(this)}>
-            <ListItem.Icon name="trash" color={this.props.settings.color} />
-            <Text style={{ paddingTop: 8, paddingBottom: 8 }}>
-              {strings.clear_image_cache}
-            </Text>
-          </ListItem>
-          <ListItem multiline>
-            <Text small secondary>
-              {strings.cache_information}
-            </Text>
-          </ListItem>
-          <Separator />
->>>>>>> ab2240b374d5679936950b15617a1d11da53ee9f
           <ListItem>
             <ListItem.Icon
               name="information-circle"
