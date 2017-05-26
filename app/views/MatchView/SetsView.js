@@ -3,8 +3,8 @@ import { View, Keyboard, Dimensions, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import actions from '../../store/actions';
-import { Container, Match } from '../../components';
-import { Button, Row, ActionSheet, Content } from '../../components/base';
+import { Container, Match, StaticListHeader } from '../../components';
+import { Button, Row, ActionSheet, Content, Touchable, Text } from '../../components/base';
 import * as theme from '../../components/base/theme';
 import { PLAYER } from '../routes';
 const height = Dimensions.get('window').height;
@@ -182,8 +182,8 @@ class SetsView extends Component {
             adjustPosition={this.adjustPosition.bind(this)}
             onSelect={this.onSelect.bind(this)}
           />
-          {data.showButton && <View style={{ height: 48 }} />}
         </Container>
+
       </View>
     );
   }
@@ -194,33 +194,37 @@ class SetsView extends Component {
     const idx = match.live
       ? 0
       : this.props.auth.team.ids.indexOf(match.score_suggest) !== -1 ? 1 : 2;
+    const disabled = this.props.loading || idx === 1;
+    const Wrap = disabled ? View : Touchable;
+
     return (
-      <View style={styles.submitRow}>
-        <Button
-          disabled={this.props.loading || idx === 1}
+      <StaticListHeader style={{ paddingVertical: 12, paddingHorizontal: 12}}>
+        <Wrap
+          style={{ opacity: disabled ? 0.6 : 1}}
           onPress={() => {
             this.props.suggestScore(match.id, match.sets, idx);
           }}
-          title={`${btnText[idx]}`}
-        />
-      </View>
+
+        ><Text color='#fff' center>{`${btnText[idx]}`}</Text>
+      </Wrap>
+      </StaticListHeader>
     );
   }
 }
 
 const styles = StyleSheet.create({
   submitRow: {
-    position: 'absolute',
-    bottom: 0,
-    width: Dimensions.get('window').width,
+    // position: 'absolute',
+    // bottom: 0,
+    // width: Dimensions.get('window').width,
     paddingHorizontal: 8,
     paddingVertical: 8,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'rgba(0, 0, 0, .2)',
-    backgroundColor: Platform.OS === 'ios'
-      ? 'rgba(244, 244, 244, .9)'
-      : 'rgba(221, 221, 221, .9)',
-    zIndex: 99,
+    // borderTopWidth: StyleSheet.hairlineWidth,
+    // borderTopColor: 'rgba(0, 0, 0, .2)',
+    // backgroundColor: Platform.OS === 'ios'
+    //   ? 'rgba(244, 244, 244, .9)'
+    //   : 'rgba(221, 221, 221, .9)',
+    // zIndex: 99,
   },
 });
 

@@ -3,7 +3,7 @@ import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { Container, TeamLogo, StaticListHeader } from '../components';
-import { Text, ListItem, Column, Separator } from '../components/base';
+import { Text, ListItem, Column, Separator, Row } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import { TEAM } from './routes';
 
@@ -64,6 +64,7 @@ class TableView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StaticListHeader>
+          <Row center style={{marginVertical: 8}}>
           <Column center fluid style={{ width: 24 }} />
           <Column style={{ paddingLeft: 4, width }} />
           <Column center fluid style={{ width: 35 }}>
@@ -78,6 +79,7 @@ class TableView extends Component {
           <Column center fluid style={{ width: 35 }}>
             <Text bold size={12} color="#fff">Pkt.</Text>
           </Column>
+          </Row>
         </StaticListHeader>
 
         <Container

@@ -71,15 +71,10 @@ class SelectableMatchListView extends Component {
     return (
       <View style={{ flex: 1 }}>
         {this.props.leagues[id].match_days &&
-          <View
-            style={[
-              style.header,
-              { backgroundColor: darken(this.props.color, 5) },
-            ]}
-          >
+          <StaticListHeader>
             <Touchable onPress={() => this.openMenu(matchDayKeys)}>
-              <Content>
-                <Row center>
+
+                <Row center style={{ marginVertical: 12 }}>
                   <Column>
                     <Text color="#fff">
                       {this.state.selectedMatchDay ||
@@ -90,9 +85,9 @@ class SelectableMatchListView extends Component {
                     <Icon name="more" size={22} color="#fff" />
                   </Column>
                 </Row>
-              </Content>
+
             </Touchable>
-          </View>}
+          </StaticListHeader>}
         <Container
           getRef={container => (this.container = container)}
           error={this.props.error}

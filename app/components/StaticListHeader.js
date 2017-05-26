@@ -7,9 +7,15 @@ import { darken } from '../Helper';
 
 class StaticListHeader extends Component {
   render() {
+    const headerStyle = [style.row, { backgroundColor: darken(this.props.color, 5) }];
+
+    if (this.props.style) {
+      headerStyle.push(this.props.style)
+    }
+
     return (
       <View
-        style={[style.row, { backgroundColor: darken(this.props.color, 10) }]}
+        style={headerStyle}
       >
         {this.props.children}
       </View>
@@ -19,11 +25,6 @@ class StaticListHeader extends Component {
 
 const style = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 30,
-
     elevation: 2,
     paddingHorizontal: 16,
     shadowColor: 'black',
@@ -31,8 +32,7 @@ const style = StyleSheet.create({
     shadowRadius: StyleSheet.hairlineWidth,
     shadowOffset: {
       height: StyleSheet.hairlineWidth,
-    },
-    zIndex: 1,
+    }
   },
 });
 

@@ -29,6 +29,7 @@ class PlayerStatsView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StaticListHeader>
+          <Row center style={{marginVertical: 8}}>
           <Column fluid style={{ width: 24 }} />
           <Column>
             <Text size={12} color="#fff">Name</Text>
@@ -42,6 +43,7 @@ class PlayerStatsView extends Component {
           <Column fluid style={{ width: 38 }} center>
             <Text bold size={12} color="#fff">LI</Text>
           </Column>
+        </Row>
         </StaticListHeader>
         <Container
           hasHeader
