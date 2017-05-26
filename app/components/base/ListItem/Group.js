@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderBottomWidth: 1.5,
     borderTopColor: '#fff',
-    borderBottomColor: '#ccc'
-  }
+    borderBottomColor: '#ccc',
+  },
 });
 
 export default ListItemGroup;

@@ -9,7 +9,7 @@ import strings from '../Strings';
 import {
   TAB_MATCHES_TODAY,
   TAB_MATCHES_NEXT,
-  TAB_MATCHES_PLAYED
+  TAB_MATCHES_PLAYED,
 } from './routes';
 
 class Overview extends Component {
@@ -38,9 +38,9 @@ function createTab(keyName) {
       matches: state.overview[keyName],
       error: state.loading.error,
       fetching: state.loading.nonBlocking,
-      refreshOnMount: keyName === 'today'
+      refreshOnMount: keyName === 'today',
     }),
-    dispatch => ({ queryMatches: () => dispatch(actions.queryMatches()) })
+    dispatch => ({ queryMatches: () => dispatch(actions.queryMatches()) }),
   )(Overview);
 }
 
@@ -48,19 +48,19 @@ export default TabNavigator(
   {
     [TAB_MATCHES_TODAY]: {
       screen: createTab('today'),
-      navigationOptions: { title: strings.today }
+      navigationOptions: { title: strings.today },
     },
     [TAB_MATCHES_NEXT]: {
       screen: createTab('next'),
-      navigationOptions: { title: strings.next }
+      navigationOptions: { title: strings.next },
     },
     [TAB_MATCHES_PLAYED]: {
       screen: createTab('played'),
-      navigationOptions: { title: strings.played }
-    }
+      navigationOptions: { title: strings.played },
+    },
   },
   {
     ...NavTabBarTop,
-    lazyLoad: false
-  }
+    lazyLoad: false,
+  },
 );

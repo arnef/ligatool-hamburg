@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
 import { Image, ListItem, Text, Button } from '../components/base';
@@ -11,11 +17,10 @@ import {
   LEAGUE_CUP,
   OVERVIEW,
   MY_TEAM,
-  SETTINGS
+  SETTINGS,
 } from './routes';
 
 class NavigationView extends Component {
-
   componentDidMount() {
     if (this.props.leagues.length === 0) {
       this.props.getRankings();
@@ -30,8 +35,8 @@ class NavigationView extends Component {
           routeName: LEAGUE,
           params: {
             id: state.leagueID,
-            title: state.title
-          }
+            title: state.title,
+          },
         });
       } else if (state.state === LEAGUE_CUP) {
         navigate({
@@ -39,8 +44,8 @@ class NavigationView extends Component {
           params: {
             id: state.leagueID,
             title: state.title,
-            cup: true // why?
-          }
+            cup: true, // why?
+          },
         });
       } else {
         navigate({ routeName: state.state });
@@ -91,11 +96,11 @@ class NavigationView extends Component {
               leagueID: league.id,
               state: league.cup ? LEAGUE_CUP : LEAGUE,
               title: league.name,
-              active
+              active,
             });
           }}
         >
-          <Text bold color={active ? color : null }>
+          <Text bold color={active ? color : null}>
             {league.name}
           </Text>
         </ListItem>
@@ -130,19 +135,38 @@ class NavigationView extends Component {
             MY_TEAM,
             team ? 'Mein Team' : 'Team wählen',
             team ? 'shirt' : 'log-in',
-            1
+            1,
           )}
           {this.renderSeparator()}
-          { this.props.loading && (
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flex: 1, padding: 16 }}>
-              <ActivityIndicator size={'large'} color={this.props.settings.color} />
-            </View>
-          )}
-          { !this.props.loading && leagues.length === 0 && (
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', flex: 1, padding: 16 }}>
-              <Button title='Erneut laden' onPress={this.props.getRankings.bind(this)} />
-            </View>
-          )}
+          {this.props.loading &&
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                flex: 1,
+                padding: 16,
+              }}
+            >
+              <ActivityIndicator
+                size={'large'}
+                color={this.props.settings.color}
+              />
+            </View>}
+          {!this.props.loading &&
+            leagues.length === 0 &&
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                flex: 1,
+                padding: 16,
+              }}
+            >
+              <Button
+                title="Erneut laden"
+                onPress={this.props.getRankings.bind(this)}
+              />
+            </View>}
           {leagues.length > 0 && this.renderLeagues()}
           {this.renderSeparator()}
           {this._renderItem(SETTINGS, 'Einstellungen', 'settings', 2)}
@@ -159,48 +183,50 @@ class NavigationView extends Component {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   separator: {
     backgroundColor: '#eee',
     flex: 1,
     height: 1,
-    marginVertical: 4
+    marginVertical: 4,
   },
   space: {
     flex: 1,
-    height: 5
+    height: 5,
   },
   teamContainer: {
     alignItems: 'center',
     flexDirection: 'row',
     height: 60,
-    position: 'absolute'
+    position: 'absolute',
   },
   teamLogo: {
     height: 60,
     marginLeft: 8,
-    width: 60
+    width: 60,
   },
   teamName: {
     flex: 1,
-    marginLeft: 16
-  }
+    marginLeft: 16,
+  },
 });
 
-export const DRAWER_WIDTH = Dimensions.get('window').width * .8;
+export const DRAWER_WIDTH = Dimensions.get('window').width * 0.8;
 
 export default connect(
   state => ({
     activeItem: state.drawer,
     loading: state.loading.nonBlocking,
-    leagues: Object.values(state.leagues).sort((a, b) => a.name < b.name ? -1 : 1),
-    settings: state.settings
+    leagues: Object.values(state.leagues).sort(
+      (a, b) => (a.name < b.name ? -1 : 1),
+    ),
+    settings: state.settings,
   }),
   dispatch => ({
     getRankings: () => dispatch(actions.getRankings()),
     navigate: route => dispatch(NavigationActions.navigate(route)),
     closeDrawer: () =>
-      dispatch(NavigationActions.navigate({ routeName: 'DrawerClose' }))
-  })
+      dispatch(NavigationActions.navigate({ routeName: 'DrawerClose' })),
+  }),
 )(NavigationView);

@@ -15,7 +15,7 @@ const middleware = [promise(), thunk];
 if (__DEV__) {
   Reactotron.configure({
     // host: '192.168.0.164',
-    name: 'LigaTool'
+    name: 'LigaTool',
   })
     .use(reactotronRedux())
     .use(apisaucePlugin())
@@ -23,20 +23,19 @@ if (__DEV__) {
 
   console.tron = {
     clear: Reactotron.clear,
-    log: (data) => {
+    log: data => {
       Reactotron.log({
         platform: Platform.OS,
-        message: data
+        message: data,
       });
     },
     apisauce: Reactotron.apisauce,
     error: Reactotron.error,
     display: Reactotron.display,
     warn: Reactotron.warn,
-    createStore: Reactotron.createStore
+    createStore: Reactotron.createStore,
   };
   console.tron.clear();
-
 } else {
   // a mock version should you decide to leave console.tron in your codebase
   console.tron = {
@@ -44,7 +43,7 @@ if (__DEV__) {
     error: () => false,
     image: () => false,
     log: () => false,
-    warn: () => false
+    warn: () => false,
   };
 }
 
@@ -53,11 +52,7 @@ const cs = __DEV__ ? console.tron.createStore : createStore;
 const migration = createMigration(manifest, APP_KEY);
 const store = cs(
   reducer,
-  compose(
-    migration,
-    autoRehydrate(),
-    applyMiddleware(...middleware)
-  )
+  compose(migration, autoRehydrate(), applyMiddleware(...middleware)),
 );
 
 export default store;

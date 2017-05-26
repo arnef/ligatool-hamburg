@@ -15,5 +15,5 @@ class NavTabBarTop extends Component {
 }
 
 export default connect(state => ({ color: state.settings.color }))(
-  NavTabBarTop
+  NavTabBarTop,
 );

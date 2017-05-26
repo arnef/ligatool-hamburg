@@ -5,7 +5,16 @@ import * as theme from './theme';
 class Text extends Component {
   render() {
     const textStyle = [styles.text];
-    const { small, color, secondary, bold, size, center, style, ...rest} = this.props;
+    const {
+      small,
+      color,
+      secondary,
+      bold,
+      size,
+      center,
+      style,
+      ...rest
+    } = this.props;
 
     if (color) {
       textStyle.push({ color });
@@ -40,13 +49,12 @@ class Text extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: '400',
-    color: theme.primaryTextColor
-  }
+    color: theme.primaryTextColor,
+  },
 });
 
 export default Text;

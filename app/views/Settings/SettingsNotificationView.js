@@ -31,11 +31,12 @@ class SettingsNotificationView extends Component {
         dataSource={this.props.leagues}
         renderRow={this.renderRow.bind(this)}
         keyExtractor={item => item.id}
-        ItemSeparatorComponent={Separator} />
+        ItemSeparatorComponent={Separator}
+      />
     );
   }
 
-  renderRow({item}) {
+  renderRow({ item }) {
     const groups = this.props.settings.notification.leagues || {};
     const checked = groups[item.id];
 
@@ -65,12 +66,14 @@ class SettingsNotificationView extends Component {
 
 export default connect(
   state => ({
-    leagues: Object.values(state.leagues).sort((a, b) => (a.name < b.name ? -1 : 1)),
-    settings: state.settings
+    leagues: Object.values(state.leagues).sort(
+      (a, b) => (a.name < b.name ? -1 : 1),
+    ),
+    settings: state.settings,
   }),
   dispatch => ({
     saveNotifications: () => dispatch(actions.saveNotifications()),
     setGroupNotification: (key, value) =>
-      dispatch(actions.setGroupNotification(key, value))
-  })
+      dispatch(actions.setGroupNotification(key, value)),
+  }),
 )(SettingsNotificationView);

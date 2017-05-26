@@ -1,6 +1,6 @@
 const pkg = require('../package.json');
 // @flow
-const strings: {[string]: string } = {
+const strings: { [string]: string } = {
   overview: 'Übersicht',
   my_team: 'Mein Team',
   leagues: 'Gruppen',
@@ -30,7 +30,7 @@ const strings: {[string]: string } = {
   player_info: 'Spieler-Info',
   team_info: 'Team-Info',
   clear_image_cache: 'Bilder-Cache leeren',
-  cache_information: 'Teamlogos und Spielerbilder werden Lokal gespeichert, um das Datenvolumen zu schonen. Sollten mal nicht die aktuellsten Bilder angezeigt werden, kann hier der Speicher gelöscht werden und die Bilder werden neu geladen.'
+  cache_information: 'Teamlogos und Spielerbilder werden Lokal gespeichert, um das Datenvolumen zu schonen. Sollten mal nicht die aktuellsten Bilder angezeigt werden, kann hier der Speicher gelöscht werden und die Bilder werden neu geladen.',
 };
 
 export default strings;

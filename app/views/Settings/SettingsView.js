@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { View, Platform, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
-import { ListItem, Text, Switch, Separator, Column } from '../../components/base';
+import {
+  ListItem,
+  Text,
+  Switch,
+  Separator,
+  Column,
+} from '../../components/base';
 import { Container } from '../../components';
 import * as theme from '../../components/base/theme';
 import { NavigationActions } from 'react-navigation';
 import { SETTINGS_NOTIFICATIONS, MODAL_LOGIN } from '../routes';
 import strings from '../../Strings';
-
 
 class SettingsView extends Component {
   _logout() {
@@ -21,10 +26,9 @@ class SettingsView extends Component {
   loginView() {
     this.props.pushRoute({
       routeName: MODAL_LOGIN,
-      action: NavigationActions.navigate({ routeName: 'LoginView' })
+      action: NavigationActions.navigate({ routeName: 'LoginView' }),
     });
   }
-
 
   componentDidMount() {
     const { leagues, getRankings } = this.props;
@@ -64,7 +68,7 @@ class SettingsView extends Component {
 
   _toggleGroups() {
     this.props.pushRoute({
-      routeName: SETTINGS_NOTIFICATIONS
+      routeName: SETTINGS_NOTIFICATIONS,
     });
   }
 
@@ -79,21 +83,21 @@ class SettingsView extends Component {
           'Benachrichtigungen',
           notification.on,
           'on',
-          !this.props.settings.fcm_token
+          !this.props.settings.fcm_token,
         )}
         <Separator />
         {this._renderCheckbox(
           'Live-Zwischenergebnis',
           notification.live,
           'live',
-          disabled
+          disabled,
         )}
         <Separator />
         {this._renderCheckbox(
           'Endstand',
           notification.ended,
           'ended',
-          disabled
+          disabled,
         )}
         <Separator />
         <ListItem
@@ -136,7 +140,7 @@ class SettingsView extends Component {
                   <ListItem.Icon name="key" color={this.props.settings.color} />
                   <Text>Zugangsdaten eingeben</Text>
                 </ListItem>}
-                {!this.props.auth.api_key && (<Separator image />)}
+              {!this.props.auth.api_key && <Separator image />}
               <ListItem onPress={this._logout.bind(this)}>
                 <ListItem.Icon
                   name="log-out"
@@ -157,12 +161,14 @@ class SettingsView extends Component {
         <ListItem.Group>
           <ListItem.Header title="Informationen" />
           <ListItem onPress={this.props.clearImageCache.bind(this)}>
-            <ListItem.Icon name='trash' color={this.props.settings.color} />
-              <Text style={{ paddingTop: 8, paddingBottom: 8}}>{ strings.clear_image_cache }</Text>
+            <ListItem.Icon name="trash" color={this.props.settings.color} />
+            <Text style={{ paddingTop: 8, paddingBottom: 8 }}>
+              {strings.clear_image_cache}
+            </Text>
           </ListItem>
           <ListItem multiline>
             <Text small secondary>
-              { strings.cache_information }
+              {strings.cache_information}
             </Text>
           </ListItem>
           <Separator />
@@ -185,7 +191,7 @@ export default connect(
     auth: state.auth,
     dialog: state.dialog,
     leagues: state.leagues,
-    settings: state.settings
+    settings: state.settings,
   }),
   dispatch => ({
     getRankings: () => dispatch(actions.getRankings()),
@@ -195,6 +201,6 @@ export default connect(
     saveNotifications: () => dispatch(actions.saveNotifications()),
     setNotification: (key, value) =>
       dispatch(actions.setNotification(key, value)),
-    showLogin: show => dispatch(actions.showLogin(show))
-  })
+    showLogin: show => dispatch(actions.showLogin(show)),
+  }),
 )(SettingsView);

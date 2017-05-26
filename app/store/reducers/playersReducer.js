@@ -1,9 +1,9 @@
 // @flow
 import { FULFILLED, GET_PLAYER } from '../actions/types';
 
-const initialState = {}
+const initialState = {};
 
-export default function (state = initialState, action: Action) {
+export default function(state = initialState, action: Action) {
   switch (action.type) {
     case GET_PLAYER + FULFILLED:
       if (action.payload.ok) {

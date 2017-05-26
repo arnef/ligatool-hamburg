@@ -3,12 +3,12 @@ import { FULFILLED, QUERY_MY_TEAM_MATCHES, LOGOUT } from '../actions/types';
 
 const initialState: MyTeamState = {
   next: [],
-  played: []
+  played: [],
 };
 
 export default function(
   state: MyTeamState = initialState,
-  action: Action
+  action: Action,
 ): MyTeamState {
   switch (action.type) {
     case QUERY_MY_TEAM_MATCHES + FULFILLED: {

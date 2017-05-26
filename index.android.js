@@ -5,7 +5,6 @@ import { ANDROID_VERSION_LOLLIPOP } from './app/consts';
 import App from './app/App';
 
 class androidapp extends Component {
-
   componentWillMount() {
     if (Platform.Version >= ANDROID_VERSION_LOLLIPOP) {
       StatusBar.setTranslucent(true);
@@ -14,7 +13,7 @@ class androidapp extends Component {
   }
 
   render() {
-    return (<App />);
+    return <App />;
   }
 }
 

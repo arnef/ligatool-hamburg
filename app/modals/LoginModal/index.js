@@ -8,11 +8,11 @@ const NavStack = StackNavigator(
   {
     SelectGroup: { screen: SelectGroupView },
     SelectTeam: { screen: SelectTeamView },
-    LoginView: { screen: LoginView }
+    LoginView: { screen: LoginView },
   },
   {
-    ...NavHeader
-  }
+    ...NavHeader,
+  },
 );
 
 export default NavStack;

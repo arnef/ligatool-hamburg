@@ -10,18 +10,18 @@ const LeagueView = TabNavigator(
   {
     [TAB_TABLE]: {
       screen: TableView,
-      navigationOptions: { title: strings.table }
+      navigationOptions: { title: strings.table },
     },
     [TAB_MATCHES]: {
       screen: SelectableMatchListView,
-      navigationOptions: { title: strings.matches }
+      navigationOptions: { title: strings.matches },
     },
     [TAB_PLAYER_STATS]: {
       screen: PlayerStatsView,
-      navigationOptions: { title: strings.player_statistics }
-    }
+      navigationOptions: { title: strings.player_statistics },
+    },
   },
-  { ...NavTabBarTop }
+  { ...NavTabBarTop },
 );
 
 export default LeagueView;

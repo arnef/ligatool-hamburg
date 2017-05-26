@@ -6,22 +6,21 @@ import { TabView } from 'react-navigation';
 
 const white = 'rgba(255, 255, 255, .9)';
 
-
 class NavTabBarTop extends Component {
   render() {
     return (
       <TabView.TabBarTop
         {...this.props}
-        activeTintColor='#fff'
+        activeTintColor="#fff"
         inactiveTintColor={white}
         indicatorStyle={{
-          backgroundColor: white
+          backgroundColor: white,
         }}
         style={{ backgroundColor: this.props.color, elevation: 4 }}
         labelStyle={{
           marginHorizontal: 0,
           marginVertical: 4,
-          fontWeight: Platform.OS === 'android' ? '500' : '600'
+          fontWeight: Platform.OS === 'android' ? '500' : '600',
         }}
       />
     );
@@ -30,7 +29,7 @@ class NavTabBarTop extends Component {
 
 export default {
   tabBarComponent: connect(state => ({ color: state.settings.color }))(
-    NavTabBarTop
+    NavTabBarTop,
   ),
   tabBarPosition: 'top',
   swipeEnabled: true,
@@ -38,6 +37,6 @@ export default {
   lazyLoad: true,
   backBehavior: 'none',
   tabBarOptions: {
-    scrollEnabled: Dimensions.get('window').width < 321
-  }
+    scrollEnabled: Dimensions.get('window').width < 321,
+  },
 };

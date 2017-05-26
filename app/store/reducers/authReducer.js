@@ -6,12 +6,12 @@ import api from '../../api';
 
 const defaultState: AuthState = {
   api_key: null,
-  team: null
+  team: null,
 };
 
 export default function(
   state: AuthState = defaultState,
-  action: Action
+  action: Action,
 ): AuthState {
   switch (action.type) {
     case API_KEY + FULFILLED:

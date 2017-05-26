@@ -20,13 +20,13 @@ export function compareDays(d1: number, d2: number): number {
     date1.getFullYear() +
       ('0' + date1.getMonth()).slice(-2) +
       ('0' + date1.getDate()).slice(-2),
-    10
+    10,
   );
   const day2: number = parseInt(
     date2.getFullYear() +
       ('0' + date2.getMonth()).slice(-2) +
       ('0' + date2.getDate()).slice(-2),
-    10
+    10,
   );
   const diff: number = day1 - day2;
 
@@ -108,13 +108,15 @@ export function sortMatches(matches: MatchesState): Function {
 }
 
 export function currentRoute(): NavigationRoute {
-  const recursiveFindRoute = (nav) => {
-
+  const recursiveFindRoute = nav => {
     const subState = nav.routes[nav.index].routeName === 'DrawerOpen'
       ? nav.routes[0]
       : nav.routes[nav.index];
 
-    if (!subState.routes || subState.routes[0].routeName.indexOf('TAB_') !== - 1) {
+    if (
+      !subState.routes ||
+      subState.routes[0].routeName.indexOf('TAB_') !== -1
+    ) {
       return subState;
     }
     return recursiveFindRoute(subState);
@@ -126,6 +128,8 @@ export function currentRoute(): NavigationRoute {
 export function darken(color, amt) {
   amt = Math.round(2.55 * amt);
   const colorVal = parseInt(color.replace('#', ''), 16);
-  const darkColor = ((( colorVal & 0x0000FF) - amt) | (((( colorVal>> 8) & 0x00FF) - amt) << 8) | (((colorVal >> 16) - amt) << 16)).toString(16);
+  const darkColor = (((colorVal & 0x0000ff) - amt) |
+    ((((colorVal >> 8) & 0x00ff) - amt) << 8) |
+    (((colorVal >> 16) - amt) << 16)).toString(16);
   return `#${darkColor}`;
 }

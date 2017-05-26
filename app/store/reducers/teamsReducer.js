@@ -5,7 +5,7 @@ const initialState: TeamsState = {};
 
 export default function(
   state: TeamsState = initialState,
-  action: Action
+  action: Action,
 ): TeamsState {
   switch (action.type) {
     case GET_TEAM + FULFILLED:

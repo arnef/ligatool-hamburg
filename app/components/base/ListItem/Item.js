@@ -35,12 +35,18 @@ class Item extends Component {
       itemStyle.push({
         paddingVertical: Platform.OS === 'ios' ? 12 : 14,
         height: null,
-        alignItems: 'flex-start'
-      })
+        alignItems: 'flex-start',
+      });
     }
 
     return (
-      <View style={active ? { backgroundColor: theme.backgroundColor } : { backgroundColor: '#fff'}}>
+      <View
+        style={
+          active
+            ? { backgroundColor: theme.backgroundColor }
+            : { backgroundColor: '#fff' }
+        }
+      >
         <Container onPress={onPress} style={itemStyle}>
           {children}
         </Container>
@@ -53,7 +59,7 @@ Item.ITEM_HEIGHT = Platform.OS === 'ios' ? 44 : 48;
 
 const styles = StyleSheet.create({
   disabled: {
-    opacity: 0.5
+    opacity: 0.5,
   },
   item: Platform.select({
     android: {
@@ -64,7 +70,7 @@ const styles = StyleSheet.create({
       height: 48,
 
       paddingVertical: 14,
-      paddingHorizontal: 16
+      paddingHorizontal: 16,
     },
     ios: {
       alignItems: 'center',
@@ -72,24 +78,24 @@ const styles = StyleSheet.create({
       height: 44,
       // maxHeight: 44,
       paddingVertical: 12,
-      paddingHorizontal: 16
-    }
+      paddingHorizontal: 16,
+    },
   }),
   separator: Platform.select({
     android: {
       backgroundColor: theme.backgroundColor,
       height: 1,
-      marginLeft: 0
+      marginLeft: 0,
     },
     ios: {
       backgroundColor: theme.backgroundColor,
       height: 1,
-      marginLeft: 16
-    }
+      marginLeft: 16,
+    },
   }),
   text: {
-    color: theme.primaryTextColor
-  }
+    color: theme.primaryTextColor,
+  },
 });
 
 export default Item;

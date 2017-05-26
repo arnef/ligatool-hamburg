@@ -14,5 +14,5 @@ export {
   LaunchScreen,
   MatchItem,
   TeamLogo,
-  StaticListHeader
+  StaticListHeader,
 };

@@ -3,7 +3,7 @@ import { create } from 'apisauce';
 import baseUrl from './url';
 
 const api: API = create({
-  baseURL: `${baseUrl}/index.php?option=com_sportsmanagerapi&q=`
+  baseURL: `${baseUrl}/index.php?option=com_sportsmanagerapi&q=`,
 });
 
 if (__DEV__) {

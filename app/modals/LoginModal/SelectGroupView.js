@@ -22,7 +22,11 @@ class SelectGroupView extends Component {
         renderRow={this.renderItem.bind(this)}
         dataSource={this.props.leagues}
         ItemSeparatorComponent={Separator}
-        getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
+        getItemLayout={(data, index) => ({
+          length: ListItem.ITEM_HEIGHT,
+          offset: ListItem.ITEM_HEIGHT * index,
+          index,
+        })}
         keyExtractor={item => item.id}
       />
     );
@@ -31,33 +35,32 @@ class SelectGroupView extends Component {
   renderItem({ item }) {
     return (
       <ListItem onPress={() => this.onPress(item)}>
-        <Text>{ `${item.name}`}</Text>
+        <Text>{`${item.name}`}</Text>
       </ListItem>
-    )
+    );
   }
 
   onPress(league) {
     this.props.navigate({
       routeName: 'SelectTeam',
-      params: { id: league.id }
+      params: { id: league.id },
     });
   }
 }
 
-
 SelectGroupView.navigationOptions = {
   title: 'Gruppe wählen',
-  header: NavCloseIcon
+  header: NavCloseIcon,
 };
 
 export default connect(
   state => ({
     error: state.loading.error,
     fetching: state.loading.nonBlocking,
-    leagues: Object.values(state.leagues)
+    leagues: Object.values(state.leagues),
   }),
   dispatch => ({
     getRankings: () => dispatch(getRankings()),
-    navigate: route => dispatch(NavigationActions.navigate(route))
-  })
+    navigate: route => dispatch(NavigationActions.navigate(route)),
+  }),
 )(SelectGroupView);

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  Platform
+  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
@@ -17,7 +17,7 @@ import {
   Button,
   Text,
   Content,
-  Separator
+  Separator,
 } from '../../components/base';
 import * as theme from '../../components/base/theme';
 import { CLIENT_ERROR } from 'apisauce';
@@ -29,7 +29,7 @@ class LoginView extends Component {
     super(props);
     this.state = {
       pass: '',
-      user: ''
+      user: '',
     };
   }
 
@@ -52,42 +52,42 @@ class LoginView extends Component {
 
           </Content>
           <Wrapper>
-          {isIOS && <Separator full />}
-          <TextInput
-            placeholder="Username"
-            ref="UserInput"
-            autoCapitalize="none"
-            style={styles.input}
-            underlineColorAndroid={theme.backgroundColor}
-            editable={!loading}
-            blurOnSubmit={false}
-            autoCorrect={false}
-            selectTextOnFocus={true}
-            onChangeText={text => {
-              this.setState({ user: text });
-            }}
-            onSubmitEditing={() => {
-              this.refs.PassInput.focus();
-            }}
-            returnKeyLabel="next"
-          />
-          {isIOS && <Separator />}
-          <TextInput
-            placeholder="Passwort"
-            ref="PassInput"
-            style={styles.input}
-            selectTextOnFocus={true}
-            underlineColorAndroid={theme.backgroundColor}
-            editable={!loading}
-            secureTextEntry={true}
-            keyboardAppearance="dark"
-            onChangeText={text => {
-              this.setState({ pass: text });
-            }}
-            onSubmitEditing={this.login.bind(this)}
-            returnKeyType="send"
-          />
-          {isIOS && <Separator full />}
+            {isIOS && <Separator full />}
+            <TextInput
+              placeholder="Username"
+              ref="UserInput"
+              autoCapitalize="none"
+              style={styles.input}
+              underlineColorAndroid={theme.backgroundColor}
+              editable={!loading}
+              blurOnSubmit={false}
+              autoCorrect={false}
+              selectTextOnFocus={true}
+              onChangeText={text => {
+                this.setState({ user: text });
+              }}
+              onSubmitEditing={() => {
+                this.refs.PassInput.focus();
+              }}
+              returnKeyLabel="next"
+            />
+            {isIOS && <Separator />}
+            <TextInput
+              placeholder="Passwort"
+              ref="PassInput"
+              style={styles.input}
+              selectTextOnFocus={true}
+              underlineColorAndroid={theme.backgroundColor}
+              editable={!loading}
+              secureTextEntry={true}
+              keyboardAppearance="dark"
+              onChangeText={text => {
+                this.setState({ pass: text });
+              }}
+              onSubmitEditing={this.login.bind(this)}
+              returnKeyType="send"
+            />
+            {isIOS && <Separator full />}
           </Wrapper>
           {!loading &&
             <Content>
@@ -139,7 +139,7 @@ class LoginView extends Component {
     if (this.state.user !== '' && this.state.pass !== '') {
       const loginUser = {
         password: this.state.pass,
-        username: this.state.user
+        username: this.state.user,
       };
 
       this.props.requestAPIKey(loginUser);
@@ -158,13 +158,13 @@ const styles = StyleSheet.create({
   input: Platform.select({
     ios: {
       height: 40,
-      marginLeft: 16
+      marginLeft: 16,
     },
     android: {
       marginLeft: -2,
-      marginRight: -2
-    }
-  })
+      marginRight: -2,
+    },
+  }),
 });
 
 LoginView.navigationOptions = {
@@ -175,7 +175,7 @@ LoginView.navigationOptions = {
     } else {
       return defaultHeader;
     }
-  }
+  },
 };
 
 export default connect(
@@ -183,12 +183,12 @@ export default connect(
     auth: state.auth,
     error: state.loading.error,
     loading: state.loading.nonBlocking,
-    color: state.settings.color
+    color: state.settings.color,
   }),
   dispatch => ({
     queryTeamMatches: () => dispatch(actions.queryTeamMatches()),
     renewToken: apiKey => dispatch(actions.renewToken(apiKey)),
     requestAPIKey: user => dispatch(actions.requestAPIKey(user)),
-    showLogin: show => dispatch(actions.showLogin(show))
-  })
+    showLogin: show => dispatch(actions.showLogin(show)),
+  }),
 )(LoginView);
