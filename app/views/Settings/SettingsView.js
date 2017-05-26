@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform, ActivityIndicator } from 'react-native';
+import { View, Platform, ActivityIndicator, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { ListItem, Text, Switch, Separator, Column } from '../../components/base';
@@ -156,16 +156,11 @@ class SettingsView extends Component {
         <Separator group />
         <ListItem.Group>
           <ListItem.Header title="Informationen" />
-          <ListItem onPress={this.props.clearImageCache.bind(this)}>
+          <ListItem onPress={this.clearImageCache.bind(this)}>
             <ListItem.Icon name='trash' color={this.props.settings.color} />
               <Text style={{ paddingTop: 8, paddingBottom: 8}}>{ strings.clear_image_cache }</Text>
           </ListItem>
-          <ListItem multiline>
-            <Text small secondary>
-              { strings.cache_information }
-            </Text>
-          </ListItem>
-          <Separator />
+          <Separator image />
           <ListItem>
             <ListItem.Icon
               name="information-circle"
@@ -176,6 +171,15 @@ class SettingsView extends Component {
         </ListItem.Group>
       </Container>
     );
+  }
+
+  clearImageCache() {
+    Alert.alert(strings.clear_image_cache, strings.cache_information,
+    [
+      { text: 'Abbrechen', onPress: () => {}},
+      { text: 'Löschen', onPress: () => { this.props.clearImageCache() }}
+    ]
+  );
   }
 }
 

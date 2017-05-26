@@ -1,3 +1,30 @@
+<a name="0.10.1"></a>
+## 0.10.1 (2017-05-25)
+
+
+### Bug Fixes
+
+* .gitignore ([f2775e3](https://github.com/arnef/ligatool-hamburg/commit/f2775e3))
+* merge league data from server with local data ([0aa2392](https://github.com/arnef/ligatool-hamburg/commit/0aa2392))
+* **Container:** check which scroll function to use ([2f1c1dc](https://github.com/arnef/ligatool-hamburg/commit/2f1c1dc)), closes [#23](https://github.com/arnef/ligatool-hamburg/issues/23)
+* update line up if set has score ([a55451f](https://github.com/arnef/ligatool-hamburg/commit/a55451f))
+* **DrawerView:** show reload button if no leagues ([fbd2a6b](https://github.com/arnef/ligatool-hamburg/commit/fbd2a6b))
+
+
+### Features
+
+* add player statistics ([e07cc3a](https://github.com/arnef/ligatool-hamburg/commit/e07cc3a))
+* add settings entry to clear app cache ([5f441b7](https://github.com/arnef/ligatool-hamburg/commit/5f441b7)), closes [#22](https://github.com/arnef/ligatool-hamburg/issues/22)
+* disable player if he played 2 doubles or 2 singles ([a1da325](https://github.com/arnef/ligatool-hamburg/commit/a1da325))
+* update the ui ([f2c1b55](https://github.com/arnef/ligatool-hamburg/commit/f2c1b55))
+
+
+### Performance Improvements
+
+* use FlatList instead of ScrollView ([d25e332](https://github.com/arnef/ligatool-hamburg/commit/d25e332))
+
+
+
 <a name="0.10.0"></a>
 # 0.10.0 (2017-05-12)
 
