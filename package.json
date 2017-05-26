@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "flow": "flow --show-all-errors",
     "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'",
     "precommit": "lint-staged"
   },
