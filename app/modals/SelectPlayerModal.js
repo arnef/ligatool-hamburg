@@ -89,7 +89,10 @@ class SelectPlayer extends Component {
         if (state.params.team === 'home') {
           navigate({
             routeName: 'SelectPlayerView',
-            params: { ...state.params, team: 'away' },
+            params: { ...state.params,
+              team: 'away',
+              title: `${state.params.data.name} Gast`
+            },
           });
         } else {
           closeModal();
@@ -113,21 +116,7 @@ class SelectPlayer extends Component {
   }
 }
 
-SelectPlayer.navigationOptions = {
-  title: ({ state }) => {
-    const team = state.params.team === 'home' ? 'Heim' : 'Gast';
-
-    return `${state.params.data.name} ${team}`;
-  },
-  header: (navigation, defaulHeader) => {
-    // maybe check this in NavCloseIcon
-    if (navigation.state.key === 'Init') {
-      return NavCloseIcon(navigation, defaulHeader);
-    } else {
-      return defaulHeader;
-    }
-  },
-};
+SelectPlayer.navigationOptions = NavCloseIcon();
 
 export default StackNavigator(
   {

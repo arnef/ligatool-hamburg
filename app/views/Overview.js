@@ -61,6 +61,6 @@ export default TabNavigator(
   },
   {
     ...NavTabBarTop,
-    lazyLoad: false,
+    lazy: false,
   },
 );

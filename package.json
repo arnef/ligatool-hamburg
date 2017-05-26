@@ -22,7 +22,7 @@
     "react-native-fcm": "^6.2.0",
     "react-native-http-cache": "git+https://github.com/arnef/react-native-http-cache.git",
     "react-native-vector-icons": "^4.0.0",
-    "react-navigation": "git+https://github.com/react-community/react-navigation.git#7edd9a7",
+    "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",

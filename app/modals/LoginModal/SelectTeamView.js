@@ -66,9 +66,6 @@ class SelectTeamView extends Component {
   }
 }
 
-SelectTeamView.navigationOptions = {
-  title: 'Team wählen',
-};
 
 export default connect(
   state => ({

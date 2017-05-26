@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { TabView } from 'react-navigation';
+import { TabBarBottom } from 'react-navigation';
 
-class NavTabBarTop extends Component {
+class NavTabBarBottom extends Component {
   render() {
     return (
-      <TabView.TabBarBottom
+      <TabBarBottom
         {...this.props}
         activeTintColor={this.props.color}
       />
@@ -15,5 +15,5 @@ class NavTabBarTop extends Component {
 }
 
 export default connect(state => ({ color: state.settings.color }))(
-  NavTabBarTop,
+  NavTabBarBottom,
 );

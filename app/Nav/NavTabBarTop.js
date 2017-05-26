@@ -2,14 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { Platform, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 
-import { TabView } from 'react-navigation';
+import { TabBarTop } from 'react-navigation';
 
 const white = 'rgba(255, 255, 255, .9)';
 
 class NavTabBarTop extends Component {
   render() {
     return (
-      <TabView.TabBarTop
+      <TabBarTop
         {...this.props}
         activeTintColor="#fff"
         inactiveTintColor={white}
@@ -27,7 +27,8 @@ class NavTabBarTop extends Component {
   }
 }
 
-export default {
+export default
+{
   tabBarComponent: connect(state => ({ color: state.settings.color }))(
     NavTabBarTop,
   ),

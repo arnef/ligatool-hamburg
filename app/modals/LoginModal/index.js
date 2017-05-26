@@ -3,16 +3,24 @@ import SelectGroupView from './SelectGroupView';
 import SelectTeamView from './SelectTeamView';
 import LoginView from './LoginView';
 import NavHeader from '../../Nav/NavHeader';
+import NavCloseIcon from '../../Nav/NavCloseIcon';
 
 const NavStack = StackNavigator(
   {
-    SelectGroup: { screen: SelectGroupView },
-    SelectTeam: { screen: SelectTeamView },
-    LoginView: { screen: LoginView },
+    SelectGroup: {
+      screen: SelectGroupView,
+      navigationOptions: NavCloseIcon('Gruppe wählen')
+    },
+    SelectTeam: {
+      screen: SelectTeamView,
+      navigationOptions: { title: 'Team wählen'}
+    },
+    LoginView: {
+      screen: LoginView,
+      navigationOptions: NavCloseIcon('Login')
+    },
   },
-  {
-    ...NavHeader,
-  },
+  NavHeader,
 );
 
 export default NavStack;

@@ -48,10 +48,6 @@ class SelectGroupView extends Component {
   }
 }
 
-SelectGroupView.navigationOptions = {
-  title: 'Gruppe wählen',
-  header: NavCloseIcon,
-};
 
 export default connect(
   state => ({

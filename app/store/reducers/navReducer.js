@@ -47,7 +47,10 @@ export default function(state, action: Action) {
         nextState = Root.router.getStateForAction(
           NavigationActions.navigate({
             routeName: MODAL_SELECT_PLAYER,
-            params: { ...action.payload, team: 'home' },
+            params: {
+              ...action.payload,
+              title: `${action.payload.data.name} Heim`,
+              team: 'home' },
           }),
           state,
         );

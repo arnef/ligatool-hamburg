@@ -167,16 +167,6 @@ const styles = StyleSheet.create({
   }),
 });
 
-LoginView.navigationOptions = {
-  title: 'Login',
-  header: (navigation, defaultHeader) => {
-    if (navigation.state.key === 'Init') {
-      return NavCloseIcon(navigation, defaultHeader);
-    } else {
-      return defaultHeader;
-    }
-  },
-};
 
 export default connect(
   state => ({
