@@ -2,7 +2,7 @@
 
 type User = {
   username: string,
-  password: string
+  password: string,
 };
 
 type Player = {
@@ -10,14 +10,15 @@ type Player = {
   name: string,
   surname: string,
   image: string,
-  number: string
+  number: string,
+  disabled?: boolean,
 };
 
 type Team = {
   id: number,
   name: string,
   image?: string,
-  player: Array<Player>
+  player: Array<Player>,
 };
 
 type Venue = {
@@ -25,13 +26,13 @@ type Venue = {
   name: string,
   street: string,
   zip_code: number,
-  city: string
+  city: string,
 };
 
 type League = {
   id: number,
   name: string,
-  shifting_rule: boolean
+  shifting_rule: boolean,
 };
 
 type Sets = {
@@ -41,7 +42,13 @@ type Sets = {
   player_2_home: ?Player,
   player_2_away: ?Player,
   goals_home: ?number,
-  goals_away: ?number
+  goals_away: ?number,
+};
+
+type LineUp = {
+  update: boolean,
+  errors: number[],
+  playerDisabled: { [key: string]: { singles: boolean, doubles: boolean } },
 };
 
 type Match = {
@@ -62,5 +69,7 @@ type Match = {
   date_confirmed: boolean,
   sets: { [setNumber: string]: Sets },
   type: string,
-  is_admin: boolean
+  is_admin: boolean,
+  showButton?: boolean,
+  lineUp?: LineUp,
 };

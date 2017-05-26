@@ -15,23 +15,41 @@ import { ListItem, Text } from '../base';
 
 const DEVICE_HEIGHT = Math.round(Dimensions.get('window').height * 0.8);
 const DURATION = 250;
-class ActionSheet extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalVisible: false,
-      items: [],
-      y: new Animated.Value(DEVICE_HEIGHT),
-    };
-  }
+
+type State = {
+  items: any[],
+  modalVisible: boolean,
+  callback: Function,
+  y: Animated.Value,
+};
+
+type Props = {
+  ref?: (instance: any) => void,
+};
+
+type ActionSheetConfig = {
+  options: string[],
+  cancelButtonIndex?: number,
+};
+
+class ActionSheet extends Component<void, Props, State> {
+  state: State = {
+    modalVisible: false,
+    items: [],
+    y: new Animated.Value(DEVICE_HEIGHT),
+    callback: () => null,
+  };
 
   static actionsheetInstance;
 
-  static show(config, callback) {
+  static show(config: ActionSheetConfig, callback: (index: number) => void) {
     this.actionsheetInstance.showActionSheet(config, callback);
   }
 
-  showActionSheet(config, callback) {
+  showActionSheet(
+    config: ActionSheetConfig,
+    callback: (index: number) => void,
+  ) {
     if (Platform.OS === 'ios') {
       let iosConfig = JSON.parse(JSON.stringify(config));
       iosConfig.options.push('Abbrechen');
@@ -50,8 +68,8 @@ class ActionSheet extends Component {
     }
   }
 
-  callbackWrapper(cancelIdx, callback) {
-    return val => {
+  callbackWrapper(cancelIdx: number, callback: (index: number) => void) {
+    return (val: number) => {
       if (val < cancelIdx) {
         callback(val);
       }
