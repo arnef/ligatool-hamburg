@@ -11,24 +11,21 @@ import { backgroundColor } from './components/base/theme';
 import NotificationManager from './NotificationManager';
 
 class AppContainer extends Component {
-
   componentDidMount() {
     NotificationManager.requestPermissions();
     this.notificationListener = NotificationManager.notificationListener();
     this.refreshTokenListener = NotificationManager.refreshTokenListener();
-
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const oldnav = this.props.nav;
       this.props.dispatch({ type: NavigationActions.BACK });
       const dontClose = this.props.nav !== oldnav;
       if (dontClose) {
-        this.props.dispatch({ type: 'UPDATE_DRAWER_ITEM'});
+        this.props.dispatch({ type: 'UPDATE_DRAWER_ITEM' });
       }
       return dontClose;
     });
   }
-
 
   componentWillUnmount() {
     if (this.refreshTokenListener) {
@@ -45,11 +42,15 @@ class AppContainer extends Component {
     return (
       <View style={{ flex: 1, backgroundColor }}>
         <Loading />
-        <ActionSheet ref={ (c) => {ActionSheet.actionsheetInstance = c;}} />
+        <ActionSheet
+          ref={c => {
+            ActionSheet.actionsheetInstance = c;
+          }}
+        />
         <Root
           navigation={addNavigationHelpers({
             dispatch,
-            state: nav
+            state: nav,
           })}
         />
       </View>
@@ -57,9 +58,7 @@ class AppContainer extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    auth: state.auth,
-    nav: state.nav,
-  })
-)(AppContainer);
+export default connect(state => ({
+  auth: state.auth,
+  nav: state.nav,
+}))(AppContainer);

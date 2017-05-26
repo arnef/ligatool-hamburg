@@ -4,14 +4,14 @@ import {
   QUERY_RANKINGS,
   GET_LEAGUE,
   QUERY_LEAGUE_MATCHES,
-  GET_PLAYERS_STATS
+  GET_PLAYERS_STATS,
 } from '../actions/types';
 
 const initialState: LeaguesState = {};
 
 export default function(
   state: LeaguesState = initialState,
-  action: Action
+  action: Action,
 ): LeaguesState {
   switch (action.type) {
     case QUERY_RANKINGS + FULFILLED:
@@ -58,13 +58,13 @@ export default function(
 
 type MatchDays = {
   matchdays: { [matchday: string]: Array<number> },
-  selected: ?string
+  selected: ?string,
 };
 
 function getMatchDays(matches: Array<Match>): MatchDays {
   const matchDays: MatchDays = {
     matchdays: {},
-    selected: null
+    selected: null,
   };
 
   for (let match: Match of matches) {
@@ -77,7 +77,7 @@ function getMatchDays(matches: Array<Match>): MatchDays {
     }
   }
   if (!matchDays.selected) {
-    matchDays.selected = matches[matches.length-1].match_day;
+    matchDays.selected = matches[matches.length - 1].match_day;
   }
 
   return matchDays;

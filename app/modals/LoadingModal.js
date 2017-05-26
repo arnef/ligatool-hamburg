@@ -4,7 +4,7 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  Platform
+  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       height: 80,
       justifyContent: 'center',
-      width: 80
-    }
+      width: 80,
+    },
   }),
   loadingContainer: {
     alignItems: 'center',
@@ -51,10 +51,10 @@ const styles = StyleSheet.create({
       ? 'rgba(0,0,0,.3)'
       : 'rgba(0, 0, 0, .6)',
     flex: 1,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 export default connect(state => ({
-  loading: state.loading
+  loading: state.loading,
 }))(LoadingModal);

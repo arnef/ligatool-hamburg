@@ -3,13 +3,18 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, MatchStatsBar, StaticListHeader } from '../components';
-import { ListItem, Text, Row, Column, Image, Separator } from '../components/base';
+import {
+  ListItem,
+  Text,
+  Row,
+  Column,
+  Image,
+  Separator,
+} from '../components/base';
 import { getPlayersStats } from '../store/actions/leagueActions';
 import { PLAYER } from './routes';
 
-
 class PlayerStatsView extends Component {
-
   componentDidMount() {
     if (!this.props.leagues[this.props.navigation.state.params.id].players) {
       this.getPlayersStats();
@@ -18,24 +23,24 @@ class PlayerStatsView extends Component {
 
   render() {
     const { error, loading } = this.props;
-    const bestlist = this.props.leagues[this.props.navigation.state.params.id].players || [];
+    const bestlist = this.props.leagues[this.props.navigation.state.params.id]
+      .players || [];
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <StaticListHeader>
-          <Column fluid style={{ width: 24 }}>
-          </Column>
+          <Column fluid style={{ width: 24 }} />
           <Column>
-            <Text size={12} color='#fff'>Name</Text>
+            <Text size={12} color="#fff">Name</Text>
           </Column>
           <Column fluid style={{ width: 36 }} center>
-            <Text size={12} color='#fff'>Q</Text>
+            <Text size={12} color="#fff">Q</Text>
           </Column>
           <Column fluid style={{ width: 38, alignItems: 'flex-end' }}>
-            <Text size={12} color='#fff'>Spiele</Text>
+            <Text size={12} color="#fff">Spiele</Text>
           </Column>
           <Column fluid style={{ width: 38 }} center>
-            <Text bold size={12} color='#fff'>LI</Text>
+            <Text bold size={12} color="#fff">LI</Text>
           </Column>
         </StaticListHeader>
         <Container
@@ -43,14 +48,19 @@ class PlayerStatsView extends Component {
           error={error}
           refreshing={loading}
           onRefresh={this.getPlayersStats.bind(this)}
-          renderRow={({item}) => this.renderRow(item, item.position === bestlist.length)}
+          renderRow={({ item }) =>
+            this.renderRow(item, item.position === bestlist.length)}
           dataSource={bestlist}
           ItemSeparatorComponent={props => <Separator table image />}
           keyExtractor={this.keyExtractor.bind(this)}
-          getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
+          getItemLayout={(data, index) => ({
+            length: ListItem.ITEM_HEIGHT,
+            offset: ListItem.ITEM_HEIGHT * index,
+            index,
+          })}
         />
       </View>
-    )
+    );
   }
   keyExtractor(item) {
     return `${item.position}`;
@@ -60,32 +70,39 @@ class PlayerStatsView extends Component {
     return (
       <ListItem
         key={item.position}
-        onPress={() => this.props.navigation.navigate(PLAYER, item.player)}>
-          <Column center fluid style={{ width: 20 }}>
-            <Text bold center>{ `${item.position}` }</Text>
-          </Column>
-            <Image url={item.player.image} size={32} style={{marginHorizontal: 8 }} />
+        onPress={() => this.props.navigation.navigate(PLAYER, item.player)}
+      >
+        <Column center fluid style={{ width: 20 }}>
+          <Text bold center>{`${item.position}`}</Text>
+        </Column>
+        <Image
+          url={item.player.image}
+          size={32}
+          style={{ marginHorizontal: 8 }}
+        />
+        <Column>
+          <Row style={{ paddingVertical: 0, paddingHorizontal: 0 }}>
             <Column>
-              <Row style={{ paddingVertical: 0, paddingHorizontal: 0 }}>
-              <Column>
-                <Text numberOfLines={1}>{ `${item.player.name} ${item.player.surname}`}</Text>
-              </Column>
-              <Column fluid style={{ width: 42, alignItems: 'flex-end'}}>
-                <Text>{ `${item.rate}`}</Text>
-              </Column>
-              <Column fluid center style={{ width: 38 }}>
-                <Text>{ `${item.matches}`}</Text>
-              </Column>
-              <Column fluid style={{ width: 38}} center>
-                <Text bold>{ `${item.competitive_index}`}</Text>
-              </Column>
-            </Row>
-            <Row style={{ paddingVertical: 0, paddingHorizontal: 0 }}>
-              <MatchStatsBar small stats={item} />
-            </Row>
-          </Column>
+              <Text
+                numberOfLines={1}
+              >{`${item.player.name} ${item.player.surname}`}</Text>
+            </Column>
+            <Column fluid style={{ width: 42, alignItems: 'flex-end' }}>
+              <Text>{`${item.rate}`}</Text>
+            </Column>
+            <Column fluid center style={{ width: 38 }}>
+              <Text>{`${item.matches}`}</Text>
+            </Column>
+            <Column fluid style={{ width: 38 }} center>
+              <Text bold>{`${item.competitive_index}`}</Text>
+            </Column>
+          </Row>
+          <Row style={{ paddingVertical: 0, paddingHorizontal: 0 }}>
+            <MatchStatsBar small stats={item} />
+          </Row>
+        </Column>
       </ListItem>
-    )
+    );
   }
 
   getPlayersStats() {
@@ -98,9 +115,9 @@ export default connect(
   state => ({
     loading: state.loading.nonBlocking,
     error: state.loading.error,
-    leagues: state.leagues
+    leagues: state.leagues,
   }),
   dispatch => ({
-    getPlayersStats: (id: number ) => dispatch(getPlayersStats(id))
-  })
+    getPlayersStats: (id: number) => dispatch(getPlayersStats(id)),
+  }),
 )(PlayerStatsView);

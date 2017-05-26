@@ -23,5 +23,5 @@ export default combineReducers({
   teams,
   overview,
   myTeam,
-  players
+  players,
 });

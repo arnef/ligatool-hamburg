@@ -14,20 +14,20 @@ class Score extends Component {
     if (this.props.setPoints) {
       return (
         <View>
-        <View style={[styles.score, { marginTop: 8 }]}>
-          <Text style={styles.scoreText}>
-            {this.renderScore()}
+          <View style={[styles.score, { marginTop: 8 }]}>
+            <Text style={styles.scoreText}>
+              {this.renderScore()}
+            </Text>
+          </View>
+          <Text
+            bold
+            center
+            small
+            style={{ marginTop: 2 }}
+            color={this.props.setPoints.live ? '#555' : 'transparent'}
+          >
+            LIVE
           </Text>
-        </View>
-        <Text
-          bold
-          center
-          small
-          style={{marginTop: 2}}
-          color={this.props.setPoints.live ? '#555' : 'transparent'}
-        >
-          LIVE
-        </Text>
         </View>
       );
     } else if (this.props.goals) {
@@ -62,18 +62,18 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginHorizontal: 4,
     padding: 6,
-    width: 56
+    width: 56,
   },
   scoreText: {
     color: '#FFF',
     fontFamily: Platform.select({
       android: 'monospace',
-      ios: 'Courier New'
+      ios: 'Courier New',
     }),
     fontSize: 14,
     fontWeight: 'bold',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default Score;

@@ -28,18 +28,17 @@ class Row extends Component {
 const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   fluid: {
-    paddingHorizontal: 0
+    paddingHorizontal: 0,
   },
   row: {
     flexDirection: 'row',
     // paddingBottom: 8,
     // paddingVertical: 4,
     // paddingHorizontal: 8
-  }
+  },
 });
-
 
 export default Row;

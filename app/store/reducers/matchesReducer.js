@@ -13,7 +13,7 @@ import {
   RESET_SETS,
   SUGGEST_SCORE,
   SCORE_CONFIRMED,
-  NOTIFICATION
+  NOTIFICATION,
 } from '../actions/types';
 import NotificationManager from '../../NotificationManager';
 import { isAdminForMatch } from '../../Helper';
@@ -22,7 +22,7 @@ const initialState: MatchesState = {};
 
 export default function(
   state: MatchesState = initialState,
-  action: Action
+  action: Action,
 ): MatchesState {
   switch (action.type) {
     case QUERY_MATCHES + FULFILLED:
@@ -56,11 +56,13 @@ export default function(
         match.showButton = false;
         if (match.is_admin && match.score_unconfirmed) {
           if (match.league.cup) {
-            match.showButton = match.score_unconfirmed &&
+            match.showButton =
+              match.score_unconfirmed &&
               (match.set_points_home !== match.set_points_away &&
                 (match.set_points_home > 16 || match.set_points_away > 16));
           } else {
-            match.showButton = match.score_unconfirmed &&
+            match.showButton =
+              match.score_unconfirmed &&
               match.set_points_home + match.set_points_away === 32;
           }
           match.lineUp = checkLineUp(match);
@@ -138,11 +140,11 @@ export default function(
         state[id].set_points = true;
         state[id].set_points_home = parseInt(
           action.payload.set_points_home,
-          10
+          10,
         );
         state[id].set_points_away = parseInt(
           action.payload.set_points_away,
-          10
+          10,
         );
         state[id].live = JSON.parse(action.payload.live) ? true : false;
       }
@@ -154,7 +156,7 @@ export default function(
       if (state[id]) {
         state = { ...state };
         state[id].score_unconfirmed = parseInt(
-          action.payload.score_unconfirmed
+          action.payload.score_unconfirmed,
         );
         state[id].live = false;
       }
@@ -201,22 +203,31 @@ function checkLineUp(match: Match) {
 
   const addPlayerCount = (idx, player, doubles = false) => {
     if (!playerCount[player.id]) {
-      playerCount[player.id] = { singles: 0, doubles: 0};
+      playerCount[player.id] = { singles: 0, doubles: 0 };
     }
     if (!playerDisabled[player.id]) {
       playerDisabled[player.id] = { singles: false, doubles: false };
     }
     playerCount[player.id][doubles ? 'doubles' : 'singles'] += 1;
     // playerDisabled[player.id][doubles ? 'doubles' : 'singles'] = false;
-    console.tron.log(playerCount[player.id][doubles ? 'doubles' : 'singles'] + ' > ' + (doubles ? (match.league.cup ? 6 : 4) : 2))
-    if (playerCount[player.id][doubles ? 'doubles' : 'singles'] > (doubles ? (match.league.cup ? 6 : 4) : 2)) {
+    console.tron.log(
+      playerCount[player.id][doubles ? 'doubles' : 'singles'] +
+        ' > ' +
+        (doubles ? (match.league.cup ? 6 : 4) : 2),
+    );
+    if (
+      playerCount[player.id][doubles ? 'doubles' : 'singles'] >
+      (doubles ? (match.league.cup ? 6 : 4) : 2)
+    ) {
       console.tron.log(player);
       if (errors.indexOf(parseInt(idx)) === -1) {
         errors.push(parseInt(idx));
       }
-
     }
-    if (playerCount[player.id][doubles ? 'doubles' : 'singles'] > (doubles ? (match.league.cup ? 5 : 3) : 1)) {
+    if (
+      playerCount[player.id][doubles ? 'doubles' : 'singles'] >
+      (doubles ? (match.league.cup ? 5 : 3) : 1)
+    ) {
       playerDisabled[player.id][doubles ? 'doubles' : 'singles'] = true;
     }
   };
@@ -224,29 +235,31 @@ function checkLineUp(match: Match) {
   for (let idx: number in match.sets) {
     const set = match.sets[idx];
     if (set.player_1_home && set.player_1_away) {
-        count += 1;
-        if (set.player_2_home != null && set.player_2_away != null) {
-          addPlayerCount(idx, set.player_1_home, true);
-          addPlayerCount(idx, set.player_2_home, true);
-          addPlayerCount(idx, set.player_1_away, true);
-          addPlayerCount(idx, set.player_2_away, true);
-        } else {
-          addPlayerCount(idx, set.player_1_home);
-          addPlayerCount(idx, set.player_1_away);
-        }
+      count += 1;
+      if (set.player_2_home != null && set.player_2_away != null) {
+        addPlayerCount(idx, set.player_1_home, true);
+        addPlayerCount(idx, set.player_2_home, true);
+        addPlayerCount(idx, set.player_1_away, true);
+        addPlayerCount(idx, set.player_2_away, true);
+      } else {
+        addPlayerCount(idx, set.player_1_home);
+        addPlayerCount(idx, set.player_1_away);
+      }
     }
   }
   let i;
   for (i = 0; i < match.team_home.player.length; i++) {
-    match.team_home.player[i].disabled = playerDisabled[match.team_home.player[i].id];
+    match.team_home.player[i].disabled =
+      playerDisabled[match.team_home.player[i].id];
   }
   for (i = 0; i < match.team_away.player.length; i++) {
-    match.team_away.player[i].disabled = playerDisabled[match.team_away.player[i].id];
+    match.team_away.player[i].disabled =
+      playerDisabled[match.team_away.player[i].id];
   }
 
   return {
     update: count >= 16 && errors.length === 0,
     errors,
-    playerDisabled
+    playerDisabled,
   };
 }

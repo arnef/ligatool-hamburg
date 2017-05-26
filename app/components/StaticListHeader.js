@@ -6,13 +6,14 @@ import { backgroundColor } from './base/theme';
 import { darken } from '../Helper';
 
 class StaticListHeader extends Component {
-
   render() {
     return (
-      <View style={[style.row, { backgroundColor: darken(this.props.color, 10)}]}>
-        { this.props.children }
+      <View
+        style={[style.row, { backgroundColor: darken(this.props.color, 10) }]}
+      >
+        {this.props.children}
       </View>
-    )
+    );
   }
 }
 
@@ -31,10 +32,10 @@ const style = StyleSheet.create({
     shadowOffset: {
       height: StyleSheet.hairlineWidth,
     },
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 });
 
-export default connect(
-  state => ({ color: state.settings.color })
-)(StaticListHeader);
+export default connect(state => ({ color: state.settings.color }))(
+  StaticListHeader,
+);

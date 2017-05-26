@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 class Content extends Component {
-
   render() {
     return (
       <View style={style.container}>
-        { this.props.children }
+        {this.props.children}
       </View>
     );
   }
@@ -14,8 +13,8 @@ class Content extends Component {
 
 const style = StyleSheet.create({
   container: {
-    padding: 12
-  }
+    padding: 12,
+  },
 });
 
 export default Content;

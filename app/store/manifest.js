@@ -1,10 +1,14 @@
 // @flow
 import api, { LEAGUES, USER_AUTH_REFRESH } from '../api';
-import { LOAD_SETTINGS_FULFILLED, FULFILLED, QUERY_RANKINGS, TOKEN } from './actions/types';
-
+import {
+  LOAD_SETTINGS_FULFILLED,
+  FULFILLED,
+  QUERY_RANKINGS,
+  TOKEN,
+} from './actions/types';
 
 export default {
-  '1': state => ({ ...state })
+  '1': state => ({ ...state }),
 };
 
 export const APP_KEY = 'app';
@@ -16,7 +20,7 @@ export function migrateFromStorage(store, AsyncStorage) {
         Promise.all([
           AsyncStorage.getItem('API_KEY'),
           AsyncStorage.getItem('TOKEN'),
-          AsyncStorage.getItem('SETTINGS_V09')
+          AsyncStorage.getItem('SETTINGS_V09'),
         ])
           .then(values => {
             try {
@@ -25,15 +29,15 @@ export function migrateFromStorage(store, AsyncStorage) {
               values[2] = JSON.parse(values[2]);
               store.dispatch({
                 payload: { ok: true, data: values[2] },
-                type: 'LOAD_SETTINGS_FULFILLED'
+                type: 'LOAD_SETTINGS_FULFILLED',
               });
               store.dispatch({
                 payload: { ok: true, data: values[1] },
-                type: 'TOKEN_FULFILLED'
+                type: 'TOKEN_FULFILLED',
               });
               store.dispatch({
                 payload: { ok: true, data: { access_key: values[0] } },
-                type: 'API_KEY_FULFILLED'
+                type: 'API_KEY_FULFILLED',
               });
             } catch (ex) {
               console.tron.warn(ex);
@@ -58,26 +62,31 @@ export function setDefaultSettings(store) {
         if (resp.ok) {
           store.dispatch({
             type: QUERY_RANKINGS + FULFILLED,
-            payload: resp
+            payload: resp,
           });
-          const notification = { on: true, live: true, ended: true, leagues: {} };
+          const notification = {
+            on: true,
+            live: true,
+            ended: true,
+            leagues: {},
+          };
           for (let league of resp.data) {
             notification.leagues[league.id] = true;
           }
           store.dispatch({
             type: LOAD_SETTINGS_FULFILLED,
-            payload: { ok: true, data:{ notification } }
+            payload: { ok: true, data: { notification } },
           });
           console.tron.log('set default settings');
           resolve({ ok: true });
         } else {
           resolve({ ok: false, message: 'Fehler beim Laden der Gruppen' });
         }
-      })
+      });
     } else {
       resolve({ ok: true });
     }
-  })
+  });
 }
 
 export function checkToken(store) {
@@ -87,16 +96,16 @@ export function checkToken(store) {
       api.post(USER_AUTH_REFRESH, { access_key: auth.api_key }).then(resp => {
         store.dispatch({
           type: TOKEN + FULFILLED,
-          payload: resp
+          payload: resp,
         });
         api.get(LEAGUES).then(resp => {
           store.dispatch({
             type: QUERY_RANKINGS + FULFILLED,
-            payload: resp
+            payload: resp,
           });
           resolve();
-        })
-      })
+        });
+      });
     } else {
       resolve();
     }

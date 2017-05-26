@@ -18,7 +18,7 @@ const actions = Object.assign(
   LeagueActions,
   AuthActions,
   FCMActions,
-  PlayerActions
+  PlayerActions,
 );
 
 export default actions;

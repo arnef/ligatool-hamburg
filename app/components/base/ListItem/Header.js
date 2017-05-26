@@ -15,23 +15,18 @@ class ListItemHeader extends Component {
       menuOpen,
       closeIcon,
       children,
-      hideSeparator
+      hideSeparator,
     } = this.props;
     const Container = !!toggleMenu ? Touchable : View;
 
     return (
+      <View style={styles.header}>
+        {/* <View style={styles.header}> */}
+        <Text bold style={styles.headerText} color={this.props.color}>
+          {title}
+        </Text>
 
-        <View style={styles.header}>
-          {/* <View style={styles.header}> */}
-            <Text
-              bold
-              style={styles.headerText}
-              color={this.props.color}
-            >
-              {title}
-            </Text>
-
-            {/* <View style={{ flex: 1 }} />
+        {/* <View style={{ flex: 1 }} />
             {!!toggleMenu &&
               <Icon
                 name={
@@ -42,13 +37,12 @@ class ListItemHeader extends Component {
                 color={theme.secondaryTextColor}
               />}
           </View> */}
-          {/* {!!children &&
+        {/* {!!children &&
             <Text secondary size={12} style={styles.subHeaderText}>
               {children}
             </Text>} */}
 
-        </View>
-
+      </View>
     );
   }
 }
@@ -57,25 +51,24 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingBottom: 12
+    paddingBottom: 12,
   },
   headerText: {
     marginBottom: 0,
     marginHorizontal: 16,
-    marginTop: 0
+    marginTop: 0,
   },
   separator: {
     borderBottomColor: theme.backgroundColor,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   subHeaderText: {
     marginBottom: 0,
     marginHorizontal: 16,
-    marginTop: 0
-  }
+    marginTop: 0,
+  },
 });
 
-
 export default connect(state => ({
-  color: state.settings.color
+  color: state.settings.color,
 }))(ListItemHeader);

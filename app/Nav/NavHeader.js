@@ -14,7 +14,7 @@ class NavHeader extends Component {
     const headerStyle = [style];
 
     headerStyle.push({
-      backgroundColor: this.props.color
+      backgroundColor: this.props.color,
     });
     if (
       Platform.OS === ANDROID &&
@@ -23,7 +23,7 @@ class NavHeader extends Component {
       headerStyle.push({
         borderTopWidth: 20,
         borderTopColor: this.props.color,
-        height: 56 + 20
+        height: 56 + 20,
       });
     }
 
@@ -39,21 +39,20 @@ const singleHeader = [
   'SelectGroup',
   'SelectTeam',
   'LoginView',
-  'SelectPlayerView'
+  'SelectPlayerView',
 ];
 
 export default {
   cardStyle: { backgroundColor },
   headerComponent: connect(state => ({
-    color: state.settings.color
+    color: state.settings.color,
   }))(NavHeader),
   navigationOptions: {
-
     header: navigation => {
       const defaultHeader = {
         backTitle: null,
         tintColor: '#fff',
-        pressColor: white
+        pressColor: white,
       };
 
       if (singleHeader.indexOf(navigation.state.routeName) !== -1) {
@@ -65,10 +64,10 @@ export default {
             elevation: 0,
             shadowOpacity: 0,
             shadowRadius: 0,
-            shadowOffset: {}
-          }
+            shadowOffset: {},
+          },
         };
       }
-    }
-  }
+    },
+  },
 };

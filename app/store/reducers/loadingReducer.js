@@ -7,19 +7,19 @@ import {
   TOKEN,
   UPDATE_FCM_TOKEN,
   PUT_NOTIFICATION,
-  CLEAR_IMAGE_CACHE
+  CLEAR_IMAGE_CACHE,
 } from '../actions/types';
 import { NavigationActions } from 'react-navigation';
 
 const initialState: LoadingState = {
   blocking: false,
   nonBlocking: false,
-  error: null
+  error: null,
 };
 
 export default function(
   state: LoadingState = initialState,
-  action: Action
+  action: Action,
 ): LoadingState {
   switch (action.type) {
     case UPDATE_FCM_TOKEN + PENDING:
@@ -41,7 +41,7 @@ export default function(
         blocking: false,
         error: action.type === LOGOUT + FULFILLED || !action.payload
           ? null
-          : action.payload.problem
+          : action.payload.problem,
       };
     case NavigationActions.NAVIGATE:
     case NavigationActions.BACK:
@@ -55,7 +55,7 @@ export default function(
         state = {
           ...state,
           nonBlocking: false,
-          error: action.payload ? action.payload.problem : null
+          error: action.payload ? action.payload.problem : null,
         };
       }
       return state;

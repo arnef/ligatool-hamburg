@@ -6,7 +6,7 @@ import {
   PUT_NOTIFICATION,
   LOGOUT,
   FULFILLED,
-  UPDATE_FCM_TOKEN
+  UPDATE_FCM_TOKEN,
 } from '../actions/types';
 
 const defaultColor = '#ef473a';
@@ -16,11 +16,14 @@ const defaultState: SettingState = {
   color: defaultColor,
   fcm_token: null,
   notification: {},
-  team: null
+  team: null,
 };
 import api from '../../api';
 
-export default function(state: SettingState = defaultState, action: Action): SettingState {
+export default function(
+  state: SettingState = defaultState,
+  action: Action,
+): SettingState {
   switch (action.type) {
     case 'LOAD_SETTINGS_FULFILLED': {
       if (action.payload.ok) {
@@ -82,7 +85,7 @@ export default function(state: SettingState = defaultState, action: Action): Set
       state.team = {
         id: action.payload.id,
         image: action.payload.image,
-        name: action.payload.name
+        name: action.payload.name,
       };
 
       return state;

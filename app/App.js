@@ -1,46 +1,47 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  AsyncStorage,
-  Alert,
-  Image,
-} from 'react-native'
+import { AsyncStorage, Alert, Image } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
-import { migrateFromStorage, setDefaultSettings, checkToken } from './store/manifest';
+import {
+  migrateFromStorage,
+  setDefaultSettings,
+  checkToken,
+} from './store/manifest';
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
-import * as actions from './store/actions'
+import * as actions from './store/actions';
 import store from './store';
-
 
 type State = {
   rehydrated: boolean,
-  message: string
+  message: string,
 };
 type Props = {};
-
 
 class App extends Component<void, Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      rehydrated: false
+      rehydrated: false,
     };
   }
 
   componentDidMount() {
-    const config = { storage: AsyncStorage, whitelist: ['app', 'settings', 'auth', 'matches'] }
+    const config = {
+      storage: AsyncStorage,
+      whitelist: ['app', 'settings', 'auth', 'matches'],
+    };
     persistStore(store, config, (err: any, localStore: any) => {
       if (localStore.app.version === 1 && !localStore.settings) {
         // first start or old version of app
         migrateFromStorage(store, AsyncStorage).then(
-          this.rehydrateDone.bind(this)
+          this.rehydrateDone.bind(this),
         );
       } else {
         this.rehydrateDone();
       }
-    })
+    });
     // .purge();
   }
 
@@ -60,9 +61,7 @@ class App extends Component<void, Props, State> {
         </Provider>
       );
     } else {
-      return (
-        <LaunchScreen />
-      );
+      return <LaunchScreen />;
     }
   }
 }

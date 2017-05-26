@@ -13,7 +13,7 @@ class TeamView extends Component {
     const props = {
       error: this.props.error,
       onRefresh: () => this.props.getTeamMatches(state.params.team.id),
-      refreshing: this.props.fetching
+      refreshing: this.props.fetching,
     };
 
     return <MatchListView {...props} refreshOnMount matches={matches || []} />;
@@ -24,9 +24,9 @@ export default connect(
   state => ({
     teams: state.teams,
     error: state.loading.error,
-    fetching: state.loading.nonBlocking
+    fetching: state.loading.nonBlocking,
   }),
   dispatch => ({
-    getTeamMatches: id => dispatch(getTeamMatches(id))
-  })
+    getTeamMatches: id => dispatch(getTeamMatches(id)),
+  }),
 )(TeamView);

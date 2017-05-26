@@ -7,10 +7,9 @@ import { Text, ListItem, Column, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import { TEAM } from './routes';
 
-const width = Dimensions.get('window').width - (5*40) - 32;
+const width = Dimensions.get('window').width - 5 * 40 - 32;
 
 class TableView extends Component {
-
   componentDidMount() {
     const id = this.props.navigation.state.params.id;
 
@@ -21,16 +20,13 @@ class TableView extends Component {
 
   _renderTeam(data, idx, last) {
     return (
-      <ListItem
-        last
-        onPress={() => this._onPress(data)}
-      >
+      <ListItem last onPress={() => this._onPress(data)}>
         <Column center fluid style={{ width: 20 }}>
-          <Text bold >{data.position}</Text>
+          <Text bold>{data.position}</Text>
         </Column>
         <TeamLogo team={data} />
         <Column style={{ paddingLeft: 4, width }}>
-          <Text numberOfLines={1} ellipsizeMode='tail'>{data.name}</Text>
+          <Text numberOfLines={1} ellipsizeMode="tail">{data.name}</Text>
         </Column>
         <Column center fluid style={{ width: 35 }}>
           <Text>{data.matches}</Text>
@@ -51,7 +47,7 @@ class TableView extends Component {
   _onPress(team) {
     this.props.pushRoute({
       routeName: TEAM,
-      params: { team, title: team.name }
+      params: { team, title: team.name },
     });
   }
 
@@ -68,21 +64,19 @@ class TableView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StaticListHeader>
-          <Column center fluid style={{ width: 24 }}>
-          </Column>
-          <Column style={{ paddingLeft: 4, width }}>
-          </Column>
+          <Column center fluid style={{ width: 24 }} />
+          <Column style={{ paddingLeft: 4, width }} />
           <Column center fluid style={{ width: 35 }}>
-            <Text size={12} color='#fff'>Sp.</Text>
+            <Text size={12} color="#fff">Sp.</Text>
           </Column>
           <Column center fluid style={{ width: 40 }}>
-            <Text size={12} color='#fff'>Sätze</Text>
+            <Text size={12} color="#fff">Sätze</Text>
           </Column>
           <Column center fluid style={{ width: 35 }}>
-            <Text size={12} color='#fff'>Tore</Text>
+            <Text size={12} color="#fff">Tore</Text>
           </Column>
           <Column center fluid style={{ width: 35 }}>
-            <Text bold size={12} color='#fff'>Pkt.</Text>
+            <Text bold size={12} color="#fff">Pkt.</Text>
           </Column>
         </StaticListHeader>
 
@@ -92,14 +86,17 @@ class TableView extends Component {
           refreshing={this.props.loading}
           onRefresh={this._getLeagues.bind(this)}
           renderRow={({ item, index }) => this._renderTeam(item, index, false)}
-          keyExtractor={item => `${item.position}` }
+          keyExtractor={item => `${item.position}`}
           ItemSeparatorComponent={props => <Separator table image />}
-          getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
+          getItemLayout={(data, index) => ({
+            length: ListItem.ITEM_HEIGHT,
+            offset: ListItem.ITEM_HEIGHT * index,
+            index,
+          })}
           dataSource={table}
-
         />
       </View>
-    )
+    );
   }
 }
 
@@ -107,10 +104,10 @@ export default connect(
   state => ({
     error: state.loading.error,
     loading: state.loading.nonBlocking,
-    leagues: state.leagues
+    leagues: state.leagues,
   }),
   dispatch => ({
     getLeague: id => dispatch(actions.getLeague(id)),
-    pushRoute: route => dispatch(NavigationActions.navigate(route))
-  })
+    pushRoute: route => dispatch(NavigationActions.navigate(route)),
+  }),
 )(TableView);

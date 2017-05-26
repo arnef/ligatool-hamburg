@@ -5,10 +5,7 @@ import { View } from 'react-native';
 import { Container } from '../components';
 import { ListItem, Text, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
-import {
-  LEAGUE,
-  LEAGUE_CUP
-} from './routes';
+import { LEAGUE, LEAGUE_CUP } from './routes';
 
 class LeaguesView extends Component {
   componentDidMount() {
@@ -21,10 +18,10 @@ class LeaguesView extends Component {
 
   renderItem({ item }) {
     return (
-      <ListItem onPress={ () => this.onPress(item)}>
-        <Text>{ item.name }</Text>
+      <ListItem onPress={() => this.onPress(item)}>
+        <Text>{item.name}</Text>
       </ListItem>
-    )
+    );
   }
 
   render() {
@@ -33,12 +30,17 @@ class LeaguesView extends Component {
         error={this.props.error}
         refreshing={this.props.loading}
         onRefresh={this.props.getRankings.bind(this)}
-        keyExtractor={item => item.id }
+        keyExtractor={item => item.id}
         renderRow={this.renderItem.bind(this)}
         dataSource={this.props.leagues}
-        getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
-        ItemSeparatorComponent={Separator} />
-    )
+        getItemLayout={(data, index) => ({
+          length: ListItem.ITEM_HEIGHT,
+          offset: ListItem.ITEM_HEIGHT * index,
+          index,
+        })}
+        ItemSeparatorComponent={Separator}
+      />
+    );
   }
 
   onPress(league) {
@@ -50,22 +52,24 @@ class LeaguesView extends Component {
         params: {
           id: league.id,
           title: league.name,
-          cup: league.cup ? league.name : undefined
-        }
-      })
+          cup: league.cup ? league.name : undefined,
+        },
+      }),
     );
   }
 }
 
 export default connect(
   state => ({
-    leagues: Object.values(state.leagues).sort((a, b) => (a.name < b.name ? -1 : 1)),
+    leagues: Object.values(state.leagues).sort(
+      (a, b) => (a.name < b.name ? -1 : 1),
+    ),
     loading: state.loading.nonBlocking,
-    error: state.loading.error
+    error: state.loading.error,
   }),
   dispatch => ({
     getRankings: () => dispatch(actions.getRankings()),
     pushRoute: route => dispatch(actions.pushRoute(route)),
-    dispatch: action => dispatch(action)
-  })
+    dispatch: action => dispatch(action),
+  }),
 )(LeaguesView);

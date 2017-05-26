@@ -8,9 +8,8 @@ class Button extends Component {
     const { style, onPress, disabled, color, loading, outline } = this.props;
     const buttonStyle = [styles.button];
 
-
     // if (outline) {
-      buttonStyle.push({ borderColor: color, borderWidth: 1 });
+    buttonStyle.push({ borderColor: color, borderWidth: 1 });
     if (!outline) {
       buttonStyle.push({ backgroundColor: color });
     }
@@ -19,13 +18,14 @@ class Button extends Component {
       buttonStyle.push(styles.disabled);
     }
     const android = Platform.OS === 'android';
-    const Container = disabled || loading
-      ? View
-      : Touchable;
-
+    const Container = disabled || loading ? View : Touchable;
 
     return (
-      <Container onPress={onPress} style={buttonStyle} pressColor={outline ? color : 'rgba(255,255,255,0.7)'}>
+      <Container
+        onPress={onPress}
+        style={buttonStyle}
+        pressColor={outline ? color : 'rgba(255,255,255,0.7)'}
+      >
         <Text color={outline ? color : '#fff'} bold={android}>
           {android ? this.props.title.toUpperCase() : this.props.title}
         </Text>
@@ -51,10 +51,10 @@ const styles = StyleSheet.create({
     // paddingVertical: 8
   },
   disabled: {
-    opacity: 0.5
-  }
+    opacity: 0.5,
+  },
 });
 
 export default connect(state => ({
-  color: state.settings.color
+  color: state.settings.color,
 }))(Button);

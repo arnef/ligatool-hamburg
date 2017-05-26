@@ -24,7 +24,7 @@ class Icon extends Component {
     }
     const iconStyle = [
       styles.icon,
-      { height: this.props.size, width: this.props.size }
+      { height: this.props.size, width: this.props.size },
     ];
 
     if (this.props.style) {
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
   icon: {
     borderWidth: 0,
     textAlign: 'center',
-    textAlignVertical: 'center'
-  }
+    textAlignVertical: 'center',
+  },
 });
 
 export default Icon;

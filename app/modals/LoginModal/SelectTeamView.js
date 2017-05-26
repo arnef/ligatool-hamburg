@@ -33,8 +33,12 @@ class SelectTeamView extends Component {
         onRefresh={this.getTeams.bind(this)}
         dataSource={teams}
         renderRow={this.renderItem.bind(this)}
-        getItemLayout={(data, index) => ( {length: ListItem.ITEM_HEIGHT, offset: ListItem.ITEM_HEIGHT * index, index} )}
-        ItemSeparatorComponent={() => (<Separator image />)}
+        getItemLayout={(data, index) => ({
+          length: ListItem.ITEM_HEIGHT,
+          offset: ListItem.ITEM_HEIGHT * index,
+          index,
+        })}
+        ItemSeparatorComponent={() => <Separator image />}
         keyExtractor={item => item.id}
       />
     );
@@ -42,9 +46,9 @@ class SelectTeamView extends Component {
 
   renderItem({ item }) {
     return (
-      <ListItem onPress={() => this.onPress(item) }>
+      <ListItem onPress={() => this.onPress(item)}>
         <TeamLogo team={item} />
-        <Text>{ `${item.name}` }</Text>
+        <Text>{`${item.name}`}</Text>
       </ListItem>
     );
   }
@@ -57,24 +61,24 @@ class SelectTeamView extends Component {
   onPress(team) {
     this.props.setUserTeam(team);
     this.props.navigate({
-      routeName: 'LoginView'
+      routeName: 'LoginView',
     });
   }
 }
 
 SelectTeamView.navigationOptions = {
-  title: 'Team wählen'
+  title: 'Team wählen',
 };
 
 export default connect(
   state => ({
     error: state.loading.error,
     fetching: state.loading.nonBlocking,
-    leagues: state.leagues
+    leagues: state.leagues,
   }),
   dispatch => ({
     getLeague: id => dispatch(actions.getLeague(id)),
     setUserTeam: team => dispatch(actions.setUserTeam(team)),
-    navigate: route => dispatch(NavigationActions.navigate(route))
-  })
+    navigate: route => dispatch(NavigationActions.navigate(route)),
+  }),
 )(SelectTeamView);
