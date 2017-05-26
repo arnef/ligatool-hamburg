@@ -6,9 +6,7 @@ class Icon extends Component {
   render() {
     let iconName = Platform.OS === 'android'
       ? `md-${this.props.name}`
-      : this.props.name.indexOf('outline') === -1
-          ? `ios-${this.props.name}-outline`
-          : `ios-${this.props.name}`;
+      : `ios-${this.props.name}`;
 
     if (this.props.name === 'caret-down') {
       iconName = 'ios-arrow-down-outline';
