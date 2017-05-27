@@ -107,7 +107,7 @@ export function sortMatches(matches: MatchesState): Function {
   };
 }
 
-export function currentRoute(navigation): NavigationRoute {
+export function currentRoute(navigation: any): NavigationRoute {
   const recursiveFindRoute = nav => {
     const subState = nav.routes[nav.index].routeName === 'DrawerOpen'
       ? nav.routes[0]

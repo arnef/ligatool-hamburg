@@ -20,8 +20,21 @@ import { currentRoute } from '../../Helper';
 
 const routes = [OVERVIEW, MY_TEAM, LEAGUE, LEAGUE_CUP, SETTINGS];
 
+type Routes =
+  | typeof OVERVIEW
+  | typeof MY_TEAM
+  | typeof LEAGUE
+  | typeof LEAGUE_CUP
+  | typeof SETTINGS
+  | string;
+
+type State = {
+  navigation: ?any,
+  activeItem: Routes,
+};
+
 export default function(
-  state = { navigation: null, activeItem: OVERVIEW },
+  state: State = { navigation: null, activeItem: OVERVIEW },
   action: Action,
 ) {
   switch (action.type) {
@@ -122,7 +135,7 @@ export default function(
         navigation: Root.router.getStateForAction(action, state.navigation),
       };
       const route = currentRoute(state.navigation);
-      if (routes.indexOf(route.routeName) !== -1) {
+      if (routes.indexOf(route.routeName) !== -1 && route.params) {
         state.activeItem = route.routeName === LEAGUE ||
           route.routeName === LEAGUE_CUP
           ? `${route.routeName}_${route.params.id}`
