@@ -73,3 +73,41 @@ type Match = {
   showButton?: boolean,
   lineUp?: LineUp,
 };
+
+declare var console: {
+  assert(condition: mixed, ...data: Array<any>): void,
+  clear(): void,
+  count(label: string): void,
+  debug(...data: Array<any>): void,
+  dir(...data: Array<any>): void,
+  dirxml(...data: Array<any>): void,
+  error(...data: Array<any>): void,
+  _exception(...data: Array<any>): void,
+  group(...data: Array<any>): void,
+  groupCollapsed(...data: Array<any>): void,
+  groupEnd(): void,
+  info(...data: Array<any>): void,
+  log(...data: Array<any>): void,
+  profile(name: string): void,
+  profileEnd(): void,
+  table(
+    tabularData:
+      | { [key: string]: any }
+      | Array<{ [key: string]: any }>
+      | Array<Array<any>>,
+  ): void,
+  time(label: string): void,
+  timeEnd(label: string): void,
+  timeStamp(label?: string): void,
+  trace(...data: Array<any>): void,
+  warn(...data: Array<any>): void,
+  tron: {
+    clear(): void,
+    log(...data: Array<any>): void,
+    apisauce(...data: Array<any>): void,
+    error(...data: Array<any>): void,
+    display(...data: Array<any>): void,
+    warn(...data: Array<any>): void,
+    createStore(...data: Array<any>): void,
+  },
+};
