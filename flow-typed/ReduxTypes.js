@@ -3,6 +3,8 @@
 type Action = {
   type: string,
   payload: any,
+  params?: ?any,
+  routeName?: ?any,
 };
 
 type AuthState = {
