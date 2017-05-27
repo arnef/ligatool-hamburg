@@ -10,41 +10,48 @@ import {
   MODAL_SELECT_PLAYER,
   MY_TEAM,
   MATCH,
+  OVERVIEW,
+  LEAGUE,
+  LEAGUE_CUP,
+  SETTINGS
 } from '../../views/routes';
 import store from '../../store';
+import { currentRoute } from '../../Helper';
 
-export default function(state, action: Action) {
-  let nextState = null;
+const routes = [OVERVIEW, MY_TEAM, LEAGUE, LEAGUE_CUP, SETTINGS];
+
+
+export default function(state={ navigation: null, activeItem: OVERVIEW }, action: Action) {
   switch (action.type) {
     case SHOW_LOGIN:
       if (action.payload) {
-        nextState = Root.router.getStateForAction(
+        state = { ...state, navigation: Root.router.getStateForAction(
           NavigationActions.navigate({ routeName: MODAL_LOGIN }),
-          state,
-        );
+          state.navigation,
+        )};
       } else {
-        nextState = Root.router.getStateForAction(
-          NavigationActions.back({ key: findRouteKey(state, MODAL_LOGIN) }),
-          state,
-        );
+        state = { ...state, navigation: Root.router.getStateForAction(
+          NavigationActions.back({ key: findRouteKey(state.navigation, MODAL_LOGIN) }),
+          state.navigation,
+        )};
       }
       break;
 
     case TOKEN + FULFILLED:
       if (action.payload.ok) {
-        const key = findRouteKey(state, MODAL_LOGIN);
+        const key = findRouteKey(state.navigation, MODAL_LOGIN);
         if (key) {
-          nextState = Root.router.getStateForAction(
+          state = {...state , navigation: Root.router.getStateForAction(
             NavigationActions.back({ key }),
-            state,
-          );
+            state.navigation,
+          )};
         }
       }
       break;
 
     case DIALOG_PLAYER:
       if (action.payload) {
-        nextState = Root.router.getStateForAction(
+        state = { ...state, navigation: Root.router.getStateForAction(
           NavigationActions.navigate({
             routeName: MODAL_SELECT_PLAYER,
             params: {
@@ -52,15 +59,15 @@ export default function(state, action: Action) {
               title: `${action.payload.data.name} Heim`,
               team: 'home' },
           }),
-          state,
-        );
+          state.navigation,
+        )};
       } else {
-        nextState = Root.router.getStateForAction(
+        state = { ...state, navigation: Root.router.getStateForAction(
           NavigationActions.back({
             key: findRouteKey(state, MODAL_SELECT_PLAYER),
           }),
-          state,
-        );
+          state.navigation,
+        )};
       }
       break;
     case NavigationActions.NAVIGATE:
@@ -74,13 +81,29 @@ export default function(state, action: Action) {
       if (action.routeName === MATCH) {
         NotificationManager.removeNotification(action.params.id);
       }
-
+      state = { ...state, navigation: Root.router.getStateForAction(action, state.navigation)};
+      if (routes.indexOf(action.routeName) !== -1) {
+        state.activeItem = action.routeName;
+        if (action.routeName === LEAGUE || action.routeName === LEAGUE_CUP) {
+          state.activeItem = `${action.routeName}_${action.params.id}`;
+        }
+      }
+      break;
+    case NavigationActions.BACK:
+      state = { ...state, navigation: Root.router.getStateForAction(action, state.navigation)};
+      const route = currentRoute(state.navigation);
+      if (routes.indexOf(route.routeName) !== -1) {
+        state.activeItem = (route.routeName === LEAGUE || route.routeName === LEAGUE_CUP)
+          ? `${route.routeName}_${route.params.id}`
+          : route.routeName;
+      }
+      break;
     default:
-      nextState = Root.router.getStateForAction(action, state);
+      state = { ...state, navigation: Root.router.getStateForAction(action, state.navigation)};
       break;
   }
 
-  return nextState || state;
+  return state;
 }
 
 const recursiveFindRoute = (route, name) => {

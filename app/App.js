@@ -54,15 +54,15 @@ class App extends Component<void, Props, State> {
   }
 
   render() {
-    // if (this.state.rehydrated) {
+    if (this.state.rehydrated) {
       return (
         <Provider store={store}>
           <AppContainer />
         </Provider>
       );
-    // } else {
-    //   return <LaunchScreen />;
-    // }
+    } else {
+      return <LaunchScreen />;
+    }
   }
 }
 

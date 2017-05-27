@@ -107,7 +107,7 @@ export function sortMatches(matches: MatchesState): Function {
   };
 }
 
-export function currentRoute(): NavigationRoute {
+export function currentRoute(navigation): NavigationRoute {
   const recursiveFindRoute = nav => {
     const subState = nav.routes[nav.index].routeName === 'DrawerOpen'
       ? nav.routes[0]
@@ -122,7 +122,7 @@ export function currentRoute(): NavigationRoute {
     return recursiveFindRoute(subState);
   };
 
-  return recursiveFindRoute(store.getState().nav);
+  return recursiveFindRoute(navigation || store.getState().nav.navigation);
 }
 
 export function darken(color, amt) {

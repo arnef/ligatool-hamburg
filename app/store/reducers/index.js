@@ -8,14 +8,12 @@ import loading from './loadingReducer';
 import nav from './navReducer';
 import overview from './overviewReducer';
 import myTeam from './myTeamReducer';
-import drawer from './drawerReducer';
 import players from './playersReducer';
 
 export default combineReducers({
   app: (state = {}, action) => state,
   auth,
   nav,
-  drawer,
   leagues,
   loading,
   matches,

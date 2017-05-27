@@ -216,7 +216,7 @@ export const DRAWER_WIDTH = Dimensions.get('window').width * 0.8;
 
 export default connect(
   state => ({
-    activeItem: state.drawer,
+    activeItem: state.nav.activeItem,
     loading: state.loading.nonBlocking,
     leagues: Object.values(state.leagues).sort(
       (a, b) => (a.name < b.name ? -1 : 1),

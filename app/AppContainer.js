@@ -19,11 +19,7 @@ class AppContainer extends Component {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const oldnav = this.props.nav;
       this.props.dispatch({ type: NavigationActions.BACK });
-      const dontClose = this.props.nav !== oldnav;
-      if (dontClose) {
-        this.props.dispatch({ type: 'UPDATE_DRAWER_ITEM' });
-      }
-      return dontClose;
+      return this.props.nav !== oldnav;;
     });
   }
 
@@ -60,5 +56,5 @@ class AppContainer extends Component {
 
 export default connect(state => ({
   auth: state.auth,
-  nav: state.nav,
+  nav: state.nav.navigation,
 }))(AppContainer);
