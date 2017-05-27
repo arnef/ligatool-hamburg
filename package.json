@@ -9,7 +9,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
+    "{index.{android,ios},app/**/*}.js": [
       "prettier --write --single-quote --trailing-comma=all --bracket-spacing",
       "git add"
     ]
