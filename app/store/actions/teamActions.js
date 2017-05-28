@@ -6,7 +6,7 @@ import {
   SHOW_LOGIN,
 } from './types';
 import store from '../../store';
-import api, { TEAMS, MATCHES } from '../../api';
+import * as api from '../../api';
 import { ANDROID } from '../../consts';
 
 // queryTeamMatches und getTeamMatches zu einer function machen?
@@ -14,7 +14,7 @@ export function queryTeamMatches(): Action {
   const team: Team = store.getState().settings.team;
   if (!!team && !!team.id) {
     return {
-      payload: api.get(TEAMS, { id: team.id, route: MATCHES }),
+      payload: api.getTeamMatches(team.id),
       type: QUERY_MY_TEAM_MATCHES,
     };
   } else {
@@ -27,14 +27,14 @@ export function queryTeamMatches(): Action {
 
 export function getTeam(id: number): Action {
   return {
-    payload: api.get(TEAMS, { id }),
+    payload: api.getTeam(id),
     type: GET_TEAM,
   };
 }
 
 export function getTeamMatches(id: number): Action {
   return {
-    payload: api.get(TEAMS, { id, route: MATCHES }),
+    payload: api.getTeamMatches(id),
     type: QUERY_TEAM_MATCHES,
   };
 }

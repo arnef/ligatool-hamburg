@@ -131,7 +131,7 @@ export default function(
         navigation: Root.router.getStateForAction(action, state.navigation),
       };
       const route = currentRoute(state.navigation);
-      if (routes.indexOf(route.routeName) !== -1) {
+      if (routes.indexOf(route.routeName) !== -1 && route.params) {
         state.activeItem = route.routeName === LEAGUE ||
           route.routeName === LEAGUE_CUP
           ? `${route.routeName}_${route.params.id}`

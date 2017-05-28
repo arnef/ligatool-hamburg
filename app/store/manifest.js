@@ -1,5 +1,5 @@
 // @flow
-import api, { LEAGUES, USER_AUTH_REFRESH } from '../api';
+import * as api from '../api';
 import {
   LOAD_SETTINGS_FULFILLED,
   FULFILLED,
@@ -58,7 +58,7 @@ export function setDefaultSettings(store: any) {
   return new Promise(resolve => {
     const state = store.getState();
     if (Object.keys(state.settings.notification).length === 0) {
-      api.get(LEAGUES).then(resp => {
+      api.getLeagues().then(resp => {
         if (resp.ok) {
           store.dispatch({
             type: QUERY_RANKINGS + FULFILLED,
@@ -70,8 +70,10 @@ export function setDefaultSettings(store: any) {
             ended: true,
             leagues: {},
           };
-          for (let league of resp.data) {
-            notification.leagues[league.id] = true;
+          if (resp.data) {
+            for (let league of resp.data) {
+              notification.leagues[league.id] = true;
+            }
           }
           store.dispatch({
             type: LOAD_SETTINGS_FULFILLED,
@@ -93,12 +95,12 @@ export function checkToken(store: any) {
   return new Promise(resolve => {
     const auth = store.getState().auth;
     if (auth.api_key && auth.team.expires < new Date().getTime()) {
-      api.post(USER_AUTH_REFRESH, { access_key: auth.api_key }).then(resp => {
+      api.refreshAuthentication(auth.api_key).then(resp => {
         store.dispatch({
           type: TOKEN + FULFILLED,
           payload: resp,
         });
-        api.get(LEAGUES).then(resp => {
+        api.getLeagues().then(resp => {
           store.dispatch({
             type: QUERY_RANKINGS + FULFILLED,
             payload: resp,

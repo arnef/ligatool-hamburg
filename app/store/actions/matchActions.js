@@ -9,18 +9,18 @@ import {
   PENDING,
   FULFILLED,
 } from './types';
-import api, { MATCHES } from '../../api';
+import * as api from '../../api';
 
 export function queryMatches(): Action {
   return {
-    payload: api.get(MATCHES),
+    payload: api.getMatches(),
     type: QUERY_MATCHES,
   };
 }
 
 export function getMatch(id: number): Action {
   return {
-    payload: api.get(MATCHES, { id }),
+    payload: api.getMatch(id),
     type: GET_MATCH,
   };
 }
@@ -39,7 +39,7 @@ export function setPlayer(
 
 export function updateSets(matchId: number, sets: any): Action {
   return {
-    payload: api.put(`${MATCHES}/${matchId}`, { sets }),
+    payload: api.updateMatch(matchId, { sets }),
     type: PUT_SETS,
   };
 }
@@ -61,7 +61,7 @@ export const suggestScore = (matchId: number, sets: any, type: number) => {
   const body = { sets, ...action };
 
   return {
-    payload: api.put(`${MATCHES}/${matchId}`, body),
+    payload: api.updateMatch(matchId, body),
     type: PUT_SETS,
   };
 };

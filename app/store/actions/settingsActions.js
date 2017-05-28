@@ -5,7 +5,7 @@ import {
   PUT_NOTIFICATION,
   CLEAR_IMAGE_CACHE,
 } from './types';
-import api, { NOTIFICATION } from '../../api';
+import * as api from '../../api';
 import store from '../index';
 import { clearCache } from 'react-native-http-cache';
 
@@ -41,10 +41,7 @@ export function saveNotifications(
     notification = settings.notification;
   }
   return {
-    payload: api.post(NOTIFICATION, {
-      fcm_token,
-      notification,
-    }),
+    payload: api.registerPushNotifications(fcm_token, notification),
     type: PUT_NOTIFICATION,
   };
 }
