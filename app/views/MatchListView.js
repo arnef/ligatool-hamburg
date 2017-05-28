@@ -35,16 +35,8 @@ class MatchListView extends Component {
   }
 
   componentDidMount() {
-    if (this.props.refreshOnMount) {
-      if (this.props.matches.length === 0) {
-        this.props.onRefresh();
-      } else {
-        const id: number = this.props.matches[0];
-        const match: Match = this.props.data[id];
-        if (compareDays(match.datetime, new Date().getTime()) < 0) {
-          this.props.onRefresh();
-        }
-      }
+    if (this.props.refreshOnMount && this.props.matches.length === 0) {
+      this.props.onRefresh();
     }
   }
 
@@ -55,17 +47,6 @@ class MatchListView extends Component {
   }
 
   render() {
-    // if (this.props.error) {
-    //   return (
-    //     <Container>
-    //       <Row style={{ marginTop: 16 }}>
-    //         <Column center>
-    //           <Button onPress={this.props.onRefresh}>Erneut Laden</Button>
-    //         </Column>
-    //       </Row>
-    //     </Container>
-    //   );
-    // }
     if (this.props.matches.length === 0 && !this.props.refreshing) {
       return (
         <Container
