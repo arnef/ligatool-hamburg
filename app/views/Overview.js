@@ -39,7 +39,7 @@ function createTab(keyName) {
       matches: state.overview[keyName],
       error: state.loading.error,
       fetching: state.loading.nonBlocking,
-      refreshOnMount: keyName === 'today',
+      refreshOnMount: keyName === 'played',
     }),
     (dispatch: Dispatch<*>) => ({
       queryMatches: () => dispatch(actions.queryMatches()),
