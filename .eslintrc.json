@@ -30,8 +30,10 @@
     "rules": {
         "no-console": [2, { "allow": ["warn", "error", "tron"] }],
         "flowtype/no-primitive-constructor-types": 2,
-        "flowtype/require-parameter-type": [2, { "excludeArrowFunctions": true }],
         "flowtype/require-valid-file-annotation": [2, "always"],
-        "react/prop-types": 0
+        "react/prop-types": 0,
+        "react-native/no-inline-styles": 0,
+        "react-native/no-color-literals": 0,
+        "react-native/split-platform-components": 0
     }
 }
