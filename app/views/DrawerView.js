@@ -21,7 +21,7 @@ import {
 } from './routes';
 
 class NavigationView extends Component {
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.leagues.length === 0) {
       this.props.getRankings();
     }
@@ -139,6 +139,7 @@ class NavigationView extends Component {
           )}
           {this.renderSeparator()}
           {this.props.loading &&
+            leagues.length === 0 &&
             <View
               style={{
                 flexDirection: 'row',
