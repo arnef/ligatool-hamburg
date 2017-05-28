@@ -47,7 +47,7 @@ class MatchStatsBar extends Component {
       if (this.props.stats.draws === 0) {
         wins.push({
           borderTopRightRadius: 8,
-          borderBottomRightRadius: 8
+          borderBottomRightRadius: 8,
         });
       }
     }

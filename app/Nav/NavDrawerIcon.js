@@ -19,16 +19,16 @@ import { ANDROID } from '../consts';
 //   }
 // };
 
-export default (title=null) => ({ navigation}) => {
+export default (title = null) => ({ navigation }) => {
   return {
     title: title || navigation.state.params.title,
     headerLeft: (
       <Touchable borderless onPress={() => navigation.navigate('DrawerOpen')}>
-          <Icon name="menu" style={styles.icon} color="#fff" size={24} />
+        <Icon name="menu" style={styles.icon} color="#fff" size={24} />
       </Touchable>
-    )
-  }
-}
+    ),
+  };
+};
 
 const styles = StyleSheet.create({
   icon: {

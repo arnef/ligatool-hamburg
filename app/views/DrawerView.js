@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     height: 60,
-    position: 'absolute'
+    position: 'absolute',
   },
   teamLogo: {
     height: 60,

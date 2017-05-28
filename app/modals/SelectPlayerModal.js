@@ -89,9 +89,10 @@ class SelectPlayer extends Component {
         if (state.params.team === 'home') {
           navigate({
             routeName: 'SelectPlayerView',
-            params: { ...state.params,
+            params: {
+              ...state.params,
               team: 'away',
-              title: `${state.params.data.name} Gast`
+              title: `${state.params.data.name} Gast`,
             },
           });
         } else {

@@ -64,21 +64,21 @@ class TableView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StaticListHeader>
-          <Row center style={{marginVertical: 8}}>
-          <Column center fluid style={{ width: 24 }} />
-          <Column style={{ paddingLeft: 4, width }} />
-          <Column center fluid style={{ width: 35 }}>
-            <Text size={12} color="#fff">Sp.</Text>
-          </Column>
-          <Column center fluid style={{ width: 40 }}>
-            <Text size={12} color="#fff">Sätze</Text>
-          </Column>
-          <Column center fluid style={{ width: 35 }}>
-            <Text size={12} color="#fff">Tore</Text>
-          </Column>
-          <Column center fluid style={{ width: 35 }}>
-            <Text bold size={12} color="#fff">Pkt.</Text>
-          </Column>
+          <Row center style={{ marginVertical: 8 }}>
+            <Column center fluid style={{ width: 24 }} />
+            <Column style={{ paddingLeft: 4, width }} />
+            <Column center fluid style={{ width: 35 }}>
+              <Text size={12} color="#fff">Sp.</Text>
+            </Column>
+            <Column center fluid style={{ width: 40 }}>
+              <Text size={12} color="#fff">Sätze</Text>
+            </Column>
+            <Column center fluid style={{ width: 35 }}>
+              <Text size={12} color="#fff">Tore</Text>
+            </Column>
+            <Column center fluid style={{ width: 35 }}>
+              <Text bold size={12} color="#fff">Pkt.</Text>
+            </Column>
           </Row>
         </StaticListHeader>
 

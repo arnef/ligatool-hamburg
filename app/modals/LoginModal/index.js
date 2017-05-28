@@ -9,15 +9,15 @@ const NavStack = StackNavigator(
   {
     SelectGroup: {
       screen: SelectGroupView,
-      navigationOptions: NavCloseIcon('Gruppe wählen')
+      navigationOptions: NavCloseIcon('Gruppe wählen'),
     },
     SelectTeam: {
       screen: SelectTeamView,
-      navigationOptions: { title: 'Team wählen'}
+      navigationOptions: { title: 'Team wählen' },
     },
     LoginView: {
       screen: LoginView,
-      navigationOptions: NavCloseIcon('Login')
+      navigationOptions: NavCloseIcon('Login'),
     },
   },
   NavHeader,

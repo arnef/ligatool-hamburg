@@ -48,7 +48,6 @@ class SelectGroupView extends Component {
   }
 }
 
-
 export default connect(
   state => ({
     error: state.loading.error,

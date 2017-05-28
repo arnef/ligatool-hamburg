@@ -23,7 +23,7 @@ class AppContainer extends Component {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const oldnav = this.props.nav;
       this.props.dispatch({ type: NavigationActions.BACK });
-      return this.props.nav !== oldnav;;
+      return this.props.nav !== oldnav;
     });
   }
 

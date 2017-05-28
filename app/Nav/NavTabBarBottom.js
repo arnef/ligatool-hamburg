@@ -5,12 +5,7 @@ import { TabBarBottom } from 'react-navigation';
 
 class NavTabBarBottom extends Component {
   render() {
-    return (
-      <TabBarBottom
-        {...this.props}
-        activeTintColor={this.props.color}
-      />
-    );
+    return <TabBarBottom {...this.props} activeTintColor={this.props.color} />;
   }
 }
 

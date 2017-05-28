@@ -4,7 +4,14 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import actions from '../../store/actions';
 import { Container, Match, StaticListHeader } from '../../components';
-import { Button, Row, ActionSheet, Content, Touchable, Text } from '../../components/base';
+import {
+  Button,
+  Row,
+  ActionSheet,
+  Content,
+  Touchable,
+  Text,
+} from '../../components/base';
 import * as theme from '../../components/base/theme';
 import { PLAYER } from '../routes';
 const height = Dimensions.get('window').height;
@@ -198,15 +205,15 @@ class SetsView extends Component {
     const Wrap = disabled ? View : Touchable;
 
     return (
-      <StaticListHeader style={{ paddingVertical: 12, paddingHorizontal: 12}}>
+      <StaticListHeader style={{ paddingVertical: 12, paddingHorizontal: 12 }}>
         <Wrap
-          style={{ opacity: disabled ? 0.6 : 1}}
+          style={{ opacity: disabled ? 0.6 : 1 }}
           onPress={() => {
             this.props.suggestScore(match.id, match.sets, idx);
           }}
-
-        ><Text color='#fff' center>{`${btnText[idx]}`}</Text>
-      </Wrap>
+        >
+          <Text color="#fff" center>{`${btnText[idx]}`}</Text>
+        </Wrap>
       </StaticListHeader>
     );
   }

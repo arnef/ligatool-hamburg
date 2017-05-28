@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
   }),
 });
 
-
 export default connect(
   state => ({
     auth: state.auth,

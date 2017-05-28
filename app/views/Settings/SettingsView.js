@@ -161,8 +161,10 @@ class SettingsView extends Component {
         <ListItem.Group>
           <ListItem.Header title="Informationen" />
           <ListItem onPress={this.clearImageCache.bind(this)}>
-            <ListItem.Icon name='trash' color={this.props.settings.color} />
-              <Text style={{ paddingTop: 8, paddingBottom: 8}}>{ strings.clear_image_cache }</Text>
+            <ListItem.Icon name="trash" color={this.props.settings.color} />
+            <Text style={{ paddingTop: 8, paddingBottom: 8 }}>
+              {strings.clear_image_cache}
+            </Text>
           </ListItem>
           <Separator image />
           <ListItem>
@@ -178,12 +180,15 @@ class SettingsView extends Component {
   }
 
   clearImageCache() {
-    Alert.alert(strings.clear_image_cache, strings.cache_information,
-    [
-      { text: 'Abbrechen', onPress: () => {}},
-      { text: 'Löschen', onPress: () => { this.props.clearImageCache() }}
-    ]
-  );
+    Alert.alert(strings.clear_image_cache, strings.cache_information, [
+      { text: 'Abbrechen', onPress: () => {} },
+      {
+        text: 'Löschen',
+        onPress: () => {
+          this.props.clearImageCache();
+        },
+      },
+    ]);
   }
 }
 

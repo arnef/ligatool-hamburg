@@ -7,16 +7,17 @@ import { darken } from '../Helper';
 
 class StaticListHeader extends Component {
   render() {
-    const headerStyle = [style.row, { backgroundColor: darken(this.props.color, 5) }];
+    const headerStyle = [
+      style.row,
+      { backgroundColor: darken(this.props.color, 5) },
+    ];
 
     if (this.props.style) {
-      headerStyle.push(this.props.style)
+      headerStyle.push(this.props.style);
     }
 
     return (
-      <View
-        style={headerStyle}
-      >
+      <View style={headerStyle}>
         {this.props.children}
       </View>
     );
@@ -32,7 +33,7 @@ const style = StyleSheet.create({
     shadowRadius: StyleSheet.hairlineWidth,
     shadowOffset: {
       height: StyleSheet.hairlineWidth,
-    }
+    },
   },
 });
 

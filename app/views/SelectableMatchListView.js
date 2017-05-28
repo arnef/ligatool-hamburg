@@ -74,17 +74,17 @@ class SelectableMatchListView extends Component {
           <StaticListHeader>
             <Touchable onPress={() => this.openMenu(matchDayKeys)}>
 
-                <Row center style={{ marginVertical: 12 }}>
-                  <Column>
-                    <Text color="#fff">
-                      {this.state.selectedMatchDay ||
-                        this.props.leagues[id].selected}
-                    </Text>
-                  </Column>
-                  <Column fluid>
-                    <Icon name="more" size={22} color="#fff" />
-                  </Column>
-                </Row>
+              <Row center style={{ marginVertical: 12 }}>
+                <Column>
+                  <Text color="#fff">
+                    {this.state.selectedMatchDay ||
+                      this.props.leagues[id].selected}
+                  </Text>
+                </Column>
+                <Column fluid>
+                  <Icon name="more" size={22} color="#fff" />
+                </Column>
+              </Row>
 
             </Touchable>
           </StaticListHeader>}

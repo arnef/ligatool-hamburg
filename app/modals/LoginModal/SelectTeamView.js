@@ -66,7 +66,6 @@ class SelectTeamView extends Component {
   }
 }
 
-
 export default connect(
   state => ({
     error: state.loading.error,
