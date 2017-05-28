@@ -26,7 +26,7 @@ class StaticListHeader extends Component {
 
 const style = StyleSheet.create({
   row: {
-    elevation: 2,
+    elevation: 4,
     paddingHorizontal: 16,
     shadowColor: 'black',
     shadowOpacity: 0.1,

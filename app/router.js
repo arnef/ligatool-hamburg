@@ -108,7 +108,7 @@ export const SettingStack = StackNavigator(
   NavHeader,
 );
 
-export const App = Platform.OS === 'android' || true
+export const App = Platform.OS === 'android'
   ? DrawerNavigator(
       {
         [OVERVIEW]: {

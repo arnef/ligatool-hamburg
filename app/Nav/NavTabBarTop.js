@@ -1,6 +1,8 @@
+// @flow
 import React, { Component, PropTypes } from 'react';
-import { Platform, Dimensions } from 'react-native';
+import { Platform, Dimensions, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
+import { StaticListHeader } from '../components';
 
 import { TabBarTop } from 'react-navigation';
 
@@ -16,16 +18,34 @@ class NavTabBarTop extends Component {
         indicatorStyle={{
           backgroundColor: white,
         }}
-        style={{ backgroundColor: this.props.color, elevation: 4 }}
-        labelStyle={{
-          marginHorizontal: 0,
-          marginVertical: 4,
-          fontWeight: Platform.OS === 'android' ? '500' : '600',
-        }}
+        style={[
+          styles.container,
+          {
+            backgroundColor: this.props.color,
+          },
+        ]}
+        labelStyle={styles.label}
       />
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowRadius: StyleSheet.hairlineWidth,
+    shadowOffset: {
+      height: StyleSheet.hairlineWidth,
+    },
+    elevation: 4,
+  },
+  label: {
+    marginHorizontal: 0,
+    marginVertical: 4,
+    fontWeight: Platform.OS === 'android' ? '500' : '600',
+  },
+});
 
 export default {
   tabBarComponent: connect(state => ({ color: state.settings.color }))(
@@ -34,7 +54,7 @@ export default {
   tabBarPosition: 'top',
   swipeEnabled: true,
   animationEnabled: true,
-  lazyLoad: true,
+  lazy: true,
   backBehavior: 'none',
   tabBarOptions: {
     scrollEnabled: Dimensions.get('window').width < 321,

@@ -12,7 +12,6 @@ class NavHeader extends Component {
   render() {
     const { style, ...rest } = this.props;
     const headerStyle = [style];
-    // console.tron.log(this.props.navigation);
     headerStyle.push({
       backgroundColor: this.props.color,
     });
@@ -49,11 +48,9 @@ const ConnectHeader = connect(state => ({ color: state.settings.color }))(
 export default {
   cardStyle: { backgroundColor },
   navigationOptions: ({ navigation }) => {
-    // console.tron.log(navigation);
     const headerStyle = singleHeader.indexOf(navigation.state.routeName) !== -1
       ? null
       : { elevation: 0, shadowOpacity: 0 };
-    console.tron.log(headerStyle);
 
     return {
       header: props => <ConnectHeader {...props} />,
