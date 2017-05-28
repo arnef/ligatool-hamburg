@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Platform, BackAndroid } from 'react-native';
+import { View, Platform, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import actions from './store/actions'; // why?
@@ -20,10 +20,10 @@ class AppContainer extends Component {
     this.notificationListener = NotificationManager.notificationListener();
     this.refreshTokenListener = NotificationManager.refreshTokenListener();
 
-    BackAndroid.addEventListener('hardwareBackPress', () => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
       const oldnav = this.props.nav;
       this.props.dispatch({ type: NavigationActions.BACK });
-      return this.props.nav !== oldnav;;
+      return this.props.nav !== oldnav;
     });
   }
 
@@ -34,7 +34,7 @@ class AppContainer extends Component {
     if (this.notificationListener) {
       this.notificationListener.remove();
     }
-    BackAndroid.removeEventListener('hardwareBackPress');
+    BackHandler.removeEventListener('hardwareBackPress');
   }
 
   render() {
