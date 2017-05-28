@@ -5,7 +5,13 @@ import { Container, MatchItem } from '../components';
 import { Row, Column, Button, Text, Separator } from '../components/base';
 import { sortMatches, compareDays } from '../Helper';
 
+type State = {
+  openMenu: number,
+};
+
 class MatchListView extends Component {
+  state: State;
+
   constructor(props) {
     super(props);
     this._renderMatch.bind(this);

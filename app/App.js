@@ -15,11 +15,12 @@ import store from './store';
 
 type State = {
   rehydrated: boolean,
-  message: string,
 };
 type Props = {};
 
 class App extends Component<void, Props, State> {
+  state: State;
+
   constructor(props: Props) {
     super(props);
     this.state = {

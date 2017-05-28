@@ -22,8 +22,9 @@ export default function(
 
     case TOKEN + FULFILLED:
       if (action.payload.ok) {
-        state = { ...state, team: action.payload.data };
-        api.setHeader('Secret', state.team.token);
+        const team = action.payload.data;
+        state = { ...state, team };
+        api.setHeader('Secret', team.token);
       }
       break;
 

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
+import type { Dispatch } from 'redux';
 import { Container, MatchStatsBar, StaticListHeader } from '../components';
 import {
   ListItem,
@@ -119,7 +120,7 @@ export default connect(
     error: state.loading.error,
     leagues: state.leagues,
   }),
-  dispatch => ({
+  (dispatch: Dispatch<*>) => ({
     getPlayersStats: (id: number) => dispatch(getPlayersStats(id)),
   }),
 )(PlayerStatsView);

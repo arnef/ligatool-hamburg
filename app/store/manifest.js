@@ -8,12 +8,12 @@ import {
 } from './actions/types';
 
 export default {
-  '1': state => ({ ...state }),
+  '1': (state: any) => ({ ...state }),
 };
 
 export const APP_KEY = 'app';
 
-export function migrateFromStorage(store, AsyncStorage) {
+export function migrateFromStorage(store: any, AsyncStorage: any) {
   return new Promise(resolve => {
     AsyncStorage.getAllKeys((err, keys) => {
       if (!err && keys.length === 3) {
@@ -54,7 +54,7 @@ export function migrateFromStorage(store, AsyncStorage) {
   });
 }
 
-export function setDefaultSettings(store) {
+export function setDefaultSettings(store: any) {
   return new Promise(resolve => {
     const state = store.getState();
     if (Object.keys(state.settings.notification).length === 0) {
@@ -89,7 +89,7 @@ export function setDefaultSettings(store) {
   });
 }
 
-export function checkToken(store) {
+export function checkToken(store: any) {
   return new Promise(resolve => {
     const auth = store.getState().auth;
     if (auth.api_key && auth.team.expires < new Date().getTime()) {

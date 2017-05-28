@@ -14,7 +14,7 @@ import { MATCH, OVERVIEW } from './views/routes';
 import { IOS } from './consts';
 import { currentRoute } from './Helper';
 
-type Listener = {
+export type Listener = {
   remove: Function,
 };
 
@@ -39,7 +39,8 @@ function receiveNotification(notif) {
   if (notif) {
     const route = currentRoute();
     const id = parseInt(notif.id);
-    const matchOpen = route.routeName === MATCH && route.params.id === id;
+    const matchOpen =
+      route.routeName === MATCH && route.params && route.params.id === id;
     if (Platform.OS === IOS) {
       switch (notif._notificationType) {
         case NotificationType.Remote:
