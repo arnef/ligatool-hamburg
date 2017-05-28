@@ -1,4 +1,19 @@
 <a name="0.10.1"></a>
+## 0.10.1 (2017-05-28)
+
+
+### Bug Fixes
+
+* change navigationoption to work with reactnavigation beta.11 ([8864ee1](https://github.com/arnef/ligatool-hamburg/commit/8864ee1))
+* conflict in settingsview ([92f92f8](https://github.com/arnef/ligatool-hamburg/commit/92f92f8))
+* merge drawer and nav reducer ([32c50c8](https://github.com/arnef/ligatool-hamburg/commit/32c50c8))
+* **api:** add timestamp to get requests ([97f6288](https://github.com/arnef/ligatool-hamburg/commit/97f6288)), closes [#25](https://github.com/arnef/ligatool-hamburg/issues/25)
+* move suggest score button to page top ([ce11c65](https://github.com/arnef/ligatool-hamburg/commit/ce11c65)), closes [#24](https://github.com/arnef/ligatool-hamburg/issues/24)
+* upgrade to reactnavigation beta.11 ([b66fe7e](https://github.com/arnef/ligatool-hamburg/commit/b66fe7e))
+
+
+
+<a name="0.10.1"></a>
 ## 0.10.1 (2017-05-25)
 
 
