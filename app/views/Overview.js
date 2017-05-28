@@ -1,6 +1,7 @@
 /* @flow */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import type { Dispatch } from 'redux';
 import MatchListView from './MatchListView';
 import actions from '../store/actions';
 import NavTabBarTop from '../Nav/NavTabBarTop';
@@ -40,7 +41,9 @@ function createTab(keyName) {
       fetching: state.loading.nonBlocking,
       refreshOnMount: keyName === 'today',
     }),
-    dispatch => ({ queryMatches: () => dispatch(actions.queryMatches()) }),
+    (dispatch: Dispatch<*>) => ({
+      queryMatches: () => dispatch(actions.queryMatches()),
+    }),
   )(Overview);
 }
 

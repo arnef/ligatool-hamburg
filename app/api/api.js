@@ -2,7 +2,7 @@
 import { create } from 'apisauce';
 import baseUrl from './url';
 
-const api: API = create({
+const api = create({
   baseURL: `${baseUrl}/index.php?option=com_sportsmanagerapi&q=`,
 });
 
@@ -24,9 +24,8 @@ api.addRequestTransform(request => {
     }
   }
   if (request.method === 'get') {
-      request.url += `&timestamp=${new Date().getTime()}`;
+    request.url += `&timestamp=${new Date().getTime()}`;
   }
-
 });
 
 export default api;

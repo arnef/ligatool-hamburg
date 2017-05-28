@@ -107,7 +107,7 @@ export function sortMatches(matches: MatchesState): Function {
   };
 }
 
-export function currentRoute(navigation): NavigationRoute {
+export function currentRoute(navigation: any): NavigationRoute {
   const recursiveFindRoute = nav => {
     const subState = nav.routes[nav.index].routeName === 'DrawerOpen'
       ? nav.routes[0]
@@ -125,7 +125,7 @@ export function currentRoute(navigation): NavigationRoute {
   return recursiveFindRoute(navigation || store.getState().nav.navigation);
 }
 
-export function darken(color, amt) {
+export function darken(color: string, amt: number): string {
   amt = Math.round(2.55 * amt);
   const colorVal = parseInt(color.replace('#', ''), 16);
   const darkColor = (((colorVal & 0x0000ff) - amt) |

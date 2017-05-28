@@ -80,13 +80,21 @@ export default function(
         match.sets = {};
       }
       for (let idx: number of action.payload.setsIdx) {
-        const set = match.sets[idx] || {};
+        const set = match.sets[String(idx)] || {
+          number: idx,
+          player_1_home: null,
+          player_1_away: null,
+          player_2_home: null,
+          player_2_away: null,
+          goals_home: null,
+          goals_away: null,
+        };
         for (let i = 0; i < action.payload.player.length; i++) {
           set[`player_${i + 1}_${action.payload.team}`] =
             action.payload.player[i];
         }
         set.number = idx;
-        match.sets[idx] = set;
+        match.sets[String(idx)] = set;
       }
       match.lineUp = checkLineUp(match);
       return state;
@@ -99,13 +107,13 @@ export default function(
 
       if (match) {
         for (let idx: number of action.payload.idx) {
-          if (match.sets && match.sets[idx]) {
-            match.sets[idx].player_1_home = null;
-            match.sets[idx].player_2_home = null;
-            match.sets[idx].player_1_away = null;
-            match.sets[idx].player_2_away = null;
-            match.sets[idx].goals_home = null;
-            match.sets[idx].goals_away = null;
+          if (match.sets && match.sets[String(idx)]) {
+            match.sets[String(idx)].player_1_home = null;
+            match.sets[String(idx)].player_2_home = null;
+            match.sets[String(idx)].player_1_away = null;
+            match.sets[String(idx)].player_2_away = null;
+            match.sets[String(idx)].goals_home = null;
+            match.sets[String(idx)].goals_away = null;
           }
         }
         match.type = action.payload.type;
@@ -117,14 +125,14 @@ export default function(
       const match: Match = state[action.payload.id];
       if (match) {
         state = { ...state };
-        for (let idx of action.payload.setsIdx) {
-          if (match.sets && match.sets[idx]) {
-            match.sets[idx].player_1_home = null;
-            match.sets[idx].player_2_home = null;
-            match.sets[idx].player_1_away = null;
-            match.sets[idx].player_2_away = null;
-            match.sets[idx].goals_home = null;
-            match.sets[idx].goals_away = null;
+        for (let idx: number of action.payload.setsIdx) {
+          if (match.sets && match.sets[String(idx)]) {
+            match.sets[String(idx)].player_1_home = null;
+            match.sets[String(idx)].player_2_home = null;
+            match.sets[String(idx)].player_1_away = null;
+            match.sets[String(idx)].player_2_away = null;
+            match.sets[String(idx)].goals_home = null;
+            match.sets[String(idx)].goals_away = null;
           }
         }
       }
@@ -202,6 +210,9 @@ function checkLineUp(match: Match) {
   const errors = [];
 
   const addPlayerCount = (idx, player, doubles = false) => {
+    if (!player || !player.id) {
+      return;
+    }
     if (!playerCount[player.id]) {
       playerCount[player.id] = { singles: 0, doubles: 0 };
     }
@@ -232,7 +243,7 @@ function checkLineUp(match: Match) {
     }
   };
 
-  for (let idx: number in match.sets) {
+  for (let idx: string in match.sets) {
     const set = match.sets[idx];
     if (set.player_1_home && set.player_1_away) {
       count += 1;

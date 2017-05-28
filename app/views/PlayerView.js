@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
+import type { Dispatch } from 'redux';
 import { getPlayer } from '../store/actions/playersActions';
 import { Container, MatchStatsBar, StaticListHeader } from '../components';
 import {
@@ -303,7 +304,7 @@ export default connect(
     error: state.loading.error,
     players: state.players,
   }),
-  dispatch => ({
+  (dispatch: Dispatch<*>) => ({
     getPlayer: (id: number) => dispatch(getPlayer(id)),
   }),
 )(PlayerView);

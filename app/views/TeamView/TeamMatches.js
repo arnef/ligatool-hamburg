@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import type { Dispatch } from 'redux';
 import { getTeamMatches } from '../../store/actions/teamActions';
 import MatchListView from '../MatchListView';
 
@@ -26,7 +27,7 @@ export default connect(
     error: state.loading.error,
     fetching: state.loading.nonBlocking,
   }),
-  dispatch => ({
+  (dispatch: Dispatch<*>) => ({
     getTeamMatches: id => dispatch(getTeamMatches(id)),
   }),
 )(TeamView);

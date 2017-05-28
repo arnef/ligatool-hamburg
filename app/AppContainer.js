@@ -9,8 +9,12 @@ import { Root } from './router';
 import { ActionSheet } from './components/base';
 import { backgroundColor } from './components/base/theme';
 import NotificationManager from './NotificationManager';
+import type { Listener } from './NotificationManager';
 
 class AppContainer extends Component {
+  notificationListener: Listener;
+  refreshTokenListener: Listener;
+
   componentDidMount() {
     NotificationManager.requestPermissions();
     this.notificationListener = NotificationManager.notificationListener();
