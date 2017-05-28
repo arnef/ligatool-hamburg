@@ -1,9 +1,9 @@
 /* @flow */
 import { create } from 'apisauce';
-import baseUrl from './url';
+import config from '../config';
 
 const api = create({
-  baseURL: `${baseUrl}/index.php?option=com_sportsmanagerapi&q=`,
+  baseURL: `${config.baseUrl}/index.php?option=com_sportsmanagerapi&q=`,
 });
 
 if (__DEV__) {
