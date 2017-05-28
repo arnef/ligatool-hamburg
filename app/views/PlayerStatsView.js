@@ -54,7 +54,7 @@ class PlayerStatsView extends Component {
           renderRow={({ item }) =>
             this.renderRow(item, item.position === bestlist.length)}
           dataSource={bestlist}
-          ItemSeparatorComponent={props => <Separator table image />}
+          ItemSeparatorComponent={() => <Separator table image />}
           keyExtractor={this.keyExtractor.bind(this)}
           getItemLayout={(data, index) => ({
             length: ListItem.ITEM_HEIGHT,
@@ -69,7 +69,7 @@ class PlayerStatsView extends Component {
     return `${item.position}`;
   }
 
-  renderRow(item, last) {
+  renderRow(item) {
     return (
       <ListItem
         key={item.position}

@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import { View, Keyboard, Dimensions, StyleSheet, Platform } from 'react-native';
+import { View, Keyboard, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import actions from '../../store/actions';
 import { Container, Match, StaticListHeader } from '../../components';
-import {
-  Button,
-  Row,
-  ActionSheet,
-  Content,
-  Touchable,
-  Text,
-} from '../../components/base';
+import { ActionSheet, Touchable, Text } from '../../components/base';
 import * as theme from '../../components/base/theme';
 import { PLAYER } from '../routes';
 const height = Dimensions.get('window').height;
@@ -77,8 +70,6 @@ class SetsView extends Component {
           cancelButtonIndex: 2,
         },
         val => {
-          if (val === 0) {
-          }
           if (val === 1) {
             this.toggleScoreInput(idx);
           }
@@ -218,22 +209,6 @@ class SetsView extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  submitRow: {
-    // position: 'absolute',
-    // bottom: 0,
-    // width: Dimensions.get('window').width,
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-    // borderTopWidth: StyleSheet.hairlineWidth,
-    // borderTopColor: 'rgba(0, 0, 0, .2)',
-    // backgroundColor: Platform.OS === 'ios'
-    //   ? 'rgba(244, 244, 244, .9)'
-    //   : 'rgba(221, 221, 221, .9)',
-    // zIndex: 99,
-  },
-});
 
 const btnText = [
   'Ergebnis vorschlagen',

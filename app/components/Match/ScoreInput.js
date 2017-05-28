@@ -174,7 +174,7 @@ class ScoreInput extends Component {
   }
 
   getName(player) {
-    return !!player ? `${player.name} ${player.surname}` : '';
+    return player ? `${player.name} ${player.surname}` : '';
   }
 }
 

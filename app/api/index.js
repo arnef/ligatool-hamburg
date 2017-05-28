@@ -1,3 +1,5 @@
+// @flow
+
 import api from './api';
 
 export const USER_AUTH: string = '/user/auth';

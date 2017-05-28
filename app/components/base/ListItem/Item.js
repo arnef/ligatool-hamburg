@@ -5,17 +5,7 @@ import * as theme from '../theme.js';
 
 class Item extends Component {
   render() {
-    const {
-      icon,
-      multiline,
-      maxHeight,
-      disabled,
-      onPress,
-      active,
-      last,
-      children,
-      ...rest
-    } = this.props;
+    const { icon, multiline, disabled, onPress, active, children } = this.props;
     const Container = onPress && !disabled ? Touchable : View;
     const separatorStyle = [styles.separator];
     const itemStyle = [styles.item];
@@ -23,10 +13,6 @@ class Item extends Component {
     if (icon) {
       separatorStyle.push({ marginLeft: 64 });
     }
-
-    // if (maxHeight) {
-    //   itemStyle.push({ height: maxHeight });
-    // }
 
     if (disabled) {
       itemStyle.push(styles.disabled);
@@ -93,9 +79,6 @@ const styles = StyleSheet.create({
       marginLeft: 16,
     },
   }),
-  text: {
-    color: theme.primaryTextColor,
-  },
 });
 
 export default Item;

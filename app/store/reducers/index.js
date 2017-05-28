@@ -11,7 +11,7 @@ import myTeam from './myTeamReducer';
 import players from './playersReducer';
 
 export default combineReducers({
-  app: (state = {}, action) => state,
+  app: (state = {}) => state,
   auth,
   nav,
   leagues,

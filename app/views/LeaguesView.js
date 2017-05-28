@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from '../store/actions';
-import { View } from 'react-native';
 import { Container } from '../components';
 import { ListItem, Text, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';

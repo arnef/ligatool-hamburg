@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { backgroundColor } from '../theme';
+import { View, StyleSheet } from 'react-native';
 
 class ListItemGroup extends Component {
   render() {

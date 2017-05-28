@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import actions from '../../store/actions';
 import { Container } from '../../components';
 import {
-  Card,
   ListItem,
   Row,
   Column,
@@ -21,7 +20,6 @@ import {
 } from '../../components/base';
 import * as theme from '../../components/base/theme';
 import { CLIENT_ERROR } from 'apisauce';
-import NavCloseIcon from '../../Nav/NavCloseIcon';
 import strings from '../../Strings';
 
 class LoginView extends Component {
@@ -31,6 +29,7 @@ class LoginView extends Component {
       pass: '',
       user: '',
     };
+    this.passwordInput = null;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,7 +54,6 @@ class LoginView extends Component {
             {isIOS && <Separator full />}
             <TextInput
               placeholder="Username"
-              ref="UserInput"
               autoCapitalize="none"
               style={styles.input}
               underlineColorAndroid={theme.backgroundColor}
@@ -67,14 +65,14 @@ class LoginView extends Component {
                 this.setState({ user: text });
               }}
               onSubmitEditing={() => {
-                this.refs.PassInput.focus();
+                this.passwordInput.focus();
               }}
               returnKeyLabel="next"
             />
             {isIOS && <Separator />}
             <TextInput
               placeholder="Passwort"
-              ref="PassInput"
+              ref={ref => (this.passwordInput = ref)}
               style={styles.input}
               selectTextOnFocus={true}
               underlineColorAndroid={theme.backgroundColor}

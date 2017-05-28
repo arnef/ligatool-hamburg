@@ -26,10 +26,12 @@ export default function(
 ): MatchesState {
   switch (action.type) {
     case QUERY_MATCHES + FULFILLED:
-      NotificationManager.removeAllNotifications();
     case QUERY_TEAM_MATCHES + FULFILLED:
     case QUERY_MY_TEAM_MATCHES + FULFILLED:
     case QUERY_LEAGUE_MATCHES + FULFILLED:
+      if (action.type === QUERY_MATCHES + FULFILLED) {
+        NotificationManager.removeAllNotifications();
+      }
       if (action.payload.ok) {
         state = { ...state };
         for (let match: Match of action.payload.data) {

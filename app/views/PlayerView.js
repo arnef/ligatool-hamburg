@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
 import { getPlayer } from '../store/actions/playersActions';
-import { Container, MatchStatsBar, StaticListHeader } from '../components';
+import { Container, MatchStatsBar } from '../components';
 import {
   Text,
   Image,
@@ -23,7 +23,7 @@ class PlayerView extends Component {
     }
   }
 
-  renderItem(name, value) {
+  renderItem(name: string, value: string) {
     return (
       <ListItem multiline>
         <View>
@@ -295,8 +295,6 @@ class PlayerView extends Component {
     this.props.getPlayer(params.id);
   }
 }
-
-const rowBackground = '#efefef';
 
 export default connect(
   state => ({

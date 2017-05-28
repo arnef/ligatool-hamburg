@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text as RNText, StyleSheet, Platform } from 'react-native';
+import { Text as RNText, StyleSheet } from 'react-native';
 import * as theme from './theme';
 
 class Text extends Component {

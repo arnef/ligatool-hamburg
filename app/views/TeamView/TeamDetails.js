@@ -8,7 +8,6 @@ import { PLAYER } from '../routes';
 import {
   Row,
   Column,
-  Button,
   ListItem,
   Image,
   Text,
@@ -56,7 +55,7 @@ class TeamView extends Component {
     );
   }
 
-  renderItem(name, value, last, childs) {
+  renderItem(name, value, last) {
     return (
       <View key={name}>
         <ListItem multiline>
@@ -71,8 +70,6 @@ class TeamView extends Component {
   }
 
   renderTeamDetails(team) {
-    const leftWidth = 5;
-
     return (
       <ListItem.Group>
         <ListItem.Header title={strings.team_info} />
@@ -188,7 +185,6 @@ class TeamView extends Component {
   }
 
   getTeam() {
-    const { navigation } = this.props;
     const teamID = this.getTeamId();
 
     return this.props.teams[teamID];

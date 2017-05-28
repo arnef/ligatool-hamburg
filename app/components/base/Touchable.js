@@ -14,9 +14,6 @@ class Touchable extends Component {
       Platform.OS === 'android' &&
       Platform.Version >= ANDROID_VERSION_LOLLIPOP
     ) {
-      const useForeground = TouchableNativeFeedback.canUseNativeForeground()
-        ? { useForeground: true }
-        : {};
       return (
         <TouchableNativeFeedback
           {...rest}

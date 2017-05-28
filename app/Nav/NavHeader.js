@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-navigation';
@@ -53,7 +53,7 @@ export default {
       : { elevation: 0, shadowOpacity: 0 };
 
     return {
-      header: props => <ConnectHeader {...props} />,
+      header: ConnectHeader,
       headerTintColor: '#fff',
       headerBackTitle: null,
       headerPressColorAndroid: white,

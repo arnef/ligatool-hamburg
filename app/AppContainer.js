@@ -1,9 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Platform, BackHandler } from 'react-native';
+import { View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
-import actions from './store/actions'; // why?
 import Loading from './modals/LoadingModal';
 import { Root } from './router';
 import { ActionSheet } from './components/base';

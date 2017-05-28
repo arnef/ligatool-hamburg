@@ -4,7 +4,7 @@ import { Touchable } from '../base';
 
 class Card extends Component {
   render() {
-    const { onPress, children } = this.props;
+    const { onPress } = this.props;
 
     const Container = onPress ? Touchable : View;
 

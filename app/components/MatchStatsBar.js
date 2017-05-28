@@ -69,7 +69,6 @@ class MatchStatsBar extends Component {
     );
   }
 }
-const barHeight = 21;
 
 const style = StyleSheet.create({
   barContainer: {

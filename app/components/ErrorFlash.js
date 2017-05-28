@@ -12,7 +12,7 @@ import { CLIENT_ERROR, NETWORK_ERROR, SERVER_ERROR } from 'apisauce';
 
 class ErrorFlash extends Component {
   render() {
-    if (!!this.props.error) {
+    if (this.props.error) {
       const error = this.error();
 
       return (

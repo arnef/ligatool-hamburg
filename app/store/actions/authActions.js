@@ -2,7 +2,6 @@
 import { API_KEY, TOKEN, LOGOUT, SET_USER_TEAM } from './types';
 import api, { USER_AUTH, USER_AUTH_REFRESH } from '../../api';
 import store from '../index';
-import { AsyncStorage } from 'react-native';
 
 export function requestAPIKey(user: User): Action {
   const accesskey = store.getState().auth.api_key;

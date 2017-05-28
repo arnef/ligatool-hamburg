@@ -2,7 +2,6 @@
 import { TabNavigator } from 'react-navigation';
 
 import NavTabBarTop from '../../Nav/NavTabBarTop';
-import NavIcon from '../../Nav/NavIcon';
 import TeamView from './TeamDetails';
 import TeamMatches from './TeamMatches';
 import { TAB_TEAM, TAB_MATCHES } from '../routes';
