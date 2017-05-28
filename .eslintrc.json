@@ -1,51 +1,37 @@
 {
+    "extends": [
+        "eslint:recommended",
+        "plugin:flowtype/recommended",
+        "plugin:react/recommended",
+        "plugin:react-native/all",
+        "prettier",
+        "prettier/react",
+        "prettier/flowtype"
+    ],
+    "plugins": [
+        "flowtype",
+        "react",
+        "react-native"
+    ],
     "env": {
-        "browser": true,
-        "commonjs": true,
         "es6": true,
+        "browser": true,
         "node": true
     },
-    "globals":{
+    "globals": {
         "__DEV__": true
     },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true,
-            "experimentalObjectRestSpread": true
-        },
-        "sourceType": "module"
+    "parser": "babel-eslint",
+    "settings": {
+        "flowtype": {
+            "onlyFilesWithFlowAnnotation": true
+        }
     },
-    "plugins": [
-        "react"
-    ],
     "rules": {
-        "indent": 2,
-        "no-const-assign": 2,
-        "no-this-before-super": 2,
-        "no-trailing-spaces": 2,
-        "no-undef": 2,
-        "no-unreachable": 2,
-        "no-unused-vars": 2,
-        "constructor-super": 2,
-        "valid-typeof": 2,
-        "curly": 2,
-        "camelcase": [2, { "properties": "never" }],
-        "jsx-quotes": [2, "prefer-single"],
-        "no-useless-constructor": 2,
-        "sort-vars": 2,
-        "no-var": 2,
-        "newline-before-return": 2,
-        "comma-dangle": [2, "never"],
-        "semi": [2, "never"],
-        "newline-after-var": [2],
-        "no-tabs": 2,
-        "object-curly-spacing": [2, "always"],
-        "react/no-did-mount-set-state": 2,
-        "react/no-did-update-set-state": 2,
-        "react/jsx-uses-react": 2,
-        "react/jsx-no-undef": 2,
-        "react/prop-types": 2,
-        "react/jsx-uses-vars": 2,
-        "react/jsx-space-before-closing": [2, "always"]
+        "no-console": [2, { "allow": ["warn", "error", "tron"] }],
+        "flowtype/no-primitive-constructor-types": 2,
+        "flowtype/require-parameter-type": [2, { "excludeArrowFunctions": true }],
+        "flowtype/require-valid-file-annotation": [2, "always"],
+        "react/prop-types": 0
     }
 }

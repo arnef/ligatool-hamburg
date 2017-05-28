@@ -6,6 +6,7 @@
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "flow": "flow --show-all-errors",
+    "lint": "eslint app/ index.android.js index.ios.js",
     "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'",
     "precommit": "lint-staged"
   },
@@ -33,9 +34,12 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.1",
+    "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
-    "eslint-plugin-react": "^6.10.3",
+    "eslint-config-prettier": "^2.1.1",
+    "eslint-plugin-flowtype": "^2.33.0",
+    "eslint-plugin-react": "^7.0.1",
+    "eslint-plugin-react-native": "^2.3.2",
     "flow-bin": "0.42.0",
     "husky": "^0.13.3",
     "lint-staged": "^3.5.0",
