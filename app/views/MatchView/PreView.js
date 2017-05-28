@@ -16,18 +16,14 @@ class TeamAway extends Component {
   }
 }
 
-TeamHome.navigationOptions = {
-  title: ({ state }) => state.params.match.team_home.name,
-  tabBar: {
-    label: 'Heim',
-  },
-};
-TeamAway.navigationOptions = {
-  title: ({ state }) => state.params.match.team_away.name,
-  tabBar: {
-    label: 'Gast',
-  },
-};
+TeamHome.navigationOptions = ({ navigation }) => ({
+  title: navigation.state.params.match.team_home.name,
+  tabBarLabel: 'Heim',
+});
+TeamAway.navigationOptions = ({ navigation }) => ({
+  title: navigation.state.params.match.team_away.name,
+  tabBarLabel: 'Gast',
+});
 export default TabNavigator(
   {
     [TAB_HOME]: { screen: TeamHome },
