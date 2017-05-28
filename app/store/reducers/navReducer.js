@@ -118,11 +118,7 @@ export default function(
         ...state,
         navigation: Root.router.getStateForAction(action, state.navigation),
       };
-      if (
-        routes.indexOf(action.routeName) !== -1 &&
-        action.params &&
-        action.routeName
-      ) {
+      if (routes.indexOf(action.routeName) !== -1 && action.routeName) {
         state.activeItem = action.routeName;
         if (action.routeName === LEAGUE || action.routeName === LEAGUE_CUP) {
           state.activeItem = `${action.routeName}_${action.params.id}`;
@@ -135,7 +131,7 @@ export default function(
         navigation: Root.router.getStateForAction(action, state.navigation),
       };
       const route = currentRoute(state.navigation);
-      if (routes.indexOf(route.routeName) !== -1 && route.params) {
+      if (routes.indexOf(route.routeName) !== -1) {
         state.activeItem = route.routeName === LEAGUE ||
           route.routeName === LEAGUE_CUP
           ? `${route.routeName}_${route.params.id}`
