@@ -1,12 +1,10 @@
+// @flow
 import type { AxiosRequestConfig, AxiosInstance } from 'axios';
 
 declare module 'apisauce' {
     declare type HEADERS = { [key: string]: string };
 
-    declare export var DEFAULT_HEADERS: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-    };
+    declare export var DEFAULT_HEADERS: HEADERS;
 
     declare export var NONE: null;
     declare export var CLIENT_ERROR: 'CLIENT_ERROR';
@@ -50,7 +48,7 @@ declare module 'apisauce' {
         config?: AxiosRequestConfig;
         duration?: number;
     };
-    declare type ApiResponse<T> = ApiErrorResponse<T> | ApiOkResponse<T>;
+    declare export type ApiResponse<T> = ApiErrorResponse<T> | ApiOkResponse<T>;
 
     declare type Monitor = (response: ApiResponse<any>) => void;
     declare type RequestTransform = (request: AxiosRequestConfig) => void;
@@ -72,7 +70,7 @@ declare module 'apisauce' {
 
         headers: HEADERS;
         setHeader: (key: string, value: string) => AxiosInstance;
-        setHeaders: (headers: [[string, string]]) => AxiosInstance;
+        setHeaders: (headers: HEADERS) => AxiosInstance;
         deleteHeader: (name: string) => AxiosInstance;
 
         /** Sets a new base URL */

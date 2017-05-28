@@ -1,6 +1,6 @@
 // @flow
 import { API_KEY, TOKEN, LOGOUT, SET_USER_TEAM } from './types';
-import api, { USER_AUTH, USER_AUTH_REFRESH } from '../../api';
+import * as api from '../../api';
 import store from '../index';
 import { AsyncStorage } from 'react-native';
 
@@ -10,7 +10,7 @@ export function requestAPIKey(user: User): Action {
     return renewToken(accesskey);
   } else {
     return {
-      payload: api.post(USER_AUTH, user),
+      payload: api.authenticate(user.username, user.password),
       type: API_KEY,
     };
   }
@@ -18,14 +18,14 @@ export function requestAPIKey(user: User): Action {
 
 export function renewToken(apiKey: string): Action {
   return {
-    payload: api.post(USER_AUTH_REFRESH, { access_key: apiKey }),
+    payload: api.refreshAuthentication(apiKey),
     type: TOKEN,
   };
 }
 
 export function logout(): Action {
   return {
-    payload: api.delete(USER_AUTH),
+    payload: api.logout(),
     type: LOGOUT,
   };
 }
