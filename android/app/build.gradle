@@ -99,10 +99,12 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file(LIGATOOL_RELEASE_STORE_FILE)
-            storePassword LIGATOOL_RELEASE_STORE_PASSWORD
-            keyAlias LIGATOOL_RELEASE_KEY_ALIAS
-            keyPassword LIGATOOL_RELEASE_KEY_PASSWORD
+            if (project.hasProperty('LIGATOOL_RELEASE_STORE_FILE')) {
+                storeFile file(LIGATOOL_RELEASE_STORE_FILE)
+                storePassword LIGATOOL_RELEASE_STORE_PASSWORD
+                keyAlias LIGATOOL_RELEASE_KEY_ALIAS
+                keyPassword LIGATOOL_RELEASE_KEY_PASSWORD
+            }
         }
     }
     splits {
@@ -117,7 +119,9 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+            if (project.hasProperty('LIGATOOL_RELEASE_STORE_FILE')) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     // applicationVariants are e.g. debug, release
