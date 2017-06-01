@@ -57,13 +57,15 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
     [PREVIEW]: { screen: Preview },
     [TEAM]: {
       screen: Team,
-      navigationOptions: { title: ({ state }) => state.params.title },
+      navigationOptions: ({ navigation }) => ({
+        title: navigation.state.params.title,
+      }),
     },
     [PLAYER]: {
       screen: PlayerView,
-      navigationOptions: {
-        title: ({ state }) => `${state.params.name} ${state.params.surname}`,
-      },
+      navigationOptions: ({ navigation }) => ({
+        title: `${navigation.state.params.name} ${navigation.state.params.surname}`,
+      }),
     },
   };
   const routes = optionalRoutes
