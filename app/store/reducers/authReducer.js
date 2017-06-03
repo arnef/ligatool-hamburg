@@ -1,5 +1,5 @@
 // @flow
-import { API_KEY, TOKEN, FULFILLED, LOGOUT, PENDING } from '../actions/types';
+import { API_KEY, TOKEN, FULFILLED, LOGOUT } from '../actions/types';
 import { DEFAULT_HEADERS } from 'apisauce';
 import { REHYDRATE } from 'redux-persist/constants';
 import api from '../../api';

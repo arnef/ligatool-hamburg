@@ -8,18 +8,24 @@ import * as theme from '../theme';
 
 const iconSize = 32;
 
-ListItem.Image = props => (
-  <Image size={iconSize} style={{ marginRight: 16 }} {...props} />
-);
+function ListItemImage(props) {
+  return <Image size={iconSize} style={{ marginRight: 16 }} {...props} />;
+}
 
-ListItem.Icon = props => (
-  <Icon
-    size={iconSize}
-    style={{ marginRight: props.right ? 0 : 16, textAlign: 'center' }}
-    color={props.right ? theme.secondaryTextColor : theme.primaryTextColor}
-    {...props}
-  />
-);
+function ListItemIcon(props) {
+  return (
+    <Icon
+      size={iconSize}
+      style={{ marginRight: props.right ? 0 : 16, textAlign: 'center' }}
+      color={props.right ? theme.secondaryTextColor : theme.primaryTextColor}
+      {...props}
+    />
+  );
+}
+
+ListItem.Image = ListItemImage;
+
+ListItem.Icon = ListItemIcon;
 
 ListItem.Group = ListItemGroup;
 

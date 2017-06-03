@@ -18,7 +18,7 @@ class TableView extends Component {
     }
   }
 
-  _renderTeam(data, idx, last) {
+  _renderTeam(data) {
     return (
       <ListItem last onPress={() => this._onPress(data)}>
         <Column center fluid style={{ width: 20 }}>
@@ -89,7 +89,7 @@ class TableView extends Component {
           onRefresh={this._getLeagues.bind(this)}
           renderRow={({ item, index }) => this._renderTeam(item, index, false)}
           keyExtractor={item => `${item.position}`}
-          ItemSeparatorComponent={props => <Separator table image />}
+          ItemSeparatorComponent={() => <Separator table image />}
           getItemLayout={(data, index) => ({
             length: ListItem.ITEM_HEIGHT,
             offset: ListItem.ITEM_HEIGHT * index,

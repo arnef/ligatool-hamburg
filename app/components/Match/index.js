@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
-import { Row, Column, Text, Switch, Separator, Content } from '../base';
+import { Row, Column, Text, Switch, Content } from '../base';
 import Set from './Set';
 import Header from './Header';
 
 class Match extends Component {
-  renderRow(data, idx, separator) {
+  renderRow(data, idx) {
     const {
       onPress,
       matches,

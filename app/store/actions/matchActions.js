@@ -6,8 +6,6 @@ import {
   PUT_SETS,
   TOGGLE_D5,
   RESET_SETS,
-  PENDING,
-  FULFILLED,
 } from './types';
 import api, { MATCHES } from '../../api';
 

@@ -16,7 +16,6 @@ class SelectTeamView extends Component {
 
   render() {
     const lid = this.props.navigation.state.params.id;
-    console.log(this.props.leagues[lid]);
     const teams = this.props.leagues[lid].table
       ? JSON.parse(JSON.stringify(this.props.leagues[lid].table))
       : [];

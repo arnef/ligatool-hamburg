@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import { View, Platform, ActivityIndicator, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../store/actions';
-import {
-  ListItem,
-  Text,
-  Switch,
-  Separator,
-  Column,
-} from '../../components/base';
+import { ListItem, Text, Switch, Separator } from '../../components/base';
 import { Container } from '../../components';
 import * as theme from '../../components/base/theme';
 import { NavigationActions } from 'react-navigation';

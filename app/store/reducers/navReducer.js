@@ -125,7 +125,7 @@ export default function(
         }
       }
       break;
-    case NavigationActions.BACK:
+    case NavigationActions.BACK: {
       state = {
         ...state,
         navigation: Root.router.getStateForAction(action, state.navigation),
@@ -138,6 +138,7 @@ export default function(
           : route.routeName;
       }
       break;
+    }
     default:
       state = {
         ...state,

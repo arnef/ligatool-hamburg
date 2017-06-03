@@ -1,9 +1,7 @@
 // @flow
-import React, { Component, PropTypes } from 'react';
-import { Platform, Dimensions, StyleSheet, View } from 'react-native';
+import React, { Component } from 'react';
+import { Platform, Dimensions, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { StaticListHeader } from '../components';
-
 import { TabBarTop } from 'react-navigation';
 
 const white = 'rgba(255, 255, 255, .9)';

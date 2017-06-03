@@ -79,7 +79,7 @@ export default function(
 
     case SET_USER_TEAM: {
       state = { ...state };
-      if (!!action.payload.color) {
+      if (action.payload.color) {
         state.color = action.payload.color;
       }
       state.team = {

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { Text, Content, Touchable } from '../base';
+import { Text, Touchable } from '../base';
 import { connect } from 'react-redux';
 
 class Button extends Component {
   render() {
-    const { style, onPress, disabled, color, loading, outline } = this.props;
+    const { onPress, disabled, color, loading, outline } = this.props;
     const buttonStyle = [styles.button];
 
     // if (outline) {

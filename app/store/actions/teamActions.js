@@ -1,3 +1,5 @@
+// @flow
+
 import { Platform } from 'react-native';
 import {
   GET_TEAM,

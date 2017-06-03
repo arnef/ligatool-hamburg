@@ -1,6 +1,6 @@
-import { AsyncStorage, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { persistStore, autoRehydrate } from 'redux-persist';
+import { autoRehydrate } from 'redux-persist';
 import createMigration from 'redux-persist-migrate';
 import thunk from 'redux-thunk';
 import Reactotron from 'reactotron-react-native';

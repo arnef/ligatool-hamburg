@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, MatchItem } from '../components';
-import { Row, Column, Button, Text, Separator } from '../components/base';
-import { sortMatches, compareDays } from '../Helper';
+import { Text } from '../components/base';
+import { sortMatches } from '../Helper';
 
 type State = {
   openMenu: number,

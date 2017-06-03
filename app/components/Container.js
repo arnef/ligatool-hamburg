@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
-import * as theme from './base/theme';
 
 class Container extends Component {
   constructor(props) {
@@ -42,7 +41,7 @@ class Container extends Component {
             style={{ flex: 1 }}
             keyboardShouldPersistTaps="handled"
             ItemSeparatorComponent={this.props.ItemSeparatorComponent}
-            refreshControl={!!this.props.onRefresh ? refreshControl : null}
+            refreshControl={this.props.onRefresh ? refreshControl : null}
             renderItem={this.props.renderRow}
             keyExtractor={this.props.keyExtractor}
             data={this.props.dataSource}
@@ -65,7 +64,7 @@ class Container extends Component {
             automaticallyAdjustContentInsets={false}
             onScroll={this.props.onScroll}
             scrollEventThrottle={200}
-            refreshControl={!!this.props.onRefresh ? refreshControl : null}
+            refreshControl={this.props.onRefresh ? refreshControl : null}
             ref={scrollview => {
               this.scrollView = scrollview;
             }}

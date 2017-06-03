@@ -44,7 +44,7 @@ export function migrateFromStorage(store: any, AsyncStorage: any) {
             }
             resolve();
           })
-          .catch(ex => {
+          .catch(() => {
             resolve();
           });
       } else {

@@ -1,36 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import actions from '../store/actions';
 import {
   ListItem,
   Text,
   Touchable,
   Icon,
-  Separator,
-  Content,
   ActionSheet,
   Row,
   Column,
 } from '../components/base';
 import { Container, MatchItem, StaticListHeader } from '../components';
 import { NavigationActions } from 'react-navigation';
-import { sortMatches, darken } from '../Helper';
-import { backgroundColor } from '../components/base/theme';
-
-const style = StyleSheet.create({
-  header: {
-    backgroundColor,
-    elevation: 2,
-    shadowColor: 'black',
-    shadowOpacity: 0.1,
-    shadowRadius: StyleSheet.hairlineWidth,
-    shadowOffset: {
-      height: StyleSheet.hairlineWidth,
-    },
-    zIndex: 1,
-  },
-});
+import { sortMatches } from '../Helper';
 
 class SelectableMatchListView extends Component {
   constructor(props) {

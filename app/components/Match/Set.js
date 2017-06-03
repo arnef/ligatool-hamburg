@@ -8,13 +8,10 @@ import {
   Content,
   Row,
   Column,
-  ListItem,
   Touchable,
   Text,
   Icon,
   Image,
-  Separator,
-  Picker,
 } from '../../components/base';
 
 class ListItemSet extends Component {
@@ -134,7 +131,7 @@ class ListItemSet extends Component {
   }
 
   getName(player) {
-    return !!player
+    return player
       ? `${player.name} ${player.surname}`
       : this.props.editable ? 'Bitte wählen' : '';
   }

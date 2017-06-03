@@ -11,14 +11,7 @@ import actions from '../store/actions';
 import { Image, ListItem, Text, Button } from '../components/base';
 import * as theme from '../components/base/theme';
 import { NavigationActions } from 'react-navigation';
-import {
-  LEAGUE,
-  LEAGUES,
-  LEAGUE_CUP,
-  OVERVIEW,
-  MY_TEAM,
-  SETTINGS,
-} from './routes';
+import { LEAGUE, LEAGUE_CUP, OVERVIEW, MY_TEAM, SETTINGS } from './routes';
 
 class NavigationView extends Component {
   componentWillMount() {
@@ -55,8 +48,7 @@ class NavigationView extends Component {
     }
   }
 
-  _renderItem(state, text, icon, idx) {
-    const { navigation } = this.props;
+  _renderItem(state, text, icon) {
     const color = this.props.settings.color;
     const active = state === this.props.activeItem;
 
@@ -81,7 +73,7 @@ class NavigationView extends Component {
   renderLeagues() {
     // const { navigation } = this.props;
     const color = this.props.settings.color;
-    return this.props.leagues.map((league, idx) => {
+    return this.props.leagues.map(league => {
       const active = league.cup
         ? `${LEAGUE_CUP}_${league.id}` === this.props.activeItem
         : `${LEAGUE}_${league.id}` === this.props.activeItem;

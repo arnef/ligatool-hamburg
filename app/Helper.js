@@ -1,5 +1,4 @@
 // @flow
-import moment from 'moment';
 import store from './store';
 
 const weekdays = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];

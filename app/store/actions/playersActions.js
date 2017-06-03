@@ -1,3 +1,5 @@
+// @flow
+
 import { GET_PLAYER } from './types';
 import api, { PLAYER } from '../../api';
 

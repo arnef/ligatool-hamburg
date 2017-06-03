@@ -4,7 +4,6 @@ import { getRankings } from '../../store/actions/leagueActions';
 import { Container } from '../../components';
 import { ListItem, Text, Separator } from '../../components/base';
 import { NavigationActions } from 'react-navigation';
-import NavCloseIcon from '../../Nav/NavCloseIcon';
 
 class SelectGroupView extends Component {
   componentDidMount() {

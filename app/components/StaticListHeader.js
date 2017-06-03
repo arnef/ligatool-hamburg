@@ -1,8 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { backgroundColor } from './base/theme';
 import { darken } from '../Helper';
 
 class StaticListHeader extends Component {

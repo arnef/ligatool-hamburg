@@ -9,13 +9,25 @@ import FCM, {
 import { NavigationActions } from 'react-navigation';
 import store from './store';
 import actions from './store/actions';
-import { PUT_NOTIFICATION, NOTIFICATION } from './store/actions/types';
 import { MATCH, OVERVIEW } from './views/routes';
 import { IOS } from './consts';
 import { currentRoute } from './Helper';
 
 export type Listener = {
   remove: Function,
+};
+
+type Notification = {
+  collapse_key: string,
+  opened_from_tray: boolean,
+  from: string,
+  notification: {
+    title?: string,
+    body: string,
+    icon: string,
+  },
+  _notificationType: string,
+  finish(type?: string): void,
 };
 
 /**
@@ -35,7 +47,7 @@ function refreshTokenListener(): Listener {
 /**
  * handle notification
  */
-function receiveNotification(notif) {
+function receiveNotification(notif: Notification) {
   if (notif) {
     const route = currentRoute();
     const id = parseInt(notif.id);
@@ -111,7 +123,7 @@ function refreshToken(token: string) {
 /**
  * handle notification on app start
  */
-function getInitialNotification(notif) {
+function getInitialNotification(notif: Notification) {
   if (notif) {
     if (Platform.OS === IOS) {
       // set to open match in app

@@ -1,14 +1,5 @@
 // @flow
-import {
-  UPDATE_FCM_TOKEN,
-  SCORE,
-  FULFILLED,
-  SUGGEST_SCORE,
-  NOTIFICATION,
-} from './types';
-import { getMatch } from './matchActions';
-import { isAdminForMatch } from '../../Helper';
-import store from '../index';
+import { UPDATE_FCM_TOKEN, FULFILLED, NOTIFICATION } from './types';
 
 export function updateFCMToken(token: string): Action {
   return {
