@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { connect } from 'react-redux';
@@ -47,13 +48,13 @@ const ConnectHeader = connect(state => ({ color: state.settings.color }))(
 
 export default {
   cardStyle: { backgroundColor },
-  navigationOptions: ({ navigation }) => {
+  navigationOptions: ({ navigation }: any) => {
     const headerStyle = singleHeader.indexOf(navigation.state.routeName) !== -1
       ? null
       : { elevation: 0, shadowOpacity: 0 };
 
     return {
-      header: ConnectHeader,
+      header: (props: any) => <ConnectHeader {...props} />,
       headerTintColor: '#fff',
       headerBackTitle: null,
       headerPressColorAndroid: white,
