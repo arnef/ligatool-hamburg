@@ -21,27 +21,22 @@ class NavigationView extends Component {
   }
 
   _handleRowPress(state) {
-    const { navigate, closeDrawer } = this.props;
+    const { closeDrawer } = this.props;
+    const navigate = this.props.navigation.navigate;
     if (!state.active) {
       if (state.state === LEAGUE) {
-        navigate({
-          routeName: LEAGUE,
-          params: {
-            id: state.leagueID,
-            title: state.title,
-          },
+        navigate(LEAGUE, {
+          id: state.leagueID,
+          title: state.title,
         });
       } else if (state.state === LEAGUE_CUP) {
-        navigate({
-          routeName: LEAGUE_CUP,
-          params: {
-            id: state.leagueID,
-            title: state.title,
-            cup: true, // why?
-          },
+        navigate(LEAGUE_CUP, {
+          id: state.leagueID,
+          title: state.title,
+          cup: true, // why?
         });
       } else {
-        navigate({ routeName: state.state });
+        navigate(state.state);
       }
     } else {
       closeDrawer();
@@ -218,7 +213,7 @@ export default connect(
   }),
   dispatch => ({
     getRankings: () => dispatch(actions.getRankings()),
-    navigate: route => dispatch(NavigationActions.navigate(route)),
+    // navigate: route => dispatch(NavigationActions.navigate(route)),
     closeDrawer: () =>
       dispatch(NavigationActions.navigate({ routeName: 'DrawerClose' })),
   }),

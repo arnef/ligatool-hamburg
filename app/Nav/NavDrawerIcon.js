@@ -6,7 +6,11 @@ export default (title = null) => ({ navigation }) => {
   return {
     title: title || navigation.state.params.title,
     headerLeft: (
-      <Touchable borderless onPress={() => navigation.navigate('DrawerOpen')}>
+      <Touchable
+        borderless
+        pressColor={'rgba(255, 255, 255, .8)'}
+        onPress={() => navigation.navigate('DrawerOpen')}
+      >
         <Icon name="menu" style={styles.icon} color="#fff" size={24} />
       </Touchable>
     ),

@@ -21,6 +21,7 @@ import {
 import * as theme from '../../components/base/theme';
 import { CLIENT_ERROR } from 'apisauce';
 import strings from '../../Strings';
+import { NavigationActions } from 'react-navigation';
 
 class LoginView extends Component {
   constructor(props) {
@@ -38,7 +39,8 @@ class LoginView extends Component {
 
   render() {
     const { loading, error } = this.props;
-    const init = this.props.navigation.state.key === 'Init';
+    const init = this.props.navigation.state.key.indexOf('Init') !== -1;
+
     const isIOS = Platform.OS === 'ios';
     const Wrapper = isIOS ? View : Content;
     return (
@@ -94,10 +96,8 @@ class LoginView extends Component {
                   <Button
                     outline
                     onPress={() => {
-                      this.props.showLogin(false);
-                      if (!init) {
-                        this.props.queryTeamMatches();
-                      }
+                      // this.props.showLogin(false);
+                      this.closeLogin();
                     }}
                     title={init ? 'Abbrechen' : 'Überspringen'}
                   />
@@ -133,6 +133,19 @@ class LoginView extends Component {
     );
   }
 
+  closeLogin() {
+    const init = this.props.navigation.state.key.indexOf('Init') !== -1;
+    this.props.showLogin(false);
+    if (!init) {
+      this.props.queryTeamMatches();
+      if (this.props.navigation.state.params.next) {
+        this.props.navigate({
+          routeName: this.props.navigation.state.params.next,
+        });
+      }
+    }
+  }
+
   login() {
     if (this.state.user !== '' && this.state.pass !== '') {
       const loginUser = {
@@ -148,6 +161,7 @@ class LoginView extends Component {
     if (this.props.auth.api_key === null && nextProps.auth.api_key !== null) {
       nextProps.renewToken(nextProps.auth.api_key);
       nextProps.queryTeamMatches();
+      this.closeLogin();
     }
   }
 }
@@ -177,5 +191,6 @@ export default connect(
     renewToken: apiKey => dispatch(actions.renewToken(apiKey)),
     requestAPIKey: user => dispatch(actions.requestAPIKey(user)),
     showLogin: show => dispatch(actions.showLogin(show)),
+    navigate: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(LoginView);

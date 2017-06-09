@@ -1,18 +1,19 @@
 // @flow
 import { API_KEY, TOKEN, LOGOUT, SET_USER_TEAM } from './types';
 import api, { USER_AUTH, USER_AUTH_REFRESH } from '../../api';
-import store from '../index';
 
-export function requestAPIKey(user: User): Action {
-  const accesskey = store.getState().auth.api_key;
-  if (accesskey != null) {
-    return renewToken(accesskey);
-  } else {
-    return {
-      payload: api.post(USER_AUTH, user),
-      type: API_KEY,
-    };
-  }
+export function requestAPIKey(user: User): Function {
+  return (dispatch, getState) => {
+    const accesskey = getState().auth.api_key;
+    if (accesskey !== null) {
+      dispatch(renewToken(accesskey));
+    } else {
+      dispatch({
+        payload: api.post(USER_AUTH, user),
+        type: API_KEY,
+      });
+    }
+  };
 }
 
 export function renewToken(apiKey: string): Action {

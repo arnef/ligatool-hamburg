@@ -16,7 +16,7 @@ import {
   NOTIFICATION,
 } from '../actions/types';
 import NotificationManager from '../../NotificationManager';
-import { isAdminForMatch } from '../../Helper';
+// import { isAdminForMatch } from '../../Helper';
 
 const initialState: MatchesState = {};
 
@@ -35,7 +35,6 @@ export default function(
       if (action.payload.ok) {
         state = { ...state };
         for (let match: Match of action.payload.data) {
-          match.is_admin = isAdminForMatch(match);
           if (state[match.id]) {
             state[match.id] = { ...state[match.id], ...match };
           } else {
@@ -54,7 +53,6 @@ export default function(
         state = { ...state };
         match.sets = compareSets(match, state[action.payload.data.id]);
         match.type = getMatchType(match);
-        match.is_admin = isAdminForMatch(match);
         match.showButton = false;
         if (match.is_admin && match.score_unconfirmed) {
           if (match.league.cup) {
@@ -68,7 +66,6 @@ export default function(
               match.set_points_home + match.set_points_away === 32;
           }
           match.lineUp = checkLineUp(match);
-          console.tron.log(match.team_home.player);
         }
         state[match.id] = match;
       }
@@ -222,17 +219,11 @@ function checkLineUp(match: Match) {
       playerDisabled[player.id] = { singles: false, doubles: false };
     }
     playerCount[player.id][doubles ? 'doubles' : 'singles'] += 1;
-    // playerDisabled[player.id][doubles ? 'doubles' : 'singles'] = false;
-    console.tron.log(
-      playerCount[player.id][doubles ? 'doubles' : 'singles'] +
-        ' > ' +
-        (doubles ? (match.league.cup ? 6 : 4) : 2),
-    );
+
     if (
       playerCount[player.id][doubles ? 'doubles' : 'singles'] >
       (doubles ? (match.league.cup ? 6 : 4) : 2)
     ) {
-      console.tron.log(player);
       if (errors.indexOf(parseInt(idx)) === -1) {
         errors.push(parseInt(idx));
       }

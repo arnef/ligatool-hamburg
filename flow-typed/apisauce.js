@@ -43,7 +43,6 @@ declare module 'apisauce' {
     declare type ApiOkResponse<T> = {
         ok: true;
         problem: null;
-
         data?: T;
         status?: number;
         headers?: {};

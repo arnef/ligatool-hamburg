@@ -11,7 +11,7 @@ import store from './store';
 import actions from './store/actions';
 import { MATCH, OVERVIEW } from './views/routes';
 import { IOS } from './consts';
-import { currentRoute } from './Helper';
+import { currentRoute, isAdminForMatch } from './Helper';
 
 export type Listener = {
   remove: Function,
@@ -49,7 +49,7 @@ function refreshTokenListener(): Listener {
  */
 function receiveNotification(notif: Notification) {
   if (notif) {
-    const route = currentRoute();
+    const route = currentRoute(store.getState().nav.navigation);
     const id = parseInt(notif.id);
     const matchOpen =
       route.routeName === MATCH && route.params && route.params.id === id;
@@ -97,10 +97,16 @@ function receiveNotification(notif: Notification) {
           }),
         );
       }
+
+      const match = store.getState().matches[id];
+
       store.dispatch(
         NavigationActions.navigate({
           routeName: MATCH,
-          params: { id },
+          params: {
+            id,
+            isAdmin: match && isAdminForMatch(match, store.getState().auth),
+          },
         }),
       );
     }

@@ -7,24 +7,24 @@ import {
   QUERY_TEAM_MATCHES,
   SHOW_LOGIN,
 } from './types';
-import store from '../../store';
 import api, { TEAMS, MATCHES } from '../../api';
 import { ANDROID } from '../../consts';
 
 // queryTeamMatches und getTeamMatches zu einer function machen?
-export function queryTeamMatches(): Action {
-  const team: Team = store.getState().settings.team;
-  if (!!team && !!team.id) {
-    return {
-      payload: api.get(TEAMS, { id: team.id, route: MATCHES }),
-      type: QUERY_MY_TEAM_MATCHES,
-    };
-  } else {
-    return {
-      type: Platform.OS === ANDROID ? SHOW_LOGIN : 'IGNORE',
-      payload: true,
-    };
-  }
+export function queryTeamMatches(): Function {
+  return (dispatch, getState) => {
+    const team: Team = getState().settings.team;
+    if (team && team.id) {
+      dispatch({
+        payload: api.get(TEAMS, { id: team.id, route: MATCHES }),
+        type: QUERY_MY_TEAM_MATCHES,
+      });
+    } else {
+      dispatch({
+        type: Platform.OS === ANDROID ? SHOW_LOGIN : 'IGNORE',
+      });
+    }
+  };
 }
 
 export function getTeam(id: number): Action {

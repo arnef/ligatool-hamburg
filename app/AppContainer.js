@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import { View, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
-import actions from './store/actions'; // don't remove until actions are fixed :P
 import Loading from './modals/LoadingModal';
 import { Root } from './router';
 import { ActionSheet } from './components/base';
 import { backgroundColor } from './components/base/theme';
 import NotificationManager from './NotificationManager';
 import type { Listener } from './NotificationManager';
+import { MY_TEAM, MODAL_LOGIN } from './views/routes';
 
 class AppContainer extends Component {
   notificationListener: Listener;
@@ -49,7 +49,17 @@ class AppContainer extends Component {
         />
         <Root
           navigation={addNavigationHelpers({
-            dispatch,
+            dispatch: action => {
+              if (action.routeName === MY_TEAM && !this.props.team) {
+                dispatch({
+                  ...action,
+                  routeName: MODAL_LOGIN,
+                  params: { next: MY_TEAM },
+                });
+              } else {
+                dispatch(action);
+              }
+            },
             state: nav,
           })}
         />
@@ -59,6 +69,7 @@ class AppContainer extends Component {
 }
 
 export default connect(state => ({
+  team: state.settings.team,
   auth: state.auth,
   nav: state.nav.navigation,
 }))(AppContainer);

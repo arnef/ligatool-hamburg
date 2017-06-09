@@ -6,8 +6,11 @@ import {
   PUT_SETS,
   TOGGLE_D5,
   RESET_SETS,
+  PENDING,
+  FULFILLED,
 } from './types';
 import api, { MATCHES } from '../../api';
+import { isAdminForMatch } from '../../Helper';
 
 export function queryMatches(): Action {
   return {
@@ -16,10 +19,12 @@ export function queryMatches(): Action {
   };
 }
 
-export function getMatch(id: number): Action {
-  return {
-    payload: api.get(MATCHES, { id }),
-    type: GET_MATCH,
+export function getMatch(id: number): Function {
+  return (dispatch, getState) => {
+    dispatch({ type: GET_MATCH + PENDING });
+    api.get(MATCHES, { id }).then(resp => {
+      handleMatchResponse(GET_MATCH + FULFILLED, resp, dispatch, getState);
+    });
   };
 }
 
@@ -35,10 +40,12 @@ export function setPlayer(
   };
 }
 
-export function updateSets(matchId: number, sets: any): Action {
-  return {
-    payload: api.put(`${MATCHES}/${matchId}`, { sets }),
-    type: PUT_SETS,
+export function updateSets(matchId: number, sets: any): Function {
+  return (dispatch, getState) => {
+    dispatch({ type: PUT_SETS + PENDING });
+    api.put(`${MATCHES}/${matchId}`, { sets }).then(resp => {
+      handleMatchResponse(PUT_SETS + FULFILLED, resp, dispatch, getState);
+    });
   };
 }
 
@@ -49,20 +56,25 @@ export function resetSets(matchId: number, setsIdx: Array<number>): Action {
   };
 }
 
-export const suggestScore = (matchId: number, sets: any, type: number) => {
-  if (type === 1) {
-    throw 'Wrong type for suggestScore action, must be 0 or 2';
-  }
-  const action = type === 0
-    ? { score_suggest: true }
-    : { score_unconfirmed: false };
-  const body = { sets, ...action };
-
-  return {
-    payload: api.put(`${MATCHES}/${matchId}`, body),
-    type: PUT_SETS,
+export function suggestScore(
+  matchId: number,
+  sets: any,
+  type: number,
+): Function {
+  return (dispatch, getState) => {
+    if (type === 1) {
+      throw 'Wrong type for suggestScore action, must be 0 or 2';
+    }
+    const action = type === 0
+      ? { score_suggest: true }
+      : { score_unconfirmed: false };
+    const body = { sets, ...action };
+    dispatch({ type: PUT_SETS + PENDING });
+    api.put(`${MATCHES}/${matchId}`, body).then(resp => {
+      handleMatchResponse(PUT_SETS + FULFILLED, resp, dispatch, getState);
+    });
   };
-};
+}
 
 export function toggleMatchType(
   id: number,
@@ -73,4 +85,19 @@ export function toggleMatchType(
     payload: { id, idx: setsIdx, type },
     type: TOGGLE_D5,
   };
+}
+
+function handleMatchResponse(
+  type: string,
+  resp: any | { ok: boolean, data: Match },
+  dispatch: Function,
+  getState: Function,
+) {
+  if (resp.ok) {
+    resp.data.is_admin = isAdminForMatch(resp.data, getState().auth);
+  }
+  dispatch({
+    type,
+    payload: resp,
+  });
 }

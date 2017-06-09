@@ -1,5 +1,5 @@
 // @flow
-import store from './store';
+// import store from './store';
 
 const weekdays = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
 
@@ -37,15 +37,17 @@ export function compareDays(d1: number, d2: number): number {
  * @param {object} match
  * @return {boolean}
  */
-export function isAdminForMatch(match: Match): boolean {
-  const user = store.getState().auth;
+export function isAdminForMatch(match: Match, user: any): boolean {
+  // const user = store.getState().auth;
 
   return user.team &&
     user.team.ids &&
     match &&
     match.id &&
-    !(user.team.ids.indexOf(match.team_home.id) === -1 &&
-      user.team.ids.indexOf(match.team_away.id) === -1) &&
+    !(
+      user.team.ids.indexOf(match.team_home.id) === -1 &&
+      user.team.ids.indexOf(match.team_away.id) === -1
+    ) &&
     (!match.set_points || match.score_unconfirmed)
     ? true
     : false;
@@ -61,7 +63,8 @@ export function formatDate(timestamp: number): string {
   const day: string = `0${date.getDate()}`.slice(-2);
   const month: string = `0${date.getMonth() + 1}`.slice(-2);
 
-  return `${weekdays[date.getDay()]} ${day}.${month}.${('' + date.getFullYear()).slice(-2)}`;
+  return `${weekdays[date.getDay()]} ${day}.${month}.${('' +
+    date.getFullYear()).slice(-2)}`;
 }
 
 /**
@@ -121,7 +124,7 @@ export function currentRoute(navigation: any): NavigationRoute {
     return recursiveFindRoute(subState);
   };
 
-  return recursiveFindRoute(navigation || store.getState().nav.navigation);
+  return recursiveFindRoute(navigation); // || store.getState().nav.navigation);
 }
 
 export function darken(color: string, amt: number): string {

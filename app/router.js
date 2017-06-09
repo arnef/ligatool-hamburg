@@ -64,7 +64,8 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
     [PLAYER]: {
       screen: PlayerView,
       navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.name} ${navigation.state.params.surname}`,
+        title: `${navigation.state.params.name} ${navigation.state.params
+          .surname}`,
       }),
     },
   };
@@ -148,7 +149,8 @@ export const App = Platform.OS === 'android'
               [PLAYER]: {
                 screen: PlayerView,
                 navigationOptions: ({ navigation }) => ({
-                  title: `${navigation.state.params.name} ${navigation.state.params.surname}`,
+                  title: `${navigation.state.params.name} ${navigation.state
+                    .params.surname}`,
                 }),
               },
               [SETTINGS]: {
@@ -221,3 +223,17 @@ export const Root: StackNavigator = StackNavigator(
     initialRouteName: APP,
   },
 );
+
+// const defaultGetStateForAction = Root.router.getStateForAction;
+
+// Root.router.getStateForAction = (action, state) => {
+//   console.log(state);
+//   return defaultGetStateForAction(action, state);
+// };
+
+// const defaultGetStateForAction = Root.getStateForAction;
+
+// Root.getStateForAction = (action, state) => {
+//   console.log(state);
+//   return defaultGetStateForAction(action, state);
+// }

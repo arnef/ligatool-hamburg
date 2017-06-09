@@ -152,12 +152,13 @@ class SetsView extends Component {
 
   render() {
     const data = this.props.matches[this.props.data.id] || {};
-    const editable = data.is_admin && data.type;
+
+    const editable = data.type && data.is_admin;
 
     return (
       <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
         <Match.Header matchId={this.props.data.id} />
-        {data.showButton && this.renderSubmitButton()}
+        {data.is_admin && data.showButton && this.renderSubmitButton()}
         <Container
           getRef={scrollView => {
             this.scrollView = scrollView;

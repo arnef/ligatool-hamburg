@@ -1,6 +1,7 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDate, formatTime } from '../Helper';
+import { formatDate, formatTime, isAdminForMatch } from '../Helper';
 import Score from './Score';
 import { Card, Content, Row, Column, Icon, Text } from '../components/base';
 import { TeamLogo } from '../components';
@@ -15,14 +16,14 @@ class MatchItem extends Component {
     return (
       <Card onPress={() => this.onPress(data)}>
         <Content>
-          <Text
-            bold
-            color={color}
-          >{`${data.league.name} (${data.match_day})`}</Text>
+          <Text bold color={color}>{`${data.league
+            .name} (${data.match_day})`}</Text>
           {data.venue &&
             <Text secondary small>
               <Icon name="pin" />
-              {` ${data.venue.name} ${formatDate(data.datetime)} ${formatTime(data.datetime)}`}
+              {` ${data.venue.name} ${formatDate(data.datetime)} ${formatTime(
+                data.datetime,
+              )}`}
             </Text>}
         </Content>
         <Row>
@@ -47,13 +48,14 @@ class MatchItem extends Component {
   }
 
   onPress(match) {
+    const isAdmin: boolean = isAdminForMatch(match, this.props.auth);
     if (
       match.set_points ||
-      (match.is_admin && moment(match.datetime).diff(moment(), 'minutes') < 31)
+      (isAdmin && moment(match.datetime).diff(moment(), 'minutes') < 31)
     ) {
       this.props.pushRoute({
         routeName: MATCH,
-        params: { id: match.id },
+        params: { id: match.id, isAdmin },
       });
     } else {
       this.props.pushRoute({
@@ -68,6 +70,7 @@ MatchItem.ITEM_HEIGHT = 152;
 
 export default connect(
   state => ({
+    auth: state.auth,
     color: state.settings.color,
   }),
   dispatch => ({

@@ -40,7 +40,7 @@ export function migrateFromStorage(store: any, AsyncStorage: any) {
                 type: 'API_KEY_FULFILLED',
               });
             } catch (ex) {
-              console.tron.warn(ex);
+              console.warn(ex);
             }
             resolve();
           })
@@ -77,7 +77,6 @@ export function setDefaultSettings(store: any) {
             type: LOAD_SETTINGS_FULFILLED,
             payload: { ok: true, data: { notification } },
           });
-          console.tron.log('set default settings');
           resolve({ ok: true });
         } else {
           resolve({ ok: false, message: 'Fehler beim Laden der Gruppen' });
@@ -92,7 +91,7 @@ export function setDefaultSettings(store: any) {
 export function checkToken(store: any) {
   return new Promise(resolve => {
     const auth = store.getState().auth;
-    if (auth.api_key && auth.team.expires < new Date().getTime()) {
+    if (auth.api_key && auth.team && auth.team.expires < new Date().getTime()) {
       api.post(USER_AUTH_REFRESH, { access_key: auth.api_key }).then(resp => {
         store.dispatch({
           type: TOKEN + FULFILLED,

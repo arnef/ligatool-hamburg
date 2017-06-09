@@ -1,7 +1,5 @@
 // @flow
-import { Platform } from 'react-native';
 import NotificationManager from '../../NotificationManager';
-import { IOS } from '../../consts';
 import { FULFILLED, TOKEN, SHOW_LOGIN, DIALOG_PLAYER } from '../actions/types';
 import { Root } from '../../router';
 import { NavigationActions } from 'react-navigation';
@@ -15,7 +13,6 @@ import {
   LEAGUE_CUP,
   SETTINGS,
 } from '../../views/routes';
-import store from '../../store';
 import { currentRoute } from '../../Helper';
 
 const routes = [OVERVIEW, MY_TEAM, LEAGUE, LEAGUE_CUP, SETTINGS];
@@ -60,21 +57,6 @@ export default function(
       }
       break;
 
-    case TOKEN + FULFILLED:
-      if (action.payload.ok) {
-        const key = findRouteKey(state.navigation, MODAL_LOGIN);
-        if (key) {
-          state = {
-            ...state,
-            navigation: Root.router.getStateForAction(
-              NavigationActions.back({ key }),
-              state.navigation,
-            ),
-          };
-        }
-      }
-      break;
-
     case DIALOG_PLAYER:
       if (action.payload) {
         state = {
@@ -96,7 +78,7 @@ export default function(
           ...state,
           navigation: Root.router.getStateForAction(
             NavigationActions.back({
-              key: findRouteKey(state, MODAL_SELECT_PLAYER),
+              key: findRouteKey(state.navigation, MODAL_SELECT_PLAYER),
             }),
             state.navigation,
           ),
@@ -104,13 +86,6 @@ export default function(
       }
       break;
     case NavigationActions.NAVIGATE:
-      if (
-        Platform.OS === IOS &&
-        action.routeName === MY_TEAM &&
-        !store.getState().settings.team
-      ) {
-        action = { ...action, routeName: MODAL_LOGIN };
-      }
       if (action.routeName === MATCH && action.params) {
         NotificationManager.removeNotification(action.params.id);
       }

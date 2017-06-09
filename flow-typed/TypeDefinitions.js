@@ -66,10 +66,10 @@ type Match = {
   goals_home: number,
   goals_away: number,
   league: League,
+  is_admin: boolean,
   date_confirmed: boolean,
   sets: { [setNumber: string]: Sets },
   type: string,
-  is_admin: boolean,
   showButton?: boolean,
   lineUp?: LineUp,
 };

@@ -8,7 +8,7 @@ const api = create({
 
 if (__DEV__) {
   api.addMonitor(response => {
-    console.tron.apisauce(response);
+    console.log(response);
   });
 }
 

@@ -9,7 +9,7 @@ class MatchView extends Component {
       id: navigation.state.params.id,
     };
 
-    return <SetsView data={match} />;
+    return <SetsView data={match} isAdmin={navigation.state.params.isAdmin} />;
   }
 }
 

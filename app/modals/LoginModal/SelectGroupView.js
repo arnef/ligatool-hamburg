@@ -40,9 +40,13 @@ class SelectGroupView extends Component {
   }
 
   onPress(league) {
+    const { state } = this.props.navigation;
     this.props.navigate({
       routeName: 'SelectTeam',
-      params: { id: league.id },
+      params: {
+        id: league.id,
+        next: state.params && state.params.next ? state.params.next : null,
+      },
     });
   }
 }
