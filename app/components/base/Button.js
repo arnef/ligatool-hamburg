@@ -8,7 +8,6 @@ class Button extends Component {
     const { onPress, disabled, color, loading, outline } = this.props;
     const buttonStyle = [styles.button];
 
-    // if (outline) {
     buttonStyle.push({ borderColor: color, borderWidth: 1 });
     if (!outline) {
       buttonStyle.push({ backgroundColor: color });
@@ -39,16 +38,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     borderRadius: 2,
-    // flex: 1,
     padding: 8,
     justifyContent: 'center',
-    // marginVertical: 8,
-    // minHeight: Platform.select({
-    //   android: 20,
-    //   ios: 26
-    // }),
-    // paddingHorizontal: 16,
-    // paddingVertical: 8
   },
   disabled: {
     opacity: 0.5,

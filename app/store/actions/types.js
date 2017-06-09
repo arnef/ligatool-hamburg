@@ -33,8 +33,8 @@ export const GET_PLAYER: string = 'GET_PLAYER';
 export const SET_NOTIFICATION: string = 'SET_NOTIFICATION';
 export const SET_GROUP_NOTIFICATION: string = 'SET_GROUP_NOTIFICATION';
 export const PUT_NOTIFICATION: string = 'PUT_NOTIFICATION';
-export const LOAD_SETTINGS_FULFILLED = 'LOAD_SETTINGS_FULFILLED';
-export const CLEAR_IMAGE_CACHE = 'CLEAR_IMAGE_CACHE';
+export const LOAD_SETTINGS_FULFILLED: string = 'LOAD_SETTINGS_FULFILLED';
+export const CLEAR_IMAGE_CACHE: string = 'CLEAR_IMAGE_CACHE';
 
 // leagues
 export const GET_LEAGUE: string = 'GET_LEAGUE';
@@ -45,8 +45,6 @@ export const GET_PLAYERS_STATS: string = 'GET_PLAYERS_STATS';
 export const QUERY_RANKINGS: string = 'QUERY_RANKINGS';
 export const SET_USER: string = 'SET_USER';
 
-export const PENDING: string = '_PENDING';
-export const FULFILLED: string = '_FULFILLED';
 export const NOTIFICATION: string = '_NOTIFICATION';
 
 // notification
@@ -55,3 +53,6 @@ export const SUGGEST_SCORE: string = 'SUGGEST_SCORE';
 export const SCORE_CONFIRMED: string = 'SCORE_CONFIRMED';
 
 export const UPDATE_FCM_TOKEN: string = 'UPDATE_FCM_TOKEN';
+
+export const LOADING: string = 'LOADING';
+export const LOADING_FULLSCREEN: string = 'LOADING_FULLSCREEN';

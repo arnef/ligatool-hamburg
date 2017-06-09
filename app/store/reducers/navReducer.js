@@ -1,6 +1,6 @@
 // @flow
 import NotificationManager from '../../NotificationManager';
-import { FULFILLED, TOKEN, SHOW_LOGIN, DIALOG_PLAYER } from '../actions/types';
+import { TOKEN, SHOW_LOGIN, DIALOG_PLAYER } from '../actions/types';
 import { Root } from '../../router';
 import { NavigationActions } from 'react-navigation';
 import {

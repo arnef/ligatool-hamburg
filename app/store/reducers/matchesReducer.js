@@ -1,6 +1,5 @@
 // @flow
 import {
-  FULFILLED,
   QUERY_MATCHES,
   QUERY_TEAM_MATCHES,
   QUERY_MY_TEAM_MATCHES,
@@ -25,53 +24,47 @@ export default function(
   action: Action,
 ): MatchesState {
   switch (action.type) {
-    case QUERY_MATCHES + FULFILLED:
-    case QUERY_TEAM_MATCHES + FULFILLED:
-    case QUERY_MY_TEAM_MATCHES + FULFILLED:
-    case QUERY_LEAGUE_MATCHES + FULFILLED:
-      if (action.type === QUERY_MATCHES + FULFILLED) {
+    case QUERY_MATCHES:
+    case QUERY_TEAM_MATCHES:
+    case QUERY_MY_TEAM_MATCHES:
+    case QUERY_LEAGUE_MATCHES:
+      if (action.type === QUERY_MATCHES) {
         NotificationManager.removeAllNotifications();
       }
-      if (action.payload.ok) {
-        state = { ...state };
-        for (let match: Match of action.payload.data) {
-          if (state[match.id]) {
-            state[match.id] = { ...state[match.id], ...match };
-          } else {
-            state[match.id] = match;
-          }
+      state = { ...state };
+      for (let match: Match of action.payload.data) {
+        if (state[match.id]) {
+          state[match.id] = { ...state[match.id], ...match };
+        } else {
+          state[match.id] = match;
         }
       }
-
       return state;
 
-    case PUT_SETS + FULFILLED:
-    case GET_MATCH + FULFILLED: {
-      if (action.payload.ok) {
-        const match: Match = action.payload.data;
+    case PUT_SETS:
+    case GET_MATCH: {
+      const match: Match = action.payload.data;
 
-        state = { ...state };
-        match.sets = compareSets(match, state[action.payload.data.id]);
-        match.type = getMatchType(match);
-        match.showButton = false;
-        if (match.is_admin && match.score_unconfirmed) {
-          if (match.league.cup) {
-            match.showButton =
-              match.score_unconfirmed &&
-              (match.set_points_home !== match.set_points_away &&
-                (match.set_points_home > 16 || match.set_points_away > 16));
-          } else {
-            match.showButton =
-              match.score_unconfirmed &&
-              match.set_points_home + match.set_points_away === 32;
-          }
-          match.lineUp = checkLineUp(match);
+      state = { ...state };
+      match.sets = compareSets(match, state[action.payload.data.id]);
+      match.type = getMatchType(match);
+      match.showButton = false;
+      if (match.is_admin && match.score_unconfirmed) {
+        if (match.league.cup) {
+          match.showButton =
+            match.score_unconfirmed &&
+            (match.set_points_home !== match.set_points_away &&
+              (match.set_points_home > 16 || match.set_points_away > 16));
+        } else {
+          match.showButton =
+            match.score_unconfirmed &&
+            match.set_points_home + match.set_points_away === 32;
         }
-        state[match.id] = match;
+        match.lineUp = checkLineUp(match);
       }
+      state[match.id] = match;
       return state;
     }
-
     case SET_PLAYER: {
       state = { ...state };
       const match: Match = state[action.payload.id];

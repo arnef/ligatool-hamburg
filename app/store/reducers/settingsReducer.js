@@ -5,7 +5,6 @@ import {
   SET_USER_TEAM,
   PUT_NOTIFICATION,
   LOGOUT,
-  FULFILLED,
   UPDATE_FCM_TOKEN,
 } from '../actions/types';
 
@@ -33,18 +32,12 @@ export default function(
       return state;
     }
 
-    case UPDATE_FCM_TOKEN + FULFILLED: {
-      if (action.payload.ok) {
-        state = { ...state, fcm_token: action.payload.data.fcm_token };
-        if (state.fcm_token) {
-          api.setHeader('x-fcm', state.fcm_token);
-        }
-      }
-
+    case UPDATE_FCM_TOKEN: {
+      state = { ...state, fcm_token: action.payload.data.fcm_token };
       return state;
     }
 
-    case LOGOUT + FULFILLED: {
+    case LOGOUT: {
       state = { ...state, color: defaultColor, team: null };
       return state;
     }
@@ -68,12 +61,8 @@ export default function(
       return state;
     }
 
-    case PUT_NOTIFICATION + FULFILLED: {
-      if (action.payload.ok) {
-        state = { ...state };
-        state.changed = false;
-      }
-
+    case PUT_NOTIFICATION: {
+      state = { ...state, changed: false };
       return state;
     }
 

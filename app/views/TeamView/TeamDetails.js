@@ -91,7 +91,8 @@ class TeamView extends Component {
         {!isNaN(parseInt(team.home_match_day, 10)) &&
           this.renderItem(
             'Heimspielzeit',
-            `${weekdays[team.home_match_day]} um ${team.home_match_time || '-'}`,
+            `${weekdays[team.home_match_day]} um ${team.home_match_time ||
+              '-'}`,
             true,
           )}
       </ListItem.Group>
@@ -122,7 +123,7 @@ class TeamView extends Component {
       return (
         <ListItem.Group>
           <ListItem.Header title="Kontakt" />
-          {contacts.map((item, index) => (
+          {contacts.map((item, index) =>
             <View key={`${index}`}>
               <ListItem>
                 <Touchable
@@ -156,8 +157,8 @@ class TeamView extends Component {
                   </Touchable>}
               </ListItem>
               {index < contacts.length - 1 && <Separator />}
-            </View>
-          ))}
+            </View>,
+          )}
         </ListItem.Group>
       );
     } else {
@@ -169,7 +170,7 @@ class TeamView extends Component {
     return (
       <ListItem.Group>
         <ListItem.Header title="Spieler" />
-        {players.map((player, idx) => (
+        {players.map((player, idx) =>
           <View key={player.id}>
             <ListItem
               onPress={() => this.props.navigation.navigate(PLAYER, player)}
@@ -178,8 +179,8 @@ class TeamView extends Component {
               <Text>{`${player.name} ${player.surname}`}</Text>
             </ListItem>
             {idx < players.length - 1 && <Separator image />}
-          </View>
-        ))}
+          </View>,
+        )}
       </ListItem.Group>
     );
   }

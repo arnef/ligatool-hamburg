@@ -1,6 +1,5 @@
 // @flow
-import { API_KEY, TOKEN, FULFILLED, LOGOUT } from '../actions/types';
-import { DEFAULT_HEADERS } from 'apisauce';
+import { API_KEY, TOKEN, LOGOUT } from '../actions/types';
 import { REHYDRATE } from 'redux-persist/constants';
 import api from '../../api';
 
@@ -14,22 +13,16 @@ export default function(
   action: Action,
 ): AuthState {
   switch (action.type) {
-    case API_KEY + FULFILLED:
-      if (action.payload.ok) {
-        state = { ...state, api_key: action.payload.data.access_key };
-      }
+    case API_KEY:
+      state = { ...state, api_key: action.payload.data.access_key };
       break;
 
-    case TOKEN + FULFILLED:
-      if (action.payload.ok) {
-        const team = action.payload.data;
-        state = { ...state, team };
-        api.setHeader('Secret', team.token);
-      }
+    case TOKEN:
+      state = { ...state, team: action.payload.data };
       break;
 
-    case LOGOUT + FULFILLED:
-      api.setHeaders(DEFAULT_HEADERS);
+    case LOGOUT:
+      // api.deleteHeader('Secret');
       state = { ...state, api_key: null, team: null };
       break;
 
@@ -40,7 +33,7 @@ export default function(
         action.payload.auth.team &&
         action.payload.auth.team.token
       ) {
-        api.setHeader('Secret', action.payload.auth.team.token);
+        // api.setHeader('Secret', action.payload.auth.team.token);
       }
       break;
   }

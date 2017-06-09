@@ -89,63 +89,63 @@ class PlayerView extends Component {
 
   renderStats(stats) {
     if (stats.length > 0) {
-      return stats
-        .sort((a, b) => (a.name < b.name ? -1 : 1))
-        .map((stat, idx) => (
-          <View key={idx}>
-            <ListItem.Group>
-              <ListItem.Header title={`Statistik ${stat.name}`} />
-              <ListItem multiline>
-                <Column width={2} center>
-                  <Text bold size={12} numberOfLines={1}>Platz</Text>
-                </Column>
-                <Column width={2} center>
-                  <Text size={12} numberOfLines={1}>Spiele</Text>
-                </Column>
-                <Column width={3} center>
-                  <Text center size={12} numberOfLines={1}>
-                    Spielpunkte Quote
-                  </Text>
-                </Column>
-                <Column width={3} center>
-                  <Text bold size={12} numberOfLines={1}>Leistungsindex</Text>
-                </Column>
-              </ListItem>
-              <Separator full />
-              <ListItem multiline>
-                <Column width={2} center>
-                  <Text bold center>{`${stat.position}`}</Text>
-                </Column>
-                <Column width={2} center>
-                  <Text center>{`${stat.matches}`}</Text>
-                </Column>
-                <Column width={3} center>
-                  <Text center>{`${stat.rate}`}</Text>
-                </Column>
-                <Column width={3} center>
-                  <Text center bold>{`${stat.competitive_index}`}</Text>
-                </Column>
-              </ListItem>
-              <ListItem multiline>
-                <Column>
-                  <MatchStatsBar stats={stat} />
-                  <Row>
-                    <Text
-                      style={{ flex: 1, fontSize: 10 }}
-                    >{`${stat.wins} Sieg${stat.wins !== 1 ? 'e' : ''}`}</Text>
-                    <Text
-                      style={{ flex: 1, fontSize: 10, textAlign: 'center' }}
-                    >{`${stat.draws} Unentschieden`}</Text>
-                    <Text
-                      style={{ flex: 1, fontSize: 10, textAlign: 'right' }}
-                    >{`${stat.lost} Niederlage${stat.lost !== 1 ? 'n' : ''}`}</Text>
-                  </Row>
-                </Column>
-              </ListItem>
-            </ListItem.Group>
-            <Separator group />
-          </View>
-        ));
+      return stats.sort((a, b) => (a.name < b.name ? -1 : 1)).map((stat, idx) =>
+        <View key={idx}>
+          <ListItem.Group>
+            <ListItem.Header title={`Statistik ${stat.name}`} />
+            <ListItem multiline>
+              <Column width={2} center>
+                <Text bold size={12} numberOfLines={1}>Platz</Text>
+              </Column>
+              <Column width={2} center>
+                <Text size={12} numberOfLines={1}>Spiele</Text>
+              </Column>
+              <Column width={3} center>
+                <Text center size={12} numberOfLines={1}>
+                  Spielpunkte Quote
+                </Text>
+              </Column>
+              <Column width={3} center>
+                <Text bold size={12} numberOfLines={1}>Leistungsindex</Text>
+              </Column>
+            </ListItem>
+            <Separator full />
+            <ListItem multiline>
+              <Column width={2} center>
+                <Text bold center>{`${stat.position}`}</Text>
+              </Column>
+              <Column width={2} center>
+                <Text center>{`${stat.matches}`}</Text>
+              </Column>
+              <Column width={3} center>
+                <Text center>{`${stat.rate}`}</Text>
+              </Column>
+              <Column width={3} center>
+                <Text center bold>{`${stat.competitive_index}`}</Text>
+              </Column>
+            </ListItem>
+            <ListItem multiline>
+              <Column>
+                <MatchStatsBar stats={stat} />
+                <Row>
+                  <Text
+                    style={{ flex: 1, fontSize: 10 }}
+                  >{`${stat.wins} Sieg${stat.wins !== 1 ? 'e' : ''}`}</Text>
+                  <Text
+                    style={{ flex: 1, fontSize: 10, textAlign: 'center' }}
+                  >{`${stat.draws} Unentschieden`}</Text>
+                  <Text
+                    style={{ flex: 1, fontSize: 10, textAlign: 'right' }}
+                  >{`${stat.lost} Niederlage${stat.lost !== 1
+                    ? 'n'
+                    : ''}`}</Text>
+                </Row>
+              </Column>
+            </ListItem>
+          </ListItem.Group>
+          <Separator group />
+        </View>,
+      );
     }
     return <View />;
   }
@@ -268,8 +268,9 @@ class PlayerView extends Component {
                     <Column width={6}>
                       <Text
                       >{`${tournament.name} - ${tournament.discipline}`}</Text>
-                      <Text
-                      >{`${tournament.location} ${formatDate(tournament.date)}`}</Text>
+                      <Text>{`${tournament.location} ${formatDate(
+                        tournament.date,
+                      )}`}</Text>
                     </Column>
                     <Column width={1} center>
                       <Text>{`${tournament.position}`}</Text>
@@ -282,7 +283,8 @@ class PlayerView extends Component {
                 </View>
               );
             })}
-          </ListItem.Group><Separator group />
+          </ListItem.Group>
+          <Separator group />
         </View>
       );
     } else {

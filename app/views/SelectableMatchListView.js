@@ -45,9 +45,10 @@ class SelectableMatchListView extends Component {
     const id = this.props.navigation.state.params.id;
     const matchDays = this.props.leagues[id].match_days || {};
     const matchDayKeys = Object.keys(matchDays);
-    const matchList = matchDays[
-      this.state.selectedMatchDay || this.props.leagues[id].selected
-    ] || [];
+    const matchList =
+      matchDays[
+        this.state.selectedMatchDay || this.props.leagues[id].selected
+      ] || [];
     const { showDropdown } = this.state;
     matchList.sort(sortMatches(this.props.matches));
 

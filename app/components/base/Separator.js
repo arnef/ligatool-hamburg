@@ -38,9 +38,8 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
   },
   separator: {
-    height: 1, //StyleSheet.hairlineWidth,
+    height: 1,
     backgroundColor,
-    // marginLeft: 16
   },
 });
 

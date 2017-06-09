@@ -6,25 +6,42 @@ import {
   PUT_SETS,
   TOGGLE_D5,
   RESET_SETS,
-  PENDING,
-  FULFILLED,
+  LOADING_FULLSCREEN,
+  LOADING,
 } from './types';
 import api, { MATCHES } from '../../api';
 import { isAdminForMatch } from '../../Helper';
 
-export function queryMatches(): Action {
-  return {
-    payload: api.get(MATCHES),
-    type: QUERY_MATCHES,
+export function queryMatches(): Function {
+  return dispatch => {
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(MATCHES)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        dispatch({
+          type: QUERY_MATCHES,
+          payload: resp,
+        });
+      })
+      .catch(ex => {
+        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+      });
   };
 }
 
 export function getMatch(id: number): Function {
   return (dispatch, getState) => {
-    dispatch({ type: GET_MATCH + PENDING });
-    api.get(MATCHES, { id }).then(resp => {
-      handleMatchResponse(GET_MATCH + FULFILLED, resp, dispatch, getState);
-    });
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(`${MATCHES}/${id}`)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        handleMatchResponse(GET_MATCH, resp, dispatch, getState);
+      })
+      .catch(ex => {
+        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+      });
   };
 }
 
@@ -42,9 +59,10 @@ export function setPlayer(
 
 export function updateSets(matchId: number, sets: any): Function {
   return (dispatch, getState) => {
-    dispatch({ type: PUT_SETS + PENDING });
+    dispatch({ type: LOADING_FULLSCREEN, payload: { loading: true } });
     api.put(`${MATCHES}/${matchId}`, { sets }).then(resp => {
-      handleMatchResponse(PUT_SETS + FULFILLED, resp, dispatch, getState);
+      dispatch({ type: LOADING_FULLSCREEN, payload: { loading: false } });
+      handleMatchResponse(PUT_SETS, resp, dispatch, getState);
     });
   };
 }
@@ -69,10 +87,19 @@ export function suggestScore(
       ? { score_suggest: true }
       : { score_unconfirmed: false };
     const body = { sets, ...action };
-    dispatch({ type: PUT_SETS + PENDING });
-    api.put(`${MATCHES}/${matchId}`, body).then(resp => {
-      handleMatchResponse(PUT_SETS + FULFILLED, resp, dispatch, getState);
-    });
+    dispatch({ type: LOADING_FULLSCREEN, payload: { loading: true } });
+    api
+      .put(`${MATCHES}/${matchId}`, body)
+      .then(resp => {
+        dispatch({ type: LOADING_FULLSCREEN, payload: { loading: false } });
+        handleMatchResponse(PUT_SETS, resp, dispatch, getState);
+      })
+      .catch(ex => {
+        dispatch({
+          type: LOADING_FULLSCREEN,
+          payload: { loading: false, error: ex.message },
+        });
+      });
   };
 }
 
@@ -93,9 +120,8 @@ function handleMatchResponse(
   dispatch: Function,
   getState: Function,
 ) {
-  if (resp.ok) {
-    resp.data.is_admin = isAdminForMatch(resp.data, getState().auth);
-  }
+  resp.data.is_admin = isAdminForMatch(resp.data, getState().auth);
+
   dispatch({
     type,
     payload: resp,

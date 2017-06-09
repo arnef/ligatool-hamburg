@@ -24,8 +24,8 @@ class PlayerStatsView extends Component {
 
   render() {
     const { error, loading } = this.props;
-    const bestlist = this.props.leagues[this.props.navigation.state.params.id]
-      .players || [];
+    const bestlist =
+      this.props.leagues[this.props.navigation.state.params.id].players || [];
 
     return (
       <View style={{ flex: 1 }}>
@@ -86,9 +86,8 @@ class PlayerStatsView extends Component {
         <Column>
           <Row style={{ paddingVertical: 0, paddingHorizontal: 0 }}>
             <Column>
-              <Text
-                numberOfLines={1}
-              >{`${item.player.name} ${item.player.surname}`}</Text>
+              <Text numberOfLines={1}>{`${item.player.name} ${item.player
+                .surname}`}</Text>
             </Column>
             <Column fluid style={{ width: 42, alignItems: 'flex-end' }}>
               <Text>{`${item.rate}`}</Text>

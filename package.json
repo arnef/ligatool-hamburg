@@ -17,10 +17,10 @@
     ]
   },
   "dependencies": {
-    "apisauce": "^0.13.0",
+    "axios": "^0.16.2",
     "moment": "^2.18.1",
-    "react": "16.0.0-alpha.6",
-    "react-native": "^0.44.3",
+    "react": "16.0.0-alpha.12",
+    "react-native": "^0.45.0",
     "react-native-fcm": "^7.0.0",
     "react-native-http-cache": "git+https://github.com/arnef/react-native-http-cache.git",
     "react-native-vector-icons": "^4.0.0",
@@ -30,7 +30,6 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.7.1",
     "redux-persist-migrate": "^4.1.0",
-    "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
@@ -40,7 +39,7 @@
     "eslint-plugin-flowtype": "^2.33.0",
     "eslint-plugin-react": "^7.0.1",
     "eslint-plugin-react-native": "^2.3.2",
-    "flow-bin": "0.42.0",
+    "flow-bin": "0.45.0",
     "husky": "^0.13.3",
     "lint-staged": "^3.5.0",
     "prettier": "^1.3.1"

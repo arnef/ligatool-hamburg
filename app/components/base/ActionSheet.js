@@ -130,7 +130,7 @@ class ActionSheet extends Component<void, Props, State> {
                   offset: ListItem.ITEM_HEIGHT * index,
                   index,
                 })}
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }) =>
                   <ListItem
                     onPress={() => {
                       this.state.callback(index);
@@ -138,8 +138,7 @@ class ActionSheet extends Component<void, Props, State> {
                     }}
                   >
                     <Text>{`${item}`}</Text>
-                  </ListItem>
-                )}
+                  </ListItem>}
               />
             </View>
           </Animated.View>

@@ -19,7 +19,6 @@ import {
   Separator,
 } from '../../components/base';
 import * as theme from '../../components/base/theme';
-import { CLIENT_ERROR } from 'apisauce';
 import strings from '../../Strings';
 import { NavigationActions } from 'react-navigation';
 
@@ -96,7 +95,6 @@ class LoginView extends Component {
                   <Button
                     outline
                     onPress={() => {
-                      // this.props.showLogin(false);
                       this.closeLogin();
                     }}
                     title={init ? 'Abbrechen' : 'Überspringen'}
@@ -123,7 +121,7 @@ class LoginView extends Component {
             </Content>}
         </ListItem.Group>
         {!loading &&
-          error === CLIENT_ERROR &&
+          error === 'CLIENT_ERROR' &&
           <Content>
             <Text color="red" center>
               {strings.login_error}

@@ -2,8 +2,8 @@
 import {
   PUT_SETS,
   LOGOUT,
-  PENDING,
-  FULFILLED,
+  LOADING,
+  LOADING_FULLSCREEN,
   UPDATE_FCM_TOKEN,
   PUT_NOTIFICATION,
   CLEAR_IMAGE_CACHE,
@@ -21,42 +21,20 @@ export default function(
   action: Action,
 ): LoadingState {
   switch (action.type) {
-    case UPDATE_FCM_TOKEN + PENDING:
-    case UPDATE_FCM_TOKEN + FULFILLED:
-    case PUT_NOTIFICATION + PENDING:
-    case PUT_NOTIFICATION + FULFILLED:
-      // do in background
-      return state;
-    case LOGOUT + PENDING:
-    case PUT_SETS + PENDING:
-    case CLEAR_IMAGE_CACHE + PENDING:
-      return { ...state, blocking: true, error: null };
-
-    case LOGOUT + FULFILLED:
-    case PUT_SETS + FULFILLED:
-    case CLEAR_IMAGE_CACHE + FULFILLED:
-      return {
+    case LOADING:
+      state = {
         ...state,
-        blocking: false,
-        error: action.type === LOGOUT + FULFILLED || !action.payload
-          ? null
-          : action.payload.problem,
+        nonBlocking: action.payload.loading,
+        error: action.payload.error,
       };
-    case NavigationActions.NAVIGATE:
-    case NavigationActions.BACK:
-      return { ...state, error: null };
-
-    default:
-      if (action.type.indexOf(PENDING) !== -1 && !state.blocking) {
-        state = { ...state, nonBlocking: true, error: null };
-      }
-      if (action.type.indexOf(FULFILLED) !== -1) {
-        state = {
-          ...state,
-          nonBlocking: false,
-          error: action.payload ? action.payload.problem : null,
-        };
-      }
-      return state;
+      break;
+    case LOADING_FULLSCREEN:
+      state = {
+        ...state,
+        blocking: action.payload.loading,
+        error: action.payload.error,
+      };
+      break;
   }
+  return state;
 }

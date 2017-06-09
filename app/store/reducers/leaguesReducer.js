@@ -1,6 +1,5 @@
 // @flow
 import {
-  FULFILLED,
   QUERY_RANKINGS,
   GET_LEAGUE,
   QUERY_LEAGUE_MATCHES,
@@ -14,41 +13,37 @@ export default function(
   action: Action,
 ): LeaguesState {
   switch (action.type) {
-    case QUERY_RANKINGS + FULFILLED:
-      if (action.payload.ok) {
-        state = { ...state };
-        for (let league of action.payload.data) {
-          state[league.id] = league;
-        }
+    case QUERY_RANKINGS:
+      state = { ...state };
+      for (let league of action.payload.data) {
+        state[league.id] = league;
       }
+
       return state;
 
-    case GET_LEAGUE + FULFILLED:
-      if (action.payload.ok) {
-        let league = state[action.payload.data.id];
-        if (league) {
-          league = { ...league, ...action.payload.data };
-        } else {
-          league = action.payload.data;
-        }
-        state = { ...state, [action.payload.data.id]: league };
+    case GET_LEAGUE: {
+      let league = state[action.payload.data.id];
+      if (league) {
+        league = { ...league, ...action.payload.data };
+      } else {
+        league = action.payload.data;
       }
-      return state;
+      state = { ...state, [action.payload.data.id]: league };
 
-    case QUERY_LEAGUE_MATCHES + FULFILLED:
-      if (action.payload.ok && state[action.payload.config.params.id]) {
+      return state;
+    }
+    case QUERY_LEAGUE_MATCHES:
+      if (state[action.payload.params.id]) {
         state = { ...state };
         const matchDays = getMatchDays(action.payload.data);
-        state[action.payload.config.params.id].match_days = matchDays.matchdays;
-        state[action.payload.config.params.id].selected = matchDays.selected;
+        state[action.payload.params.id].match_days = matchDays.matchdays;
+        state[action.payload.params.id].selected = matchDays.selected;
       }
       return state;
 
-    case GET_PLAYERS_STATS + FULFILLED:
-      if (action.payload.ok) {
-        state = { ...state };
-        state[action.payload.config.params.id].players = action.payload.data;
-      }
+    case GET_PLAYERS_STATS:
+      state = { ...state };
+      state[action.payload.params.id].players = action.payload.data;
       return state;
 
     default:

@@ -1,24 +1,22 @@
-import * as MatchActions from './matchActions';
-import * as LoginActions from './login';
-import * as SettingsActions from './settingsActions';
-import * as TeamActions from './teamActions';
-import * as DialogActions from './dialogActions';
-import * as LeagueActions from './leagueActions';
-import * as AuthActions from './authActions';
-import * as FCMActions from './fcmActions';
-import * as PlayerActions from './playersActions';
+// @flow
+import * as match from './matchActions';
+import * as login from './login';
+import * as settings from './settingsActions';
+import * as team from './teamActions';
+import * as dialog from './dialogActions';
+import * as league from './leagueActions';
+import * as auth from './authActions';
+import * as fcm from './fcmActions';
+import * as players from './playersActions';
 
-const actions = Object.assign(
-  {},
-  MatchActions,
-  LoginActions,
-  SettingsActions,
-  TeamActions,
-  DialogActions,
-  LeagueActions,
-  AuthActions,
-  FCMActions,
-  PlayerActions,
-);
-
-export default actions;
+export default {
+  ...match,
+  ...login,
+  ...settings,
+  ...team,
+  ...dialog,
+  ...league,
+  ...auth,
+  ...fcm,
+  ...players,
+};

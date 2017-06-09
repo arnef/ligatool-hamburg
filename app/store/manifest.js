@@ -2,7 +2,6 @@
 import api, { LEAGUES, USER_AUTH_REFRESH } from '../api';
 import {
   LOAD_SETTINGS_FULFILLED,
-  FULFILLED,
   QUERY_RANKINGS,
   TOKEN,
 } from './actions/types';
@@ -61,7 +60,7 @@ export function setDefaultSettings(store: any) {
       api.get(LEAGUES).then(resp => {
         if (resp.ok) {
           store.dispatch({
-            type: QUERY_RANKINGS + FULFILLED,
+            type: QUERY_RANKINGS,
             payload: resp,
           });
           const notification = {
@@ -91,20 +90,26 @@ export function setDefaultSettings(store: any) {
 export function checkToken(store: any) {
   return new Promise(resolve => {
     const auth = store.getState().auth;
-    if (auth.api_key && auth.team && auth.team.expires < new Date().getTime()) {
-      api.post(USER_AUTH_REFRESH, { access_key: auth.api_key }).then(resp => {
-        store.dispatch({
-          type: TOKEN + FULFILLED,
-          payload: resp,
-        });
-        api.get(LEAGUES).then(resp => {
+    if (auth.api_key && auth.team) {
+      if (auth.team.expires < new Date().getTime()) {
+        api.post(USER_AUTH_REFRESH, { access_key: auth.api_key }).then(resp => {
           store.dispatch({
-            type: QUERY_RANKINGS + FULFILLED,
+            type: TOKEN,
             payload: resp,
           });
-          resolve();
+          api.defaults.headers.common['Secret'] = resp.data.token;
+          api.get(LEAGUES).then(resp => {
+            store.dispatch({
+              type: QUERY_RANKINGS,
+              payload: resp,
+            });
+            resolve();
+          });
         });
-      });
+      } else {
+        api.defaults.headers.common['Secret'] = auth.team.token;
+        resolve();
+      }
     } else {
       resolve();
     }

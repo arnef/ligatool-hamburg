@@ -4,33 +4,72 @@ import {
   GET_LEAGUE,
   QUERY_LEAGUE_MATCHES,
   GET_PLAYERS_STATS,
+  LOADING,
 } from './types';
 import api, { LEAGUES, MATCHES, PLAYER } from '../../api';
 
-export function getRankings(): Action {
-  return {
-    payload: api.get(LEAGUES),
-    type: QUERY_RANKINGS,
+export function getRankings(): Function {
+  return dispatch => {
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(LEAGUES)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        dispatch({ type: QUERY_RANKINGS, payload: resp });
+      })
+      .catch(ex => {
+        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+      });
   };
 }
 
-export function getLeague(id: number): Action {
-  return {
-    payload: api.get(LEAGUES, { id }),
-    type: GET_LEAGUE,
+export function getLeague(id: number): Function {
+  return dispatch => {
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(`${LEAGUES}/${id}`)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        dispatch({ type: GET_LEAGUE, payload: resp });
+      })
+      .catch(ex => {
+        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+      });
   };
 }
 
-export function getLeagueMatches(id: number): Action {
-  return {
-    payload: api.get(LEAGUES, { id, route: MATCHES }),
-    type: QUERY_LEAGUE_MATCHES,
+export function getLeagueMatches(id: number): Function {
+  return dispatch => {
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(`${LEAGUES}/${id}${MATCHES}`)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        dispatch({
+          type: QUERY_LEAGUE_MATCHES,
+          payload: { ...resp, params: { id } },
+        });
+      })
+      .catch(ex => {
+        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+      });
   };
 }
 
-export function getPlayersStats(id: number): Action {
-  return {
-    type: GET_PLAYERS_STATS,
-    payload: api.get(LEAGUES, { id, route: PLAYER }),
+export function getPlayersStats(id: number): Function {
+  return dispatch => {
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(`${LEAGUES}/${id}${PLAYER}`)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        dispatch({
+          type: GET_PLAYERS_STATS,
+          payload: { ...resp, params: { id } },
+        });
+      })
+      .catch(ex => {
+        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+      });
   };
 }

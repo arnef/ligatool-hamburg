@@ -1,5 +1,5 @@
 // @flow
-import { FULFILLED, QUERY_MY_TEAM_MATCHES, LOGOUT } from '../actions/types';
+import { QUERY_MY_TEAM_MATCHES, LOGOUT } from '../actions/types';
 
 const initialState: MyTeamState = {
   next: [],
@@ -11,20 +11,20 @@ export default function(
   action: Action,
 ): MyTeamState {
   switch (action.type) {
-    case QUERY_MY_TEAM_MATCHES + FULFILLED: {
+    case QUERY_MY_TEAM_MATCHES: {
       state = { ...state, next: [], played: [] };
-      if (action.payload.ok) {
-        for (let match: Match of action.payload.data) {
-          if (match.set_points && !match.score_unconfirmed) {
-            state.played.push(match.id);
-          } else {
-            state.next.push(match.id);
-          }
+
+      for (let match: Match of action.payload.data) {
+        if (match.set_points && !match.score_unconfirmed) {
+          state.played.push(match.id);
+        } else {
+          state.next.push(match.id);
         }
       }
+
       return state;
     }
-    case LOGOUT + FULFILLED: {
+    case LOGOUT: {
       state = { next: [], played: [] };
       return state;
     }

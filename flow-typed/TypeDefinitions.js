@@ -104,7 +104,6 @@ declare var console: {
   tron: {
     clear(): void,
     log(...data: Array<any>): void,
-    apisauce(...data: Array<any>): void,
     error(...data: Array<any>): void,
     display(...data: Array<any>): void,
     warn(...data: Array<any>): void,

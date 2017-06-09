@@ -5,9 +5,8 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import manifest, { APP_KEY } from './manifest';
 import reducer from './reducers';
-import promise from 'redux-promise-middleware';
 
-const middleware = [promise(), thunk];
+const middleware = [thunk];
 
 if (__DEV__) {
   middleware.push(logger);

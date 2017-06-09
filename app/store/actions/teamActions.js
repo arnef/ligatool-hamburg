@@ -1,42 +1,74 @@
 // @flow
-
-import { Platform } from 'react-native';
 import {
   GET_TEAM,
   QUERY_MY_TEAM_MATCHES,
   QUERY_TEAM_MATCHES,
-  SHOW_LOGIN,
+  LOADING,
 } from './types';
 import api, { TEAMS, MATCHES } from '../../api';
-import { ANDROID } from '../../consts';
 
 // queryTeamMatches und getTeamMatches zu einer function machen?
 export function queryTeamMatches(): Function {
   return (dispatch, getState) => {
     const team: Team = getState().settings.team;
     if (team && team.id) {
-      dispatch({
-        payload: api.get(TEAMS, { id: team.id, route: MATCHES }),
-        type: QUERY_MY_TEAM_MATCHES,
-      });
+      dispatch({ type: LOADING, payload: { loading: true } });
+
+      api
+        .get(`${TEAMS}/${team.id}${MATCHES}`)
+        .then(resp => {
+          dispatch({ type: LOADING, payload: { loading: false } });
+          dispatch({
+            type: QUERY_MY_TEAM_MATCHES,
+            payload: resp,
+          });
+        })
+        .catch(ex => {
+          dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        });
     } else {
       dispatch({
-        type: Platform.OS === ANDROID ? SHOW_LOGIN : 'IGNORE',
+        type: 'IGNORE',
       });
     }
   };
 }
 
-export function getTeam(id: number): Action {
-  return {
-    payload: api.get(TEAMS, { id }),
-    type: GET_TEAM,
+export function getTeam(id: number): Function {
+  return dispatch => {
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(`${TEAMS}/${id}`)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        dispatch({
+          type: GET_TEAM,
+          payload: resp,
+        });
+      })
+      .catch(ex => {
+        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+      });
   };
 }
 
-export function getTeamMatches(id: number): Action {
-  return {
-    payload: api.get(TEAMS, { id, route: MATCHES }),
-    type: QUERY_TEAM_MATCHES,
+export function getTeamMatches(id: number): Function {
+  return dispatch => {
+    dispatch({ type: LOADING, payload: { loading: true } });
+    api
+      .get(`${TEAMS}/${id}${MATCHES}`)
+      .then(resp => {
+        dispatch({ type: LOADING, payload: { loading: false } });
+        dispatch({
+          type: QUERY_TEAM_MATCHES,
+          payload: { ...resp, params: { id } },
+        });
+      })
+      .catch(ex => {
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
+      });
   };
 }

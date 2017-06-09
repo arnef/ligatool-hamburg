@@ -1,10 +1,12 @@
 // @flow
-import { UPDATE_FCM_TOKEN, FULFILLED, NOTIFICATION } from './types';
+import { UPDATE_FCM_TOKEN, NOTIFICATION } from './types';
+import api from '../../api';
 
 export function updateFCMToken(token: string): Action {
+  api.defaults.headers.common['x-fcm'] = token;
   return {
     payload: { data: { fcm_token: token }, ok: true },
-    type: UPDATE_FCM_TOKEN + FULFILLED,
+    type: UPDATE_FCM_TOKEN,
   };
 }
 

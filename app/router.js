@@ -223,17 +223,3 @@ export const Root: StackNavigator = StackNavigator(
     initialRouteName: APP,
   },
 );
-
-// const defaultGetStateForAction = Root.router.getStateForAction;
-
-// Root.router.getStateForAction = (action, state) => {
-//   console.log(state);
-//   return defaultGetStateForAction(action, state);
-// };
-
-// const defaultGetStateForAction = Root.getStateForAction;
-
-// Root.getStateForAction = (action, state) => {
-//   console.log(state);
-//   return defaultGetStateForAction(action, state);
-// }

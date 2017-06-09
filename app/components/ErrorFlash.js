@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import {
@@ -8,7 +9,6 @@ import {
   Icon,
   Row,
 } from '../components/base';
-import { CLIENT_ERROR, NETWORK_ERROR, SERVER_ERROR } from 'apisauce';
 
 class ErrorFlash extends Component {
   render() {
@@ -43,13 +43,13 @@ class ErrorFlash extends Component {
     };
 
     switch (this.props.error) {
-      case CLIENT_ERROR:
+      case 'CLIENT_ERROR':
         error.message = 'Verbindungsfehler';
         break;
-      case SERVER_ERROR:
+      case 'SERVER_ERROR':
         error.message = 'Serverprobleme';
         break;
-      case NETWORK_ERROR:
+      case 'NETWORK_ERROR':
         error.message = 'Keine Internetverbindung';
         error.color = 'orange';
         break;

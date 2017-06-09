@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import {
   Modal,
@@ -14,14 +15,14 @@ class LoadingModal extends Component {
 
     return (
       <Modal
-        animationType="fade"
+        animationType={'fade'}
         onRequestClose={this.onRequestClose.bind(this)}
         transparent={true}
         visible={loading.blocking}
       >
         <View style={styles.loadingContainer}>
           <View style={styles.loading}>
-            <ActivityIndicator size="large" color="#fff" />
+            <ActivityIndicator size={'large'} color={'#fff'} />
           </View>
         </View>
       </Modal>

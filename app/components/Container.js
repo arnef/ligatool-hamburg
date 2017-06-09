@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
-import {
-  View,
-  ScrollView,
-  FlatList,
-  RefreshControl,
-  ListView,
-} from 'react-native';
+import { View, ScrollView, FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import ErrorFlash from './ErrorFlash';
 
 class Container extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),
-    };
     if (this.props.getRef) {
       this.props.getRef(this);
     }
