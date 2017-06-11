@@ -10,6 +10,8 @@ import moment from 'moment';
 import { MATCH, PREVIEW } from '../views/routes';
 
 class MatchItem extends Component {
+  static ITEM_HEIGHT: number;
+
   render() {
     const { data, color } = this.props;
 

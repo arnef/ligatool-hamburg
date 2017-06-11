@@ -6,31 +6,16 @@ const api = axios.create({
   baseURL: `${baseUrl}/index.php?option=com_sportsmanagerapi&q=`,
 });
 
-if (__DEV__) {
-  // api.addMonitor(response => {
-  //   console.log(response);
-  // });
-}
-
-// api.addRequestTransform(request => {
-//   if (request.params) {
-//     if (request.params.id) {
-//       request.url = `${request.url}/${request.params.id}`;
-//     }
-//     if (request.params.route) {
-//       request.url = request.params.route.indexOf('/') === -1
-//         ? `${request.url}/${request.params.route}`
-//         : `${request.url}${request.params.route}`;
-//     }
-//   }
-//   if (request.method === 'get') {
-//     request.url += `&timestamp=${new Date().getTime()}`;
-//   }
-// });
+api.interceptors.request.use(
+  function(config) {
+    if (config.method === 'get') {
+      config.url = `${config.url}&timestamp=${new Date().getTime()}`;
+    }
+    return config;
+  },
+  function(error) {
+    return Promise.reject(error);
+  },
+);
 
 export default api;
-// export default {
-//   get: (url, params) => { console.log(url, params) },
-//   post: (url, params) => { console.log(url, params) },
-//   setHeader: (key, value) => { console.log(key, value) }
-// }

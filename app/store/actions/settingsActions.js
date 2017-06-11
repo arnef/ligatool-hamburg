@@ -49,7 +49,7 @@ export function saveNotifications(
         });
       })
       .catch(ex => {
-        console.log(ex);
+        console.warn(ex);
       });
   };
 }

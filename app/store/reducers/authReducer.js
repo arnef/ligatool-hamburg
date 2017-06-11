@@ -1,7 +1,6 @@
 // @flow
 import { API_KEY, TOKEN, LOGOUT } from '../actions/types';
 import { REHYDRATE } from 'redux-persist/constants';
-import api from '../../api';
 
 const defaultState: AuthState = {
   api_key: null,

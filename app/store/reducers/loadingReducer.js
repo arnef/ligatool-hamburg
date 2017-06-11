@@ -1,14 +1,5 @@
 // @flow
-import {
-  PUT_SETS,
-  LOGOUT,
-  LOADING,
-  LOADING_FULLSCREEN,
-  UPDATE_FCM_TOKEN,
-  PUT_NOTIFICATION,
-  CLEAR_IMAGE_CACHE,
-} from '../actions/types';
-import { NavigationActions } from 'react-navigation';
+import { LOADING, LOADING_FULLSCREEN } from '../actions/types';
 
 const initialState: LoadingState = {
   blocking: false,
