@@ -17,23 +17,12 @@ export default function(
       break;
 
     case TOKEN:
+      console.log(action);
       state = { ...state, team: action.payload.data };
       break;
 
     case LOGOUT:
-      // api.deleteHeader('Secret');
       state = { ...state, api_key: null, team: null };
-      break;
-
-    case REHYDRATE:
-      if (
-        action.payload &&
-        action.payload.auth &&
-        action.payload.auth.team &&
-        action.payload.auth.team.token
-      ) {
-        // api.setHeader('Secret', action.payload.auth.team.token);
-      }
       break;
   }
 

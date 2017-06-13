@@ -19,21 +19,25 @@ export function requestAPIKey(user: User): Function {
       api
         .post(USER_AUTH, user)
         .then(resp => {
-          dispatch({ type: LOADING, payload: { loading: false } });
+          // dispatch({ type: LOADING, payload: { loading: false } });
           dispatch({ type: API_KEY, payload: resp });
         })
         .catch(ex => {
-          dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+          dispatch({
+            type: LOADING,
+            payload: { loading: false, error: ex.message },
+          });
         });
     }
   };
 }
 
 export function renewToken(apiKey: string): Function {
+  console.log(apiKey);
   return dispatch => {
     dispatch({ type: LOADING, payload: { loading: true } });
     api
-      .post(USER_AUTH_REFRESH, { accesskey: apiKey })
+      .post(USER_AUTH_REFRESH, { access_key: apiKey })
       .then(resp => {
         dispatch({ type: LOADING, payload: { loading: false } });
         dispatch({ type: TOKEN, payload: resp });
@@ -41,7 +45,10 @@ export function renewToken(apiKey: string): Function {
         api.defaults.headers.common['Secret'] = resp.data.token;
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }

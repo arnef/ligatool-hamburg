@@ -121,7 +121,7 @@ class LoginView extends Component {
             </Content>}
         </ListItem.Group>
         {!loading &&
-          error === 'CLIENT_ERROR' &&
+          error &&
           <Content>
             <Text color="red" center>
               {strings.login_error}
@@ -156,7 +156,11 @@ class LoginView extends Component {
   }
 
   apiKeyFullfilled(nextProps) {
-    if (this.props.auth.api_key === null && nextProps.auth.api_key !== null) {
+    if (
+      this.props.auth.api_key === null &&
+      nextProps.auth.api_key !== null &&
+      !nextProps.error
+    ) {
       nextProps.renewToken(nextProps.auth.api_key);
       nextProps.queryTeamMatches();
       this.closeLogin();
