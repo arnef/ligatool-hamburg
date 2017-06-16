@@ -18,7 +18,10 @@ export function getRankings(): Function {
         dispatch({ type: QUERY_RANKINGS, payload: resp });
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }
@@ -33,7 +36,10 @@ export function getLeague(id: number): Function {
         dispatch({ type: GET_LEAGUE, payload: resp });
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }
@@ -51,7 +57,10 @@ export function getLeagueMatches(id: number): Function {
         });
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }
@@ -69,7 +78,10 @@ export function getPlayersStats(id: number): Function {
         });
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }

@@ -33,7 +33,6 @@ export function requestAPIKey(user: User): Function {
 }
 
 export function renewToken(apiKey: string): Function {
-  console.log(apiKey);
   return dispatch => {
     dispatch({ type: LOADING, payload: { loading: true } });
     api
