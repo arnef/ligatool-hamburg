@@ -1,3 +1,26 @@
+<a name="0.10.2"></a>
+## 0.10.2 (2017-06-18)
+
+
+### Bug Fixes
+
+* dispatch error message string instead of exception object ([aa59bc2](https://github.com/arnef/ligatool-hamburg/commit/aa59bc2))
+* don't query matches on every overview mount ([aab154c](https://github.com/arnef/ligatool-hamburg/commit/aab154c))
+* flow types for navReducer state ([05b207d](https://github.com/arnef/ligatool-hamburg/commit/05b207d))
+* import actions in appcontainer ([512e621](https://github.com/arnef/ligatool-hamburg/commit/512e621))
+* query leagues in drawer first and only show spinner if leagues not fetched ([2016fcf](https://github.com/arnef/ligatool-hamburg/commit/2016fcf))
+* remove params condition ([b88d380](https://github.com/arnef/ligatool-hamburg/commit/b88d380))
+* replace backAndroid with backHandler ([793f9fb](https://github.com/arnef/ligatool-hamburg/commit/793f9fb))
+* use correct spelled keys in login payload ([e9147df](https://github.com/arnef/ligatool-hamburg/commit/e9147df))
+* various flow errors ([1e68ed3](https://github.com/arnef/ligatool-hamburg/commit/1e68ed3))
+
+
+### Features
+
+* upgrade to rn0.44 ([f0ddb16](https://github.com/arnef/ligatool-hamburg/commit/f0ddb16))
+
+
+
 <a name="0.10.1"></a>
 ## 0.10.1 (2017-05-28)
 

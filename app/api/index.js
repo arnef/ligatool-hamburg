@@ -103,13 +103,29 @@ export function getMatch(id: number): Promise<*> {
       .then(resp => {
         resolve(ok(resp.data));
       })
-      .catch(error);
+      .catch(ex => {
+        resolve(error(ex));
+      });
+  });
+}
+
+// GET /teams/{teamid}
+export function getTeam(id: number): Promise<*> {
+  return new Promise((resolve: Function) => {
+    api
+      .get(`${TEAMS}/${id}`)
+      .then(resp => {
+        resolve(ok(resp.data));
+      })
+      .catch(ex => {
+        resolve(error(ex));
+      });
   });
 }
 
 // GET /teams/{myteamid}/matches
 export function getMyTeamMatches(id: number): Promise<*> {
-  return new Promise(resolve => {
+  return new Promise((resolve: Function) => {
     api
       .get(`${MATCHES}/${id}`)
       .then(resp => {

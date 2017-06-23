@@ -25,7 +25,10 @@ export function queryMatches(): Function {
         });
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }
@@ -40,7 +43,10 @@ export function getMatch(id: number): Function {
         handleMatchResponse(GET_MATCH, resp, dispatch, getState);
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }

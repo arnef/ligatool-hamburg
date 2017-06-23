@@ -24,7 +24,10 @@ export function queryTeamMatches(): Function {
           });
         })
         .catch(ex => {
-          dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+          dispatch({
+            type: LOADING,
+            payload: { loading: false, error: ex.message },
+          });
         });
     } else {
       dispatch({
@@ -47,7 +50,10 @@ export function getTeam(id: number): Function {
         });
       })
       .catch(ex => {
-        dispatch({ type: LOADING, payload: { loading: false, error: ex } });
+        dispatch({
+          type: LOADING,
+          payload: { loading: false, error: ex.message },
+        });
       });
   };
 }
