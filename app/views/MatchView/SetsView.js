@@ -182,7 +182,6 @@ class SetsView extends Component {
             onSelect={this.onSelect.bind(this)}
           />
         </Container>
-
       </View>
     );
   }

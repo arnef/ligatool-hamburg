@@ -27,8 +27,12 @@ class PlayerView extends Component {
     return (
       <ListItem multiline>
         <View>
-          <Text bold>{name}</Text>
-          <Text>{value ? value : '-'}</Text>
+          <Text bold>
+            {name}
+          </Text>
+          <Text>
+            {value ? value : '-'}
+          </Text>
         </View>
       </ListItem>
     );
@@ -95,10 +99,14 @@ class PlayerView extends Component {
             <ListItem.Header title={`Statistik ${stat.name}`} />
             <ListItem multiline>
               <Column width={2} center>
-                <Text bold size={12} numberOfLines={1}>Platz</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Platz
+                </Text>
               </Column>
               <Column width={2} center>
-                <Text size={12} numberOfLines={1}>Spiele</Text>
+                <Text size={12} numberOfLines={1}>
+                  Spiele
+                </Text>
               </Column>
               <Column width={3} center>
                 <Text center size={12} numberOfLines={1}>
@@ -106,7 +114,9 @@ class PlayerView extends Component {
                 </Text>
               </Column>
               <Column width={3} center>
-                <Text bold size={12} numberOfLines={1}>Leistungsindex</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Leistungsindex
+                </Text>
               </Column>
             </ListItem>
             <Separator full />
@@ -160,13 +170,19 @@ class PlayerView extends Component {
             />
             <ListItem multiline>
               <Column width={6}>
-                <Text bold size={12} numberOfLines={1}>Rangliste</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Rangliste
+                </Text>
               </Column>
               <Column width={1} center>
-                <Text bold size={12} numberOfLines={1}>Platz</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Platz
+                </Text>
               </Column>
               <Column width={3} center>
-                <Text bold size={12} numberOfLines={1}>Meldungen</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Meldungen
+                </Text>
               </Column>
             </ListItem>
             <Separator full />
@@ -205,13 +221,19 @@ class PlayerView extends Component {
             <ListItem.Header title="Teams" />
             <ListItem multiline>
               <Column width={2}>
-                <Text bold size={12} numberOfLines={1}>Saison</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Saison
+                </Text>
               </Column>
               <Column width={4}>
-                <Text bold size={12} numberOfLines={1}>Name</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Name
+                </Text>
               </Column>
               <Column width={4}>
-                <Text bold size={12} numberOfLines={1}>Wettbewerbe</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Wettbewerbe
+                </Text>
               </Column>
             </ListItem>
             <Separator full />
@@ -227,7 +249,9 @@ class PlayerView extends Component {
                     </Column>
 
                     <Column width={4}>
-                      <Text>{team.competitions.join('\n')}</Text>
+                      <Text>
+                        {team.competitions.join('\n')}
+                      </Text>
                     </Column>
                   </ListItem>
                   {idx < teams.length - 1 && <Separator />}
@@ -251,13 +275,19 @@ class PlayerView extends Component {
             <ListItem.Header title="Turniermeldungen" />
             <ListItem multiline>
               <Column width={6}>
-                <Text bold size={12} numberOfLines={1}>Turnier</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Turnier
+                </Text>
               </Column>
               <Column width={1} center>
-                <Text bold size={12} numberOfLines={1}>Platz</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Platz
+                </Text>
               </Column>
               <Column width={3} center>
-                <Text bold size={12} numberOfLines={1}>Meldungen</Text>
+                <Text bold size={12} numberOfLines={1}>
+                  Meldungen
+                </Text>
               </Column>
             </ListItem>
             <Separator full />

@@ -60,7 +60,9 @@ class NavigationView extends Component {
           color={active ? color : theme.secondaryTextColor}
           name={icon}
         />
-        <Text bold color={active ? color : null}>{text}</Text>
+        <Text bold color={active ? color : null}>
+          {text}
+        </Text>
       </ListItem>
     );
   }

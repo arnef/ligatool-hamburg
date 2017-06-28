@@ -49,7 +49,6 @@ class LoginView extends Component {
             <Text>
               {strings.login_info}
             </Text>
-
           </Content>
           <Wrapper>
             {isIOS && <Separator full />}
@@ -99,7 +98,6 @@ class LoginView extends Component {
                     }}
                     title={init ? 'Abbrechen' : 'Überspringen'}
                   />
-
                 </Column>
                 <Column fluid style={{ width: 8 }} />
                 <Column>
@@ -114,9 +112,7 @@ class LoginView extends Component {
           {loading &&
             <Content>
               <Row center>
-
                 <ActivityIndicator color={this.props.color} size={'large'} />
-
               </Row>
             </Content>}
         </ListItem.Group>

@@ -4,9 +4,10 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 
 class Icon extends Component {
   render() {
-    let iconName = Platform.OS === 'android'
-      ? `md-${this.props.name}`
-      : `ios-${this.props.name}`;
+    let iconName =
+      Platform.OS === 'android'
+        ? `md-${this.props.name}`
+        : `ios-${this.props.name}`;
 
     if (this.props.name === 'caret-down') {
       iconName = 'ios-arrow-down-outline';

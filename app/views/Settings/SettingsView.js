@@ -49,7 +49,9 @@ class SettingsView extends Component {
             : null
         }
       >
-        <Text>{text}</Text>
+        <Text>
+          {text}
+        </Text>
         <View style={{ flex: 1 }} />
         <Switch
           value={value}
@@ -126,7 +128,9 @@ class SettingsView extends Component {
                     name="shirt"
                     color={this.props.settings.color}
                   />}
-                <Text>{team.name}</Text>
+                <Text>
+                  {team.name}
+                </Text>
               </ListItem>
               <Separator image />
               {!this.props.auth.api_key &&
@@ -166,7 +170,9 @@ class SettingsView extends Component {
               name="information-circle"
               color={this.props.settings.color}
             />
-            <Text>{strings.app_version}</Text>
+            <Text>
+              {strings.app_version}
+            </Text>
           </ListItem>
         </ListItem.Group>
       </Container>

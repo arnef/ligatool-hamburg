@@ -21,7 +21,9 @@ class ErrorFlash extends Component {
             <Content>
               <Row center>
                 <Column>
-                  <Text color="#fff">{error.message}</Text>
+                  <Text color="#fff">
+                    {error.message}
+                  </Text>
                 </Column>
                 <Column fluid>
                   <Icon color="#fff" name="refresh" size={22} />

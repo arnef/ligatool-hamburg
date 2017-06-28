@@ -140,9 +140,19 @@ export function getMyTeamMatches(id: number): Promise<*> {
         }
         resolve(ok({ played, next }));
       })
-      .catch(ex => {
-        resolve(error(ex));
-      });
+      .catch(ex => resolve(error(ex)));
+  });
+}
+
+// GET /leagues
+export function getLeagues(): Promise<*> {
+  return new Promise((resolve: Function) => {
+    api
+      .get(LEAGUES)
+      .then(resp => {
+        resolve(ok(resp.data));
+      })
+      .catch(ex => resolve(error(ex)));
   });
 }
 

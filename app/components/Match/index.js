@@ -31,7 +31,9 @@ class Match extends Component {
           editable &&
           <Content>
             <Row center>
-              <Text>{data.toggle.title}</Text>
+              <Text>
+                {data.toggle.title}
+              </Text>
               <Column />
               <Switch
                 onValueChange={() => {

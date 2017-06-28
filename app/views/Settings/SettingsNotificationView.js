@@ -51,7 +51,9 @@ class SettingsNotificationView extends Component {
             : null
         }
       >
-        <Text>{item.name}</Text>
+        <Text>
+          {item.name}
+        </Text>
         <View style={{ flex: 1 }} />
         <Switch
           value={checked}

@@ -61,9 +61,7 @@ class Container extends Component {
             }}
             style={{ flex: 1 }}
           >
-
             {this.props.children}
-
           </ScrollView>
         </View>
       );

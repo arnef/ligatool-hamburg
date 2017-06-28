@@ -18,7 +18,9 @@ class LeaguesView extends Component {
   renderItem({ item }) {
     return (
       <ListItem onPress={() => this.onPress(item)}>
-        <Text>{item.name}</Text>
+        <Text>
+          {item.name}
+        </Text>
       </ListItem>
     );
   }

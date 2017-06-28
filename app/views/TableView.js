@@ -22,23 +22,35 @@ class TableView extends Component {
     return (
       <ListItem last onPress={() => this._onPress(data)}>
         <Column center fluid style={{ width: 20 }}>
-          <Text bold>{data.position}</Text>
+          <Text bold>
+            {data.position}
+          </Text>
         </Column>
         <TeamLogo team={data} />
         <Column style={{ paddingLeft: 4, width }}>
-          <Text numberOfLines={1} ellipsizeMode="tail">{data.name}</Text>
+          <Text numberOfLines={1} ellipsizeMode="tail">
+            {data.name}
+          </Text>
         </Column>
         <Column center fluid style={{ width: 35 }}>
-          <Text>{data.matches}</Text>
+          <Text>
+            {data.matches}
+          </Text>
         </Column>
         <Column center fluid style={{ width: 40 }}>
-          <Text>{data.set_points_diff}</Text>
+          <Text>
+            {data.set_points_diff}
+          </Text>
         </Column>
         <Column center fluid style={{ width: 35 }}>
-          <Text>{data.goals_diff}</Text>
+          <Text>
+            {data.goals_diff}
+          </Text>
         </Column>
         <Column center fluid style={{ width: 35 }}>
-          <Text bold>{data.points}</Text>
+          <Text bold>
+            {data.points}
+          </Text>
         </Column>
       </ListItem>
     );
@@ -68,16 +80,24 @@ class TableView extends Component {
             <Column center fluid style={{ width: 24 }} />
             <Column style={{ paddingLeft: 4, width }} />
             <Column center fluid style={{ width: 35 }}>
-              <Text size={12} color="#fff">Sp.</Text>
+              <Text size={12} color="#fff">
+                Sp.
+              </Text>
             </Column>
             <Column center fluid style={{ width: 40 }}>
-              <Text size={12} color="#fff">Sätze</Text>
+              <Text size={12} color="#fff">
+                Sätze
+              </Text>
             </Column>
             <Column center fluid style={{ width: 35 }}>
-              <Text size={12} color="#fff">Tore</Text>
+              <Text size={12} color="#fff">
+                Tore
+              </Text>
             </Column>
             <Column center fluid style={{ width: 35 }}>
-              <Text bold size={12} color="#fff">Pkt.</Text>
+              <Text bold size={12} color="#fff">
+                Pkt.
+              </Text>
             </Column>
           </Row>
         </StaticListHeader>

@@ -60,8 +60,12 @@ class TeamView extends Component {
       <View key={name}>
         <ListItem multiline>
           <View>
-            <Text bold>{name}</Text>
-            <Text>{value ? value : '-'}</Text>
+            <Text bold>
+              {name}
+            </Text>
+            <Text>
+              {value ? value : '-'}
+            </Text>
           </View>
         </ListItem>
         {!last && <Separator />}
@@ -110,7 +114,6 @@ class TeamView extends Component {
             <Column />
             <ListItem.Icon right name="pin" color={this.props.color} />
           </ListItem>
-
         </ListItem.Group>
       );
     } else {
@@ -153,7 +156,6 @@ class TeamView extends Component {
                     <Column fluid>
                       <Icon color={this.props.color} name="mail" size={32} />
                     </Column>
-
                   </Touchable>}
               </ListItem>
               {index < contacts.length - 1 && <Separator />}
@@ -219,9 +221,10 @@ class TeamView extends Component {
 
   openMaps(venue) {
     const address = `${venue.street} ${venue.zip_code} ${venue.city}`;
-    const prefix = Platform.OS === 'ios'
-      ? 'http://maps.apple.com/?address='
-      : 'geo:53.5586526,9.6476386?q=';
+    const prefix =
+      Platform.OS === 'ios'
+        ? 'http://maps.apple.com/?address='
+        : 'geo:53.5586526,9.6476386?q=';
 
     Linking.openURL(prefix + encodeURI(address)).catch(() => {
       Alert.alert('Keine Karten-App');

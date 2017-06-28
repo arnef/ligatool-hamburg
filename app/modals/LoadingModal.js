@@ -48,9 +48,8 @@ const styles = StyleSheet.create({
   }),
   loadingContainer: {
     alignItems: 'center',
-    backgroundColor: Platform.OS === 'ios'
-      ? 'rgba(0,0,0,.3)'
-      : 'rgba(0, 0, 0, .6)',
+    backgroundColor:
+      Platform.OS === 'ios' ? 'rgba(0,0,0,.3)' : 'rgba(0, 0, 0, .6)',
     flex: 1,
     justifyContent: 'center',
   },

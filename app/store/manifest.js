@@ -1,5 +1,5 @@
 // @flow
-import api, { LEAGUES, USER_AUTH_REFRESH } from '../api';
+import * as api from '../api';
 import {
   LOAD_SETTINGS_FULFILLED,
   QUERY_RANKINGS,
@@ -57,7 +57,7 @@ export function setDefaultSettings(store: any) {
   return new Promise(resolve => {
     const state = store.getState();
     if (Object.keys(state.settings.notification).length === 0) {
-      api.get(LEAGUES).then(resp => {
+      api.getLeagues().then(resp => {
         if (resp.ok) {
           store.dispatch({
             type: QUERY_RANKINGS,
@@ -92,22 +92,17 @@ export function checkToken(store: any) {
     const auth = store.getState().auth;
     if (auth.api_key && auth.team) {
       if (auth.team.expires < new Date().getTime()) {
-        api.post(USER_AUTH_REFRESH, { access_key: auth.api_key }).then(resp => {
-          store.dispatch({
-            type: TOKEN,
-            payload: resp,
-          });
-          api.defaults.headers.common['Secret'] = resp.data.token;
-          api.get(LEAGUES).then(resp => {
+        api.refreshAuthentication(auth.api_key).then(resp => {
+          if (resp.ok) {
             store.dispatch({
-              type: QUERY_RANKINGS,
-              payload: resp,
+              type: TOKEN,
+              payload: resp.data,
             });
-            resolve();
-          });
+          }
         });
+        resolve();
       } else {
-        api.defaults.headers.common['Secret'] = auth.team.token;
+        api.setHeader('Secret', auth.team.token);
         resolve();
       }
     } else {

@@ -39,14 +39,14 @@ export function isAdminForMatch(match: Match, user: any): boolean {
   // const user = store.getState().auth;
 
   return user.team &&
-    user.team.ids &&
-    match &&
-    match.id &&
-    !(
-      user.team.ids.indexOf(match.team_home.id) === -1 &&
-      user.team.ids.indexOf(match.team_away.id) === -1
-    ) &&
-    (!match.set_points || match.score_unconfirmed)
+  user.team.ids &&
+  match &&
+  match.id &&
+  !(
+    user.team.ids.indexOf(match.team_home.id) === -1 &&
+    user.team.ids.indexOf(match.team_away.id) === -1
+  ) &&
+  (!match.set_points || match.score_unconfirmed)
     ? true
     : false;
 }
@@ -109,9 +109,10 @@ export function sortMatches(matches: MatchesState): Function {
 
 export function currentRoute(navigation: any): NavigationRoute {
   const recursiveFindRoute = nav => {
-    const subState = nav.routes[nav.index].routeName === 'DrawerOpen'
-      ? nav.routes[0]
-      : nav.routes[nav.index];
+    const subState =
+      nav.routes[nav.index].routeName === 'DrawerOpen'
+        ? nav.routes[0]
+        : nav.routes[nav.index];
 
     if (
       !subState.routes ||

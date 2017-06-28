@@ -107,10 +107,10 @@ export default function(
       };
       const route = currentRoute(state.navigation);
       if (routes.indexOf(route.routeName) !== -1) {
-        state.activeItem = route.routeName === LEAGUE ||
-          route.routeName === LEAGUE_CUP
-          ? `${route.routeName}_${route.params.id}`
-          : route.routeName;
+        state.activeItem =
+          route.routeName === LEAGUE || route.routeName === LEAGUE_CUP
+            ? `${route.routeName}_${route.params.id}`
+            : route.routeName;
       }
       break;
     }

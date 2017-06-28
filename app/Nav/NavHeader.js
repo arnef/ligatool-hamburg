@@ -49,9 +49,10 @@ const ConnectHeader = connect(state => ({ color: state.settings.color }))(
 export default {
   cardStyle: { backgroundColor },
   navigationOptions: ({ navigation }: any) => {
-    const headerStyle = singleHeader.indexOf(navigation.state.routeName) !== -1
-      ? null
-      : { elevation: 0, shadowOpacity: 0 };
+    const headerStyle =
+      singleHeader.indexOf(navigation.state.routeName) !== -1
+        ? null
+        : { elevation: 0, shadowOpacity: 0 };
 
     return {
       header: (props: any) => <ConnectHeader {...props} />,

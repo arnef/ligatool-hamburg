@@ -33,16 +33,24 @@ class PlayerStatsView extends Component {
           <Row center style={{ marginVertical: 8 }}>
             <Column fluid style={{ width: 24 }} />
             <Column>
-              <Text size={12} color="#fff">Name</Text>
+              <Text size={12} color="#fff">
+                Name
+              </Text>
             </Column>
             <Column fluid style={{ width: 36 }} center>
-              <Text size={12} color="#fff">Q</Text>
+              <Text size={12} color="#fff">
+                Q
+              </Text>
             </Column>
             <Column fluid style={{ width: 38, alignItems: 'flex-end' }}>
-              <Text size={12} color="#fff">Spiele</Text>
+              <Text size={12} color="#fff">
+                Spiele
+              </Text>
             </Column>
             <Column fluid style={{ width: 38 }} center>
-              <Text bold size={12} color="#fff">LI</Text>
+              <Text bold size={12} color="#fff">
+                LI
+              </Text>
             </Column>
           </Row>
         </StaticListHeader>

@@ -32,9 +32,7 @@ class Touchable extends Component {
     } else {
       return (
         <TouchableOpacity {...rest} style={style}>
-
           {this.props.children}
-
         </TouchableOpacity>
       );
     }

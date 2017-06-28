@@ -57,7 +57,6 @@ class SelectableMatchListView extends Component {
         {this.props.leagues[id].match_days &&
           <StaticListHeader>
             <Touchable onPress={() => this.openMenu(matchDayKeys)}>
-
               <Row center style={{ marginVertical: 12 }}>
                 <Column>
                   <Text color="#fff">
@@ -69,7 +68,6 @@ class SelectableMatchListView extends Component {
                   <Icon name="more" size={22} color="#fff" />
                 </Column>
               </Row>
-
             </Touchable>
           </StaticListHeader>}
         <Container
@@ -94,7 +92,9 @@ class SelectableMatchListView extends Component {
   renderDropdown({ item }) {
     return (
       <ListItem onPress={() => this.onSelectMatchDay(item)}>
-        <Text>{item}</Text>
+        <Text>
+          {item}
+        </Text>
       </ListItem>
     );
   }

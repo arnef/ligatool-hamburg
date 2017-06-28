@@ -31,9 +31,8 @@ class ListItemSet extends Component {
 
   render() {
     const data = this.props.data;
-    const Container = this.props.editable && !this.props.scoreInput
-      ? Touchable
-      : View;
+    const Container =
+      this.props.editable && !this.props.scoreInput ? Touchable : View;
 
     return (
       <Card>
@@ -61,11 +60,9 @@ class ListItemSet extends Component {
                 : null
             }
           >
-
             {data.sets.map((set, idx) => {
               return this.renderRow(set, idx);
             })}
-
           </Container>}
         {this.props.scoreInput &&
           <ScoreInput
@@ -96,7 +93,9 @@ class ListItemSet extends Component {
           }}
         >
           <Column>
-            <Text center color={color}>{this.getName(playerHome)}</Text>
+            <Text center color={color}>
+              {this.getName(playerHome)}
+            </Text>
           </Column>
           <Column fluid>
             {playerHome && <Image url={playerHome.image} size={32} />}
@@ -123,7 +122,9 @@ class ListItemSet extends Component {
             {playerAway && <Image url={playerAway.image} size={32} />}
           </Column>
           <Column>
-            <Text center color={color}>{this.getName(playerAway)}</Text>
+            <Text center color={color}>
+              {this.getName(playerAway)}
+            </Text>
           </Column>
         </Container>
       </Row>

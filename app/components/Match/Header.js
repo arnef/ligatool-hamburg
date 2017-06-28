@@ -14,12 +14,10 @@ class MatchHeader extends Component {
     const away = match.team_away ? match.team_away.name : '';
     const goalsHome = match.goals_home != null ? match.goals_home : '-';
     const goalsAway = match.goals_away != null ? match.goals_away : '-';
-    const scoreHome = match.set_points_home != null
-      ? match.set_points_home
-      : '-';
-    const scoreAway = match.set_points_away != null
-      ? match.set_points_away
-      : '-';
+    const scoreHome =
+      match.set_points_home != null ? match.set_points_home : '-';
+    const scoreAway =
+      match.set_points_away != null ? match.set_points_away : '-';
     const goals = `${goalsHome}:${goalsAway}`;
     const score = `${scoreHome}:${scoreAway}`;
 
@@ -44,7 +42,9 @@ class MatchHeader extends Component {
           </Text>
         </Touchable>
         <View style={style.score}>
-          <Text style={style.points} color={this.props.color}>{score}</Text>
+          <Text style={style.points} color={this.props.color}>
+            {score}
+          </Text>
           <Text style={style.points} size={12} color={this.props.color}>
             ({goals})
           </Text>

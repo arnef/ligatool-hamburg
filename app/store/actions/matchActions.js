@@ -89,9 +89,8 @@ export function suggestScore(
     if (type === 1) {
       throw 'Wrong type for suggestScore action, must be 0 or 2';
     }
-    const action = type === 0
-      ? { score_suggest: true }
-      : { score_unconfirmed: false };
+    const action =
+      type === 0 ? { score_suggest: true } : { score_unconfirmed: false };
     const body = { sets, ...action };
     dispatch({ type: LOADING_FULLSCREEN, payload: { loading: true } });
     api

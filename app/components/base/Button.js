@@ -28,7 +28,6 @@ class Button extends Component {
         <Text color={outline ? color : '#fff'} bold={android}>
           {android ? this.props.title.toUpperCase() : this.props.title}
         </Text>
-
       </Container>
     );
   }

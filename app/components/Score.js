@@ -47,9 +47,7 @@ class Score extends Component {
     } else {
       return (
         <View style={[styles.score, { width: 48 }, this.props.style]}>
-          <Text style={styles.scoreText}>
-            -:-
-          </Text>
+          <Text style={styles.scoreText}>-:-</Text>
         </View>
       );
     }
