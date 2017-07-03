@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { StackNavigator, NavigationActions } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
+import * as MatchActions from '../redux/modules/matches';
 
-import { hidePlayerDialog } from '../store/actions/dialogActions';
 import { setPlayer, updateSets } from '../store/actions/matchActions';
+import * as NavigationActions from '../redux/modules/navigation';
 import { Container } from '../components';
 import { ListItem, Text, Separator } from '../components/base';
 import NavHeader from '../Nav/NavHeader';
@@ -96,15 +97,16 @@ class SelectPlayer extends Component {
             },
           });
         } else {
-          closeModal();
-          const set = state.params.data.sets[0];
-          const match = matches[state.params.matchId];
-          if (
-            (set.goals_home != null && set.goals_away != null) ||
-            (match.lineUp && match.lineUp.update)
-          ) {
-            this.props.updateSets(state.params.matchId, match.sets);
-          }
+          // closeModal();
+          // const set = state.params.data.sets[0];
+          // const match = matches[state.params.matchId];
+          // console.log(match.sets);
+          // if (
+          //   (set.goals_home != null && set.goals_away != null) ||
+          //   (match.lineUp && match.lineUp.update)
+          // ) {
+          //   // this.props.updateSets(state.params.matchId, match.sets);
+          // }
         }
       }, 10);
     } else if (selectionLength > state.params.data.type) {
@@ -115,7 +117,10 @@ class SelectPlayer extends Component {
   }
 }
 
-SelectPlayer.navigationOptions = NavCloseIcon();
+SelectPlayer.navigationOptions = NavCloseIcon(
+  null,
+  NavigationActions.hidePlayer(),
+);
 
 export default StackNavigator(
   {
@@ -124,10 +129,12 @@ export default StackNavigator(
         state => ({ matches: state.matches }),
         dispatch => ({
           navigate: route => dispatch(NavigationActions.navigate(route)),
-          closeModal: () => dispatch(hidePlayerDialog()),
+          closeModal: () => dispatch(NavigationActions.hidePlayer()),
           setPlayer: (id, team, player, setsIdx) =>
-            dispatch(setPlayer(id, team, player, setsIdx)),
-          updateSets: (matchId, sets) => dispatch(updateSets(matchId, sets)),
+            dispatch(MatchActions.setPlayer({ id, team, player, setsIdx })),
+          //dispatch(setPlayer(id, team, player, setsIdx)),
+          updateSets: (matchId, sets) =>
+            dispatch(MatchActions.update({ id: matchId, sets })),
         }),
       )(SelectPlayer),
     },

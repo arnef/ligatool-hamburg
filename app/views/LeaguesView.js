@@ -5,6 +5,7 @@ import { Container } from '../components';
 import { ListItem, Text, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import { LEAGUE, LEAGUE_CUP } from './routes';
+import * as LeagueActions from '../redux/modules/leagues';
 
 class LeaguesView extends Component {
   componentDidMount() {
@@ -65,11 +66,11 @@ export default connect(
     leagues: Object.values(state.leagues).sort(
       (a, b) => (a.name < b.name ? -1 : 1),
     ),
-    loading: state.loading.nonBlocking,
-    error: state.loading.error,
+    loading: state.loading.list,
+    error: null, //state.loading.error,
   }),
   dispatch => ({
-    getRankings: () => dispatch(actions.getRankings()),
+    getRankings: () => dispatch(LeagueActions.getLeagues()),
     pushRoute: route => dispatch(actions.pushRoute(route)),
     dispatch: action => dispatch(action),
   }),

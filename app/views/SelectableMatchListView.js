@@ -14,6 +14,7 @@ import {
 import { Container, MatchItem, StaticListHeader } from '../components';
 import { NavigationActions } from 'react-navigation';
 import { sortMatches } from '../Helper';
+import * as LeaguesActions from '../redux/modules/leagues';
 
 class SelectableMatchListView extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class SelectableMatchListView extends Component {
     const matchDayKeys = Object.keys(matchDays);
     const matchList =
       matchDays[
-        this.state.selectedMatchDay || this.props.leagues[id].selected
+        this.state.selectedMatchDay || this.props.leagues[`${id}`].selected
       ] || [];
     const { showDropdown } = this.state;
     matchList.sort(sortMatches(this.props.matches));
@@ -82,7 +83,7 @@ class SelectableMatchListView extends Component {
               : this.renderItem.bind(this)
           }
           // getItemLayout={(data, index) => ( {length: MatchItem.ITEM_HEIGHT, offset: MatchItem.ITEM_HEIGHT * index, index} )}
-          keyExtractor={item => item}
+          keyExtractor={(item, idx) => idx}
           dataSource={showDropdown ? matchDayKeys : matchList}
         />
       </View>
@@ -113,14 +114,14 @@ class SelectableMatchListView extends Component {
 
 export default connect(
   state => ({
-    loading: state.loading.nonBlocking,
-    error: state.loading.error,
+    loading: state.loading.list,
+    error: null, //state.loading.error,
     leagues: state.leagues,
     matches: state.matches,
     color: state.settings.color,
   }),
   dispatch => ({
-    getLeagueMatches: id => dispatch(actions.getLeagueMatches(id)),
+    getLeagueMatches: id => dispatch(LeaguesActions.getMatches(id)),
     pushRoute: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(SelectableMatchListView);

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
 import MatchListView from './MatchListView';
-import actions from '../store/actions';
+// import actions from '../store/actions';
 import NavTabBarTop from '../Nav/NavTabBarTop';
 import { TabNavigator } from 'react-navigation';
 import strings from '../Strings';
@@ -12,6 +12,8 @@ import {
   TAB_MATCHES_NEXT,
   TAB_MATCHES_PLAYED,
 } from './routes';
+import * as OverviewActions from '../redux/modules/overview';
+// import * as OverviewActions from '../redux/modules/overview';
 
 class Overview extends Component {
   onRefresh() {
@@ -37,12 +39,13 @@ function createTab(keyName) {
   return connect(
     state => ({
       matches: state.overview[keyName],
-      error: state.loading.error,
-      fetching: state.loading.nonBlocking,
+      error: null, //state.loading.error,
+      fetching: state.loading.list,
       refreshOnMount: keyName === 'played',
     }),
     (dispatch: Dispatch<*>) => ({
-      queryMatches: () => dispatch(actions.queryMatches()),
+      queryMatches: () => dispatch(OverviewActions.getMatches()),
+      // queryMatches: () => dispatch({ type: 'IGNORE' }),
     }),
   )(Overview);
 }

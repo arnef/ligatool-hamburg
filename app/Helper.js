@@ -30,26 +30,29 @@ export function compareDays(d1: number, d2: number): number {
   return diff;
 }
 
-/**
- * check if a user is logged in and can edit given match
- * @param {object} match
- * @return {boolean}
- */
-export function isAdminForMatch(match: Match, user: any): boolean {
-  // const user = store.getState().auth;
+// /**
+//  * check if a user is logged in and can edit given match
+//  * @param {object} match
+//  * @return {boolean}
+//  */
+// export function isAdminForMatch(match: Match, user: any): boolean {
+//   // const user = store.getState().auth;
 
-  return user.team &&
-  user.team.ids &&
-  match &&
-  match.id &&
-  !(
-    user.team.ids.indexOf(match.team_home.id) === -1 &&
-    user.team.ids.indexOf(match.team_away.id) === -1
-  ) &&
-  (!match.set_points || match.score_unconfirmed)
-    ? true
-    : false;
-}
+//   const isAdmin: boolean = user.team &&
+//   user.team.ids &&
+//   match &&
+//   match.id &&
+//   !(
+//     user.team.ids.indexOf(`${match.team_home.id}`) === -1 &&
+//     user.team.ids.indexOf(`${match.team_away.id}`) === -1
+//   ) &&
+//   (!match.set_points || match.score_unconfirmed)
+//     ? true
+//     : false;
+
+//   console.log(`is admin for match: ${isAdmin ? 'true' : 'false'}`);
+//   return isAdmin;
+// }
 
 /**
  * format timestamp to date string (Mo. dd.mm.yyyy)
@@ -134,3 +137,38 @@ export function darken(color: string, amt: number): string {
     (((colorVal >> 16) - amt) << 16)).toString(16);
   return `#${darkColor}`;
 }
+
+export function getMatchDays(matches: Array<Match>): any {
+  const matchDays: any = {
+    matchdays: {},
+    selected: null,
+  };
+
+  for (let match: Match of matches) {
+    if (!matchDays.matchdays[match.match_day]) {
+      matchDays.matchdays[match.match_day] = [];
+    }
+    matchDays.matchdays[match.match_day].push(`${match.id}`);
+    if (!match.set_points && !matchDays.selected) {
+      matchDays.selected = match.match_day;
+    }
+  }
+  if (!matchDays.selected) {
+    matchDays.selected = matches[matches.length - 1].match_day;
+  }
+
+  return { match_days: matchDays.matchdays, selected: matchDays.selected };
+}
+
+// export function getMatchType(match: Match): string {
+//   let type: string = match.league.cup ? 'cup' : 'default';
+//   const sets = match && match.sets ? match.sets : {};
+
+//   if (sets['5'] && sets['6']) {
+//     if (sets['5'].player_2_home != null && sets['6'].player_2_away != null) {
+//       type += '_d5';
+//     }
+//   }
+
+//   return type;
+// }

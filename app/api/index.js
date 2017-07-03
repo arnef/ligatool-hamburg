@@ -1,6 +1,5 @@
 // @flow
 import api from './api';
-import { compareDays } from '../Helper';
 
 export const USER_AUTH: string = '/user/auth';
 export const USER_AUTH_REFRESH: string = USER_AUTH + '/refresh';
@@ -21,37 +20,20 @@ export function authenticate(user: {
   username: string,
   password: string,
 }): Promise<*> {
-  return new Promise(resolve => {
-    api
-      .post(USER_AUTH, user)
-      .then(resp => {
-        const apiKey = resp.data.access_key;
-        refreshAuthentication(apiKey)
-          .then(refreshResp => {
-            resolve(
-              ok({
-                ...refreshResp.data,
-                access_key: apiKey,
-              }),
-            );
-          })
-          .catch(error);
-      })
-      .catch(error);
-  });
+  return api.post(USER_AUTH, user);
 }
 
 // POST /user/auth/refresh
 export function refreshAuthentication(apiKey: string): Promise<*> {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     api
       .post(USER_AUTH_REFRESH, { access_key: apiKey })
       .then(resp => {
         setHeader('Secret', resp.data.token);
-        resolve(ok(resp.data));
+        resolve(resp);
       })
       .catch(ex => {
-        resolve(error(ex));
+        reject(ex);
       });
   });
 }
@@ -59,107 +41,53 @@ export function refreshAuthentication(apiKey: string): Promise<*> {
 // DELETE /user/auth
 export function logout(): Promise<*> {
   delete api.defaults.headers.common['Secret'];
-  return new Promise(resolve => {
-    api.delete(USER_AUTH).then(resolve).catch(resolve);
-  });
+  return api.delete(USER_AUTH);
 }
 
 // GET /matches
 export function getMatches() {
-  return new Promise(resolve => {
-    api
-      .get(MATCHES)
-      .then(resp => {
-        const now = new Date().getTime();
-        const today = [];
-        const next = [];
-        const played = [];
-
-        for (let match: Match of resp.data) {
-          if (match.date_confirmed) {
-            const diff: number = compareDays(match.datetime, now);
-            if ((match.live && diff > -2) || diff === 0) {
-              today.push(`${match.id}`);
-            } else if (match.set_points) {
-              played.push(`${match.id}`);
-            } else if (diff > 0) {
-              next.push(`${match.id}`);
-            }
-          }
-        }
-        resolve(ok({ today, next, played }));
-      })
-      .catch(ex => {
-        resolve(error(ex));
-      });
-  });
+  return api.get(MATCHES);
 }
 
 // GET /matches/{matchid}
 export function getMatch(id: number): Promise<*> {
-  return new Promise(resolve => {
-    api
-      .get(`${MATCHES}/${id}`)
-      .then(resp => {
-        resolve(ok(resp.data));
-      })
-      .catch(ex => {
-        resolve(error(ex));
-      });
-  });
+  return api.get(`${MATCHES}/${id}`);
+}
+
+export function updateMatch(id: number | string, data: any) {
+  return api.put(`${MATCHES}/${id}`, data);
 }
 
 // GET /teams/{teamid}
 export function getTeam(id: number): Promise<*> {
-  return new Promise((resolve: Function) => {
-    api
-      .get(`${TEAMS}/${id}`)
-      .then(resp => {
-        resolve(ok(resp.data));
-      })
-      .catch(ex => {
-        resolve(error(ex));
-      });
-  });
+  return api.get(`${TEAMS}/${id}`);
 }
 
 // GET /teams/{myteamid}/matches
-export function getMyTeamMatches(id: number): Promise<*> {
-  return new Promise((resolve: Function) => {
-    api
-      .get(`${MATCHES}/${id}`)
-      .then(resp => {
-        const played = [];
-        const next = [];
-        for (let match: Match of resp.data) {
-          if (match.set_points && !match.score_unconfirmed) {
-            played.push(`${match.id}`);
-          } else {
-            next.push(`${match.id}`);
-          }
-        }
-        resolve(ok({ played, next }));
-      })
-      .catch(ex => resolve(error(ex)));
-  });
+export function getTeamMatches(id: number): Promise<*> {
+  return api.get(`${TEAMS}/${id}${MATCHES}`);
 }
 
 // GET /leagues
 export function getLeagues(): Promise<*> {
-  return new Promise((resolve: Function) => {
-    api
-      .get(LEAGUES)
-      .then(resp => {
-        resolve(ok(resp.data));
-      })
-      .catch(ex => resolve(error(ex)));
-  });
+  return api(LEAGUES);
 }
 
-function ok(data) {
-  return { ok: true, data };
+// GET /leagues/{id}
+export function getLeague(id: number | string): Promise<*> {
+  return api(`${LEAGUES}/${id}`);
 }
 
-function error(ex: { message: string }) {
-  return { ok: false, error: ex.message };
+// GET /leagues/{id}/matches
+export function getLeagueMatches(id: number | string): Promise<*> {
+  return api(`${LEAGUES}/${id}${MATCHES}`);
+}
+
+// GET /leagues/{id}/players
+export function getLeaguePlayers(id: number | string): Promise<*> {
+  return api(`${LEAGUES}/${id}${PLAYER}`);
+}
+
+export function getPlayer(id: number | string): Promise<*> {
+  return api(`${PLAYER}/${id}`);
 }

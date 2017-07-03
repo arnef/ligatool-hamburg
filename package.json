@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.45.1",
@@ -30,11 +31,12 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.8.1",
     "redux-persist-migrate": "^4.1.0",
+    "redux-saga": "^0.15.4",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "eslint": "^4.1.1",
+    "eslint": "^3.17.0",
     "eslint-config-prettier": "^2.2.0",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-react": "^7.1.0",

@@ -20,7 +20,9 @@ import {
 } from '../../components/base';
 import * as theme from '../../components/base/theme';
 import strings from '../../Strings';
-import { NavigationActions } from 'react-navigation';
+import * as NavigationActions from '../../redux/modules/navigation';
+import * as AuthActions from '../../redux/modules/auth';
+import * as MyTeamActions from '../../redux/modules/myteam';
 
 class LoginView extends Component {
   constructor(props) {
@@ -30,10 +32,6 @@ class LoginView extends Component {
       user: '',
     };
     this.passwordInput = null;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.apiKeyFullfilled(nextProps);
   }
 
   render() {
@@ -128,16 +126,10 @@ class LoginView extends Component {
   }
 
   closeLogin() {
-    const init = this.props.navigation.state.key.indexOf('Init') !== -1;
-    this.props.showLogin(false);
-    if (!init) {
-      this.props.queryTeamMatches();
-      if (this.props.navigation.state.params.next) {
-        this.props.navigate({
-          routeName: this.props.navigation.state.params.next,
-        });
-      }
-    }
+    const next = this.props.navigation.state.params
+      ? this.props.navigation.state.params.next
+      : null;
+    this.props.hideLogin(next);
   }
 
   login() {
@@ -146,20 +138,10 @@ class LoginView extends Component {
         password: this.state.pass,
         username: this.state.user,
       };
-
-      this.props.requestAPIKey(loginUser);
-    }
-  }
-
-  apiKeyFullfilled(nextProps) {
-    if (
-      this.props.auth.api_key === null &&
-      nextProps.auth.api_key !== null &&
-      !nextProps.error
-    ) {
-      nextProps.renewToken(nextProps.auth.api_key);
-      nextProps.queryTeamMatches();
-      this.closeLogin();
+      const next = this.props.navigation.state.params
+        ? this.props.navigation.state.params.next
+        : null;
+      this.props.login(loginUser, next);
     }
   }
 }
@@ -181,14 +163,17 @@ export default connect(
   state => ({
     auth: state.auth,
     error: state.loading.error,
-    loading: state.loading.nonBlocking,
+    loading: state.loading.list,
     color: state.settings.color,
   }),
   dispatch => ({
-    queryTeamMatches: () => dispatch(actions.queryTeamMatches()),
-    renewToken: apiKey => dispatch(actions.renewToken(apiKey)),
-    requestAPIKey: user => dispatch(actions.requestAPIKey(user)),
-    showLogin: show => dispatch(actions.showLogin(show)),
+    hideLogin: next => dispatch(NavigationActions.hideLogin(next)),
+    login: (user, next) => dispatch(AuthActions.login(user, next)),
     navigate: route => dispatch(NavigationActions.navigate(route)),
+    // queryTeamMatches: () => dispatch(actions.queryTeamMatches()),
+    // renewToken: apiKey => dispatch(actions.renewToken(apiKey)),
+    // requestAPIKey: user => dispatch(actions.requestAPIKey(user)),
+    // showLogin: show => dispatch(NavigationActions.hideLogin()),
+    // navigate: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(LoginView);

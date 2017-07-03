@@ -12,7 +12,8 @@ import {
   Image,
   Separator,
 } from '../components/base';
-import { getPlayersStats } from '../store/actions/leagueActions';
+import * as LeaguesActions from '../redux/modules/leagues';
+
 import { PLAYER } from './routes';
 
 class PlayerStatsView extends Component {
@@ -123,11 +124,12 @@ class PlayerStatsView extends Component {
 
 export default connect(
   state => ({
-    loading: state.loading.nonBlocking,
-    error: state.loading.error,
+    loading: state.loading.list,
+    error: null, //state.loading.error,
     leagues: state.leagues,
   }),
   (dispatch: Dispatch<*>) => ({
-    getPlayersStats: (id: number) => dispatch(getPlayersStats(id)),
+    getPlayersStats: (id: number) =>
+      dispatch(LeaguesActions.getPlayerStats(id)),
   }),
 )(PlayerStatsView);

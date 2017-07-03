@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getRankings } from '../../store/actions/leagueActions';
+// import { getRankings } from '../../store/actions/leagueActions';
+import * as LeaguesActions from '../../redux/modules/leagues';
 import { Container } from '../../components';
 import { ListItem, Text, Separator } from '../../components/base';
 import { NavigationActions } from 'react-navigation';
@@ -54,11 +55,11 @@ class SelectGroupView extends Component {
 export default connect(
   state => ({
     error: state.loading.error,
-    fetching: state.loading.nonBlocking,
+    fetching: state.loading.list,
     leagues: Object.values(state.leagues),
   }),
   dispatch => ({
-    getRankings: () => dispatch(getRankings()),
+    getRankings: () => dispatch(LeaguesActions.getLeagues()),
     navigate: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(SelectGroupView);

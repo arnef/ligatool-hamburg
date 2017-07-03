@@ -1,6 +1,8 @@
 // @flow
+import { GET_MATCHES } from './match';
 import * as LoadingActions from './loading';
 import * as api from '../../api';
+import { compareDays } from '../../Helper';
 
 type State = {
   today: Array<number>,
@@ -19,7 +21,7 @@ type Action = {
 
 // Actions
 export const OVERVIEW_MATCHES: OVERVIEW_MATCHES =
-  'ligatool-hamburg/overview/OVERVIEW_MATCHES';
+  'ligatool-hamburg/modules/OVERVIEW_MATCHES';
 
 // Reducer
 export default function reducer(
@@ -28,7 +30,7 @@ export default function reducer(
 ): State {
   switch (action.type) {
     case OVERVIEW_MATCHES:
-      state = { ...action.payload.data };
+      state = { ...action.payload };
       break;
   }
 
@@ -41,8 +43,27 @@ export function getMatches(): Function {
     dispatch(LoadingActions.showLoading());
     api.getMatches().then(resp => {
       if (resp.ok) {
-        dispatch({ type: OVERVIEW_MATCHES, payload: resp });
+        dispatch({ type: GET_MATCHES, payload: resp.data });
       }
+      const now = new Date().getTime();
+      const today = [];
+      const next = [];
+      const played = [];
+      const matches: Array<Match> = resp.data;
+
+      for (let match: Match of matches) {
+        if (match.date_confirmed) {
+          const diff: number = compareDays(match.datetime, now);
+          if ((match.live && diff > -2) || diff === 0) {
+            today.push(`${match.id}`);
+          } else if (match.set_points) {
+            played.push(`${match.id}`);
+          } else if (diff > 0) {
+            next.push(`${match.id}`);
+          }
+        }
+      }
+      dispatch({ type: OVERVIEW_MATCHES, payload: { today, next, played } });
       dispatch(LoadingActions.hideLoading(resp.error));
     });
   };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Linking, Alert, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { getTeam } from '../../store/actions/teamActions';
+import * as TeamsActions from '../../redux/modules/teams';
 import { Container } from '../../components';
 import { PLAYER } from '../routes';
 import {
@@ -246,11 +246,11 @@ export default connect(
   state => ({
     teams: state.teams,
     error: state.loading.error,
-    fetching: state.loading.nonBlocking,
+    fetching: state.loading.list,
     color: state.settings.color,
   }),
   dispatch => ({
-    getTeam: id => dispatch(getTeam(id)),
+    getTeam: id => dispatch(TeamsActions.getTeam(id)),
     setTitle: (title, key) => dispatch({ type: 'SET_TITLE', title, key }),
     navigate: route => dispatch(NavigationActions.navigate(route)),
   }),

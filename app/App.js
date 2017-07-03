@@ -10,7 +10,7 @@ import {
 } from './store/manifest';
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
-import store from './store';
+import store from './redux/store';
 
 type State = {
   rehydrated: boolean,

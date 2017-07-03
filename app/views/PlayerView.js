@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
-import { getPlayer } from '../store/actions/playersActions';
+// import { getPlayer } from '../store/actions/playersActions';
+import * as PlayerActions from '../redux/modules/player';
 import { Container, MatchStatsBar } from '../components';
 import {
   Text,
@@ -330,11 +331,11 @@ class PlayerView extends Component {
 
 export default connect(
   state => ({
-    loading: state.loading.nonBlocking,
+    loading: state.loading.list,
     error: state.loading.error,
     players: state.players,
   }),
   (dispatch: Dispatch<*>) => ({
-    getPlayer: (id: number) => dispatch(getPlayer(id)),
+    getPlayer: (id: number) => dispatch(PlayerActions.getPlayer(id)),
   }),
 )(PlayerView);

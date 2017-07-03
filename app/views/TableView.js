@@ -6,6 +6,7 @@ import { Container, TeamLogo, StaticListHeader } from '../components';
 import { Text, ListItem, Column, Separator, Row } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import { TEAM } from './routes';
+import * as LeaguesActions from '../redux/modules/leagues';
 
 const width = Dimensions.get('window').width - 5 * 40 - 32;
 
@@ -124,12 +125,12 @@ class TableView extends Component {
 
 export default connect(
   state => ({
-    error: state.loading.error,
-    loading: state.loading.nonBlocking,
+    error: null, //state.loading.error,
+    loading: state.loading.list,
     leagues: state.leagues,
   }),
   dispatch => ({
-    getLeague: id => dispatch(actions.getLeague(id)),
+    getLeague: id => dispatch(LeaguesActions.getLeague(id)),
     pushRoute: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(TableView);

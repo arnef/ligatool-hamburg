@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Container, TeamLogo } from '../../components';
 import { connect } from 'react-redux';
-import actions from '../../store/actions';
+// import actions from '../../store/actions';
+import * as LeaguesActions from '../../redux/modules/leagues';
+import * as SettingsActions from '../../redux/modules/settings';
 import { ListItem, Text, Separator } from '../../components/base';
 import { NavigationActions } from 'react-navigation';
 
@@ -69,12 +71,12 @@ class SelectTeamView extends Component {
 export default connect(
   state => ({
     error: state.loading.error,
-    fetching: state.loading.nonBlocking,
+    fetching: state.loading.list,
     leagues: state.leagues,
   }),
   dispatch => ({
-    getLeague: id => dispatch(actions.getLeague(id)),
-    setUserTeam: team => dispatch(actions.setUserTeam(team)),
+    getLeague: id => dispatch(LeaguesActions.getLeague(id)),
+    setUserTeam: team => dispatch(SettingsActions.setTeam(team)),
     navigate: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(SelectTeamView);

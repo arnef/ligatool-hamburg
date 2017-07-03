@@ -1,5 +1,5 @@
 // @flow
-import { OVERVIEW_MATCHES } from './overview';
+// import { OVERVIEW_MATCHES } from './overview';
 import { MY_TEAM_MATCHES } from './myteam';
 // Type Definitions
 type State = { +[string]: Match };
@@ -10,18 +10,15 @@ type Action = {
 };
 
 // Actions
+export const GET_MATCHES = 'ligatool-hamburg/modules/GET_MATHCES';
 const GET_MATCH: GET_MATCH = 'ligatool-hamburg/modules/GET_MATCH';
 const TOGGLE_DOUBLES_5 = 'ligatool-hamburg/modules/TOGGLE_DOUBLES_5';
 
 // Reducer
 export default function reducer(state: State = {}, action: Action): State {
   switch (action.type) {
-    case OVERVIEW_MATCHES:
-      state = {
-        ...merge(state, action.payload.data.today),
-        ...merge(state, action.payload.data.next),
-        ...merge(state, action.payload.data.played),
-      };
+    case GET_MATCHES:
+      state = merge(state, action.payload);
       break;
     case MY_TEAM_MATCHES:
       state = {

@@ -1,13 +1,14 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDate, formatTime, isAdminForMatch } from '../Helper';
+import { formatDate, formatTime } from '../Helper';
 import Score from './Score';
 import { Card, Content, Row, Column, Icon, Text } from '../components/base';
 import { TeamLogo } from '../components';
 import { NavigationActions } from 'react-navigation';
 import moment from 'moment';
 import { MATCH, PREVIEW } from '../views/routes';
+import { isAdmin } from '../libs/Match';
 
 class MatchItem extends Component {
   static ITEM_HEIGHT: number;
@@ -50,14 +51,15 @@ class MatchItem extends Component {
   }
 
   onPress(match) {
-    const isAdmin: boolean = isAdminForMatch(match, this.props.auth);
+    // TODO know this before click
+    const ia: boolean = isAdmin(match, this.props.auth).is_admin;
     if (
       match.set_points ||
-      (isAdmin && moment(match.datetime).diff(moment(), 'minutes') < 31)
+      (ia && moment(match.datetime).diff(moment(), 'minutes') < 31)
     ) {
       this.props.pushRoute({
         routeName: MATCH,
-        params: { id: match.id, isAdmin },
+        params: { id: match.id, ia },
       });
     } else {
       this.props.pushRoute({

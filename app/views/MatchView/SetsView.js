@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Keyboard, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
-import actions from '../../store/actions';
+// import { NavigationActions } from 'react-navigation';
+import * as NavigationActions from '../../redux/modules/navigation';
+import * as MatchActions from '../../redux/modules/matches';
 import { Container, Match, StaticListHeader } from '../../components';
 import { ActionSheet, Touchable, Text } from '../../components/base';
 import * as theme from '../../components/base/theme';
@@ -218,26 +219,23 @@ const btnText = [
 
 export default connect(
   state => ({
-    loading: state.loading.nonBlocking,
+    loading: state.loading.list,
     error: state.loading.error,
     auth: state.auth,
     matches: state.matches,
   }),
   dispatch => ({
-    getMatch: id => dispatch(actions.getMatch(id)),
-    hidePlayerDialog: () => dispatch(actions.hidePlayerDialog()),
-    setPlayer: (team, result, setsIdx) =>
-      dispatch(actions.setPlayer(team, result, setsIdx)),
+    getMatch: id => dispatch(MatchActions.getMatch(id)), //actions.getMatch(id)),
+    hidePlayerDialog: () => dispatch(NavigationActions.hidePlayer()), //actions.hidePlayerDialog()),
+    // setPlayer: (team, result, setsIdx) => dispatch({ type: 'set player' }), //actions.setPlayer(team, result, setsIdx)),
     showPlayerDialog: (id, data) =>
-      dispatch(actions.showPlayerDialog(id, data)),
-    suggestScore: (id, sets, btnIdx) =>
-      dispatch(actions.suggestScore(id, sets, btnIdx)),
+      dispatch(NavigationActions.showPlayer(id, data)), //actions.showPlayerDialog(id, data)),
+    suggestScore: (id, sets, btnIdx) => dispatch({ type: 'suggest score' }), //actions.suggestScore(id, sets, btnIdx)),
     toggleMatchType: (id, setsIdx, type) =>
-      dispatch(actions.toggleMatchType(id, setsIdx, type)),
-    updateSets: (id, sets) => dispatch(actions.updateSets(id, sets)),
+      dispatch(MatchActions.setType({ id, setsIdx, type })), //actions.toggleMatchType(id, setsIdx, type)),
+    updateSets: (id, sets) => dispatch(MatchActions.update({ id, sets })), //actions.updateSets(id, sets)),
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate({ routeName, params })),
-    resetSets: (matchId, setsIdx) =>
-      dispatch(actions.resetSets(matchId, setsIdx)),
+    // resetSets: (matchId, setsIdx) => dispatch(MatchActions.setType({ id: matchId, setsIdx })), //actions.resetSets(matchId, setsIdx)),
   }),
 )(SetsView);

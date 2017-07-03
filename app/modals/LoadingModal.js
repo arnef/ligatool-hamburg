@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Modal,
   View,
@@ -9,30 +9,33 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-class LoadingModal extends Component {
-  render() {
-    const { loading } = this.props;
-
-    return (
-      <Modal
-        animationType={'fade'}
-        onRequestClose={this.onRequestClose.bind(this)}
-        transparent={true}
-        visible={loading.blocking}
-      >
-        <View style={styles.loadingContainer}>
-          <View style={styles.loading}>
-            <ActivityIndicator size={'large'} color={'#fff'} />
-          </View>
+function LoadingModal(props) {
+  return (
+    <Modal
+      animationType={'fade'}
+      onRequestClose={() => false}
+      transparent={true}
+      visible={props.loading}
+    >
+      <View style={styles.loadingContainer}>
+        <View style={styles.loading}>
+          <ActivityIndicator size={'large'} color={'#fff'} />
         </View>
-      </Modal>
-    );
-  }
-
-  onRequestClose() {
-    return false;
-  }
+      </View>
+    </Modal>
+  );
 }
+
+// class LoadingModal extends Component {
+//   render() {
+//     const { loading } = this.props;
+
+//   }
+
+//   onRequestClose() {
+//     return false;
+//   }
+// }
 
 const styles = StyleSheet.create({
   loading: Platform.select({
@@ -56,5 +59,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => ({
-  loading: state.loading,
+  loading: state.loading.modal,
 }))(LoadingModal);

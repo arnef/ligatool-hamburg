@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { TabNavigator } from 'react-navigation';
 import MatchListView from './MatchListView';
 import NavTabBarTop from '../Nav/NavTabBarTop';
-import { queryTeamMatches } from '../store/actions/teamActions';
+import * as MyTeamActions from '../redux/modules/myteam';
+
 import strings from '../Strings';
 import { TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes';
 
@@ -17,7 +18,7 @@ class MyTeam extends Component {
         error={error}
         matches={matches}
         refreshing={fetching}
-        onRefresh={() => this.props.dispatch(queryTeamMatches())}
+        onRefresh={() => this.props.dispatch(MyTeamActions.getMatches())}
         refreshOnMount={refreshOnMount}
       />
     );
@@ -29,8 +30,8 @@ export default TabNavigator(
     [TAB_MATCHES_NEXT]: {
       screen: connect(state => ({
         matches: state.myTeam.next,
-        fetching: state.loading.nonBlocking,
-        error: state.loading.error,
+        fetching: state.loading.list,
+        error: null, // state.loading.error,
         refreshOnMount: true,
       }))(MyTeam),
       navigationOptions: { title: strings.next },
@@ -38,10 +39,10 @@ export default TabNavigator(
     [TAB_MATCHES_PLAYED]: {
       screen: connect(state => ({
         matches: state.myTeam.played,
-        fetching: state.loading.nonBlocking,
-        error: state.loading.error,
+        fetching: state.loading.list,
+        error: null, //state.loading.error,
         refreshOnMount: false,
-        team: state.settings.team,
+        // team: state.settings.team,
       }))(MyTeam),
       navigationOptions: { title: strings.played },
     },

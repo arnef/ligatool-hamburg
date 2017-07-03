@@ -1,16 +1,19 @@
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { Icon, Touchable } from '../components/base';
-import { showLogin } from '../store/actions/login';
+import * as NavigationActions from '../redux/modules/navigation';
 import { ANDROID } from '../consts';
 
-export default title => ({ navigation }) => ({
+export default (title, action) => ({ navigation }) => ({
   title: title || navigation.state.params.title,
   headerLeft: (
     <Touchable
       borderless
       delayPressIn={0}
-      onPress={() => navigation.dispatch(showLogin(false))}
+      onPress={() => {
+        navigation.dispatch(action || NavigationActions.hideLogin());
+        // navigation.dispatch(NavigationActions.hidePlayer());
+      }}
     >
       <Icon name="close" color="#fff" style={styles.icon} size={iconSize} />
     </Touchable>

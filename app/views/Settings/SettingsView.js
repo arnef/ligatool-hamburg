@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { View, Platform, ActivityIndicator, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import actions from '../../store/actions';
+// import actions from '../../store/actions';
 import { ListItem, Text, Switch, Separator } from '../../components/base';
 import { Container } from '../../components';
 import * as theme from '../../components/base/theme';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
+import * as NavigationActions from '../../redux/modules/navigation';
 import { SETTINGS_NOTIFICATIONS, MODAL_LOGIN } from '../routes';
 import strings from '../../Strings';
+import * as LeagueActions from '../../redux/modules/leagues';
+import * as SettingsActions from '../../redux/modules/settings';
+import * as AuthActions from '../../redux/modules/auth';
 
 class SettingsView extends Component {
   _logout() {
@@ -15,7 +19,8 @@ class SettingsView extends Component {
   }
 
   _login() {
-    this.props.showLogin(true);
+    this.props.showLogin();
+    // this.props.navigation.navigate(MODAL_LOGIN);
   }
   loginView() {
     this.props.pushRoute({
@@ -63,9 +68,7 @@ class SettingsView extends Component {
   }
 
   _toggleGroups() {
-    this.props.pushRoute({
-      routeName: SETTINGS_NOTIFICATIONS,
-    });
+    this.props.navigation.navigate(SETTINGS_NOTIFICATIONS);
   }
 
   _renderSectionNotification() {
@@ -194,20 +197,19 @@ class SettingsView extends Component {
 
 export default connect(
   state => ({
-    loading: state.loading.nonBlocking,
+    loading: state.loading.list,
     auth: state.auth,
-    dialog: state.dialog,
+    dialog: {}, //state.dialog,
     leagues: state.leagues,
     settings: state.settings,
   }),
   dispatch => ({
-    getRankings: () => dispatch(actions.getRankings()),
-    logout: () => dispatch(actions.logout()),
-    clearImageCache: () => dispatch(actions.clearImageCache()),
+    getRankings: () => dispatch(LeagueActions.getLeagues()),
+    logout: () => dispatch(AuthActions.logout()),
+    clearImageCache: () => dispatch(SettingsActions.clearCache()),
+    saveNotifications: () => dispatch({ type: 'SAVE_NOTIFICATION' }),
+    setNotification: (key, value) => dispatch({ type: 'SET_NOTIFICATION' }),
+    showLogin: () => dispatch(NavigationActions.showLogin()),
     pushRoute: route => dispatch(NavigationActions.navigate(route)),
-    saveNotifications: () => dispatch(actions.saveNotifications()),
-    setNotification: (key, value) =>
-      dispatch(actions.setNotification(key, value)),
-    showLogin: show => dispatch(actions.showLogin(show)),
   }),
 )(SettingsView);

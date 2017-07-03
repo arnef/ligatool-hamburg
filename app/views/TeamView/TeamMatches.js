@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
-import { getTeamMatches } from '../../store/actions/teamActions';
+// import { getTeamMatches } from '../../store/actions/teamActions';
+import * as TeamsActions from '../../redux/modules/teams';
 import MatchListView from '../MatchListView';
 
 class TeamView extends Component {
@@ -24,10 +25,10 @@ class TeamView extends Component {
 export default connect(
   state => ({
     teams: state.teams,
-    error: state.loading.error,
-    fetching: state.loading.nonBlocking,
+    error: null, //state.loading.error,
+    fetching: state.loading.list,
   }),
   (dispatch: Dispatch<*>) => ({
-    getTeamMatches: id => dispatch(getTeamMatches(id)),
+    getTeamMatches: id => dispatch(TeamsActions.getMatches(id)),
   }),
 )(TeamView);
