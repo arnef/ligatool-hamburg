@@ -11,9 +11,10 @@ import {
   LEAGUE_CUP,
   SETTINGS,
 } from '../../views/routes';
+import { currentRoute } from '../../Helper';
 
 // Type Definitions
-// const routes = [OVERVIEW, MY_TEAM, LEAGUE, LEAGUE_CUP, SETTINGS];
+const routes = [OVERVIEW, MY_TEAM, LEAGUE, LEAGUE_CUP, SETTINGS];
 
 type Routes =
   | typeof OVERVIEW
@@ -91,6 +92,33 @@ export default function reducer(
           state.navigation,
         ),
       };
+      break;
+    case NavigationActions.NAVIGATE:
+      state = {
+        ...state,
+        navigation: Root.router.getStateForAction(action, state.navigation),
+      };
+      if (routes.indexOf(action.routeName) !== -1 && action.routeName) {
+        state.activeItem = action.routeName;
+        if (action.routeName === LEAGUE || action.routeName === LEAGUE_CUP) {
+          state.activeItem = `${action.routeName}_${action.params.id}`;
+        }
+      }
+      break;
+    case NavigationActions.BACK:
+      {
+        state = {
+          ...state,
+          navigation: Root.router.getStateForAction(action, state.navigation),
+        };
+        const route = currentRoute(state.navigation);
+        if (routes.indexOf(route.routeName) !== -1) {
+          state.activeItem =
+            route.routeName === LEAGUE || route.routeName === LEAGUE_CUP
+              ? `${route.routeName}_${route.params.id}`
+              : route.routeName;
+        }
+      }
       break;
 
     default:

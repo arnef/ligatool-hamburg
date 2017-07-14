@@ -30,7 +30,7 @@ class App extends Component<void, Props, State> {
   componentDidMount() {
     const config = {
       storage: AsyncStorage,
-      whitelist: ['app', 'settings', 'auth', 'matches'],
+      whitelist: ['app', 'settings', 'auth', 'matches', 'drawer'],
     };
     persistStore(store, config, (err: any, localStore: any) => {
       if (localStore.app.version === 1 && !localStore.settings) {

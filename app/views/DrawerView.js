@@ -7,9 +7,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
-import actions from '../store/actions';
+// import actions from '../store/actions';
 import { Image, ListItem, Text, Button } from '../components/base';
 import * as theme from '../components/base/theme';
+import * as LeaguesActions from '../redux/modules/leagues';
 import { NavigationActions } from 'react-navigation';
 import { LEAGUE, LEAGUE_CUP, OVERVIEW, MY_TEAM, SETTINGS } from './routes';
 
@@ -214,7 +215,7 @@ export default connect(
     settings: state.settings,
   }),
   dispatch => ({
-    getRankings: () => dispatch(actions.getRankings()),
+    getRankings: () => dispatch(LeaguesActions.getLeagues()),
     // navigate: route => dispatch(NavigationActions.navigate(route)),
     closeDrawer: () =>
       dispatch(NavigationActions.navigate({ routeName: 'DrawerClose' })),

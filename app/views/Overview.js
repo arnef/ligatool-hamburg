@@ -52,6 +52,10 @@ function createTab(keyName) {
 
 export default TabNavigator(
   {
+    [TAB_MATCHES_PLAYED]: {
+      screen: createTab('played'),
+      navigationOptions: { title: strings.played },
+    },
     [TAB_MATCHES_TODAY]: {
       screen: createTab('today'),
       navigationOptions: { title: strings.today },
@@ -60,13 +64,10 @@ export default TabNavigator(
       screen: createTab('next'),
       navigationOptions: { title: strings.next },
     },
-    [TAB_MATCHES_PLAYED]: {
-      screen: createTab('played'),
-      navigationOptions: { title: strings.played },
-    },
   },
   {
     ...NavTabBarTop,
+    initialRouteName: TAB_MATCHES_TODAY,
     lazy: false,
   },
 );

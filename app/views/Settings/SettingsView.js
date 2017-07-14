@@ -200,7 +200,7 @@ export default connect(
     loading: state.loading.list,
     auth: state.auth,
     dialog: {}, //state.dialog,
-    leagues: state.leagues,
+    leagues: state.drawer,
     settings: state.settings,
   }),
   dispatch => ({

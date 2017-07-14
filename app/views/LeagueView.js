@@ -8,20 +8,20 @@ import strings from '../Strings';
 
 const LeagueView = TabNavigator(
   {
-    [TAB_TABLE]: {
-      screen: TableView,
-      navigationOptions: { title: strings.table },
-    },
     [TAB_MATCHES]: {
       screen: SelectableMatchListView,
       navigationOptions: { title: strings.matches },
+    },
+    [TAB_TABLE]: {
+      screen: TableView,
+      navigationOptions: { title: strings.table },
     },
     [TAB_PLAYER_STATS]: {
       screen: PlayerStatsView,
       navigationOptions: { title: strings.player_statistics },
     },
   },
-  { ...NavTabBarTop },
+  { ...NavTabBarTop, initialRouteName: TAB_TABLE },
 );
 
 export default LeagueView;

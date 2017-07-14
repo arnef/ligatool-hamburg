@@ -25,6 +25,7 @@ export function authenticate(user: {
 
 // POST /user/auth/refresh
 export function refreshAuthentication(apiKey: string): Promise<*> {
+  console.log(apiKey);
   return new Promise((resolve, reject) => {
     api
       .post(USER_AUTH_REFRESH, { access_key: apiKey })

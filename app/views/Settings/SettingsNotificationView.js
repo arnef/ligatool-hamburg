@@ -68,7 +68,7 @@ class SettingsNotificationView extends Component {
 
 export default connect(
   state => ({
-    leagues: Object.values(state.leagues).sort(
+    leagues: Object.values(state.drawer).sort(
       (a, b) => (a.name < b.name ? -1 : 1),
     ),
     settings: state.settings,

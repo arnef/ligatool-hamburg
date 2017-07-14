@@ -16,6 +16,7 @@ import leagues from './modules/leagues';
 import loading from './modules/loading';
 import teams from './modules/teams';
 import players from './modules/player';
+import drawer from './modules/drawer';
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
@@ -36,6 +37,7 @@ const reducer = combineReducers({
   loading,
   teams,
   players,
+  drawer,
 });
 
 const migration = createMigration(manifest, APP_KEY);

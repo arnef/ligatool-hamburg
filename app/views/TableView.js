@@ -14,7 +14,7 @@ class TableView extends Component {
   componentDidMount() {
     const id = this.props.navigation.state.params.id;
 
-    if (!this.props.leagues[id].table) {
+    if (!this.props.leagues[id] || !this.props.leagues[id].table) {
       this._getLeagues();
     }
   }
@@ -72,7 +72,9 @@ class TableView extends Component {
 
   render() {
     const { leagues } = this.props;
-    const table = leagues[this.props.navigation.state.params.id].table || [];
+    const table = leagues[this.props.navigation.state.params.id]
+      ? leagues[this.props.navigation.state.params.id].table || []
+      : [];
 
     return (
       <View style={{ flex: 1 }}>

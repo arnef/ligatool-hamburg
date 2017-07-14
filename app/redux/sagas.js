@@ -30,6 +30,8 @@ import * as AuthActions from './modules/auth';
 import * as NavigationActions from './modules/navigation';
 import * as PlayerActions from './modules/player';
 import * as MatchLib from '../libs/Match';
+import * as DrawerActions from './modules/drawer';
+
 import { compareDays, getMatchDays } from '../Helper';
 
 function* overview() {
@@ -43,7 +45,13 @@ function* overview() {
       played: [],
     };
     const now = new Date().getTime();
+    const state = yield select();
+    let updateDrawer = false;
     for (let match: Match of matches.data) {
+      if (!state.drawer[`${match.league.id}`]) {
+        updateDrawer = true;
+      }
+
       const diff: number = compareDays(match.datetime, now);
       if ((match.live && diff > -2) || diff === 0) {
         data.today.push(`${match.id}`);
@@ -54,9 +62,19 @@ function* overview() {
       }
     }
     yield put({ type: OVERVIEW_MATCHES, payload: data });
+    yield put(LoadingActions.hide());
+    if (updateDrawer) {
+      const leagues = yield call(api.getLeagues);
+      yield put(
+        DrawerActions.setLeagues(
+          _.keyBy(leagues.data, l => {
+            return `${l.id}`;
+          }),
+        ),
+      );
+    }
   } catch (ex) {
     console.warn(ex);
-  } finally {
     yield put(LoadingActions.hide());
   }
 }
