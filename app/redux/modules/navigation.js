@@ -33,6 +33,8 @@ const SHOW_LOG_IN_MODAL: SHOW_LOG_IN_MODAL =
   'ligatool/modules/SHOW_LOG_IN_MODAL';
 export const HIDE_LOG_IN_MODAL: HIDE_LOG_IN_MODAL =
   'ligatool/modules/HIDE_LOG_IN_MODAL';
+export const NAVIGATE: NAVIGATE = NavigationActions.NAVIGATE;
+export const BACK: BACK = NavigationActions.BACK;
 const SHOW_PLAYER_MODAL: SHOW_PLAYER_MODAL =
   'ligatool/modules/navigation/SHOW_PLAYER_MODAL';
 const HIDE_PLAYER_MODAL: HIDE_PLAYER_MODAL =

@@ -1,30 +1,12 @@
+// @flow
 import React, { Component } from 'react';
 import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import actions from '../../store/actions';
+import * as SettingsActions from '../../redux/modules/settings';
 import { Container } from '../../components';
 import { ListItem, Text, Switch, Separator } from '../../components/base';
 
 class SettingsNotificationView extends Component {
-  componentWillUnmount() {
-    if (this.props.settings.changed) {
-      this.props.saveNotifications();
-    }
-  }
-
-  // render() {
-  //   const leagues = Object.values(this.props.leagues);
-  //   leagues.sort((a, b) => (a.name < b.name ? -1 : 1));
-  //   return (
-  //     <Container {...this.props}>
-  //       <ListItem.Group>
-  //         {leagues.map((league, idx) => {
-  //           return this.renderRow(league, idx);
-  //         })}
-  //       </ListItem.Group>
-  //     </Container>
-  //   );
-  // }
   render() {
     return (
       <Container
@@ -46,7 +28,7 @@ class SettingsNotificationView extends Component {
         onPress={
           Platform.OS === 'android'
             ? () => {
-                this.props.setGroupNotification(item.id, !checked);
+                this.props.setGroupNotification(item.id);
               }
             : null
         }
@@ -57,8 +39,8 @@ class SettingsNotificationView extends Component {
         <View style={{ flex: 1 }} />
         <Switch
           value={checked}
-          onValueChange={newValue => {
-            this.props.setGroupNotification(item.id, newValue);
+          onValueChange={() => {
+            this.props.setGroupNotification(item.id);
           }}
         />
       </ListItem>
@@ -74,8 +56,7 @@ export default connect(
     settings: state.settings,
   }),
   dispatch => ({
-    saveNotifications: () => dispatch(actions.saveNotifications()),
-    setGroupNotification: (key, value) =>
-      dispatch(actions.setGroupNotification(key, value)),
+    setGroupNotification: (key: number | string) =>
+      dispatch(SettingsActions.toggleGroupNotification(key)),
   }),
 )(SettingsNotificationView);

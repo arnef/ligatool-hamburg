@@ -25,7 +25,6 @@ export function authenticate(user: {
 
 // POST /user/auth/refresh
 export function refreshAuthentication(apiKey: string): Promise<*> {
-  console.log(apiKey);
   return new Promise((resolve, reject) => {
     api
       .post(USER_AUTH_REFRESH, { access_key: apiKey })
@@ -71,24 +70,32 @@ export function getTeamMatches(id: number): Promise<*> {
 
 // GET /leagues
 export function getLeagues(): Promise<*> {
-  return api(LEAGUES);
+  return api.get(LEAGUES);
 }
 
 // GET /leagues/{id}
 export function getLeague(id: number | string): Promise<*> {
-  return api(`${LEAGUES}/${id}`);
+  return api.get(`${LEAGUES}/${id}`);
 }
 
 // GET /leagues/{id}/matches
 export function getLeagueMatches(id: number | string): Promise<*> {
-  return api(`${LEAGUES}/${id}${MATCHES}`);
+  return api.get(`${LEAGUES}/${id}${MATCHES}`);
 }
 
 // GET /leagues/{id}/players
 export function getLeaguePlayers(id: number | string): Promise<*> {
-  return api(`${LEAGUES}/${id}${PLAYER}`);
+  return api.get(`${LEAGUES}/${id}${PLAYER}`);
 }
 
 export function getPlayer(id: number | string): Promise<*> {
-  return api(`${PLAYER}/${id}`);
+  return api.get(`${PLAYER}/${id}`);
+}
+
+// POST /notification
+export function updateNotifications(
+  fcmToken: string,
+  notification: any,
+): Promise<*> {
+  return api.post(NOTIFICATION, { fcm_token: fcmToken, notification });
 }

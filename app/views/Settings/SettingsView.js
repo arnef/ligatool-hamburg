@@ -207,8 +207,9 @@ export default connect(
     getRankings: () => dispatch(LeagueActions.getLeagues()),
     logout: () => dispatch(AuthActions.logout()),
     clearImageCache: () => dispatch(SettingsActions.clearCache()),
-    saveNotifications: () => dispatch({ type: 'SAVE_NOTIFICATION' }),
-    setNotification: (key, value) => dispatch({ type: 'SET_NOTIFICATION' }),
+    saveNotifications: () => dispatch({ type: 'INGORE' }),
+    setNotification: (key, value) =>
+      dispatch(SettingsActions.toggleNotification(key)),
     showLogin: () => dispatch(NavigationActions.showLogin()),
     pushRoute: route => dispatch(NavigationActions.navigate(route)),
   }),

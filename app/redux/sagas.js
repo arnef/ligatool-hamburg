@@ -31,6 +31,7 @@ import * as NavigationActions from './modules/navigation';
 import * as PlayerActions from './modules/player';
 import * as MatchLib from '../libs/Match';
 import * as DrawerActions from './modules/drawer';
+import * as SettingsActions from './modules/settings';
 
 import { compareDays, getMatchDays } from '../Helper';
 
@@ -322,6 +323,22 @@ function* setPlayer(action) {
   }
 }
 
+function* navigate(action) {
+  try {
+    const state = yield select();
+    if (state.settings.changed && state.settings.fcm_token) {
+      yield call(
+        api.updateNotifications,
+        state.settings.fcm_token,
+        state.settings.notification,
+      );
+      yield put(SettingsActions.synchronized());
+    }
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
 export default function* sagas(): any {
   yield takeEvery(GET_OVERVIEW_MATCHES, overview);
   yield takeEvery(GET_MY_TEAM_MATCHES, myTeam);
@@ -339,4 +356,6 @@ export default function* sagas(): any {
   yield takeEvery(PlayerActions.GET_PLAYER, getPlayer);
   yield takeEvery(UPDATE_MATCH, updateMatch);
   yield takeEvery(SET_PLAYER, setPlayer);
+  yield takeEvery(NavigationActions.NAVIGATE, navigate);
+  yield takeEvery(NavigationActions.BACK, navigate);
 }
