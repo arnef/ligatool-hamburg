@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import actions from '../store/actions';
 import {
   ListItem,
   Text,

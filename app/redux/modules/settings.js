@@ -21,13 +21,14 @@ const TOGGLE_NOTIFICATION: TOGGLE_NOTIFICATION =
 const TOGGLE_GROUP_NOTIFICATION: TOGGLE_GROUP_NOTIFICATION =
   'ligatool/settings/TOGGLE_GROUP_NOTIFICATION';
 const SYNCHRONIZED: SYNCHRONIZED = 'ligatool/settings/SYNCHRONIZED';
+export const SET_FCM_TOKEN: SET_FCM_TOKEN = 'ligatool/settings/SET_FCM_TOKEN';
 
 // Reducer
 export default function reducer(
   state: State = {
     changed: false,
     color: defaultColor,
-    notification: {},
+    notification: { leagues: {} },
     fcm_token: null,
     team: null,
   },
@@ -69,6 +70,9 @@ export default function reducer(
         },
       };
       break;
+    case SET_FCM_TOKEN:
+      state = { ...state, fcm_token: action.payload.fcm_token };
+      break;
     case SYNCHRONIZED:
       state = { ...state, changed: false };
       break;
@@ -95,4 +99,8 @@ export function toggleGroupNotification(key: number | string) {
 
 export function synchronized() {
   return { type: SYNCHRONIZED };
+}
+
+export function setFCMToken(fcmToken: string) {
+  return { type: SET_FCM_TOKEN, payload: { fcm_token: fcmToken } };
 }

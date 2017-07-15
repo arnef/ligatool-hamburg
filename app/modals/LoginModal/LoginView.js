@@ -7,7 +7,6 @@ import {
   Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
-import actions from '../../store/actions';
 import { Container } from '../../components';
 import {
   ListItem,
@@ -22,7 +21,6 @@ import * as theme from '../../components/base/theme';
 import strings from '../../Strings';
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as AuthActions from '../../redux/modules/auth';
-import * as MyTeamActions from '../../redux/modules/myteam';
 
 class LoginView extends Component {
   constructor(props) {

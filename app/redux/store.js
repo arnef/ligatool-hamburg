@@ -3,7 +3,7 @@ import { autoRehydrate } from 'redux-persist';
 import createMigration from 'redux-persist-migrate';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
-import manifest, { APP_KEY } from '../store/manifest';
+import manifest, { APP_KEY } from './manifest';
 // import reducers
 import sagas from './sagas';
 import nav from './modules/navigation';

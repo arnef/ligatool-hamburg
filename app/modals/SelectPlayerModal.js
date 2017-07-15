@@ -4,7 +4,6 @@ import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as MatchActions from '../redux/modules/matches';
 
-import { setPlayer, updateSets } from '../store/actions/matchActions';
 import * as NavigationActions from '../redux/modules/navigation';
 import { Container } from '../components';
 import { ListItem, Text, Separator } from '../components/base';

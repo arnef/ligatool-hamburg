@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
-import actions from '../store/actions';
 import { Container, TeamLogo, StaticListHeader } from '../components';
 import { Text, ListItem, Column, Separator, Row } from '../components/base';
 import { NavigationActions } from 'react-navigation';

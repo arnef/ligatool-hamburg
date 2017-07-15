@@ -19,6 +19,10 @@ export const UPDATE_MATCH: UPDATE_MATCH =
   'ligatool/modules/matches/UPDATE_MATCH';
 export const TOGGLE_MATCH_TYPE: TOGGLE_MATCH_TYPE =
   'ligatool/modules/matches/TOGGLE_TYPE';
+const LIVE_NOTIFICATION: LIVE_NOTIFICATION =
+  'ligatool/matches/LIVE_NOTIFICATION';
+const END_NOTIFICATION: END_NOTIFICATION = 'ligatool/matches/END_NOTIFICAION';
+
 // Reducer
 export default function reducer(state: State = {}, action: Action): State {
   switch (action.type) {
@@ -43,6 +47,32 @@ export default function reducer(state: State = {}, action: Action): State {
           action.payload.setsIdx,
         ),
       };
+      break;
+    case LIVE_NOTIFICATION:
+      if (state[action.payload.id]) {
+        state = {
+          ...state,
+          [action.payload.id]: {
+            ...state[action.payload.id],
+            set_points: true,
+            set_points_home: parseInt(action.payload.set_points_home, 10),
+            set_points_away: parseInt(action.payload.set_points_away, 10),
+            live: JSON.parse(action.payload.live) ? true : false,
+          },
+        };
+      }
+      break;
+    case END_NOTIFICATION:
+      if (state[action.payload.id]) {
+        state = {
+          ...state,
+          [action.payload.id]: {
+            ...state[action.payload.id],
+            score_unconfirmed: parseInt(action.payload.score_unconfirmed, 10),
+            live: false,
+          },
+        };
+      }
       break;
   }
   return state;
@@ -72,6 +102,14 @@ export function setType(payload: {
   setsIdx: Array<number | string>,
 }) {
   return { type: TOGGLE_MATCH_TYPE, payload };
+}
+
+export function notification(payload: any) {
+  if (payload.type === 'SCORE_CONFIRMED') {
+    return { type: END_NOTIFICATION, payload };
+  } else {
+    return { type: LIVE_NOTIFICATION, payload };
+  }
 }
 
 function getStateForAction(state: State, action: Action): State {

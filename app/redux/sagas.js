@@ -1,6 +1,7 @@
 // @flow
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import _ from 'lodash';
+import { REHYDRATE } from 'redux-persist/constants';
 import * as CacheManager from 'react-native-http-cache';
 import * as api from '../api';
 import { GET_OVERVIEW_MATCHES, OVERVIEW_MATCHES } from './modules/overview';
@@ -339,6 +340,47 @@ function* navigate(action) {
   }
 }
 
+function* updateNotifications() {
+  try {
+    const state = yield select();
+    if (state.settings.fcm_token) {
+      yield call(
+        api.updateNotifications,
+        state.settings.fcm_token,
+        state.settings.notification,
+      );
+    }
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* rehydrate() {
+  try {
+    const state = yield select();
+    if (
+      state.auth.api_key &&
+      state.auth.team &&
+      state.auth.team < new Date().getTime()
+    ) {
+      yield put(LoadingActions.showModal());
+      const team = yield call(api.refreshAuthentication, state.auth.api_key);
+      const ids = team.data.ids.map(item => `${item}`);
+      yield put(
+        AuthActions.setToken({
+          expires: team.data.expires,
+          token: team.data.token,
+          ids,
+        }),
+      );
+    }
+  } catch (ex) {
+    console.warn(ex);
+  } finally {
+    yield put(LoadingActions.hideModal());
+  }
+}
+
 export default function* sagas(): any {
   yield takeEvery(GET_OVERVIEW_MATCHES, overview);
   yield takeEvery(GET_MY_TEAM_MATCHES, myTeam);
@@ -358,4 +400,6 @@ export default function* sagas(): any {
   yield takeEvery(SET_PLAYER, setPlayer);
   yield takeEvery(NavigationActions.NAVIGATE, navigate);
   yield takeEvery(NavigationActions.BACK, navigate);
+  yield takeEvery(REHYDRATE, rehydrate);
+  yield takeEvery(SettingsActions.SET_FCM_TOKEN, updateNotifications);
 }

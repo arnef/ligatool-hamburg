@@ -7,8 +7,11 @@ import FCM, {
   NotificationType,
 } from 'react-native-fcm';
 import { NavigationActions } from 'react-navigation';
-import store from './store';
-import actions from './store/actions';
+// import store from './storeOLD';
+import store from './redux/store';
+// import actions from './storeOLD/actions';
+import * as SettingsActions from './redux/modules/settings';
+import * as MatchesActions from './redux/modules/matches';
 import { MATCH, OVERVIEW } from './views/routes';
 import { IOS } from './consts';
 import { currentRoute, isAdminForMatch } from './Helper';
@@ -83,9 +86,9 @@ function receiveNotification(notif: Notification) {
 
     if (notif.type && !notif.local_notification) {
       if (matchOpen) {
-        store.dispatch(actions.getMatch(id));
+        store.dispatch(MatchesActions.getMatch(id));
       } else {
-        store.dispatch(actions.receiveNotification(notif));
+        store.dispatch(MatchesActions.notification(notif));
       }
     }
 
@@ -118,11 +121,7 @@ function receiveNotification(notif: Notification) {
  */
 function refreshToken(token: string) {
   if (token) {
-    const settings = store.getState().settings;
-    store.dispatch(actions.updateFCMToken(token));
-    if (settings.notification.leagues) {
-      store.dispatch(actions.saveNotifications(token, settings.notification));
-    }
+    store.dispatch(SettingsActions.setFCMToken(token));
   }
 }
 

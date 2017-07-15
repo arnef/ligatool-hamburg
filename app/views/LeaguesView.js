@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import actions from '../store/actions';
+// import actions from '../store/actions';
 import { Container } from '../components';
 import { ListItem, Text, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
@@ -71,7 +71,7 @@ export default connect(
   }),
   dispatch => ({
     getRankings: () => dispatch(LeagueActions.getLeagues()),
-    pushRoute: route => dispatch(actions.pushRoute(route)),
+    pushRoute: route => dispatch(NavigationActions.navigate(route)),
     dispatch: action => dispatch(action),
   }),
 )(LeaguesView);
