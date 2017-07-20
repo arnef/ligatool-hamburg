@@ -7,7 +7,6 @@ import {
   Touchable,
   Icon,
   ActionSheet,
-  Row,
   Column,
 } from '../components/base';
 import { Container, MatchItem, StaticListHeader } from '../components';
@@ -57,7 +56,13 @@ class SelectableMatchListView extends Component {
         {this.props.leagues[id].match_days &&
           <StaticListHeader>
             <Touchable onPress={() => this.openMenu(matchDayKeys)}>
-              <Row center style={{ marginVertical: 12 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginVertical: 12,
+                }}
+              >
                 <Column>
                   <Text color="#fff">
                     {this.state.selectedMatchDay ||
@@ -67,7 +72,7 @@ class SelectableMatchListView extends Component {
                 <Column fluid>
                   <Icon name="more" size={22} color="#fff" />
                 </Column>
-              </Row>
+              </View>
             </Touchable>
           </StaticListHeader>}
         <Container

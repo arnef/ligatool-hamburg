@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import actions from '../store/actions';
 import { Container } from '../components';
 import { ListItem, Text, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
-import { LEAGUE, LEAGUE_CUP } from './routes';
+import Routes from '../config/routes';
 import * as LeagueActions from '../redux/modules/leagues';
 
 class LeaguesView extends Component {
@@ -50,7 +49,7 @@ class LeaguesView extends Component {
 
     dispatch(
       NavigationActions.navigate({
-        routeName: league.cup ? LEAGUE_CUP : LEAGUE,
+        routeName: league.cup ? Routes.LEAGUE_CUP : Routes.LEAGUE,
         params: {
           id: league.id,
           title: league.name,

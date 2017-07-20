@@ -12,7 +12,8 @@ import { Image, ListItem, Text, Button } from '../components/base';
 import * as theme from '../components/base/theme';
 import * as LeaguesActions from '../redux/modules/leagues';
 import { NavigationActions } from 'react-navigation';
-import { LEAGUE, LEAGUE_CUP, OVERVIEW, MY_TEAM, SETTINGS } from './routes';
+// import { LEAGUE, LEAGUE_CUP, OVERVIEW, MY_TEAM, SETTINGS } from './routes';
+import Routes from '../config/routes';
 
 class NavigationView extends Component {
   componentWillMount() {
@@ -25,13 +26,13 @@ class NavigationView extends Component {
     const { closeDrawer } = this.props;
     const navigate = this.props.navigation.navigate;
     if (!state.active) {
-      if (state.state === LEAGUE) {
-        navigate(LEAGUE, {
+      if (state.state === Routes.LEAGUE) {
+        navigate(Routes.LEAGUE, {
           id: state.leagueID,
           title: state.title,
         });
-      } else if (state.state === LEAGUE_CUP) {
-        navigate(LEAGUE_CUP, {
+      } else if (state.state === Routes.LEAGUE_CUP) {
+        navigate(Routes.LEAGUE_CUP, {
           id: state.leagueID,
           title: state.title,
           cup: true, // why?
@@ -73,8 +74,8 @@ class NavigationView extends Component {
     const color = this.props.settings.color;
     return this.props.leagues.map(league => {
       const active = league.cup
-        ? `${LEAGUE_CUP}_${league.id}` === this.props.activeItem
-        : `${LEAGUE}_${league.id}` === this.props.activeItem;
+        ? `${Routes.LEAGUE_CUP}_${league.id}` === this.props.activeItem
+        : `${Routes.LEAGUE}_${league.id}` === this.props.activeItem;
       return (
         <ListItem
           key={league.id}
@@ -84,7 +85,7 @@ class NavigationView extends Component {
           onPress={() => {
             this._handleRowPress({
               leagueID: league.id,
-              state: league.cup ? LEAGUE_CUP : LEAGUE,
+              state: league.cup ? Routes.LEAGUE_CUP : Routes.LEAGUE,
               title: league.name,
               active,
             });
@@ -120,9 +121,9 @@ class NavigationView extends Component {
         </View>
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.space} />
-          {this._renderItem(OVERVIEW, 'Übersicht', 'football', 0)}
+          {this._renderItem(Routes.OVERVIEW, 'Übersicht', 'football', 0)}
           {this._renderItem(
-            MY_TEAM,
+            Routes.MY_TEAM,
             team ? 'Mein Team' : 'Team wählen',
             team ? 'shirt' : 'log-in',
             1,
@@ -160,7 +161,7 @@ class NavigationView extends Component {
             </View>}
           {leagues.length > 0 && this.renderLeagues()}
           {this.renderSeparator()}
-          {this._renderItem(SETTINGS, 'Einstellungen', 'settings', 2)}
+          {this._renderItem(Routes.SETTINGS, 'Einstellungen', 'settings', 2)}
           <View style={styles.space} />
         </ScrollView>
       </View>

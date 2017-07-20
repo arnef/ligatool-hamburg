@@ -4,9 +4,8 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as TeamsActions from '../../redux/modules/teams';
 import { Container } from '../../components';
-import { PLAYER } from '../routes';
+import Routes from '../../config/routes';
 import {
-  Row,
   Column,
   ListItem,
   Image,
@@ -15,7 +14,7 @@ import {
   Separator,
   Touchable,
 } from '../../components/base';
-import strings from '../../Strings';
+import strings from '../../lib/strings';
 
 class TeamView extends Component {
   componentDidMount() {
@@ -78,11 +77,11 @@ class TeamView extends Component {
       <ListItem.Group>
         <ListItem.Header title={strings.team_info} />
         {!!team.image &&
-          <Row>
+          <View style={{ flexDirection: 'row' }}>
             <Column center>
               <Image url={team.image} size={240} />
             </Column>
-          </Row>}
+          </View>}
         {!!team.league &&
           this.renderItem(
             'Gruppe',
@@ -136,7 +135,13 @@ class TeamView extends Component {
                       ? this.openTel(item.phone_number)
                       : this.openMail(item.email)}
                 >
-                  <Row fluid center>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 0,
+                    }}
+                  >
                     <Text>{`${item.name} ${item.surname}`}</Text>
                     <Column />
                     <Column fluid>
@@ -146,7 +151,7 @@ class TeamView extends Component {
                         size={32}
                       />
                     </Column>
-                  </Row>
+                  </View>
                 </Touchable>
                 {!!item.phone_number &&
                   <Touchable
@@ -175,7 +180,8 @@ class TeamView extends Component {
         {players.map((player, idx) =>
           <View key={player.id}>
             <ListItem
-              onPress={() => this.props.navigation.navigate(PLAYER, player)}
+              onPress={() =>
+                this.props.navigation.navigate(Routes.PLAYER, player)}
             >
               <ListItem.Image url={player.image} />
               <Text>{`${player.name} ${player.surname}`}</Text>

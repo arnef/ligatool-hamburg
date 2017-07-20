@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
-import Touchable from '../Touchable';
+import Touchable from '../../Touchable';
 import * as theme from '../theme.js';
 
 class Item extends Component {

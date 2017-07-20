@@ -6,7 +6,6 @@ import {
   ActionSheet,
   Card,
   Content,
-  Row,
   Column,
   Touchable,
   Text,
@@ -19,7 +18,6 @@ class ListItemSet extends Component {
     ActionSheet.show(
       {
         options: ['Spieler wählen', 'Ergebnis eintragen'],
-        //, `${this.props.data.name} zurücksetzen`]
       },
       val => {
         if (val < 3) {
@@ -38,7 +36,7 @@ class ListItemSet extends Component {
       <Card>
         <Container onPress={this.showMenu.bind(this)}>
           <Content>
-            <Row center>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Column>
                 <Text bold secondary>{`${data.name}`}</Text>
               </Column>
@@ -47,7 +45,7 @@ class ListItemSet extends Component {
                 <Column fluid>
                   <Icon name="more" size={16} />
                 </Column>}
-            </Row>
+            </View>
           </Content>
         </Container>
         {!this.props.scoreInput &&
@@ -81,7 +79,7 @@ class ListItemSet extends Component {
     const color = this.props.error ? 'red' : null;
     const Container = this.props.editable ? View : Touchable;
     return (
-      <Row center key={idx}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }} key={idx}>
         <Container
           onPress={() => this.props.openPlayer(playerHome)}
           style={{
@@ -127,7 +125,7 @@ class ListItemSet extends Component {
             </Text>
           </Column>
         </Container>
-      </Row>
+      </View>
     );
   }
 

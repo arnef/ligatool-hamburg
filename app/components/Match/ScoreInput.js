@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Platform } from 'react-native';
-import { Row, Column, Touchable, Text, Icon } from '../../components/base';
+import { Column, Touchable, Text, Icon } from '../../components/base';
 import * as theme from '../../components/base/theme';
 
 class ScoreInput extends Component {
@@ -45,7 +45,13 @@ class ScoreInput extends Component {
       <View>
         {playerHome1 &&
           playerAway1 &&
-          <Row center style={{ marginTop: 10 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}
+          >
             <Column center>
               <Text center>
                 {this.getName(playerHome1)}
@@ -58,8 +64,10 @@ class ScoreInput extends Component {
                 {playerAway2 && `\n-\n${this.getName(playerAway2)}`}
               </Text>
             </Column>
-          </Row>}
-        <Row center style={{ marginBottom: 10 }}>
+          </View>}
+        <View
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}
+        >
           <Column center>
             <View style={styles.score}>
               {this.renderInputField('goals_home')}
@@ -70,12 +78,12 @@ class ScoreInput extends Component {
               {this.renderInputField('goals_away')}
             </View>
           </Column>
-        </Row>
-        <Row style={styles.buttonRow}>
+        </View>
+        <View style={styles.buttonRow}>
           <Column>
             {this.state.set > 0 &&
               <Touchable onPress={this.goBack.bind(this)}>
-                <Row center>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Icon
                     color={theme.secondaryTextColor}
                     name="arrow-back"
@@ -87,7 +95,7 @@ class ScoreInput extends Component {
                   >
                     1. Satz
                   </Text>
-                </Row>
+                </View>
               </Touchable>}
           </Column>
           <Column style={styles.vSeparator}>
@@ -110,7 +118,7 @@ class ScoreInput extends Component {
               </Text>
             </Touchable>
           </Column>
-        </Row>
+        </View>
       </View>
     );
   }

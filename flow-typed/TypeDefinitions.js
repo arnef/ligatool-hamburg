@@ -53,6 +53,7 @@ type LineUp = {
 
 type Match = {
   id: number,
+  venue?: Venue,
   datetime: number,
   team_home: Team,
   team_away: Team,

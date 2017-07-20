@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import Text from '../Text';
+import Text from '../../Text';
 
 class ListItemHeader extends Component {
   render() {

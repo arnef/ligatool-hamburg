@@ -3,7 +3,7 @@ import { StyleSheet, View, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Touchable, Text } from '../../components/base';
-import { TEAM } from '../../views/routes';
+import Routes from '../../config/routes';
 
 const white = 'rgba(255, 255, 255, .9)';
 
@@ -45,7 +45,7 @@ class MatchHeader extends Component {
           <Text style={style.points} color={this.props.color}>
             {score}
           </Text>
-          <Text style={style.points} size={12} color={this.props.color}>
+          <Text style={style.points} small color={this.props.color}>
             ({goals})
           </Text>
         </View>
@@ -71,7 +71,7 @@ class MatchHeader extends Component {
 
   onPress(team) {
     this.props.pushRoute({
-      routeName: TEAM,
+      routeName: Routes.TEAM,
       params: { team, title: team.name },
     });
   }

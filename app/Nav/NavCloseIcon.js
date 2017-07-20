@@ -2,7 +2,6 @@ import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { Icon, Touchable } from '../components/base';
 import * as NavigationActions from '../redux/modules/navigation';
-import { ANDROID } from '../consts';
 
 export default (title, action) => ({ navigation }) => ({
   title: title || navigation.state.params.title,
@@ -20,11 +19,11 @@ export default (title, action) => ({ navigation }) => ({
   ),
 });
 
-const iconSize = Platform.OS === ANDROID ? 24 : 20;
+const iconSize = Platform.OS === 'android' ? 24 : 20;
 const styles = StyleSheet.create({
   icon: {
     height: iconSize,
     width: iconSize,
-    margin: Platform.OS === ANDROID ? 16 : 12,
+    margin: Platform.OS === 'android' ? 16 : 12,
   },
 });

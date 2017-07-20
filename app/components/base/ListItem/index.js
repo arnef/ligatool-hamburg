@@ -2,8 +2,8 @@ import React from 'react';
 import ListItem from './Item';
 import ListItemGroup from './Group';
 import Header from './Header';
-import Image from '../Image';
-import Icon from '../Icon';
+import Image from '../../Image';
+import Icon from '../../Icon';
 import * as theme from '../theme';
 
 const iconSize = 32;

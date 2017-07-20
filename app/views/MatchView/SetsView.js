@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, Keyboard, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-// import { NavigationActions } from 'react-navigation';
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as MatchActions from '../../redux/modules/matches';
 import { Container, Match, StaticListHeader } from '../../components';
 import { ActionSheet, Touchable, Text } from '../../components/base';
 import * as theme from '../../components/base/theme';
-import { PLAYER } from '../routes';
+import Routes from '../../config/routes';
 const height = Dimensions.get('window').height;
 
 class SetsView extends Component {
@@ -93,7 +92,7 @@ class SetsView extends Component {
   }
 
   openPlayer(player) {
-    this.props.navigate(PLAYER, player);
+    this.props.navigate(Routes.PLAYER, player);
   }
 
   onSelect(idx, data, value) {

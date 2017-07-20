@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
-import store from './redux/store';
+import store from './config/store';
 
 type State = {
   rehydrated: boolean,
@@ -25,7 +25,7 @@ class App extends Component<void, Props, State> {
   componentDidMount() {
     const config = {
       storage: AsyncStorage,
-      whitelist: ['app', 'settings', 'auth', 'matches', 'drawer'],
+      // whitelist: ['app', 'settings', 'auth', 'matches', 'drawer'],
     };
     persistStore(store, config, () => {
       this.setState({ rehydrated: true });

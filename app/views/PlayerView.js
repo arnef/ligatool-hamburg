@@ -3,19 +3,11 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
-// import { getPlayer } from '../store/actions/playersActions';
 import * as PlayerActions from '../redux/modules/player';
 import { Container, MatchStatsBar } from '../components';
-import {
-  Text,
-  Image,
-  Row,
-  Column,
-  ListItem,
-  Separator,
-} from '../components/base';
+import { Text, Image, Column, ListItem, Separator } from '../components/base';
 import { formatDate } from '../Helper';
-import strings from '../Strings';
+import strings from '../lib/strings';
 
 class PlayerView extends Component {
   componentDidMount() {
@@ -66,11 +58,11 @@ class PlayerView extends Component {
     return (
       <ListItem.Group>
         <ListItem.Header title={strings.player_info} />
-        <Row>
+        <View style={{ flexDirection: 'row' }}>
           <Column center>
             <Image url={player.image} height={240} width={180} />
           </Column>
-        </Row>
+        </View>
         {this.renderItem('Name', `${player.name} ${player.surname}`)}
         <Separator />
         {this.renderItem('Einstufung', player.classification)}
@@ -100,22 +92,22 @@ class PlayerView extends Component {
             <ListItem.Header title={`Statistik ${stat.name}`} />
             <ListItem multiline>
               <Column width={2} center>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Platz
                 </Text>
               </Column>
               <Column width={2} center>
-                <Text size={12} numberOfLines={1}>
+                <Text small numberOfLines={1}>
                   Spiele
                 </Text>
               </Column>
               <Column width={3} center>
-                <Text center size={12} numberOfLines={1}>
+                <Text center small numberOfLines={1}>
                   Spielpunkte Quote
                 </Text>
               </Column>
               <Column width={3} center>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Leistungsindex
                 </Text>
               </Column>
@@ -138,7 +130,7 @@ class PlayerView extends Component {
             <ListItem multiline>
               <Column>
                 <MatchStatsBar stats={stat} />
-                <Row>
+                <View style={{ flexDirection: 'row' }}>
                   <Text
                     style={{ flex: 1, fontSize: 10 }}
                   >{`${stat.wins} Sieg${stat.wins !== 1 ? 'e' : ''}`}</Text>
@@ -150,7 +142,7 @@ class PlayerView extends Component {
                   >{`${stat.lost} Niederlage${stat.lost !== 1
                     ? 'n'
                     : ''}`}</Text>
-                </Row>
+                </View>
               </Column>
             </ListItem>
           </ListItem.Group>
@@ -171,17 +163,17 @@ class PlayerView extends Component {
             />
             <ListItem multiline>
               <Column width={6}>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Rangliste
                 </Text>
               </Column>
               <Column width={1} center>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Platz
                 </Text>
               </Column>
               <Column width={3} center>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Meldungen
                 </Text>
               </Column>
@@ -222,17 +214,17 @@ class PlayerView extends Component {
             <ListItem.Header title="Teams" />
             <ListItem multiline>
               <Column width={2}>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Saison
                 </Text>
               </Column>
               <Column width={4}>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Name
                 </Text>
               </Column>
               <Column width={4}>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Wettbewerbe
                 </Text>
               </Column>
@@ -276,17 +268,17 @@ class PlayerView extends Component {
             <ListItem.Header title="Turniermeldungen" />
             <ListItem multiline>
               <Column width={6}>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Turnier
                 </Text>
               </Column>
               <Column width={1} center>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Platz
                 </Text>
               </Column>
               <Column width={3} center>
-                <Text bold size={12} numberOfLines={1}>
+                <Text bold small numberOfLines={1}>
                   Meldungen
                 </Text>
               </Column>

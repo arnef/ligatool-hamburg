@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
-// import { getRankings } from '../../store/actions/leagueActions';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import { Container } from '../../components';
 import { ListItem, Text, Separator } from '../../components/base';
 import { NavigationActions } from 'react-navigation';
 
-class SelectGroupView extends Component {
+class SelectGroupView extends React.Component {
   componentDidMount() {
     if (this.props.leagues.length === 0) {
       this.props.getRankings();
@@ -56,7 +56,9 @@ export default connect(
   state => ({
     error: state.loading.error,
     fetching: state.loading.list,
-    leagues: Object.values(state.leagues),
+    leagues: _.filter(Object.values(state.drawer), o => {
+      return !o.cup;
+    }),
   }),
   dispatch => ({
     getRankings: () => dispatch(LeaguesActions.getLeagues()),

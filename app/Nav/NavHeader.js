@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-navigation';
-import { ANDROID, ANDROID_VERSION_LOLLIPOP } from '../consts';
-import * as routes from '../views/routes';
+import Routes from '../config/routes';
 import { backgroundColor } from '../components/base/theme';
 
 const white = 'rgba(255, 255, 255, .8)';
@@ -16,10 +15,7 @@ class NavHeader extends Component {
     headerStyle.push({
       backgroundColor: this.props.color,
     });
-    if (
-      Platform.OS === ANDROID &&
-      Platform.Version >= ANDROID_VERSION_LOLLIPOP
-    ) {
+    if (Platform.OS === 'android' && Platform.Version >= 21) {
       headerStyle.push({
         borderTopWidth: 20,
         borderTopColor: this.props.color,
@@ -32,10 +28,10 @@ class NavHeader extends Component {
 }
 
 const singleHeader = [
-  routes.LEAGUES,
-  routes.SETTINGS,
-  routes.SETTINGS_NOTIFICATIONS,
-  routes.PLAYER,
+  Routes.LEAGUES,
+  Routes.SETTINGS,
+  Routes.SETTINGS_NOTIFICATIONS,
+  Routes.PLAYER,
   'SelectGroup',
   'SelectTeam',
   'LoginView',

@@ -1,33 +1,23 @@
 // @flow
 import { NavigationActions } from 'react-navigation';
 import { Root } from '../../router';
-import {
-  MODAL_LOGIN,
-  MODAL_SELECT_PLAYER,
-  MY_TEAM,
-  // MATCH,
-  OVERVIEW,
-  LEAGUE,
-  LEAGUE_CUP,
-  SETTINGS,
-} from '../../views/routes';
+import Routes from '../../config/routes';
 import { currentRoute } from '../../Helper';
 
 // Type Definitions
-const routes = [OVERVIEW, MY_TEAM, LEAGUE, LEAGUE_CUP, SETTINGS];
-
-type Routes =
-  | typeof OVERVIEW
-  | typeof MY_TEAM
-  | typeof LEAGUE
-  | typeof LEAGUE_CUP
-  | typeof SETTINGS
-  | string;
-
 type State = {
   navigation: ?any,
-  activeItem: Routes,
+  activeItem: string,
 };
+
+const routes = [
+  Routes.OVERVIEW,
+  Routes.MY_TEAM,
+  Routes.LEAGUE,
+  Routes.LEAGUE_CUP,
+  Routes.SETTINGS,
+];
+
 // Actions
 const SHOW_LOG_IN_MODAL: SHOW_LOG_IN_MODAL =
   'ligatool/modules/SHOW_LOG_IN_MODAL';
@@ -42,7 +32,7 @@ const HIDE_PLAYER_MODAL: HIDE_PLAYER_MODAL =
 
 // Reducer
 export default function reducer(
-  state: State = { navigation: null, activeItem: OVERVIEW },
+  state: State = { navigation: null, activeItem: Routes.OVERVIEW },
   action: Action,
 ) {
   switch (action.type) {
@@ -50,7 +40,7 @@ export default function reducer(
       state = {
         ...state,
         navigation: Root.router.getStateForAction(
-          NavigationActions.navigate({ routeName: MODAL_LOGIN }),
+          NavigationActions.navigate({ routeName: Routes.MODAL_LOGIN }),
           state.navigation,
         ),
       };
@@ -61,7 +51,7 @@ export default function reducer(
         ...state,
         navigation: Root.router.getStateForAction(
           NavigationActions.back({
-            key: findRouteKey(state.navigation, MODAL_LOGIN),
+            key: findRouteKey(state.navigation, Routes.MODAL_LOGIN),
           }),
           state.navigation,
         ),
@@ -73,7 +63,7 @@ export default function reducer(
         ...state,
         navigation: Root.router.getStateForAction(
           NavigationActions.navigate({
-            routeName: MODAL_SELECT_PLAYER,
+            routeName: Routes.MODAL_SELECT_PLAYER,
             params: {
               ...action.payload,
               title: `${action.payload.data.name} Heim`,
@@ -89,7 +79,7 @@ export default function reducer(
         ...state,
         navigation: Root.router.getStateForAction(
           NavigationActions.back({
-            key: findRouteKey(state.navigation, MODAL_SELECT_PLAYER),
+            key: findRouteKey(state.navigation, Routes.MODAL_SELECT_PLAYER),
           }),
           state.navigation,
         ),
@@ -102,7 +92,10 @@ export default function reducer(
       };
       if (routes.indexOf(action.routeName) !== -1 && action.routeName) {
         state.activeItem = action.routeName;
-        if (action.routeName === LEAGUE || action.routeName === LEAGUE_CUP) {
+        if (
+          action.routeName === Routes.LEAGUE ||
+          action.routeName === Routes.LEAGUE_CUP
+        ) {
           state.activeItem = `${action.routeName}_${action.params.id}`;
         }
       }
@@ -114,11 +107,12 @@ export default function reducer(
           navigation: Root.router.getStateForAction(action, state.navigation),
         };
         const route = currentRoute(state.navigation);
-        if (routes.indexOf(route.routeName) !== -1) {
+        if (routes.indexOf(Routes.routeName) !== -1) {
           state.activeItem =
-            route.routeName === LEAGUE || route.routeName === LEAGUE_CUP
-              ? `${route.routeName}_${route.params.id}`
-              : route.routeName;
+            Routes.routeName === Routes.LEAGUE ||
+            Routes.routeName === Routes.LEAGUE_CUP
+              ? `${Routes.routeName}_${Routes.params.id}`
+              : Routes.routeName;
         }
       }
       break;
@@ -158,16 +152,17 @@ export function hidePlayer() {
   return { type: HIDE_PLAYER_MODAL };
 }
 
+// helper
 const recursiveFindRoute = (route, name) => {
   if (!route) {
     return null;
-  } else if (route.routeName == name) {
+  } else if (Routes.routeName == name) {
     return route;
-  } else if (!route.routes) {
+  } else if (!Routes.routes) {
     return null;
   } else {
-    for (let i = 0; i < route.routes.length; i++) {
-      const found = recursiveFindRoute(route.routes[i], name);
+    for (let i = 0; i < Routes.routes.length; i++) {
+      const found = recursiveFindRoute(Routes.routes[i], name);
       if (found) {
         return found;
       }

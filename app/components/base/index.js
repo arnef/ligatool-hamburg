@@ -1,17 +1,16 @@
 // @flow
-import Button from './Button';
-import Row from './Row';
+import Button from '../Button';
 import Column from './Column';
 import ListItem from './ListItem';
-import Text from './Text';
-import Image from './Image';
-import Touchable from './Touchable';
-import Icon from './Icon';
-import Switch from './Switch';
+import Text from '../Text';
+import Image from '../Image';
+import Touchable from '../Touchable';
+import Icon from '../Icon';
+import Switch from '../Switch';
 import Separator from './Separator';
-import Card from './Card';
+import Card from '../Card';
 import Content from './Content';
-import ActionSheet from './ActionSheet';
+import ActionSheet from '../ActionSheet';
 
 export {
   ActionSheet,
@@ -19,7 +18,6 @@ export {
   Content,
   Separator,
   Button,
-  Row,
   Image,
   Column,
   ListItem,

@@ -5,9 +5,8 @@ import { TabNavigator } from 'react-navigation';
 import MatchListView from './MatchListView';
 import NavTabBarTop from '../Nav/NavTabBarTop';
 import * as MyTeamActions from '../redux/modules/myteam';
-
-import strings from '../Strings';
-import { TAB_MATCHES_NEXT, TAB_MATCHES_PLAYED } from './routes';
+import Routes from '../config/routes';
+import strings from '../lib/strings';
 
 class MyTeam extends Component {
   render() {
@@ -27,7 +26,7 @@ class MyTeam extends Component {
 
 export default TabNavigator(
   {
-    [TAB_MATCHES_NEXT]: {
+    [Routes.TAB_MATCHES_NEXT]: {
       screen: connect(state => ({
         matches: state.myTeam.next,
         fetching: state.loading.list,
@@ -36,7 +35,7 @@ export default TabNavigator(
       }))(MyTeam),
       navigationOptions: { title: strings.next },
     },
-    [TAB_MATCHES_PLAYED]: {
+    [Routes.TAB_MATCHES_PLAYED]: {
       screen: connect(state => ({
         matches: state.myTeam.played,
         fetching: state.loading.list,

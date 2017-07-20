@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, TeamLogo, StaticListHeader } from '../components';
-import { Text, ListItem, Column, Separator, Row } from '../components/base';
+import { Text, ListItem, Column, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
-import { TEAM } from './routes';
+import Routes from '../config/routes';
 import * as LeaguesActions from '../redux/modules/leagues';
 
 const width = Dimensions.get('window').width - 5 * 40 - 32;
@@ -58,7 +58,7 @@ class TableView extends Component {
 
   _onPress(team) {
     this.props.pushRoute({
-      routeName: TEAM,
+      routeName: Routes.TEAM,
       params: { team, title: team.name },
     });
   }
@@ -78,30 +78,36 @@ class TableView extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StaticListHeader>
-          <Row center style={{ marginVertical: 8 }}>
+          <View
+            style={{
+              marginVertical: 8,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             <Column center fluid style={{ width: 24 }} />
             <Column style={{ paddingLeft: 4, width }} />
             <Column center fluid style={{ width: 35 }}>
-              <Text size={12} color="#fff">
+              <Text small color="#fff">
                 Sp.
               </Text>
             </Column>
             <Column center fluid style={{ width: 40 }}>
-              <Text size={12} color="#fff">
+              <Text small color="#fff">
                 Sätze
               </Text>
             </Column>
             <Column center fluid style={{ width: 35 }}>
-              <Text size={12} color="#fff">
+              <Text small color="#fff">
                 Tore
               </Text>
             </Column>
             <Column center fluid style={{ width: 35 }}>
-              <Text bold size={12} color="#fff">
+              <Text bold small color="#fff">
                 Pkt.
               </Text>
             </Column>
-          </Row>
+          </View>
         </StaticListHeader>
 
         <Container

@@ -5,23 +5,7 @@ import {
   TabNavigator,
   DrawerNavigator,
 } from 'react-navigation';
-import {
-  APP,
-  MODAL_LOGIN,
-  MODAL_SELECT_PLAYER,
-  OVERVIEW,
-  MY_TEAM,
-  LEAGUES,
-  LEAGUE_CUP,
-  SETTINGS,
-  SETTINGS_NOTIFICATIONS,
-  LEAGUE,
-  MATCH,
-  PREVIEW,
-  TEAM,
-  PLAYER,
-} from './views/routes';
-
+import Routes from './config/routes';
 import ModalLogin from './modals/LoginModal';
 import ModalSelectPlayer from './modals/SelectPlayerModal';
 import NavHeader from './Nav/NavHeader';
@@ -31,7 +15,7 @@ import NavTabBarBottom from './Nav/NavTabBarBottom';
 
 import Drawer, { DRAWER_WIDTH } from './views/DrawerView';
 
-import Overview from './views/Overview';
+import Overview from './routes/Overview';
 import MyTeam from './views/MyTeamView';
 import Leagues from './views/LeaguesView';
 import League from './views/LeagueView';
@@ -42,26 +26,29 @@ import Preview from './views/MatchView/PreView';
 import Team from './views/TeamView';
 import LeagueCup from './views/LeagueCupView';
 import PlayerView from './views/PlayerView';
-import strings from './Strings';
+import strings from './lib/strings';
 
 function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
+  const name = key.split('/');
   const defaultRoutes = {
     [key]: {
       screen,
-      navigationOptions: { title: strings[key.toLowerCase()] },
+      navigationOptions: {
+        title: strings[name[name.length - 1].toLowerCase()],
+      },
     },
-    [MATCH]: {
+    [Routes.MATCH]: {
       screen: Match,
       navigationOptions: { title: strings.match },
     },
-    [PREVIEW]: { screen: Preview },
-    [TEAM]: {
+    [Routes.PREVIEW]: { screen: Preview },
+    [Routes.TEAM]: {
       screen: Team,
       navigationOptions: ({ navigation }) => ({
         title: navigation.state.params.title,
       }),
     },
-    [PLAYER]: {
+    [Routes.PLAYER]: {
       screen: PlayerView,
       navigationOptions: ({ navigation }) => ({
         title: `${navigation.state.params.name} ${navigation.state.params
@@ -76,16 +63,16 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
   return StackNavigator(routes, NavHeader);
 }
 
-export const OverviewStack = createTabStack(OVERVIEW, Overview);
-export const MyTeamStack = createTabStack(MY_TEAM, MyTeam);
-export const LeaguesStack = createTabStack(LEAGUES, Leagues, {
-  [LEAGUE]: {
+export const OverviewStack = createTabStack(Routes.OVERVIEW, Overview);
+export const MyTeamStack = createTabStack(Routes.MY_TEAM, MyTeam);
+export const LeaguesStack = createTabStack(Routes.LEAGUES, Leagues, {
+  [Routes.LEAGUE]: {
     screen: League,
     navigationOptions: ({ navigation }) => ({
       title: navigation.state.params.title,
     }),
   },
-  [LEAGUE_CUP]: {
+  [Routes.LEAGUE_CUP]: {
     screen: LeagueCup,
     navigationOptions: ({ navigation }) => ({
       title: navigation.state.params.title,
@@ -95,13 +82,13 @@ export const LeaguesStack = createTabStack(LEAGUES, Leagues, {
 
 export const SettingStack = StackNavigator(
   {
-    [SETTINGS]: {
+    [Routes.SETTINGS]: {
       screen: Settings,
       navigationOptions: {
         title: strings.settings,
       },
     },
-    [SETTINGS_NOTIFICATIONS]: {
+    [Routes.SETTINGS_NOTIFICATIONS]: {
       screen: SettingsNotification,
       navigationOptions: {
         title: strings.notifications,
@@ -115,50 +102,50 @@ export const App =
   Platform.OS === 'android'
     ? DrawerNavigator(
         {
-          [OVERVIEW]: {
+          [Routes.OVERVIEW]: {
             screen: StackNavigator(
               {
-                [OVERVIEW]: {
+                [Routes.OVERVIEW]: {
                   screen: Overview,
                   navigationOptions: NavDrawerIcon(strings.overview),
                 },
-                [MY_TEAM]: {
+                [Routes.MY_TEAM]: {
                   screen: MyTeam,
                   navigationOptions: NavDrawerIcon(strings.my_team),
                 },
-                [LEAGUE]: {
+                [Routes.LEAGUE]: {
                   screen: League,
                   navigationOptions: NavDrawerIcon(),
                 },
-                [LEAGUE_CUP]: {
+                [Routes.LEAGUE_CUP]: {
                   screen: LeagueCup,
                   navigationOptions: NavDrawerIcon(),
                 },
-                [MATCH]: {
+                [Routes.MATCH]: {
                   screen: Match,
                   navigationOptions: { title: strings.match },
                 },
-                [TEAM]: {
+                [Routes.TEAM]: {
                   screen: Team,
                   navigationOptions: ({ navigation }) => ({
                     title: navigation.state.params.title,
                   }),
                 },
-                [PREVIEW]: {
+                [Routes.PREVIEW]: {
                   screen: Preview,
                 },
-                [PLAYER]: {
+                [Routes.PLAYER]: {
                   screen: PlayerView,
                   navigationOptions: ({ navigation }) => ({
                     title: `${navigation.state.params.name} ${navigation.state
                       .params.surname}`,
                   }),
                 },
-                [SETTINGS]: {
+                [Routes.SETTINGS]: {
                   screen: Settings,
                   navigationOptions: NavDrawerIcon(strings.settings),
                 },
-                [SETTINGS_NOTIFICATIONS]: {
+                [Routes.SETTINGS_NOTIFICATIONS]: {
                   screen: SettingsNotification,
                   navigationOptions: { title: strings.notifications },
                 },
@@ -174,28 +161,28 @@ export const App =
       )
     : TabNavigator(
         {
-          [OVERVIEW]: {
+          [Routes.OVERVIEW]: {
             screen: OverviewStack,
             navigationOptions: {
               tabBarLabel: strings.overview,
               tabBarIcon: ({ tintColor }) => NavIcon('football', tintColor),
             },
           },
-          [MY_TEAM]: {
+          [Routes.MY_TEAM]: {
             screen: MyTeamStack,
             navigationOptions: {
               tabBarLabel: strings.my_team,
               tabBarIcon: ({ tintColor }) => NavIcon('shirt', tintColor),
             },
           },
-          [LEAGUES]: {
+          [Routes.LEAGUES]: {
             screen: LeaguesStack,
             navigationOptions: {
               tabBarLabel: strings.leagues,
               tabBarIcon: ({ tintColor }) => NavIcon('trophy', tintColor),
             },
           },
-          [SETTINGS]: {
+          [Routes.SETTINGS]: {
             screen: SettingStack,
             navigationOptions: {
               tabBarLabel: strings.settings,
@@ -214,13 +201,13 @@ export const App =
 
 export const Root: StackNavigator = StackNavigator(
   {
-    [APP]: { screen: App },
-    [MODAL_LOGIN]: { screen: ModalLogin },
-    [MODAL_SELECT_PLAYER]: { screen: ModalSelectPlayer },
+    [Routes.APP]: { screen: App },
+    [Routes.MODAL_LOGIN]: { screen: ModalLogin },
+    [Routes.MODAL_SELECT_PLAYER]: { screen: ModalSelectPlayer },
   },
   {
     headerMode: 'none',
     mode: 'modal',
-    initialRouteName: APP,
+    initialRouteName: Routes.APP,
   },
 );

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { View, Platform, ActivityIndicator, Alert } from 'react-native';
 import { connect } from 'react-redux';
-// import actions from '../../store/actions';
 import { ListItem, Text, Switch, Separator } from '../../components/base';
 import { Container } from '../../components';
 import * as theme from '../../components/base/theme';
-// import { NavigationActions } from 'react-navigation';
 import * as NavigationActions from '../../redux/modules/navigation';
-import { SETTINGS_NOTIFICATIONS, MODAL_LOGIN } from '../routes';
-import strings from '../../Strings';
+import Routes from '../../config/routes';
+import strings from '../../lib/strings';
 import * as LeagueActions from '../../redux/modules/leagues';
 import * as SettingsActions from '../../redux/modules/settings';
 import * as AuthActions from '../../redux/modules/auth';
@@ -24,7 +22,7 @@ class SettingsView extends Component {
   }
   loginView() {
     this.props.pushRoute({
-      routeName: MODAL_LOGIN,
+      routeName: Routes.MODAL_LOGIN,
       action: NavigationActions.navigate({ routeName: 'LoginView' }),
     });
   }
@@ -68,7 +66,7 @@ class SettingsView extends Component {
   }
 
   _toggleGroups() {
-    this.props.navigation.navigate(SETTINGS_NOTIFICATIONS);
+    this.props.navigation.navigate(Routes.SETTINGS_NOTIFICATIONS);
   }
 
   _renderSectionNotification() {
@@ -208,8 +206,7 @@ export default connect(
     logout: () => dispatch(AuthActions.logout()),
     clearImageCache: () => dispatch(SettingsActions.clearCache()),
     saveNotifications: () => dispatch({ type: 'INGORE' }),
-    setNotification: (key, value) =>
-      dispatch(SettingsActions.toggleNotification(key)),
+    setNotification: key => dispatch(SettingsActions.toggleNotification(key)),
     showLogin: () => dispatch(NavigationActions.showLogin()),
     pushRoute: route => dispatch(NavigationActions.navigate(route)),
   }),

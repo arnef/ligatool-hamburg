@@ -7,9 +7,9 @@ import Loading from './modals/LoadingModal';
 import { Root } from './router';
 import { ActionSheet } from './components/base';
 import { backgroundColor } from './components/base/theme';
-import NotificationManager from './NotificationManager';
-import type { Listener } from './NotificationManager';
-import { MY_TEAM, MODAL_LOGIN } from './views/routes';
+import NotificationManager from './lib/NotificationManager';
+import type { Listener } from './lib/NotificationManager';
+import Route from './config/routes';
 
 class AppContainer extends Component {
   notificationListener: Listener;
@@ -50,11 +50,11 @@ class AppContainer extends Component {
         <Root
           navigation={addNavigationHelpers({
             dispatch: action => {
-              if (action.routeName === MY_TEAM && !this.props.team) {
+              if (action.routeName === Route.MY_TEAM && !this.props.team) {
                 dispatch({
                   ...action,
-                  routeName: MODAL_LOGIN,
-                  params: { next: MY_TEAM },
+                  routeName: Route.MODAL_LOGIN,
+                  params: { next: Route.MY_TEAM },
                 });
               } else {
                 dispatch(action);

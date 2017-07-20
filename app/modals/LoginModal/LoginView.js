@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { Container } from '../../components';
 import {
   ListItem,
-  Row,
   Column,
   Button,
   Text,
@@ -18,7 +17,7 @@ import {
   Separator,
 } from '../../components/base';
 import * as theme from '../../components/base/theme';
-import strings from '../../Strings';
+import strings from '../../lib/strings';
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as AuthActions from '../../redux/modules/auth';
 
@@ -85,7 +84,7 @@ class LoginView extends Component {
           </Wrapper>
           {!loading &&
             <Content>
-              <Row>
+              <View style={{ flexDirection: 'row' }}>
                 <Column>
                   <Button
                     outline
@@ -103,13 +102,13 @@ class LoginView extends Component {
                     title="Anmelden"
                   />
                 </Column>
-              </Row>
+              </View>
             </Content>}
           {loading &&
             <Content>
-              <Row center>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <ActivityIndicator color={this.props.color} size={'large'} />
-              </Row>
+              </View>
             </Content>}
         </ListItem.Group>
         {!loading &&

@@ -4,16 +4,16 @@ import { TabNavigator } from 'react-navigation';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
 import TeamView from './TeamDetails';
 import TeamMatches from './TeamMatches';
-import { TAB_TEAM, TAB_MATCHES } from '../routes';
-import strings from '../../Strings';
+import Routes from '../../config/routes';
+import strings from '../../lib/strings';
 
 export default TabNavigator(
   {
-    [TAB_TEAM]: {
+    [Routes.TAB_TEAM]: {
       screen: TeamView,
       navigationOptions: { title: strings.team },
     },
-    [TAB_MATCHES]: {
+    [Routes.TAB_MATCHES]: {
       screen: TeamMatches,
       navigationOptions: { title: strings.matches },
     },
