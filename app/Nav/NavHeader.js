@@ -48,7 +48,7 @@ export default {
     const headerStyle =
       singleHeader.indexOf(navigation.state.routeName) !== -1
         ? null
-        : { elevation: 0, shadowOpacity: 0 };
+        : { elevation: 0, shadowOpacity: 0, borderBottomWidth: 0 };
 
     return {
       header: (props: any) => <ConnectHeader {...props} />,
