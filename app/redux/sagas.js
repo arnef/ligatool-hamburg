@@ -359,21 +359,21 @@ function* updateNotifications() {
 function* rehydrate() {
   try {
     const state = yield select();
-    if (
-      state.auth.api_key &&
-      state.auth.team &&
-      state.auth.team < new Date().getTime()
-    ) {
-      yield put(LoadingActions.showModal());
-      const team = yield call(api.refreshAuthentication, state.auth.api_key);
-      const ids = team.data.ids.map(item => `${item}`);
-      yield put(
-        AuthActions.setToken({
-          expires: team.data.expires,
-          token: team.data.token,
-          ids,
-        }),
-      );
+    if (state.auth.api_key && state.auth.team) {
+      if (state.auth.team < new Date().getTime()) {
+        yield put(LoadingActions.showModal());
+        const team = yield call(api.refreshAuthentication, state.auth.api_key);
+        const ids = team.data.ids.map(item => `${item}`);
+        yield put(
+          AuthActions.setToken({
+            expires: team.data.expires,
+            token: team.data.token,
+            ids,
+          }),
+        );
+      } else {
+        api.setSecret(state.auth.team.token);
+      }
     }
   } catch (ex) {
     console.warn(ex);

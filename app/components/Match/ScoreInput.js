@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Platform } from 'react-native';
-import { Column, Touchable, Text, Icon } from '../../components/base';
+import { Touchable, Text, Icon } from '../../components/base';
 import * as theme from '../../components/base/theme';
 
 class ScoreInput extends Component {
@@ -52,35 +52,39 @@ class ScoreInput extends Component {
               marginTop: 10,
             }}
           >
-            <Column center>
+            <View style={{ alignItems: 'center', flex: 1 }}>
               <Text center>
                 {this.getName(playerHome1)}
                 {playerHome2 && `\n-\n${this.getName(playerHome2)}`}
               </Text>
-            </Column>
-            <Column center>
+            </View>
+            <View style={{ alignItems: 'center', flex: 1 }}>
               <Text center>
                 {this.getName(playerAway1)}
                 {playerAway2 && `\n-\n${this.getName(playerAway2)}`}
               </Text>
-            </Column>
+            </View>
           </View>}
         <View
-          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginVertical: 8,
+          }}
         >
-          <Column center>
+          <View style={{ alignItems: 'center', flex: 1 }}>
             <View style={styles.score}>
               {this.renderInputField('goals_home')}
             </View>
-          </Column>
-          <Column center>
+          </View>
+          <View style={{ alignItems: 'center', flex: 1 }}>
             <View style={styles.score}>
               {this.renderInputField('goals_away')}
             </View>
-          </Column>
+          </View>
         </View>
         <View style={styles.buttonRow}>
-          <Column>
+          <View style={{ alignItems: 'center', flex: 1 }}>
             {this.state.set > 0 &&
               <Touchable onPress={this.goBack.bind(this)}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -97,8 +101,8 @@ class ScoreInput extends Component {
                   </Text>
                 </View>
               </Touchable>}
-          </Column>
-          <Column style={styles.vSeparator}>
+          </View>
+          <View style={styles.vSeparator}>
             <Touchable onPress={this.props.toggleMenu}>
               <Text
                 style={styles.buttonText}
@@ -107,8 +111,8 @@ class ScoreInput extends Component {
                 Abbrechen
               </Text>
             </Touchable>
-          </Column>
-          <Column>
+          </View>
+          <View style={{ alignItems: 'center', flex: 1 }}>
             <Touchable onPress={this.onSave.bind(this)}>
               <Text
                 style={styles.buttonText}
@@ -117,7 +121,7 @@ class ScoreInput extends Component {
                 Speichern
               </Text>
             </Touchable>
-          </Column>
+          </View>
         </View>
       </View>
     );
@@ -188,6 +192,7 @@ class ScoreInput extends Component {
 
 const styles = StyleSheet.create({
   buttonRow: {
+    flexDirection: 'row',
     borderTopColor: theme.backgroundColor,
     borderTopWidth: 1,
     paddingBottom: 0,
@@ -229,6 +234,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRightColor: theme.backgroundColor,
     borderRightWidth: 1,
+    flex: 1,
   },
 });
 

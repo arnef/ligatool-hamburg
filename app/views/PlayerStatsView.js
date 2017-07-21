@@ -1,12 +1,28 @@
 // @flow
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
 import { Container, MatchStatsBar, StaticListHeader } from '../components';
-import { ListItem, Text, Column, Image, Separator } from '../components/base';
+import { ListItem, Text, Image, Separator } from '../components/base';
 import * as LeaguesActions from '../redux/modules/leagues';
 import Routes from '../config/routes';
+
+const styles = StyleSheet.create({
+  cell24: {
+    width: 24,
+  },
+  cellFlex: {
+    flex: 1,
+  },
+  cell36: {
+    width: 36,
+    alignItems: 'center',
+  },
+  cell38: {
+    width: 38,
+  },
+});
 
 class PlayerStatsView extends Component {
   componentDidMount() {
@@ -30,27 +46,27 @@ class PlayerStatsView extends Component {
               alignItems: 'center',
             }}
           >
-            <Column fluid style={{ width: 24 }} />
-            <Column>
+            <View style={styles.cell24} />
+            <View style={styles.cellFlex}>
               <Text small color="#fff">
                 Name
               </Text>
-            </Column>
-            <Column fluid style={{ width: 36 }} center>
+            </View>
+            <View style={styles.cell36}>
               <Text small color="#fff">
                 Q
               </Text>
-            </Column>
-            <Column fluid style={{ width: 38, alignItems: 'flex-end' }}>
+            </View>
+            <View style={[styles.cell38, { alignItems: 'flex-end' }]}>
               <Text small color="#fff" numberOfLines={1}>
                 Spiele
               </Text>
-            </Column>
-            <Column fluid style={{ width: 38 }} center>
+            </View>
+            <View style={[styles.cell38, { alignItems: 'center' }]}>
               <Text small bold color="#fff">
                 LI
               </Text>
-            </Column>
+            </View>
           </View>
         </StaticListHeader>
         <Container
@@ -83,15 +99,15 @@ class PlayerStatsView extends Component {
         onPress={() =>
           this.props.navigation.navigate(Routes.PLAYER, item.player)}
       >
-        <Column center fluid style={{ width: 20 }}>
+        <View style={{ alignItems: 'center', width: 20 }}>
           <Text bold center>{`${item.position}`}</Text>
-        </Column>
+        </View>
         <Image
           url={item.player.image}
           size={32}
           style={{ marginHorizontal: 8 }}
         />
-        <Column>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -99,19 +115,19 @@ class PlayerStatsView extends Component {
               paddingHorizontal: 0,
             }}
           >
-            <Column>
+            <View style={{ flex: 1 }}>
               <Text numberOfLines={1}>{`${item.player.name} ${item.player
                 .surname}`}</Text>
-            </Column>
-            <Column fluid style={{ width: 42, alignItems: 'flex-end' }}>
+            </View>
+            <View style={{ width: 42, alignItems: 'flex-end' }}>
               <Text>{`${item.rate}`}</Text>
-            </Column>
-            <Column fluid center style={{ width: 38 }}>
+            </View>
+            <View style={{ alignItems: 'center', width: 38 }}>
               <Text>{`${item.matches}`}</Text>
-            </Column>
-            <Column fluid style={{ width: 38 }} center>
+            </View>
+            <View style={{ alignItems: 'center', width: 38 }}>
               <Text bold>{`${item.competitive_index}`}</Text>
-            </Column>
+            </View>
           </View>
           <View
             style={{
@@ -122,7 +138,7 @@ class PlayerStatsView extends Component {
           >
             <MatchStatsBar small stats={item} />
           </View>
-        </Column>
+        </View>
       </ListItem>
     );
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
-import { Column, Text, Switch, Content } from '../base';
+import { Text, Switch } from '../base';
 import Set from './Set';
 import Header from './Header';
 
@@ -29,12 +29,12 @@ class Match extends Component {
       <View key={idx}>
         {data.toggle &&
           editable &&
-          <Content>
+          <View style={{ padding: 12 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text>
                 {data.toggle.title}
               </Text>
-              <Column />
+              <View style={{ flex: 1 }} />
               <Switch
                 onValueChange={() => {
                   toggleMatchType(match.id, data.setsIdx, data.toggle.type);
@@ -42,7 +42,7 @@ class Match extends Component {
                 value={match.type.indexOf('d5') !== -1}
               />
             </View>
-          </Content>}
+          </View>}
         <Set
           onPress={
             onPress

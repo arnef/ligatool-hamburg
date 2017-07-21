@@ -6,7 +6,6 @@ import * as TeamsActions from '../../redux/modules/teams';
 import { Container } from '../../components';
 import Routes from '../../config/routes';
 import {
-  Column,
   ListItem,
   Image,
   Text,
@@ -78,9 +77,9 @@ class TeamView extends Component {
         <ListItem.Header title={strings.team_info} />
         {!!team.image &&
           <View style={{ flexDirection: 'row' }}>
-            <Column center>
+            <View style={{ flex: 1, alignItems: 'center' }}>
               <Image url={team.image} size={240} />
-            </Column>
+            </View>
           </View>}
         {!!team.league &&
           this.renderItem(
@@ -110,7 +109,7 @@ class TeamView extends Component {
           <ListItem multiline onPress={() => this.openMaps(venue)}>
             <Text
             >{`${venue.name}\n${venue.street}, ${venue.zip_code} ${venue.city}`}</Text>
-            <Column />
+            <View style={{ flex: 1 }} />
             <ListItem.Icon right name="pin" color={this.props.color} />
           </ListItem>
         </ListItem.Group>
@@ -143,14 +142,14 @@ class TeamView extends Component {
                     }}
                   >
                     <Text>{`${item.name} ${item.surname}`}</Text>
-                    <Column />
-                    <Column fluid>
+                    <View style={{ flex: 1 }} />
+                    <View>
                       <Icon
                         color={this.props.color}
                         name={item.phone_number ? 'call' : 'mail'}
                         size={32}
                       />
-                    </Column>
+                    </View>
                   </View>
                 </Touchable>
                 {!!item.phone_number &&
@@ -158,9 +157,9 @@ class TeamView extends Component {
                     onPress={() => this.openMail(item.email)}
                     style={{ flex: 0, marginLeft: 16 }}
                   >
-                    <Column fluid>
+                    <View>
                       <Icon color={this.props.color} name="mail" size={32} />
-                    </Column>
+                    </View>
                   </Touchable>}
               </ListItem>
               {index < contacts.length - 1 && <Separator />}

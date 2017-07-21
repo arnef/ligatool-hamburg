@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, TeamLogo, StaticListHeader } from '../components';
-import { Text, ListItem, Column, Separator } from '../components/base';
+import { Text, ListItem, Separator } from '../components/base';
 import { NavigationActions } from 'react-navigation';
 import Routes from '../config/routes';
 import * as LeaguesActions from '../redux/modules/leagues';
@@ -21,37 +21,37 @@ class TableView extends Component {
   _renderTeam(data) {
     return (
       <ListItem last onPress={() => this._onPress(data)}>
-        <Column center fluid style={{ width: 20 }}>
+        <View style={[styles.column, { width: 20, flex: 0 }]}>
           <Text bold>
             {data.position}
           </Text>
-        </Column>
+        </View>
         <TeamLogo team={data} />
-        <Column style={{ paddingLeft: 4, width }}>
+        <View style={{ flex: 1, paddingLeft: 4, width }}>
           <Text numberOfLines={1} ellipsizeMode="tail">
             {data.name}
           </Text>
-        </Column>
-        <Column center fluid style={{ width: 35 }}>
+        </View>
+        <View style={[styles.column, { width: 35, flex: 0 }]}>
           <Text>
             {data.matches}
           </Text>
-        </Column>
-        <Column center fluid style={{ width: 40 }}>
+        </View>
+        <View style={[styles.column, { width: 40, flex: 0 }]}>
           <Text>
             {data.set_points_diff}
           </Text>
-        </Column>
-        <Column center fluid style={{ width: 35 }}>
+        </View>
+        <View style={[styles.column, { width: 35, flex: 0 }]}>
           <Text>
             {data.goals_diff}
           </Text>
-        </Column>
-        <Column center fluid style={{ width: 35 }}>
+        </View>
+        <View style={[styles.column, { width: 35, flex: 0 }]}>
           <Text bold>
             {data.points}
           </Text>
-        </Column>
+        </View>
       </ListItem>
     );
   }
@@ -85,28 +85,28 @@ class TableView extends Component {
               alignItems: 'center',
             }}
           >
-            <Column center fluid style={{ width: 24 }} />
-            <Column style={{ paddingLeft: 4, width }} />
-            <Column center fluid style={{ width: 35 }}>
+            <View style={[styles.column, { width: 24, flex: 0 }]} />
+            <View style={{ flex: 1, paddingLeft: 4, width }} />
+            <View style={[styles.column, { width: 35, flex: 0 }]}>
               <Text small color="#fff">
                 Sp.
               </Text>
-            </Column>
-            <Column center fluid style={{ width: 40 }}>
+            </View>
+            <View style={[styles.column, { width: 40, flex: 0 }]}>
               <Text small color="#fff">
                 Sätze
               </Text>
-            </Column>
-            <Column center fluid style={{ width: 35 }}>
+            </View>
+            <View style={[styles.column, { width: 35, flex: 0 }]}>
               <Text small color="#fff">
                 Tore
               </Text>
-            </Column>
-            <Column center fluid style={{ width: 35 }}>
+            </View>
+            <View style={[styles.column, { width: 35, flex: 0 }]}>
               <Text bold small color="#fff">
                 Pkt.
               </Text>
-            </Column>
+            </View>
           </View>
         </StaticListHeader>
 
@@ -129,6 +129,13 @@ class TableView extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  column: {
+    flex: 1,
+    alignItems: 'center',
+  },
+});
 
 export default connect(
   state => ({

@@ -8,14 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Container } from '../../components';
-import {
-  ListItem,
-  Column,
-  Button,
-  Text,
-  Content,
-  Separator,
-} from '../../components/base';
+import { ListItem, Button, Text, Separator } from '../../components/base';
 import * as theme from '../../components/base/theme';
 import strings from '../../lib/strings';
 import * as NavigationActions from '../../redux/modules/navigation';
@@ -36,16 +29,15 @@ class LoginView extends Component {
     const init = this.props.navigation.state.key.indexOf('Init') !== -1;
 
     const isIOS = Platform.OS === 'ios';
-    const Wrapper = isIOS ? View : Content;
     return (
       <Container>
         <ListItem.Group>
-          <Content>
+          <View style={{ padding: 12 }}>
             <Text>
               {strings.login_info}
             </Text>
-          </Content>
-          <Wrapper>
+          </View>
+          <View style={{ padding: isIOS ? 0 : 12 }}>
             {isIOS && <Separator full />}
             <TextInput
               placeholder="Username"
@@ -81,11 +73,11 @@ class LoginView extends Component {
               returnKeyType="send"
             />
             {isIOS && <Separator full />}
-          </Wrapper>
+          </View>
           {!loading &&
-            <Content>
+            <View style={{ padding: 12 }}>
               <View style={{ flexDirection: 'row' }}>
-                <Column>
+                <View style={styles.column}>
                   <Button
                     outline
                     onPress={() => {
@@ -93,31 +85,31 @@ class LoginView extends Component {
                     }}
                     title={init ? 'Abbrechen' : 'Überspringen'}
                   />
-                </Column>
-                <Column fluid style={{ width: 8 }} />
-                <Column>
+                </View>
+                <View style={styles.buttonSpace} />
+                <View style={styles.column}>
                   <Button
                     disabled={!this.state.user || !this.state.pass}
                     onPress={this.login.bind(this)}
                     title="Anmelden"
                   />
-                </Column>
+                </View>
               </View>
-            </Content>}
+            </View>}
           {loading &&
-            <Content>
+            <View style={{ padding: 12 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <ActivityIndicator color={this.props.color} size={'large'} />
               </View>
-            </Content>}
+            </View>}
         </ListItem.Group>
         {!loading &&
           error &&
-          <Content>
+          <View style={{ padding: 12 }}>
             <Text color="red" center>
               {strings.login_error}
             </Text>
-          </Content>}
+          </View>}
       </Container>
     );
   }
@@ -144,6 +136,12 @@ class LoginView extends Component {
 }
 
 const styles = StyleSheet.create({
+  column: {
+    flex: 1,
+  },
+  buttonSpace: {
+    width: 8,
+  },
   input: Platform.select({
     ios: {
       height: 40,

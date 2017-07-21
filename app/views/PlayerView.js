@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
 import * as PlayerActions from '../redux/modules/player';
 import { Container, MatchStatsBar } from '../components';
-import { Text, Image, Column, ListItem, Separator } from '../components/base';
+import { Text, Image, ListItem, Separator } from '../components/base';
 import { formatDate } from '../Helper';
 import strings from '../lib/strings';
 
@@ -59,9 +59,9 @@ class PlayerView extends Component {
       <ListItem.Group>
         <ListItem.Header title={strings.player_info} />
         <View style={{ flexDirection: 'row' }}>
-          <Column center>
+          <View style={{ flex: 1, alignItems: 'center' }}>
             <Image url={player.image} height={240} width={180} />
-          </Column>
+          </View>
         </View>
         {this.renderItem('Name', `${player.name} ${player.surname}`)}
         <Separator />
@@ -91,44 +91,44 @@ class PlayerView extends Component {
           <ListItem.Group>
             <ListItem.Header title={`Statistik ${stat.name}`} />
             <ListItem multiline>
-              <Column width={2} center>
+              <View style={{ flex: 2, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
                   Platz
                 </Text>
-              </Column>
-              <Column width={2} center>
+              </View>
+              <View style={{ flex: 2, alignItems: 'center' }}>
                 <Text small numberOfLines={1}>
                   Spiele
                 </Text>
-              </Column>
-              <Column width={3} center>
+              </View>
+              <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text center small numberOfLines={1}>
                   Spielpunkte Quote
                 </Text>
-              </Column>
-              <Column width={3} center>
+              </View>
+              <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
                   Leistungsindex
                 </Text>
-              </Column>
+              </View>
             </ListItem>
             <Separator full />
             <ListItem multiline>
-              <Column width={2} center>
+              <View style={{ flex: 2, alignItems: 'center' }}>
                 <Text bold center>{`${stat.position}`}</Text>
-              </Column>
-              <Column width={2} center>
+              </View>
+              <View style={{ flex: 2, alignItems: 'center' }}>
                 <Text center>{`${stat.matches}`}</Text>
-              </Column>
-              <Column width={3} center>
+              </View>
+              <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text center>{`${stat.rate}`}</Text>
-              </Column>
-              <Column width={3} center>
+              </View>
+              <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text center bold>{`${stat.competitive_index}`}</Text>
-              </Column>
+              </View>
             </ListItem>
             <ListItem multiline>
-              <Column>
+              <View style={{ flex: 1 }}>
                 <MatchStatsBar stats={stat} />
                 <View style={{ flexDirection: 'row' }}>
                   <Text
@@ -143,7 +143,7 @@ class PlayerView extends Component {
                     ? 'n'
                     : ''}`}</Text>
                 </View>
-              </Column>
+              </View>
             </ListItem>
           </ListItem.Group>
           <Separator group />
@@ -162,36 +162,36 @@ class PlayerView extends Component {
               title={`Ranglistenplatzierungen ${ranglists[0].season}`}
             />
             <ListItem multiline>
-              <Column width={6}>
+              <View style={{ flex: 6 }}>
                 <Text bold small numberOfLines={1}>
                   Rangliste
                 </Text>
-              </Column>
-              <Column width={1} center>
+              </View>
+              <View style={{ flex: 1, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
                   Platz
                 </Text>
-              </Column>
-              <Column width={3} center>
+              </View>
+              <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
                   Meldungen
                 </Text>
-              </Column>
+              </View>
             </ListItem>
             <Separator full />
             {ranglists.map((ranglist, idx) => {
               return (
                 <View key={ranglist.id}>
                   <ListItem multiline>
-                    <Column width={6}>
+                    <View style={{ flex: 6 }}>
                       <Text>{`${ranglist.name}`}</Text>
-                    </Column>
-                    <Column width={1} center>
+                    </View>
+                    <View style={{ flex: 1, alignItems: 'center' }}>
                       <Text>{`${ranglist.position}`}</Text>
-                    </Column>
-                    <Column width={3} center>
+                    </View>
+                    <View style={{ flex: 3, alignItems: 'center' }}>
                       <Text>{`${ranglist.participants}`}</Text>
-                    </Column>
+                    </View>
                   </ListItem>
                   {idx < ranglists.length - 1 && <Separator />}
                 </View>
@@ -213,39 +213,39 @@ class PlayerView extends Component {
           <ListItem.Group>
             <ListItem.Header title="Teams" />
             <ListItem multiline>
-              <Column width={2}>
+              <View style={{ flex: 2 }}>
                 <Text bold small numberOfLines={1}>
                   Saison
                 </Text>
-              </Column>
-              <Column width={4}>
+              </View>
+              <View style={{ flex: 4 }}>
                 <Text bold small numberOfLines={1}>
                   Name
                 </Text>
-              </Column>
-              <Column width={4}>
+              </View>
+              <View style={{ flex: 4 }}>
                 <Text bold small numberOfLines={1}>
                   Wettbewerbe
                 </Text>
-              </Column>
+              </View>
             </ListItem>
             <Separator full />
             {teams.map((team, idx) => {
               return (
                 <View key={team.id}>
                   <ListItem multiline>
-                    <Column width={2}>
+                    <View style={{ flex: 2 }}>
                       <Text>{`${team.season}`}</Text>
-                    </Column>
-                    <Column width={4} style={{ paddingRight: 4 }}>
+                    </View>
+                    <View style={{ flex: 4, paddingRight: 4 }}>
                       <Text>{`${team.name}`}</Text>
-                    </Column>
+                    </View>
 
-                    <Column width={4}>
+                    <View style={{ flex: 4 }}>
                       <Text>
                         {team.competitions.join('\n')}
                       </Text>
-                    </Column>
+                    </View>
                   </ListItem>
                   {idx < teams.length - 1 && <Separator />}
                 </View>
@@ -267,40 +267,40 @@ class PlayerView extends Component {
           <ListItem.Group>
             <ListItem.Header title="Turniermeldungen" />
             <ListItem multiline>
-              <Column width={6}>
+              <View style={{ flex: 6 }}>
                 <Text bold small numberOfLines={1}>
                   Turnier
                 </Text>
-              </Column>
-              <Column width={1} center>
+              </View>
+              <View style={{ flex: 1, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
                   Platz
                 </Text>
-              </Column>
-              <Column width={3} center>
+              </View>
+              <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
                   Meldungen
                 </Text>
-              </Column>
+              </View>
             </ListItem>
             <Separator full />
             {tournaments.map((tournament, idx) => {
               return (
                 <View key={tournament.id}>
                   <ListItem multiline>
-                    <Column width={6}>
+                    <View style={{ flex: 6 }}>
                       <Text
                       >{`${tournament.name} - ${tournament.discipline}`}</Text>
                       <Text>{`${tournament.location} ${formatDate(
                         tournament.date,
                       )}`}</Text>
-                    </Column>
-                    <Column width={1} center>
+                    </View>
+                    <View style={{ flex: 1, alignItems: 'center' }}>
                       <Text>{`${tournament.position}`}</Text>
-                    </Column>
-                    <Column width={3} center>
+                    </View>
+                    <View style={{ flex: 3, alignItems: 'center' }}>
                       <Text>{`${tournament.participants}`}</Text>
-                    </Column>
+                    </View>
                   </ListItem>
                   {idx < tournaments.length - 1 && <Separator />}
                 </View>

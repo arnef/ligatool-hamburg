@@ -7,7 +7,6 @@ import {
   Touchable,
   Icon,
   ActionSheet,
-  Column,
 } from '../components/base';
 import { Container, MatchItem, StaticListHeader } from '../components';
 import { NavigationActions } from 'react-navigation';
@@ -63,15 +62,15 @@ class SelectableMatchListView extends Component {
                   marginVertical: 12,
                 }}
               >
-                <Column>
+                <View style={{ flex: 1 }}>
                   <Text color="#fff">
                     {this.state.selectedMatchDay ||
                       this.props.leagues[id].selected}
                   </Text>
-                </Column>
-                <Column fluid>
+                </View>
+                <View>
                   <Icon name="more" size={22} color="#fff" />
-                </Column>
+                </View>
               </View>
             </Touchable>
           </StaticListHeader>}

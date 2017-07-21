@@ -5,8 +5,6 @@ import ScoreInput from './ScoreInput';
 import {
   ActionSheet,
   Card,
-  Content,
-  Column,
   Touchable,
   Text,
   Icon,
@@ -35,18 +33,18 @@ class ListItemSet extends Component {
     return (
       <Card>
         <Container onPress={this.showMenu.bind(this)}>
-          <Content>
+          <View style={{ padding: 12 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Column>
+              <View style={{ flex: 1 }}>
                 <Text bold secondary>{`${data.name}`}</Text>
-              </Column>
+              </View>
               {this.props.editable &&
                 !this.props.scoreInput &&
-                <Column fluid>
+                <View>
                   <Icon name="more" size={16} />
-                </Column>}
+                </View>}
             </View>
-          </Content>
+          </View>
         </Container>
         {!this.props.scoreInput &&
           <Container
@@ -90,22 +88,24 @@ class ListItemSet extends Component {
             alignItems: 'center',
           }}
         >
-          <Column>
+          <View style={{ flex: 1 }}>
             <Text center color={color}>
               {this.getName(playerHome)}
             </Text>
-          </Column>
-          <Column fluid>
+          </View>
+          <View fluid>
             {playerHome && <Image url={playerHome.image} size={32} />}
-          </Column>
+          </View>
         </Container>
-        <Column
-          fluid
-          center
-          style={{ opacity: this.props.scoreInput ? 0 : 1, paddingBottom: 12 }}
+        <View
+          style={{
+            opacity: this.props.scoreInput ? 0 : 1,
+            paddingBottom: 12,
+            alignItems: 'center',
+          }}
         >
           <Score goals={set} />
-        </Column>
+        </View>
         <Container
           onPress={() => this.props.openPlayer(playerAway)}
           style={{
@@ -116,14 +116,14 @@ class ListItemSet extends Component {
             alignItems: 'center',
           }}
         >
-          <Column fluid>
+          <View>
             {playerAway && <Image url={playerAway.image} size={32} />}
-          </Column>
-          <Column>
+          </View>
+          <View style={{ flex: 1 }}>
             <Text center color={color}>
               {this.getName(playerAway)}
             </Text>
-          </Column>
+          </View>
         </Container>
       </View>
     );
