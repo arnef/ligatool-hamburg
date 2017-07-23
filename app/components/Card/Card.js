@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { View } from 'react-native';
-import { Touchable } from '../base';
+import Touchable from '../Touchable';
 
 import styles from './styles';
 

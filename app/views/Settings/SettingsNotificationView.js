@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import * as SettingsActions from '../../redux/modules/settings';
-import { Container } from '../../components';
-import { ListItem, Text, Switch, Separator } from '../../components/base';
+import { Container, ListItem, Text, Switch, Separator } from '../../components';
 
 class SettingsNotificationView extends Component {
   render() {

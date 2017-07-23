@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import formats from './formats';
 import { connect } from 'react-redux';
-import { Text, Switch } from '../base';
+import { Text, Switch } from '../../components';
 import Set from './Set';
 import Header from './Header';
 

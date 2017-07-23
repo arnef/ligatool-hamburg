@@ -9,7 +9,7 @@ import {
   Text,
   Icon,
   Image,
-} from '../../components/base';
+} from '../../components';
 
 class ListItemSet extends Component {
   showMenu() {

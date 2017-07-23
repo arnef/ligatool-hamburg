@@ -7,12 +7,12 @@ import {
   Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Container } from '../../components';
-import { ListItem, Button, Text, Separator } from '../../components/base';
-import * as theme from '../../components/base/theme';
+import { Container, ListItem, Button, Text, Separator } from '../../components';
 import strings from '../../lib/strings';
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as AuthActions from '../../redux/modules/auth';
+
+import { colors } from '../../config/styles';
 
 class LoginView extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class LoginView extends Component {
               placeholder="Username"
               autoCapitalize="none"
               style={styles.input}
-              underlineColorAndroid={theme.backgroundColor}
+              underlineColorAndroid={colors.BACKGROUND}
               editable={!loading}
               blurOnSubmit={false}
               autoCorrect={false}
@@ -62,7 +62,7 @@ class LoginView extends Component {
               ref={ref => (this.passwordInput = ref)}
               style={styles.input}
               selectTextOnFocus={true}
-              underlineColorAndroid={theme.backgroundColor}
+              underlineColorAndroid={colors.BACKGROUND}
               editable={!loading}
               secureTextEntry={true}
               keyboardAppearance="dark"
@@ -165,10 +165,5 @@ export default connect(
     hideLogin: next => dispatch(NavigationActions.hideLogin(next)),
     login: (user, next) => dispatch(AuthActions.login(user, next)),
     navigate: route => dispatch(NavigationActions.navigate(route)),
-    // queryTeamMatches: () => dispatch(actions.queryTeamMatches()),
-    // renewToken: apiKey => dispatch(actions.renewToken(apiKey)),
-    // requestAPIKey: user => dispatch(actions.requestAPIKey(user)),
-    // showLogin: show => dispatch(NavigationActions.hideLogin()),
-    // navigate: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(LoginView);

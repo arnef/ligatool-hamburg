@@ -1,8 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, MatchItem } from '../components';
-import { Text } from '../components/base';
+import { Container, MatchItem, Text } from '../components';
 import { sortMatches } from '../Helper';
 
 type State = {
@@ -47,19 +46,6 @@ class MatchListView extends Component {
   }
 
   render() {
-    if (this.props.matches.length === 0 && !this.props.refreshing) {
-      return (
-        <Container
-          error={this.props.error}
-          refreshing={this.props.refreshing}
-          onRefresh={this.props.onRefresh}
-        >
-          <Text center secondary style={{ padding: 16 }}>
-            Keine Begegnungen
-          </Text>
-        </Container>
-      );
-    }
     const matches = this.props.matches;
     matches.sort(sortMatches(this.props.data));
     return (
@@ -71,8 +57,10 @@ class MatchListView extends Component {
         keyExtractor={item => {
           return `${item}`;
         }}
-        // getItemLayout={(data, index) => ( {length: MatchItem.ITEM_HEIGHT, offset: MatchItem.ITEM_HEIGHT * index, index} )}
-        // ItemSeparatorComponent={() => (<Separator group />)}
+        ListEmptyComponent={() =>
+          <Text center secondary style={{ padding: 16 }}>
+            Keine Begegnungen
+          </Text>}
         renderRow={this._renderMatch.bind(this)}
       />
     );

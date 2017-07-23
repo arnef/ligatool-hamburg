@@ -4,8 +4,14 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
 import * as PlayerActions from '../redux/modules/player';
-import { Container, MatchStatsBar } from '../components';
-import { Text, Image, ListItem, Separator } from '../components/base';
+import {
+  Container,
+  MatchStatsBar,
+  Text,
+  Image,
+  ListItem,
+  Separator,
+} from '../components';
 import { formatDate } from '../Helper';
 import strings from '../lib/strings';
 

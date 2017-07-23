@@ -2,9 +2,9 @@ import React from 'react';
 import ListItem from './Item';
 import ListItemGroup from './Group';
 import Header from './Header';
-import Image from '../../Image';
-import Icon from '../../Icon';
-import * as theme from '../theme';
+import Image from '../Image';
+import Icon from '../Icon';
+import { colors } from '../../config/styles';
 
 const iconSize = 32;
 
@@ -17,7 +17,7 @@ function ListItemIcon(props) {
     <Icon
       size={iconSize}
       style={{ marginRight: props.right ? 0 : 16, textAlign: 'center' }}
-      color={props.right ? theme.secondaryTextColor : theme.primaryTextColor}
+      color={props.right ? colors.TEXT_SECONDARY : colors.TEXT_PRIMARY}
       {...props}
     />
   );

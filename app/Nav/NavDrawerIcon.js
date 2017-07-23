@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Icon, Touchable } from '../components/base';
+import { Icon, Touchable } from '../components';
 
 export default (title = null) => ({ navigation }) => {
   return {

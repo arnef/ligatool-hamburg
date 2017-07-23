@@ -10,7 +10,8 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-import { ListItem, Text } from '../base';
+import ListItem from '../ListItem';
+import Text from '../Text';
 
 import styles from './styles';
 

@@ -3,8 +3,15 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import type { Dispatch } from 'redux';
-import { Container, MatchStatsBar, StaticListHeader } from '../components';
-import { ListItem, Text, Image, Separator } from '../components/base';
+import {
+  Container,
+  MatchStatsBar,
+  StaticListHeader,
+  ListItem,
+  Text,
+  Image,
+  Separator,
+} from '../components';
 import * as LeaguesActions from '../redux/modules/leagues';
 import Routes from '../config/routes';
 

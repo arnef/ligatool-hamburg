@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Touchable, Text } from '../../components/base';
+import { Touchable, Text } from '../../components';
 import Routes from '../../config/routes';
 
 const white = 'rgba(255, 255, 255, .9)';

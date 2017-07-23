@@ -4,7 +4,8 @@ import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-navigation';
 import Routes from '../config/routes';
-import { backgroundColor } from '../components/base/theme';
+// import { backgroundColor } from '../components/theme';
+import { colors } from '../config/styles';
 
 const white = 'rgba(255, 255, 255, .8)';
 
@@ -43,7 +44,7 @@ const ConnectHeader = connect(state => ({ color: state.settings.color }))(
 );
 
 export default {
-  cardStyle: { backgroundColor },
+  cardStyle: { backgroundColor: colors.BACKGROUND },
   navigationOptions: ({ navigation }: any) => {
     const headerStyle =
       singleHeader.indexOf(navigation.state.routeName) !== -1

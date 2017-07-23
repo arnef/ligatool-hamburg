@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import {
+  Container,
+  MatchItem,
+  StaticListHeader,
   ListItem,
   Text,
   Touchable,
   Icon,
   ActionSheet,
-} from '../components/base';
-import { Container, MatchItem, StaticListHeader } from '../components';
+} from '../components';
 import { NavigationActions } from 'react-navigation';
 import { sortMatches } from '../Helper';
 import * as LeaguesActions from '../redux/modules/leagues';

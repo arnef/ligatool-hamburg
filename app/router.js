@@ -16,12 +16,13 @@ import NavTabBarBottom from './Nav/NavTabBarBottom';
 import Drawer, { DRAWER_WIDTH } from './views/DrawerView';
 
 import Overview from './routes/Overview';
+import Match from './routes/Match';
 import MyTeam from './views/MyTeamView';
 import Leagues from './views/LeaguesView';
 import League from './views/LeagueView';
 import Settings from './views/Settings/SettingsView';
 import SettingsNotification from './views/Settings/SettingsNotificationView';
-import Match from './views/MatchView';
+
 import Preview from './views/MatchView/PreView';
 import Team from './views/TeamView';
 import LeagueCup from './views/LeagueCupView';

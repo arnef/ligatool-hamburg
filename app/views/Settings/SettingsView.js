@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Platform, ActivityIndicator, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItem, Text, Switch, Separator } from '../../components/base';
-import { Container } from '../../components';
-import * as theme from '../../components/base/theme';
+import { Container, ListItem, Text, Switch, Separator } from '../../components';
 import * as NavigationActions from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
 import strings from '../../lib/strings';
+import { colors } from '../../config/styles';
+
 import * as LeagueActions from '../../redux/modules/leagues';
 import * as SettingsActions from '../../redux/modules/settings';
 import * as AuthActions from '../../redux/modules/auth';
@@ -105,7 +105,7 @@ class SettingsView extends Component {
           <View style={{ flex: 1 }} />
           {this.props.loading &&
             Object.keys(this.props.leagues).length === 0 &&
-            <ActivityIndicator color={theme.secondaryTextColor} />}
+            <ActivityIndicator color={colors.TEXT_SECONDARY} />}
           {Object.keys(this.props.leagues).length > 0 &&
             <ListItem.Icon name="caret-forward" right />}
         </ListItem>

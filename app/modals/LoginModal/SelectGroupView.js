@@ -1,10 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
-import { connect } from 'react-redux';
-import * as LeaguesActions from '../../redux/modules/leagues';
-import { Container } from '../../components';
-import { ListItem, Text, Separator } from '../../components/base';
 import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import * as LeaguesActions from '../../redux/modules/leagues';
+import { Container, ListItem, Text, Separator } from '../../components';
 
 class SelectGroupView extends React.Component {
   componentDidMount() {

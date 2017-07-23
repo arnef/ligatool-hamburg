@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import * as MatchActions from '../redux/modules/matches';
 
 import * as NavigationActions from '../redux/modules/navigation';
-import { Container } from '../components';
-import { ListItem, Text, Separator } from '../components/base';
+import { Container, ListItem, Text, Separator } from '../components';
 import NavHeader from '../Nav/NavHeader';
 import NavCloseIcon from '../Nav/NavCloseIcon';
 

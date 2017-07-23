@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { Icon, Touchable } from '../components/base';
+import { Icon, Touchable } from '../components';
 import * as NavigationActions from '../redux/modules/navigation';
 
 export default (title, action) => ({ navigation }) => ({

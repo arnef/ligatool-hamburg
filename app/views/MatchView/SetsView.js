@@ -1,12 +1,21 @@
+// @flow
 import React, { Component } from 'react';
 import { View, Keyboard, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as MatchActions from '../../redux/modules/matches';
-import { Container, Match, StaticListHeader } from '../../components';
-import { ActionSheet, Touchable, Text } from '../../components/base';
-import * as theme from '../../components/base/theme';
+import {
+  Container,
+  Match,
+  StaticListHeader,
+  ActionSheet,
+  Touchable,
+  Text,
+  MatchHeader,
+} from '../../components';
 import Routes from '../../config/routes';
+import { colors } from '../../config/styles';
+
 const height = Dimensions.get('window').height;
 
 class SetsView extends Component {
@@ -151,13 +160,31 @@ class SetsView extends Component {
   }
 
   render() {
-    const data = this.props.matches[this.props.data.id] || {};
+    const data: Match = this.props.matches[this.props.data.id] || {};
 
     const editable = data.type && data.is_admin;
-
+    const home = data.team_home;
+    const away = data.team_away;
+    const points = data.set_points
+      ? { home: data.set_points_home, away: data.set_points_away }
+      : null;
+    const goals = data.set_points
+      ? { home: data.goals_home, away: data.goals_away }
+      : null;
     return (
-      <View style={{ backgroundColor: theme.backgroundColor, flex: 1 }}>
-        <Match.Header matchId={this.props.data.id} />
+      <View style={{ backgroundColor: colors.BACKGROUND, flex: 1 }}>
+        <MatchHeader
+          home={home ? home.name : null}
+          away={away ? away.name : null}
+          points={points}
+          goals={goals}
+          onPress={team => {
+            this.props.navigate(Routes.TEAM, {
+              team: data[team],
+              title: data[team].name,
+            });
+          }}
+        />
         {data.is_admin && data.showButton && this.renderSubmitButton()}
         <Container
           getRef={scrollView => {
@@ -229,6 +256,7 @@ export default connect(
     // setPlayer: (team, result, setsIdx) => dispatch({ type: 'set player' }), //actions.setPlayer(team, result, setsIdx)),
     showPlayerDialog: (id, data) =>
       dispatch(NavigationActions.showPlayer(id, data)), //actions.showPlayerDialog(id, data)),
+    //TODO
     suggestScore: (id, sets, btnIdx) => dispatch({ type: 'suggest score' }), //actions.suggestScore(id, sets, btnIdx)),
     toggleMatchType: (id, setsIdx, type) =>
       dispatch(MatchActions.setType({ id, setsIdx, type })), //actions.toggleMatchType(id, setsIdx, type)),

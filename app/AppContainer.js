@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import Loading from './modals/LoadingModal';
 import { Root } from './router';
-import { ActionSheet } from './components/base';
-import { backgroundColor } from './components/base/theme';
+import { ActionSheet } from './components';
 import NotificationManager from './lib/NotificationManager';
 import type { Listener } from './lib/NotificationManager';
 import Route from './config/routes';
+
+import { colors } from './config/styles';
 
 class AppContainer extends Component {
   notificationListener: Listener;
@@ -40,7 +41,7 @@ class AppContainer extends Component {
   render() {
     const { dispatch, nav } = this.props;
     return (
-      <View style={{ flex: 1, backgroundColor }}>
+      <View style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
         <Loading />
         <ActionSheet
           ref={c => {

@@ -7,21 +7,13 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
-// import actions from '../store/actions';
-import { Image, ListItem, Text, Button } from '../components/base';
-import * as theme from '../components/base/theme';
+import { Image, ListItem, Text, Button } from '../components';
 import * as LeaguesActions from '../redux/modules/leagues';
 import { NavigationActions } from 'react-navigation';
-// import { LEAGUE, LEAGUE_CUP, OVERVIEW, MY_TEAM, SETTINGS } from './routes';
 import Routes from '../config/routes';
+import { colors } from '../config/styles';
 
 class NavigationView extends Component {
-  componentWillMount() {
-    if (this.props.leagues.length === 0) {
-      this.props.getRankings();
-    }
-  }
-
   _handleRowPress(state) {
     const { closeDrawer } = this.props;
     const navigate = this.props.navigation.navigate;
@@ -59,7 +51,7 @@ class NavigationView extends Component {
         last
       >
         <ListItem.Icon
-          color={active ? color : theme.secondaryTextColor}
+          color={active ? color : colors.TEXT_SECONDARY}
           name={icon}
         />
         <Text bold color={active ? color : null}>
@@ -114,7 +106,7 @@ class NavigationView extends Component {
           {team &&
             <View style={[styles.teamContainer, { top: height - 66, width }]}>
               {team.image && <Image url={team.image} style={styles.teamLogo} />}
-              <Text color="#fff" size={24} style={styles.teamName}>
+              <Text color="#fff" style={styles.teamName}>
                 {team.name}
               </Text>
             </View>}
@@ -201,6 +193,7 @@ const styles = StyleSheet.create({
   teamName: {
     flex: 1,
     marginLeft: 16,
+    fontSize: 24,
   },
 });
 
@@ -210,7 +203,7 @@ export default connect(
   state => ({
     activeItem: state.nav.activeItem,
     loading: state.loading.nonBlocking,
-    leagues: Object.values(state.leagues).sort(
+    leagues: Object.values(state.drawer).sort(
       (a, b) => (a.name < b.name ? -1 : 1),
     ),
     settings: state.settings,

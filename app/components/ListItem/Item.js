@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
-import Touchable from '../../Touchable';
-import * as theme from '../theme.js';
+import Touchable from '../Touchable';
+import { colors } from '../../config/styles';
 
 class Item extends Component {
   render() {
@@ -29,7 +29,7 @@ class Item extends Component {
       <View
         style={
           active
-            ? { backgroundColor: theme.backgroundColor }
+            ? { backgroundColor: colors.BACKGROUND }
             : { backgroundColor: '#fff' }
         }
       >
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
   }),
   separator: Platform.select({
     android: {
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: colors.BACKGROUND,
       height: 1,
       marginLeft: 0,
     },
     ios: {
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: colors.BACKGROUND,
       height: 1,
       marginLeft: 16,
     },

@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, TeamLogo, StaticListHeader } from '../components';
-import { Text, ListItem, Separator } from '../components/base';
+import {
+  Container,
+  TeamLogo,
+  StaticListHeader,
+  Text,
+  ListItem,
+  Separator,
+} from '../components';
 import { NavigationActions } from 'react-navigation';
 import Routes from '../config/routes';
 import * as LeaguesActions from '../redux/modules/leagues';

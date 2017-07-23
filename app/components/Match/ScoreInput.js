@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Platform } from 'react-native';
-import { Touchable, Text, Icon } from '../../components/base';
-import * as theme from '../../components/base/theme';
+import { Touchable, Text, Icon } from '../../components';
+import { colors } from '../../config/styles';
 
 class ScoreInput extends Component {
   constructor(props) {
@@ -89,7 +89,7 @@ class ScoreInput extends Component {
               <Touchable onPress={this.goBack.bind(this)}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Icon
-                    color={theme.secondaryTextColor}
+                    color={colors.TEXT_SECONDARY}
                     name="arrow-back"
                     size={20}
                   />
@@ -193,12 +193,12 @@ class ScoreInput extends Component {
 const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
-    borderTopColor: theme.backgroundColor,
+    borderTopColor: colors.BACKGROUND,
     borderTopWidth: 1,
     paddingBottom: 0,
   },
   buttonText: {
-    color: theme.secondaryTextColor,
+    color: colors.TEXT_SECONDARY,
     fontWeight: 'bold',
     marginVertical: 10,
     textAlign: 'center',
@@ -230,9 +230,9 @@ const styles = StyleSheet.create({
     width: 60,
   },
   vSeparator: {
-    borderLeftColor: theme.backgroundColor,
+    borderLeftColor: colors.BACKGROUND,
     borderLeftWidth: 1,
-    borderRightColor: theme.backgroundColor,
+    borderRightColor: colors.BACKGROUND,
     borderRightWidth: 1,
     flex: 1,
   },

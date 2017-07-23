@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
 import { View, Platform } from 'react-native';
-import { Text, Touchable } from '../base';
 import { connect } from 'react-redux';
+import Text from '../Text';
+import Touchable from '../Touchable';
 
 import styles from './styles';
 

@@ -3,16 +3,16 @@ import { View, Linking, Alert, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as TeamsActions from '../../redux/modules/teams';
-import { Container } from '../../components';
-import Routes from '../../config/routes';
 import {
+  Container,
   ListItem,
   Image,
   Text,
   Icon,
   Separator,
   Touchable,
-} from '../../components/base';
+} from '../../components';
+import Routes from '../../config/routes';
 import strings from '../../lib/strings';
 
 class TeamView extends Component {

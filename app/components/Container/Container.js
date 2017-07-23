@@ -39,6 +39,7 @@ class Container extends Component {
             ref={scrollview => {
               this.scrollView = scrollview;
             }}
+            ListEmptyComponent={this.props.ListEmptyComponent}
             getItemLayout={this.props.getItemLayout}
           />
         </View>

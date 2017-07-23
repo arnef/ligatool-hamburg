@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container } from '../components';
-import { ListItem, Text, Separator } from '../components/base';
+import { Container, ListItem, Text, Separator } from '../components';
 import { NavigationActions } from 'react-navigation';
 import Routes from '../config/routes';
 import * as LeagueActions from '../redux/modules/leagues';
