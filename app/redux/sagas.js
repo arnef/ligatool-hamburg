@@ -36,7 +36,7 @@ import {
 import * as AuthActions from './modules/auth';
 import * as NavigationActions from './modules/navigation';
 import * as PlayerActions from './modules/player';
-import * as MatchLib from '../libs/Match';
+import * as MatchUtil from '../lib/MatchUtil';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
@@ -153,10 +153,10 @@ function* getMatch(action) {
     yield put(LoadingActions.show());
     const matchData = yield call(api.getMatch, action.params.id);
     const state = yield select();
-    const match = MatchLib.isAdmin(matchData.data, state.auth);
+    const match = MatchUtil.isAdmin(matchData.data, state.auth);
     yield put({
       type: GET_MATCH_DONE,
-      payload: { ...match, games: MatchLib.sets(match) },
+      payload: { ...match, games: MatchUtil.sets(match) },
     });
   } catch (ex) {
     console.warn(ex);
@@ -302,10 +302,10 @@ function* updateMatch(action) {
     }
     const matchData = yield call(api.updateMatch, action.payload.id, payload);
     const state = yield select();
-    const match = MatchLib.isAdmin(matchData.data, state.auth);
+    const match = MatchUtil.isAdmin(matchData.data, state.auth);
     yield put({
       type: GET_MATCH_DONE,
-      payload: { ...match, games: MatchLib.sets(match) },
+      payload: { ...match, games: MatchUtil.sets(match) },
     });
   } catch (ex) {
     console.warn(ex);
@@ -317,7 +317,7 @@ function* updateMatch(action) {
 function* setPlayer(action) {
   try {
     const state = yield select();
-    const match = MatchLib.setPlayer(
+    const match = MatchUtil.setPlayer(
       state.matches[`${action.payload.id}`],
       action.payload,
     );
