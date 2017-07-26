@@ -1,4 +1,34 @@
 // @flow
+import MatchTypes from '../config/MatchTypes';
+
+export function sets(match: Match) {
+  const matchSets = match.sets || {};
+  let sets: Array<Sets> = [];
+  const format = MatchTypes[match.type || 'default'];
+
+  for (let set of format) {
+    let data = { ...set, sets: [], editable: match.is_admin };
+    for (let setIdx of data.setsIdx) {
+      if (matchSets[setIdx]) {
+        data = { ...data, sets: [...data.sets, matchSets[setIdx]] };
+      } else if (
+        match.is_admin &&
+        (!data.extra ||
+          (data.extra &&
+            match.set_points_home >= 16 &&
+            match.set_points_away >= 16))
+      ) {
+        data = { ...data, sets: [...data.sets, {}] };
+      }
+    }
+    if (data.sets.length > 0) {
+      sets = [...sets, data];
+    }
+  }
+
+  return sets;
+}
+
 /**
  * check if a user is logged in and can edit given match
  * @param {object} match
@@ -22,10 +52,22 @@ export function isAdmin(match: Match, user: any): Match {
 
   console.log(`is admin for match: ${isAdmin ? 'true' : 'false'}`);
   if (isAdmin) {
+    const score =
+      match.score_unconfirmed &&
+      (match.league.cup
+        ? match.set_points_home !== match.set_points_away &&
+          (match.set_points_home > 16 || match.set_points_away > 16)
+        : match.set_points_home + match.set_points_away === 32);
+    const suggestionState = score
+      ? match.live
+        ? 0
+        : user.team.ids.indexOf(`${match.score_suggest}`) !== -1 ? 1 : 2
+      : -1;
     return {
       ...match,
       lineUp: checkLineUp(match),
       is_admin: true,
+      can_suggest_score: suggestionState,
       type: getType(match),
     };
   } else {
@@ -52,8 +94,8 @@ export function toggleType(match: Match, type: string, idx: Array<number>) {
       };
     }
   }
-
-  return { ...match, type };
+  match = { ...match, type };
+  return { ...match, games: sets(match) };
 }
 
 export function setPlayer(
@@ -90,7 +132,6 @@ function checkLineUp(
   const playerCount = {};
   const playerDisabled = {};
   const errors = [];
-
   const addPlayerCount = (idx, player, doubles = false) => {
     if (!player || !player.id) {
       return;

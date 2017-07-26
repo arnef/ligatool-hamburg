@@ -154,15 +154,17 @@ export function hidePlayer() {
 
 // helper
 const recursiveFindRoute = (route, name) => {
+  const TAG = 'recursiveFindRoute';
+  console.log(TAG, route, name);
   if (!route) {
     return null;
-  } else if (Routes.routeName == name) {
+  } else if (route.routeName === name) {
     return route;
-  } else if (!Routes.routes) {
+  } else if (!route.routes) {
     return null;
   } else {
-    for (let i = 0; i < Routes.routes.length; i++) {
-      const found = recursiveFindRoute(Routes.routes[i], name);
+    for (let i = 0; i < route.routes.length; i++) {
+      const found = recursiveFindRoute(route.routes[i], name);
       if (found) {
         return found;
       }
@@ -174,7 +176,7 @@ const recursiveFindRoute = (route, name) => {
 
 const findRouteKey = (state: any, name: string): any => {
   const found = recursiveFindRoute(state, name);
-
+  console.log('findroutekey', found);
   if (found) {
     return found.key;
   }

@@ -59,7 +59,7 @@ class MatchListView extends Component {
         }}
         ListEmptyComponent={() =>
           <Text center secondary style={{ padding: 16 }}>
-            Keine Begegnungen
+            {`${!this.props.refreshing ? 'Keine Begegnungen' : ''}`}
           </Text>}
         renderRow={this._renderMatch.bind(this)}
       />

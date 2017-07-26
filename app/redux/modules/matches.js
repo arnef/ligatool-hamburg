@@ -17,6 +17,7 @@ export const GET_MATCH_DONE: GET_MATCH_DONE = 'ligatool/modules/GET_MATCH_DONE';
 export const SET_PLAYER: SET_PLAYER = 'ligatool/modules/matches/SET_PLAYER';
 export const UPDATE_MATCH: UPDATE_MATCH =
   'ligatool/modules/matches/UPDATE_MATCH';
+export const SUGGEST_SCORE: SUGGEST_SCORE = 'ligattol/matches/SUGGEST_SCORE';
 export const TOGGLE_MATCH_TYPE: TOGGLE_MATCH_TYPE =
   'ligatool/modules/matches/TOGGLE_TYPE';
 const LIVE_NOTIFICATION: LIVE_NOTIFICATION =
@@ -80,7 +81,7 @@ export default function reducer(state: State = {}, action: Action): State {
 
 // Action Creators
 export function getMatch(id: number) {
-  return { type: GET_MATCH, payload: { id } };
+  return { type: GET_MATCH, params: { id } };
 }
 
 export function setPlayer(payload: {
@@ -94,6 +95,10 @@ export function setPlayer(payload: {
 
 export function update(payload: { id: number, sets: { [string]: Sets } }) {
   return { type: UPDATE_MATCH, payload };
+}
+
+export function suggest(payload: { id: number, sets: { [string]: Sets } }) {
+  return { type: SUGGEST_SCORE, payload };
 }
 
 export function setType(payload: {

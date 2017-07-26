@@ -1,5 +1,4 @@
 // @flow
-import Match from './Match';
 import Container from './Container';
 import LaunchScreen from './LaunchScreen';
 import MatchItem from './MatchItem';
@@ -19,10 +18,10 @@ import Card from './Card';
 import ActionSheet from './ActionSheet';
 
 import MatchHeader from './MatchHeader';
+import ScoreInput from './ScoreInput';
+import SetItem from './SetItem';
 
-//TODO remove
 export {
-  Match,
   MatchHeader,
   MatchStatsBar,
   Container,
@@ -40,4 +39,6 @@ export {
   Separator,
   Card,
   ActionSheet,
+  ScoreInput,
+  SetItem,
 };

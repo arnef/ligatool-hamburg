@@ -2,16 +2,13 @@
   { "name": "Einzel (E1)", "setsIdx": [1], "type": 1 },
   { "name": "Einzel (E2)", "setsIdx": [2], "type": 1 },
   { "name": "Doppel (D1)", "setsIdx": [3, 4], "type": 2 },
-  { "name": "Einzel (E3)", "setsIdx": [5], "type": 1, "toggle": { "type": "cup_d5", "title": "Optionales 5. Doppel"} },
+  { "name": "Einzel (E3)", "setsIdx": [5], "type": 1, "toggle": { "type": "default_d5", "title": "Optionales 5. Doppel"} },
   { "name": "Einzel (E4)", "setsIdx": [6], "type": 1 },
   { "name": "Doppel (D2)", "setsIdx": [7, 8], "type": 2 },
-  { "name": "Einzel (E5)", "setsIdx": [9], "type": 1 },
+  { "name": "Einzel (E5)", "setsIdx": [9], "type": 1, "halftime": true },
   { "name": "Einzel (E6)", "setsIdx": [10], "type": 1 },
   { "name": "Doppel (D3)", "setsIdx": [11, 12], "type": 2 },
   { "name": "Einzel (E7)", "setsIdx": [13], "type": 1 },
   { "name": "Einzel (E8)", "setsIdx": [14], "type": 1 },
-  { "name": "Doppel (D4)", "setsIdx": [15, 16], "type": 2 },
-  { "name": "Doppel (D6)", "setsIdx": [17, 18], "type": 2, "extra": true },
-  { "name": "Doppel (D6)", "setsIdx": [19, 20], "type": 2, "extra": true },
-  { "name": "Doppel (D6)", "setsIdx": [21, 22], "type": 2, "extra": true }
+  { "name": "Doppel (D4)", "setsIdx": [15, 16], "type": 2 }
 ]

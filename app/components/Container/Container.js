@@ -30,6 +30,8 @@ class Container extends Component {
           />
           <FlatList
             style={{ flex: 1 }}
+            onScroll={this.props.onScroll}
+            scrollEventThrottle={0}
             keyboardShouldPersistTaps="handled"
             ItemSeparatorComponent={this.props.ItemSeparatorComponent}
             refreshControl={this.props.onRefresh ? refreshControl : null}
@@ -39,6 +41,7 @@ class Container extends Component {
             ref={scrollview => {
               this.scrollView = scrollview;
             }}
+            ListFooterComponent={this.props.ListFooterComponent}
             ListEmptyComponent={this.props.ListEmptyComponent}
             getItemLayout={this.props.getItemLayout}
           />
@@ -55,7 +58,7 @@ class Container extends Component {
             keyboardShouldPersistTaps="handled"
             automaticallyAdjustContentInsets={false}
             onScroll={this.props.onScroll}
-            scrollEventThrottle={200}
+            scrollEventThrottle={0}
             refreshControl={this.props.onRefresh ? refreshControl : null}
             ref={scrollview => {
               this.scrollView = scrollview;
@@ -74,8 +77,10 @@ class Container extends Component {
       setTimeout(() => {
         if (this.scrollView.scrollToOffset) {
           this.scrollView.scrollToOffset(params);
+          console.log('SCROOOOOL CONTAINER OFFSET', params);
         } else if (this.scrollView.scrollTo) {
           this.scrollView.scrollTo(params);
+          console.log('SCROOOOOL CONTAINER TO', params);
         }
       }, 100);
     }

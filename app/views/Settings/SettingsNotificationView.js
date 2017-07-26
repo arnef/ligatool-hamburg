@@ -22,21 +22,9 @@ class SettingsNotificationView extends Component {
     const checked = groups[item.id];
 
     return (
-      <ListItem
-        key={item.id}
-        onPress={
-          Platform.OS === 'android'
-            ? () => {
-                this.props.setGroupNotification(item.id);
-              }
-            : null
-        }
-      >
-        <Text>
-          {item.name}
-        </Text>
-        <View style={{ flex: 1 }} />
+      <ListItem key={item.id}>
         <Switch
+          title={item.name}
           value={checked}
           onValueChange={() => {
             this.props.setGroupNotification(item.id);

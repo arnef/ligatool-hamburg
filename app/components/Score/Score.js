@@ -17,8 +17,11 @@ export default function Score(props: ScoreProps): ReactElement<any> {
       <View>
         <View style={[styles.score, { marginTop: 8 }]}>
           <Text style={styles.scoreText}>
-            {`${props.setPoints.set_points_home || '-'}:${props.setPoints
-              .set_points_away || '-'}`}
+            {`${props.setPoints.set_points_home != null
+              ? props.setPoints.set_points_home
+              : '-'}:${props.setPoints.set_points_away != null
+              ? props.setPoints.set_points_away
+              : '-'}`}
           </Text>
         </View>
         <Text
@@ -37,8 +40,11 @@ export default function Score(props: ScoreProps): ReactElement<any> {
       <View style={{ borderWidth: 0 }}>
         <View style={[styles.score, { width: 48 }, props.style]}>
           <Text style={styles.scoreText}>
-            {`${props.goals.goals_home || '-'}:${props.goals.goals_away ||
-              '-'}`}
+            {`${props.goals.goals_home != null
+              ? props.goals.goals_home
+              : '-'}:${props.goals.goals_away != null
+              ? props.goals.goals_away
+              : '-'}`}
           </Text>
         </View>
       </View>

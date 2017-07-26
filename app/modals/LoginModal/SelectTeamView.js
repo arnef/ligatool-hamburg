@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { sortBy } from 'lodash';
 import {
   Container,
   TeamLogo,
@@ -15,21 +16,17 @@ class SelectTeamView extends Component {
   componentDidMount() {
     const id = this.props.navigation.state.params.id;
 
-    if (!this.props.leagues[id].table) {
+    if (!this.props.leagues[id]) {
       this.getTeams();
     }
   }
 
   render() {
     const lid = this.props.navigation.state.params.id;
-    const teams = this.props.leagues[lid].table
-      ? JSON.parse(JSON.stringify(this.props.leagues[lid].table))
-      : [];
-
-    // sort teams alphabetically
-    teams.sort((a, b) => {
-      return a.name < b.name ? -1 : 1;
-    });
+    const teams = sortBy(
+      this.props.leagues[lid] ? this.props.leagues[lid].table : [],
+      'name',
+    );
 
     return (
       <Container

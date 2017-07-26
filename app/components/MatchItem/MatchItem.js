@@ -33,7 +33,10 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
           props.data.set_points ||
           (props.data.is_admin && date.diff(moment(), 'minutes') < 31)
         ) {
-          route = { routeName: Routes.MATCH, params: { id: props.data.id } };
+          route = {
+            routeName: Routes.MATCH,
+            params: { id: props.data.id, title: props.data.league.name },
+          };
         }
         props.dispatch(NavigationActions.navigate(route));
       }}

@@ -3080,6 +3080,12 @@ react-native-fcm@^7.1.0:
   version "0.2.0"
   resolved "git+https://github.com/arnef/react-native-http-cache.git#9d58fa6e7d538280283a427827df6528166645db"
 
+react-native-keyboard-aware-scroll-view@^0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.2.9.tgz#2a1ae49cfae90a9665b21763c1f8bd03ed5fb92c"
+  dependencies:
+    react-timer-mixin "^0.13.3"
+
 react-native-tab-view@^0.0.67:
   version "0.0.67"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.67.tgz#cdd146fe5e5d4baff6c89f2d5d0b15fa23db39d0"
@@ -3212,7 +3218,7 @@ react-redux@^5.0.5:
     loose-envify "^1.1.0"
     prop-types "^15.5.10"
 
-react-timer-mixin@^0.13.2:
+react-timer-mixin@^0.13.2, react-timer-mixin@^0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
 

@@ -6,7 +6,12 @@ import * as CacheManager from 'react-native-http-cache';
 import * as api from '../lib/api';
 // import * as api from '../apiOLD';
 import { GET_OVERVIEW_MATCHES, OVERVIEW_MATCHES } from './modules/overview';
-import { GET_MATCHES, SET_PLAYER, UPDATE_MATCH } from './modules/matches';
+import {
+  GET_MATCHES,
+  SET_PLAYER,
+  UPDATE_MATCH,
+  SUGGEST_SCORE,
+} from './modules/matches';
 import { GET_MY_TEAM_MATCHES, MY_TEAM_MATCHES } from './modules/myteam';
 import {
   GET_LEAGUES,
@@ -34,6 +39,7 @@ import * as PlayerActions from './modules/player';
 import * as MatchLib from '../libs/Match';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
+import Routes from '../config/routes';
 
 import { compareDays, getMatchDays } from '../Helper';
 
@@ -145,16 +151,12 @@ function* clearCache() {
 function* getMatch(action) {
   try {
     yield put(LoadingActions.show());
-    const match = yield call(api.getMatch, action.payload.id);
+    const matchData = yield call(api.getMatch, action.params.id);
     const state = yield select();
+    const match = MatchLib.isAdmin(matchData.data, state.auth);
     yield put({
       type: GET_MATCH_DONE,
-      // payload: {
-      //   ...match.data,
-      //   is_admin: isAdminForMatch(match.data, state.auth),
-      //   type: getMatchType(match.data)
-      // },
-      payload: MatchLib.isAdmin(match.data, state.auth),
+      payload: { ...match, games: MatchLib.sets(match) },
     });
   } catch (ex) {
     console.warn(ex);
@@ -288,13 +290,22 @@ function* getPlayer(action) {
 function* updateMatch(action) {
   try {
     yield put(LoadingActions.showModal());
-    const match = yield call(api.updateMatch, action.payload.id, {
-      sets: action.payload.sets,
-    });
+    let payload = { sets: action.payload.sets };
+    if (action.type === SUGGEST_SCORE) {
+      const state = yield select();
+      const match = state.matches[`${action.payload.id}`];
+      if (match.can_suggest_score === 0) {
+        payload = { ...payload, score_suggest: true };
+      } else if (match.can_suggest_score === 2) {
+        payload = { ...payload, score_unconfirmed: false };
+      }
+    }
+    const matchData = yield call(api.updateMatch, action.payload.id, payload);
     const state = yield select();
+    const match = MatchLib.isAdmin(matchData.data, state.auth);
     yield put({
       type: GET_MATCH_DONE,
-      payload: MatchLib.isAdmin(match.data, state.auth),
+      payload: { ...match, games: MatchLib.sets(match) },
     });
   } catch (ex) {
     console.warn(ex);
@@ -310,6 +321,7 @@ function* setPlayer(action) {
       state.matches[`${action.payload.id}`],
       action.payload,
     );
+    console.log(match);
     yield put({ type: GET_MATCH_DONE, payload: match });
     if (action.payload.team === 'away') {
       yield put(NavigationActions.hidePlayer());
@@ -336,8 +348,15 @@ function* navigate(action) {
       );
       yield put(SettingsActions.synchronized());
     }
+    switch (action.routeName) {
+      case Routes.MATCH:
+        yield call(getMatch, action);
+        break;
+    }
   } catch (ex) {
     console.warn(ex);
+  } finally {
+    // yield put(LoadingActions.hide());
   }
 }
 
@@ -360,7 +379,7 @@ function* rehydrate() {
   try {
     const state = yield select();
     if (state.auth.api_key && state.auth.team) {
-      if (state.auth.team < new Date().getTime()) {
+      if (state.auth.team.expires < new Date().getTime()) {
         yield put(LoadingActions.showModal());
         const team = yield call(api.refreshAuthentication, state.auth.api_key);
         const ids = team.data.ids.map(item => `${item}`);
@@ -403,4 +422,5 @@ export default function* sagas(): any {
   yield takeEvery(NavigationActions.BACK, navigate);
   yield takeEvery(REHYDRATE, rehydrate);
   yield takeEvery(SettingsActions.SET_FCM_TOKEN, updateNotifications);
+  yield takeEvery(SUGGEST_SCORE, updateMatch);
 }

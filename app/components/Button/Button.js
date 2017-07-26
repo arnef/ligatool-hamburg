@@ -27,6 +27,9 @@ function Button(props: ButtonProps): ReactElement<any> {
   if (props.disabled) {
     btnStyle.push(styles.disabled);
   }
+  if (props.square) {
+    btnStyle.push({ borderRadius: 0 });
+  }
   const isAndroid = Platform.OS === 'android';
   const Container = props.disabled || props.loading ? View : Touchable;
 

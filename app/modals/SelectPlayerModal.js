@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
@@ -15,6 +16,9 @@ class SelectPlayer extends Component {
     this.state = {
       selected: {},
     };
+    console.log('Select Plater', props);
+    this.onPress = this.onPress.bind(this);
+    this.renderItem = this.renderItem.bind(this);
   }
 
   render() {
@@ -22,14 +26,15 @@ class SelectPlayer extends Component {
     const { state } = this.props.navigation;
     const match = matches[state.params.matchId];
     const teamKey = `team_${state.params.team}`;
+    console.log(teamKey);
     let items = match[teamKey] ? match[teamKey].player : [];
 
     return (
       <Container
         dataSource={items}
-        renderRow={this.renderItem.bind(this)}
+        renderRow={this.renderItem}
         ItemSeparatorComponent={() => <Separator image />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => `${item.id}`}
       />
     );
   }
@@ -42,7 +47,12 @@ class SelectPlayer extends Component {
         : item.disabled.doubles
       : false;
     return (
-      <ListItem onPress={() => this.onPress(index)} disabled={disabled}>
+      <ListItem
+        onPress={() => {
+          this.onPress(index);
+        }}
+        disabled={disabled}
+      >
         <ListItem.Image url={item.image} />
         <Text>{`${item.name} ${item.surname}`}</Text>
         <View style={{ flex: 1 }} />
@@ -130,7 +140,6 @@ export default StackNavigator(
           closeModal: () => dispatch(NavigationActions.hidePlayer()),
           setPlayer: (id, team, player, setsIdx) =>
             dispatch(MatchActions.setPlayer({ id, team, player, setsIdx })),
-          //dispatch(setPlayer(id, team, player, setsIdx)),
           updateSets: (matchId, sets) =>
             dispatch(MatchActions.update({ id: matchId, sets })),
         }),

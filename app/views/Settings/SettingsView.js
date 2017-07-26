@@ -52,11 +52,8 @@ class SettingsView extends Component {
             : null
         }
       >
-        <Text>
-          {text}
-        </Text>
-        <View style={{ flex: 1 }} />
         <Switch
+          title={text}
           value={value}
           disabled={disabled}
           onValueChange={newValue => this._toggleNotification(key, newValue)}
