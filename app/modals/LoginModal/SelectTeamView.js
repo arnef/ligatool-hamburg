@@ -13,6 +13,12 @@ import * as SettingsActions from '../../redux/modules/settings';
 import { NavigationActions } from 'react-navigation';
 
 class SelectTeamView extends Component {
+  constructor(props) {
+    super(props);
+    this.renderItem = this.renderItem.bind(this);
+    this.getTeams = this.getTeams.bind(this);
+  }
+
   componentDidMount() {
     const id = this.props.navigation.state.params.id;
 
@@ -32,9 +38,9 @@ class SelectTeamView extends Component {
       <Container
         error={this.props.error}
         refreshing={this.props.fetching}
-        onRefresh={this.getTeams.bind(this)}
+        onRefresh={this.getTeams}
         dataSource={teams}
-        renderRow={this.renderItem.bind(this)}
+        renderRow={this.renderItem}
         getItemLayout={(data, index) => ({
           length: ListItem.ITEM_HEIGHT,
           offset: ListItem.ITEM_HEIGHT * index,
@@ -64,7 +70,6 @@ class SelectTeamView extends Component {
     this.props.setUserTeam(team);
     this.props.navigate({
       routeName: 'LoginView',
-      // params: { ...this.props.navigation.state.params },
     });
   }
 }

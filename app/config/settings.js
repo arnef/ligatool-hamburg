@@ -9,3 +9,4 @@ export const URL = __DEV__
   : 'https://kickern-hamburg.de/de/competitions';
 
 export const DATETIME = 'dd. DD.MM.YY HH:mm';
+export const DATE_FORMAT = 'dd. DD.MM.YY';

@@ -1,5 +1,5 @@
 // @flow
-import * as MatchUtil from '../../lib/MatchUtil';
+import * as MatchUtils from '../../lib/MatchUtils';
 // Type Definitions
 type State = {
   +[string]: Match,
@@ -42,7 +42,7 @@ export default function reducer(state: State = {}, action: Action): State {
     case TOGGLE_MATCH_TYPE:
       state = {
         ...state,
-        [`${action.payload.id}`]: MatchUtil.toggleType(
+        [`${action.payload.id}`]: MatchUtils.toggleType(
           state[`${action.payload.id}`],
           action.payload.type,
           action.payload.setsIdx,

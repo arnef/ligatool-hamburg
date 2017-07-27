@@ -6,13 +6,17 @@ import * as LeaguesActions from '../../redux/modules/leagues';
 import { Container, ListItem, Text, Separator } from '../../components';
 
 class SelectGroupView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderItem = this.renderItem.bind(this);
+  }
   render() {
     return (
       <Container
         error={this.props.error}
         refreshing={this.props.fetching}
-        onRefresh={this.props.getRankings.bind(this)}
-        renderRow={this.renderItem.bind(this)}
+        onRefresh={this.props.getRankings}
+        renderRow={this.renderItem}
         dataSource={this.props.leagues}
         ItemSeparatorComponent={Separator}
         getItemLayout={(data, index) => ({

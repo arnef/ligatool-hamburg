@@ -36,7 +36,7 @@ import {
 import * as AuthActions from './modules/auth';
 import * as NavigationActions from './modules/navigation';
 import * as PlayerActions from './modules/player';
-import * as MatchUtil from '../lib/MatchUtil';
+import * as MatchUtils from '../lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
@@ -48,7 +48,7 @@ function* overview() {
   try {
     yield put(LoadingActions.show());
     const matchesData = yield call(api.getMatches);
-    // yield put({ type: GET_MATCHES, data: matches.data });
+
     const data = {
       today: [],
       next: [],
@@ -63,7 +63,7 @@ function* overview() {
       if (!state.drawer[`${match.league.id}`]) {
         updateDrawer = true;
       }
-      match = MatchUtil.isAdmin(match, state.auth);
+      match = MatchUtils.isAdmin(match, state.auth);
       const diff: number = compareDays(match.datetime, now);
       if ((match.live && diff > -2) || diff === 0) {
         data.today.push(`${match.id}`);
@@ -75,7 +75,9 @@ function* overview() {
       matches.push(match);
     }
     yield put({ type: GET_MATCHES, payload: matches });
+
     yield put({ type: OVERVIEW_MATCHES, payload: data });
+
     yield put(LoadingActions.hide());
     NotificationManager.removeAllNotifications();
     if (updateDrawer) {
@@ -108,7 +110,7 @@ function* myTeam() {
       } else {
         payload.next.push(`${match.id}`);
       }
-      matches.push(MatchUtil.isAdmin(match, state.auth));
+      matches.push(MatchUtils.isAdmin(match, state.auth));
     }
     yield put({ type: GET_MATCHES, payload: matches });
     yield put({ type: MY_TEAM_MATCHES, payload });
@@ -165,10 +167,10 @@ function* getMatch(action) {
     yield put(LoadingActions.show());
     const matchData = yield call(api.getMatch, action.params.id);
     const state = yield select();
-    const match = MatchUtil.isAdmin(matchData.data, state.auth);
+    const match = MatchUtils.isAdmin(matchData.data, state.auth);
     yield put({
       type: GET_MATCH_DONE,
-      payload: { ...match, games: MatchUtil.sets(match) },
+      payload: { ...match, games: MatchUtils.sets(match) },
     });
   } catch (ex) {
     console.warn(ex);
@@ -196,7 +198,7 @@ function* getLeagueMatches(action) {
     yield put(LoadingActions.show());
     const state = yield select();
     const matches = yield call(api.getLeagueMatches, action.payload.id);
-    const m = matches.data.map(match => MatchUtil.isAdmin(match, state.auth));
+    const m = matches.data.map(match => MatchUtils.isAdmin(match, state.auth));
     yield put({ type: GET_MATCHES, payload: m });
     yield put({
       type: GET_LEAGUE_MATCHES_DONE,
@@ -252,7 +254,7 @@ function* getTeamMatches(action) {
     const matches = yield call(api.getTeamMatches, action.payload.id);
     yield put({
       type: GET_MATCHES,
-      payload: matches.data.map(match => MatchUtil.isAdmin(match, state.auth)),
+      payload: matches.data.map(match => MatchUtils.isAdmin(match, state.auth)),
     });
     yield put({
       type: GET_TEAM_MATCHES_DONE,
@@ -336,10 +338,10 @@ function* updateMatch(action) {
     }
     const matchData = yield call(api.updateMatch, action.payload.id, payload);
     const state = yield select();
-    const match = MatchUtil.isAdmin(matchData.data, state.auth);
+    const match = MatchUtils.isAdmin(matchData.data, state.auth);
     yield put({
       type: GET_MATCH_DONE,
-      payload: { ...match, games: MatchUtil.sets(match) },
+      payload: { ...match, games: MatchUtils.sets(match) },
     });
   } catch (ex) {
     console.warn(ex);
@@ -352,7 +354,7 @@ function* updateMatch(action) {
 function* setPlayer(action) {
   try {
     const state = yield select();
-    const match = MatchUtil.setPlayer(
+    const match = MatchUtils.setPlayer(
       state.matches[`${action.payload.id}`],
       action.payload,
     );
@@ -387,8 +389,10 @@ function* navigate(action) {
     }
     switch (action.routeName) {
       case Routes.MATCH:
-        yield call(getMatch, action);
-        NotificationManager.removeNotification(action.payload.id);
+        {
+          yield call(getMatch, action);
+          NotificationManager.removeNotification(action.params.id);
+        }
         break;
       case Routes.MY_TEAM:
         if (!state.settings.team) {

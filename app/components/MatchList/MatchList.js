@@ -4,18 +4,17 @@ import { connect } from 'react-redux';
 import Container from '../Container';
 import Text from '../Text';
 import MatchItem from '../MatchItem';
+import { sort } from '../../lib/MatchUtils';
 
 import styles from './styles';
 
 function MatchList(props): ReactElement<any> {
-  // console.log(props);
-
   return (
     <Container
       error={props.error}
       refreshing={props.refreshing}
       onRefresh={props.onRefresh}
-      dataSource={props.matches}
+      dataSource={props.matches.sort(sort(props.data))}
       keyExtractor={item => `match-${item}`}
       ListEmptyComponent={() =>
         <Text secondary style={styles.emptyText}>

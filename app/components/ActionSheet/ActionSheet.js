@@ -48,6 +48,11 @@ class ActionSheet extends Component<void, Props, State> {
     this.actionsheetInstance.showActionSheet(config, callback);
   }
 
+  constructor(props) {
+    super(props);
+    this.hide = this.hide.bind(this);
+  }
+
   showActionSheet(
     config: ActionSheetConfig,
     callback: (index: number) => void,
@@ -100,13 +105,13 @@ class ActionSheet extends Component<void, Props, State> {
       <Modal
         transparent={true}
         animationType={'fade'}
-        onRequestClose={this.hide.bind(this)}
+        onRequestClose={this.hide}
         visible={this.state.modalVisible}
       >
         <TouchableOpacity
           style={styles.outside}
           activeOpacity={1}
-          onPress={this.hide.bind(this)}
+          onPress={this.hide}
         >
           <Animated.View
             style={[

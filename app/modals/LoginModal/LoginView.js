@@ -22,6 +22,7 @@ class LoginView extends Component {
       user: '',
     };
     this.passwordInput = null;
+    this.login = this.login.bind(this);
   }
 
   render() {
@@ -71,7 +72,7 @@ class LoginView extends Component {
               onChangeText={text => {
                 this.setState({ pass: text });
               }}
-              onSubmitEditing={this.login.bind(this)}
+              onSubmitEditing={this.login}
               returnKeyType="send"
             />
             {isIOS && <Separator full />}
@@ -92,7 +93,7 @@ class LoginView extends Component {
                 <View style={styles.column}>
                   <Button
                     disabled={!this.state.user || !this.state.pass}
-                    onPress={this.login.bind(this)}
+                    onPress={this.login}
                     title="Anmelden"
                   />
                 </View>

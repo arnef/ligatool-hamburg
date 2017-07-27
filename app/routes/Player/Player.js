@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import type { Dispatch } from 'redux';
+import moment from 'moment';
 import * as PlayerActions from '../../redux/modules/player';
+import { DATE_FORMAT } from '../../config/settings';
 import {
   Container,
   MatchStatsBar,
@@ -12,10 +13,11 @@ import {
   ListItem,
   Separator,
 } from '../../components';
-import { formatDate } from '../../Helper';
 import strings from '../../lib/strings';
 
 class Player extends Component {
+  getPlayer: Function;
+
   constructor(props) {
     super(props);
     this.getPlayer = this.getPlayer.bind(this);
@@ -292,9 +294,9 @@ class Player extends Component {
                     <View style={{ flex: 6 }}>
                       <Text
                       >{`${tournament.name} - ${tournament.discipline}`}</Text>
-                      <Text>{`${tournament.location} ${formatDate(
+                      <Text>{`${tournament.location} ${moment(
                         tournament.date,
-                      )}`}</Text>
+                      ).format(DATE_FORMAT)}`}</Text>
                     </View>
                     <View style={{ flex: 1, alignItems: 'center' }}>
                       <Text>{`${tournament.position}`}</Text>

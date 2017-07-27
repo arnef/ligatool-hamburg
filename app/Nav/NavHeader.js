@@ -32,12 +32,15 @@ const singleHeader = [
   Routes.SETTINGS,
   Routes.SETTINGS_NOTIFICATIONS,
   Routes.PLAYER,
-  Routes.MATCH,
   'SelectGroup',
   'SelectTeam',
   'LoginView',
   'SelectPlayerView',
 ];
+
+if (Platform.OS === 'android') {
+  singleHeader.push(Routes.MATCH);
+}
 
 const ConnectHeader = connect(state => ({ color: state.settings.color }))(
   NavHeader,
