@@ -16,7 +16,6 @@ class SelectPlayer extends Component {
     this.state = {
       selected: {},
     };
-    console.log('Select Plater', props);
     this.onPress = this.onPress.bind(this);
     this.renderItem = this.renderItem.bind(this);
   }
@@ -26,7 +25,6 @@ class SelectPlayer extends Component {
     const { state } = this.props.navigation;
     const match = matches[state.params.matchId];
     const teamKey = `team_${state.params.team}`;
-    console.log(teamKey);
     let items = match[teamKey] ? match[teamKey].player : [];
 
     return (
@@ -104,17 +102,6 @@ class SelectPlayer extends Component {
               title: `${state.params.data.name} Gast`,
             },
           });
-        } else {
-          // closeModal();
-          // const set = state.params.data.sets[0];
-          // const match = matches[state.params.matchId];
-          // console.log(match.sets);
-          // if (
-          //   (set.goals_home != null && set.goals_away != null) ||
-          //   (match.lineUp && match.lineUp.update)
-          // ) {
-          //   // this.props.updateSets(state.params.matchId, match.sets);
-          // }
         }
       }, 10);
     } else if (selectionLength > state.params.data.type) {

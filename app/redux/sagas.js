@@ -358,7 +358,6 @@ function* setPlayer(action) {
       state.matches[`${action.payload.id}`],
       action.payload,
     );
-    console.log(match);
     yield put({ type: GET_MATCH_DONE, payload: match });
     if (action.payload.team === 'away') {
       yield put(NavigationActions.hidePlayer());

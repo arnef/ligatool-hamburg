@@ -9,26 +9,11 @@ const instance = axios.create({
 instance.interceptors.request.use(
   config => {
     if (config.method === 'get') {
-      // add timestamp to request url to avoid ios nsurlcaching
       config.url += `&timestamp=${new Date().getTime()}`;
     }
-    console.log(config.url);
     return config;
   },
   error => {
-    return Promise.reject(error);
-  },
-);
-
-instance.interceptors.response.use(
-  function(response) {
-    // Do something with response data
-    console.log('[GET] ' + response.config.url);
-    return response;
-  },
-  function(error) {
-    console.warn(error);
-    // Do something with response error
     return Promise.reject(error);
   },
 );

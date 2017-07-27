@@ -44,7 +44,6 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
             options.push('Ergebnis eintragen');
           }
           ActionSheet.show({ options }, index => {
-            console.log(index);
             if (index === 0) {
               const address = `${props.data.venue.street}, ${props.data.venue
                 .zip_code} ${props.data.venue.city}`;
