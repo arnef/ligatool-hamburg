@@ -26,7 +26,9 @@ class LoginView extends Component {
 
   render() {
     const { loading, error } = this.props;
-    const init = this.props.navigation.state.key.indexOf('Init') !== -1;
+    const init =
+      this.props.navigation.state.params &&
+      this.props.navigation.state.params.init;
 
     const isIOS = Platform.OS === 'ios';
     return (
@@ -98,7 +100,13 @@ class LoginView extends Component {
             </View>}
           {loading &&
             <View style={{ padding: 12 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 <ActivityIndicator color={this.props.color} size={'large'} />
               </View>
             </View>}
@@ -115,10 +123,7 @@ class LoginView extends Component {
   }
 
   closeLogin() {
-    const next = this.props.navigation.state.params
-      ? this.props.navigation.state.params.next
-      : null;
-    this.props.hideLogin(next);
+    this.props.hideLogin();
   }
 
   login() {

@@ -4,6 +4,7 @@ import { colors } from '../../config/styles';
 export default StyleSheet.create({
   container: {
     flex: 1,
+    overflow: 'hidden',
   },
   containerToggle: {
     flexDirection: 'row',

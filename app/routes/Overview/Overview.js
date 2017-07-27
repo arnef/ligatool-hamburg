@@ -1,31 +1,19 @@
 /* @flow */
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import type { Dispatch } from 'redux';
-import MatchListView from '../../views/MatchListView';
+// import MatchListView from '../../views/MatchListView';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
 import { TabNavigator } from 'react-navigation';
 import strings from '../../lib/strings';
 import Routes from '../../config/routes';
+import { MatchList } from '../../components';
 import * as OverviewActions from '../../redux/modules/overview';
 
-class Overview extends Component {
-  onRefresh() {
-    this.props.queryMatches();
-  }
-
+class Overview extends React.Component {
   render() {
-    const { matches, refreshOnMount, error, fetching } = this.props;
+    const { matches } = this.props;
 
-    return (
-      <MatchListView
-        error={error}
-        refreshing={fetching}
-        matches={matches}
-        onRefresh={this.onRefresh.bind(this)}
-        refreshOnMount={refreshOnMount}
-      />
-    );
+    return <MatchList matches={matches} onRefresh={this.props.queryMatches} />;
   }
 }
 
@@ -33,9 +21,6 @@ function createTab(keyName) {
   return connect(
     state => ({
       matches: state.overview[keyName],
-      error: null, //state.loading.error,
-      fetching: state.loading.list,
-      refreshOnMount: keyName === 'played',
     }),
     (dispatch: Dispatch<*>) => ({
       queryMatches: () => dispatch(OverviewActions.getMatches()),
@@ -60,7 +45,9 @@ export default TabNavigator(
   },
   {
     ...NavTabBarTop,
-    // initialRouteName: Routes.TAB_MATCHES_TODAY,
+    initialRouteName: __DEV__
+      ? Routes.TAB_MATCHES_PLAYED
+      : Routes.TAB_MATCHES_TODAY,
     lazy: false,
   },
 );

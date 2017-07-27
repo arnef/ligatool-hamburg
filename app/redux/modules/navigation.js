@@ -19,7 +19,7 @@ const routes = [
 ];
 
 // Actions
-const SHOW_LOG_IN_MODAL: SHOW_LOG_IN_MODAL =
+export const SHOW_LOG_IN_MODAL: SHOW_LOG_IN_MODAL =
   'ligatool/modules/SHOW_LOG_IN_MODAL';
 export const HIDE_LOG_IN_MODAL: HIDE_LOG_IN_MODAL =
   'ligatool/modules/HIDE_LOG_IN_MODAL';
@@ -107,12 +107,12 @@ export default function reducer(
           navigation: Root.router.getStateForAction(action, state.navigation),
         };
         const route = currentRoute(state.navigation);
-        if (routes.indexOf(Routes.routeName) !== -1) {
+        if (routes.indexOf(route.routeName) !== -1) {
           state.activeItem =
-            Routes.routeName === Routes.LEAGUE ||
-            Routes.routeName === Routes.LEAGUE_CUP
-              ? `${Routes.routeName}_${Routes.params.id}`
-              : Routes.routeName;
+            route.routeName === Routes.LEAGUE ||
+            route.routeName === Routes.LEAGUE_CUP
+              ? `${route.routeName}_${route.params.id}`
+              : route.routeName;
         }
       }
       break;
@@ -154,8 +154,6 @@ export function hidePlayer() {
 
 // helper
 const recursiveFindRoute = (route, name) => {
-  const TAG = 'recursiveFindRoute';
-  console.log(TAG, route, name);
   if (!route) {
     return null;
   } else if (route.routeName === name) {
@@ -176,7 +174,6 @@ const recursiveFindRoute = (route, name) => {
 
 const findRouteKey = (state: any, name: string): any => {
   const found = recursiveFindRoute(state, name);
-  console.log('findroutekey', found);
   if (found) {
     return found.key;
   }

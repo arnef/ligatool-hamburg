@@ -64,7 +64,7 @@ class SelectTeamView extends Component {
     this.props.setUserTeam(team);
     this.props.navigate({
       routeName: 'LoginView',
-      params: { ...this.props.navigation.state.params },
+      // params: { ...this.props.navigation.state.params },
     });
   }
 }

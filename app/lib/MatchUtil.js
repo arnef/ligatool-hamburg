@@ -4,7 +4,7 @@ import MatchTypes from '../config/MatchTypes';
 export function sets(match: Match) {
   const matchSets = match.sets || {};
   let sets: Array<Sets> = [];
-  const format = MatchTypes[match.type || 'default'];
+  const format = MatchTypes[match.type || getType(match) || 'default'];
 
   for (let set of format) {
     let data = { ...set, sets: [], editable: match.is_admin };
@@ -121,8 +121,8 @@ export function setPlayer(
     }
     match = { ...match, sets: { ...match.sets, [`${idx}`]: set } };
   }
-  console.log(match);
-  return { ...match, lineUp: checkLineUp(match) };
+
+  return { ...match, lineUp: checkLineUp(match), games: sets(match) };
 }
 
 function checkLineUp(

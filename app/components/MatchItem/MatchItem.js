@@ -1,14 +1,16 @@
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { View, Linking, Platform, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import Card from '../Card';
-import Text from '../Text';
-import Icon from '../Icon';
-import TeamLogo from '../TeamLogo';
-import Score from '../Score';
-
+import {
+  Card,
+  Text,
+  Icon,
+  TeamLogo,
+  Score,
+  ActionSheet,
+} from '../../components';
 import { DATETIME } from '../../config/settings';
 import Routes from '../../config/routes';
 import * as NavigationActions from '../../redux/modules/navigation';
@@ -25,20 +27,65 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
   return (
     <Card
       onPress={() => {
-        let route = {
-          routeName: Routes.PREVIEW,
-          params: { match: props.data },
-        };
-        if (
-          props.data.set_points ||
-          (props.data.is_admin && date.diff(moment(), 'minutes') < 31)
-        ) {
-          route = {
-            routeName: Routes.MATCH,
-            params: { id: props.data.id, title: props.data.league.name },
-          };
+        if (props.data.set_points) {
+          props.dispatch(
+            NavigationActions.navigate({
+              routeName: Routes.MATCH,
+              params: { id: props.data.id, title: props.data.league.name },
+            }),
+          );
+        } else {
+          const options = [
+            'Spielort anzeigen',
+            `${props.data.team_home.name} anzeigen`,
+            `${props.data.team_away.name} anzeigen`,
+          ];
+          if (props.data.is_admin) {
+            options.push('Ergebnis eintragen');
+          }
+          ActionSheet.show({ options }, index => {
+            console.log(index);
+            if (index === 0) {
+              const address = `${props.data.venue.street}, ${props.data.venue
+                .zip_code} ${props.data.venue.city}`;
+              const uri =
+                Platform.OS === 'ios'
+                  ? 'http://maps.apple.com/?address='
+                  : 'geo:53.5586526,9.6476386?q=';
+
+              Linking.openURL(uri + encodeURI(address)).catch(() =>
+                Alert.alert('Keine Karten-App installiert.'),
+              );
+            } else if (index === 1) {
+              props.dispatch(
+                NavigationActions.navigate({
+                  routeName: Routes.TEAM,
+                  params: {
+                    team: props.data.team_home,
+                    title: props.data.team_home.name,
+                  },
+                }),
+              );
+            } else if (index === 2) {
+              props.dispatch(
+                NavigationActions.navigate({
+                  routeName: Routes.TEAM,
+                  params: {
+                    team: props.data.team_away,
+                    title: props.data.team_away.name,
+                  },
+                }),
+              );
+            } else if (index === 3) {
+              props.dispatch(
+                NavigationActions.navigate({
+                  routeName: Routes.MATCH,
+                  params: { id: props.data.id, title: props.data.league.name },
+                }),
+              );
+            }
+          });
         }
-        props.dispatch(NavigationActions.navigate(route));
       }}
     >
       <View style={styles.container}>

@@ -153,14 +153,14 @@ function requestPermissions() {
  * remove notification with id from tray/center
  * BUG not working at the moment
  */
-function removeNotification(id: number) {
+export function removeNotification(id: number) {
   FCM.removeDeliveredNotification(`${id}`);
 }
 
 /**
  * remove all notifications from tray/center
  */
-function removeAllNotifications() {
+export function removeAllNotifications() {
   FCM.removeAllDeliveredNotifications();
 }
 

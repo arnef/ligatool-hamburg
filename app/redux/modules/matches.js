@@ -118,7 +118,7 @@ export function notification(payload: any) {
 }
 
 function getStateForAction(state: State, action: Action): State {
-  for (let match: Match of action.data) {
+  for (let match: Match of action.payload) {
     if (state[`${match.id}`]) {
       state = {
         ...state,

@@ -13,20 +13,19 @@ import NavDrawerIcon from './Nav/NavDrawerIcon';
 import NavIcon from './Nav/NavIcon';
 import NavTabBarBottom from './Nav/NavTabBarBottom';
 
-import Drawer, { DRAWER_WIDTH } from './views/DrawerView';
+import Drawer, { DRAWER_WIDTH } from './routes/Drawer';
 
 import Overview from './routes/Overview';
 import Match from './routes/Match';
-import MyTeam from './views/MyTeamView';
-import Leagues from './views/LeaguesView';
-import League from './views/LeagueView';
-import Settings from './views/Settings/SettingsView';
-import SettingsNotification from './views/Settings/SettingsNotificationView';
+import MyTeam from './routes/MyTeam';
+import Leagues from './routes/Leagues';
+import League from './routes/League';
+import Settings from './routes/Settings';
+import SettingsNotification from './routes/SettingsNotification';
 
-import Preview from './views/MatchView/PreView';
-import Team from './views/TeamView';
-import LeagueCup from './views/LeagueCupView';
-import PlayerView from './views/PlayerView';
+import Team from './routes/Team';
+import LeagueCup from './routes/Cup';
+import PlayerView from './routes/Player';
 import strings from './lib/strings';
 
 function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
@@ -44,7 +43,6 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
         title: navigation.state.params.title || strings.match,
       }),
     },
-    [Routes.PREVIEW]: { screen: Preview },
     [Routes.TEAM]: {
       screen: Team,
       navigationOptions: ({ navigation }) => ({
@@ -133,9 +131,6 @@ export const App =
                   navigationOptions: ({ navigation }) => ({
                     title: navigation.state.params.title,
                   }),
-                },
-                [Routes.PREVIEW]: {
-                  screen: Preview,
                 },
                 [Routes.PLAYER]: {
                   screen: PlayerView,

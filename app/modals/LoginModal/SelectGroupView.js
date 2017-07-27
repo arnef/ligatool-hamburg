@@ -1,17 +1,11 @@
 import React from 'react';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { filter, sortBy } from 'lodash';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import { Container, ListItem, Text, Separator } from '../../components';
 
 class SelectGroupView extends React.Component {
-  componentDidMount() {
-    if (this.props.leagues.length === 0) {
-      this.props.getRankings();
-    }
-  }
-
   render() {
     return (
       <Container
@@ -40,12 +34,10 @@ class SelectGroupView extends React.Component {
   }
 
   onPress(league) {
-    const { state } = this.props.navigation;
     this.props.navigate({
       routeName: 'SelectTeam',
       params: {
         id: league.id,
-        next: state.params && state.params.next ? state.params.next : null,
       },
     });
   }
@@ -55,7 +47,7 @@ export default connect(
   state => ({
     error: state.loading.error,
     fetching: state.loading.list,
-    leagues: _.filter(Object.values(state.drawer), o => {
+    leagues: filter(sortBy(state.drawer, 'name'), o => {
       return !o.cup;
     }),
   }),

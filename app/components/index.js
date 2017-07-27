@@ -20,6 +20,11 @@ import ActionSheet from './ActionSheet';
 import MatchHeader from './MatchHeader';
 import ScoreInput from './ScoreInput';
 import SetItem from './SetItem';
+import MatchList from './MatchList';
+import PlayerStatsList from './PlayerStatsList';
+import Table from './Table';
+import Team from './Team';
+import Score from './Score';
 
 export {
   MatchHeader,
@@ -41,4 +46,9 @@ export {
   ActionSheet,
   ScoreInput,
   SetItem,
+  MatchList,
+  PlayerStatsList,
+  Table,
+  Team,
+  Score,
 };

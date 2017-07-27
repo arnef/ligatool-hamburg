@@ -27,6 +27,8 @@ const routes = {
   TAB_HOME: 'ligatool/routes/TAB_HOME',
   TAB_AWAY: 'ligatool/routes/TAB_AWAY',
   TAB_PLAYER_STATS: 'ligatool/routes/TAB_PLAYER_STATS',
+  TAB_LEAGUE_MATCHES: 'ligatool/routes/TAB_LEAGUE_MATCHES',
+  TAB_MY_TEAM_INFO: 'ligatool/routes/TAB_MY_TEAM_INFO',
 };
 
 export default routes;

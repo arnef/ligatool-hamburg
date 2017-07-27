@@ -19,7 +19,7 @@ const migration = createMigration(manifest, APP_KEY);
 
 const store = createStore(
   reducer,
-  compose(migration, autoRehydrate(), applyMiddleware(...middleware)),
+  compose(autoRehydrate(), migration, applyMiddleware(...middleware)),
 );
 
 sagaMiddleware.run(sagas);

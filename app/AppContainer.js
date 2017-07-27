@@ -7,14 +7,12 @@ import Loading from './modals/LoadingModal';
 import { Root } from './router';
 import { ActionSheet } from './components';
 import NotificationManager from './lib/NotificationManager';
-import type { Listener } from './lib/NotificationManager';
-import Route from './config/routes';
 
 import { colors } from './config/styles';
 
 class AppContainer extends Component {
-  notificationListener: Listener;
-  refreshTokenListener: Listener;
+  notificationListener: { remove: Function };
+  refreshTokenListener: { remove: Function };
 
   componentDidMount() {
     NotificationManager.requestPermissions();
@@ -50,17 +48,7 @@ class AppContainer extends Component {
         />
         <Root
           navigation={addNavigationHelpers({
-            dispatch: action => {
-              if (action.routeName === Route.MY_TEAM && !this.props.team) {
-                dispatch({
-                  ...action,
-                  routeName: Route.MODAL_LOGIN,
-                  params: { next: Route.MY_TEAM },
-                });
-              } else {
-                dispatch(action);
-              }
-            },
+            dispatch,
             state: nav,
           })}
         />

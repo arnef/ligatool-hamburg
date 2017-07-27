@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist/constants';
 import * as CacheManager from 'react-native-http-cache';
 import * as api from '../lib/api';
-// import * as api from '../apiOLD';
+import * as NotificationManager from '../lib/NotificationManager';
 import { GET_OVERVIEW_MATCHES, OVERVIEW_MATCHES } from './modules/overview';
 import {
   GET_MATCHES,
@@ -42,25 +42,28 @@ import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
 
 import { compareDays, getMatchDays } from '../Helper';
+import { currentRoute } from '../lib/NavUtils';
 
 function* overview() {
   try {
     yield put(LoadingActions.show());
-    const matches = yield call(api.getMatches);
-    yield put({ type: GET_MATCHES, data: matches.data });
+    const matchesData = yield call(api.getMatches);
+    // yield put({ type: GET_MATCHES, data: matches.data });
     const data = {
       today: [],
       next: [],
       played: [],
     };
+    const matches = [];
     const now = new Date().getTime();
     const state = yield select();
     let updateDrawer = false;
-    for (let match: Match of matches.data) {
+
+    for (let match: Match of matchesData.data) {
       if (!state.drawer[`${match.league.id}`]) {
         updateDrawer = true;
       }
-
+      match = MatchUtil.isAdmin(match, state.auth);
       const diff: number = compareDays(match.datetime, now);
       if ((match.live && diff > -2) || diff === 0) {
         data.today.push(`${match.id}`);
@@ -69,9 +72,12 @@ function* overview() {
       } else if (diff > 0) {
         data.next.push(`${match.id}`);
       }
+      matches.push(match);
     }
+    yield put({ type: GET_MATCHES, payload: matches });
     yield put({ type: OVERVIEW_MATCHES, payload: data });
     yield put(LoadingActions.hide());
+    NotificationManager.removeAllNotifications();
     if (updateDrawer) {
       const leagues = yield call(api.getLeagues);
       yield put(
@@ -85,6 +91,7 @@ function* overview() {
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.hide());
+    yield put(LoadingActions.error(ex.message));
   }
 }
 
@@ -92,19 +99,22 @@ function* myTeam() {
   try {
     yield put(LoadingActions.show());
     const state = yield select();
-    const matches = yield call(api.getTeamMatches, state.settings.team.id);
-    yield put({ type: GET_MATCHES, data: matches.data });
+    const matchesData = yield call(api.getTeamMatches, state.settings.team.id);
+    const matches = [];
     const payload = { next: [], played: [] };
-    for (let match: Match of matches.data) {
+    for (let match: Match of matchesData.data) {
       if (match.set_points && !match.score_unconfirmed) {
         payload.played.push(`${match.id}`);
       } else {
         payload.next.push(`${match.id}`);
       }
+      matches.push(MatchUtil.isAdmin(match, state.auth));
     }
+    yield put({ type: GET_MATCHES, payload: matches });
     yield put({ type: MY_TEAM_MATCHES, payload });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -120,6 +130,7 @@ function* leagues() {
     });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -128,6 +139,7 @@ function* leagues() {
 function* logout() {
   try {
     yield put(LoadingActions.showModal());
+    yield put({ type: MY_TEAM_MATCHES, payload: { next: [], played: [] } });
     yield call(api.logout);
   } catch (ex) {
     console.warn(ex);
@@ -160,6 +172,7 @@ function* getMatch(action) {
     });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -172,6 +185,7 @@ function* getLeague(action) {
     yield put({ type: GET_LEAGUE_DONE, payload: league.data });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -180,8 +194,10 @@ function* getLeague(action) {
 function* getLeagueMatches(action) {
   try {
     yield put(LoadingActions.show());
+    const state = yield select();
     const matches = yield call(api.getLeagueMatches, action.payload.id);
-    yield put({ type: GET_MATCHES, data: matches.data });
+    const m = matches.data.map(match => MatchUtil.isAdmin(match, state.auth));
+    yield put({ type: GET_MATCHES, payload: m });
     yield put({
       type: GET_LEAGUE_MATCHES_DONE,
       payload: {
@@ -191,6 +207,7 @@ function* getLeagueMatches(action) {
     });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -206,6 +223,7 @@ function* getLeaguePlayerStats(action) {
     });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -221,6 +239,7 @@ function* getTeam(action) {
     });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -229,8 +248,12 @@ function* getTeam(action) {
 function* getTeamMatches(action) {
   try {
     yield put(LoadingActions.show());
+    const state = yield select();
     const matches = yield call(api.getTeamMatches, action.payload.id);
-    yield put({ type: GET_MATCHES, data: matches.data });
+    yield put({
+      type: GET_MATCHES,
+      payload: matches.data.map(match => MatchUtil.isAdmin(match, state.auth)),
+    });
     yield put({
       type: GET_TEAM_MATCHES_DONE,
       payload: {
@@ -240,6 +263,7 @@ function* getTeamMatches(action) {
     });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -262,16 +286,25 @@ function* login(action) {
     );
     yield put(NavigationActions.hideLogin(action.next));
   } catch (ex) {
-    yield put(LoadingActions.error(ex.message));
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
 }
 
-function* hideLogin(action) {
-  if (action.next) {
-    yield put(NavigationActions.navigate({ routeName: action.next }));
+function* hideLogin() {
+  try {
+    const state = yield select();
+    if (
+      state.settings.team &&
+      state.myteam.next.length === 0 &&
+      state.myteam.played.length === 0
+    ) {
+      yield myTeam();
+    }
+  } catch (ex) {
+    console.warn(ex);
   }
 }
 
@@ -282,6 +315,7 @@ function* getPlayer(action) {
     yield put({ type: PlayerActions.GET_PLAYER_DONE, payload: player.data });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hide());
   }
@@ -309,6 +343,7 @@ function* updateMatch(action) {
     });
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   } finally {
     yield put(LoadingActions.hideModal());
   }
@@ -334,11 +369,13 @@ function* setPlayer(action) {
     }
   } catch (ex) {
     console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
   }
 }
 
 function* navigate(action) {
   try {
+    yield put(LoadingActions.hide());
     const state = yield select();
     if (state.settings.changed && state.settings.fcm_token) {
       yield call(
@@ -351,12 +388,94 @@ function* navigate(action) {
     switch (action.routeName) {
       case Routes.MATCH:
         yield call(getMatch, action);
+        NotificationManager.removeNotification(action.payload.id);
+        break;
+      case Routes.MY_TEAM:
+        if (!state.settings.team) {
+          yield put(NavigationActions.showLogin());
+        } else if (
+          state.myTeam.next.length === 0 &&
+          state.myTeam.played.length === 0
+        ) {
+          yield myTeam();
+        }
+        break;
+      case Routes.LEAGUE_CUP:
+        if (
+          !state.leagues[`${action.params.id}`] ||
+          !state.leagues[`${action.params.id}`].match_days
+        ) {
+          yield getLeagueMatches({ payload: { id: action.params.id } });
+        }
+        break;
+      case Routes.LEAGUE:
+        {
+          const id = action.params.id;
+          if (!state.leagues[`${id}`] || !state.leagues[`${id}`].table) {
+            yield getLeague({ payload: { id } });
+          }
+        }
+        break;
+      case Routes.TAB_PLAYER_STATS:
+        {
+          const id = action.params
+            ? action.params.id
+            : currentRoute(state.nav.navigation).params.id;
+          if (!state.leagues[`${id}`] || !state.leagues[`${id}`].players) {
+            yield getLeaguePlayerStats({ payload: { id } });
+          }
+        }
+        break;
+      case Routes.TAB_LEAGUE_MATCHES:
+        {
+          const id = action.params
+            ? action.params.id
+            : currentRoute(state.nav.navigation).params.id;
+          if (!state.leagues[`${id}`] || !state.leagues[`${id}`].match_days) {
+            yield getLeagueMatches({ payload: { id } });
+          }
+        }
+        break;
+      case Routes.TEAM:
+      case Routes.TAB_TEAM:
+        {
+          const id = action.params
+            ? action.params.team.id
+            : currentRoute(state.nav.navigation).params.team.id;
+          if (!state.teams[`${id}`]) {
+            yield getTeam({ payload: { id } });
+          }
+        }
+        break;
+      case Routes.TAB_MATCHES:
+        {
+          const id = action.params
+            ? action.params.team.id
+            : currentRoute(state.nav.navigation).params.team.id;
+          if (!state.teams[`${id}`] || !state.teams[`${id}`].matches) {
+            yield getTeamMatches({ payload: { id } });
+          }
+        }
+        break;
+      case Routes.TAB_MY_TEAM_INFO:
+        {
+          const id = state.settings.team.id;
+          if (!state.teams[`${id}`]) {
+            yield getTeam({ payload: { id } });
+          }
+        }
+        break;
+      case Routes.PLAYER:
+        {
+          const id = action.params.id;
+          if (!state.players[`${id}`]) {
+            yield getPlayer({ payload: { id } });
+          }
+        }
         break;
     }
   } catch (ex) {
     console.warn(ex);
-  } finally {
-    // yield put(LoadingActions.hide());
   }
 }
 
@@ -394,10 +513,27 @@ function* rehydrate() {
         api.setSecret(state.auth.team.token);
       }
     }
+    yield overview();
   } catch (ex) {
     console.warn(ex);
   } finally {
     yield put(LoadingActions.hideModal());
+  }
+}
+
+function* showLogin() {
+  try {
+    const state = yield select();
+    if (state.settings.team) {
+      yield put(
+        NavigationActions.navigate({
+          routeName: 'LoginView',
+          params: { init: true },
+        }),
+      );
+    }
+  } catch (ex) {
+    console.warn(ex);
   }
 }
 
@@ -415,6 +551,7 @@ export default function* sagas(): any {
   yield takeEvery(GET_TEAM_MATCHES, getTeamMatches);
   yield takeEvery(AuthActions.LOGIN, login);
   yield takeEvery(NavigationActions.HIDE_LOG_IN_MODAL, hideLogin);
+  yield takeEvery(NavigationActions.SHOW_LOG_IN_MODAL, showLogin);
   yield takeEvery(PlayerActions.GET_PLAYER, getPlayer);
   yield takeEvery(UPDATE_MATCH, updateMatch);
   yield takeEvery(SET_PLAYER, setPlayer);

@@ -4,7 +4,6 @@ import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-navigation';
 import Routes from '../config/routes';
-// import { backgroundColor } from '../components/theme';
 import { colors } from '../config/styles';
 
 const white = 'rgba(255, 255, 255, .8)';
@@ -33,6 +32,7 @@ const singleHeader = [
   Routes.SETTINGS,
   Routes.SETTINGS_NOTIFICATIONS,
   Routes.PLAYER,
+  Routes.MATCH,
   'SelectGroup',
   'SelectTeam',
   'LoginView',
@@ -49,8 +49,13 @@ export default {
     const headerStyle =
       singleHeader.indexOf(navigation.state.routeName) !== -1
         ? null
-        : { elevation: 0, shadowOpacity: 0, borderBottomWidth: 0 };
-
+        : {
+            elevation: 0,
+            shadowOpacity: 0,
+            shadowRadius: 0,
+            shadowOffset: { height: 0 },
+            borderBottomWidth: 0,
+          };
     return {
       header: (props: any) => <ConnectHeader {...props} />,
       headerTintColor: '#fff',

@@ -23,6 +23,9 @@ class Item extends Component {
         height: null,
         alignItems: 'flex-start',
       });
+      if (this.props.center) {
+        itemStyle.push({ alignItems: 'center' });
+      }
     }
 
     return (
