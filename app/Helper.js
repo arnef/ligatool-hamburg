@@ -59,27 +59,27 @@ export function compareDays(d1: number, d2: number): number {
  * @param {number} timestamp
  * @return {string}
  */
-export function formatDate(timestamp: number): string {
-  const date: Date = new Date(timestamp);
-  const day: string = `0${date.getDate()}`.slice(-2);
-  const month: string = `0${date.getMonth() + 1}`.slice(-2);
+// export function formatDate(timestamp: number): string {
+//   const date: Date = new Date(timestamp);
+//   const day: string = `0${date.getDate()}`.slice(-2);
+//   const month: string = `0${date.getMonth() + 1}`.slice(-2);
 
-  return `${weekdays[date.getDay()]} ${day}.${month}.${('' +
-    date.getFullYear()).slice(-2)}`;
-}
+//   return `${weekdays[date.getDay()]} ${day}.${month}.${('' +
+//     date.getFullYear()).slice(-2)}`;
+// }
 
-/**
- * format timestamp to time string (HH:MM)
- * @param {number} timestamp
- * @return {string}
- */
-export function formatTime(timestamp: number): string {
-  const date: Date = new Date(timestamp);
-  const hours: string = `0${date.getHours()}`.slice(-2);
-  const minutes: string = `0${date.getMinutes()}`.slice(-2);
+// /**
+//  * format timestamp to time string (HH:MM)
+//  * @param {number} timestamp
+//  * @return {string}
+//  */
+// export function formatTime(timestamp: number): string {
+//   const date: Date = new Date(timestamp);
+//   const hours: string = `0${date.getHours()}`.slice(-2);
+//   const minutes: string = `0${date.getMinutes()}`.slice(-2);
 
-  return `${hours}:${minutes}`;
-}
+//   return `${hours}:${minutes}`;
+// }
 
 /**
  *
@@ -110,24 +110,24 @@ export function sortMatches(matches: MatchesState): Function {
   };
 }
 
-export function currentRoute(navigation: any): NavigationRoute {
-  const recursiveFindRoute = nav => {
-    const subState =
-      nav.routes[nav.index].routeName === 'DrawerOpen'
-        ? nav.routes[0]
-        : nav.routes[nav.index];
+// export function currentRoute(navigation: any): NavigationRoute {
+//   const recursiveFindRoute = nav => {
+//     const subState =
+//       nav.routes[nav.index].routeName === 'DrawerOpen'
+//         ? nav.routes[0]
+//         : nav.routes[nav.index];
 
-    if (
-      !subState.routes ||
-      subState.routes[0].routeName.indexOf('TAB_') !== -1
-    ) {
-      return subState;
-    }
-    return recursiveFindRoute(subState);
-  };
+//     if (
+//       !subState.routes ||
+//       subState.routes[0].routeName.indexOf('TAB_') !== -1
+//     ) {
+//       return subState;
+//     }
+//     return recursiveFindRoute(subState);
+//   };
 
-  return recursiveFindRoute(navigation); // || store.getState().nav.navigation);
-}
+//   return recursiveFindRoute(navigation); // || store.getState().nav.navigation);
+// }
 
 export function darken(color: string, amt: number): string {
   amt = Math.round(2.55 * amt);

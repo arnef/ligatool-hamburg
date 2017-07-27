@@ -28,6 +28,6 @@ function MatchList(props): ReactElement<any> {
 
 export default connect(state => ({
   data: state.matches,
-  error: null,
+  error: state.loading.error,
   refreshing: state.loading.list,
 }))(MatchList);

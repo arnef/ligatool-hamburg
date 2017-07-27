@@ -26,11 +26,10 @@ class App extends Component<void, Props, State> {
     const config = {
       storage: AsyncStorage,
       whitelist: ['app', 'settings', 'auth', 'matches', 'drawer'],
-      // whitelist: ['app', 'settings', 'auth', 'drawer'],
     };
     persistStore(store, config, () => {
       this.setState({ rehydrated: true });
-    }); //.purge(['loading']);
+    });
   }
 
   render() {
