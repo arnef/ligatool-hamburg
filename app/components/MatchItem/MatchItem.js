@@ -11,7 +11,7 @@ import {
   Score,
   ActionSheet,
 } from '../../components';
-import { DATETIME } from '../../config/settings';
+import { DATETIME_FORMAT } from '../../config/settings';
 import Routes from '../../config/routes';
 import * as NavigationActions from '../../redux/modules/navigation';
 import styles from './styles';
@@ -94,7 +94,7 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
         {props.data.venue &&
           <Text secondary small>
             <Icon name={'pin'} />
-            {` ${props.data.venue.name} ${date.format(DATETIME)}`}
+            {` ${props.data.venue.name} ${date.format(DATETIME_FORMAT)}`}
           </Text>}
         <View style={styles.teams}>
           <View style={styles.team}>

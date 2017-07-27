@@ -5,17 +5,19 @@ import Card from '../Card';
 import Touchable from '../Touchable';
 import Text from '../Text';
 import Icon from '../Icon';
-
+import { WITH_DRAW, WIN_GOALS, DRAW_GOALS } from '../../config/settings';
 import styles from './styles';
 
 export default class ScoreInput extends React.Component {
   state: {
-    goals_home?: string,
-    goals_away?: string,
+    goals_home: ?string,
+    goals_away: ?string,
     set: number,
   };
+  onSave: Function;
+  onPressBack: Function;
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       goals_home: null,
@@ -25,7 +27,6 @@ export default class ScoreInput extends React.Component {
 
     this.onSave = this.onSave.bind(this);
     this.onPressBack = this.onPressBack.bind(this);
-    // this.onCancel = this.props.onCancel;
   }
 
   componentDidMount() {
@@ -54,8 +55,8 @@ export default class ScoreInput extends React.Component {
     this.setState({ set: this.state.set - 1 });
   }
 
-  renderInput(key) {
-    const otherKey = key === 'goals_away' ? 'goals_home' : 'goals_away';
+  renderInput(key: string) {
+    const otherKey: string = key === 'goals_away' ? 'goals_home' : 'goals_away';
 
     return (
       <TextInput
@@ -68,8 +69,16 @@ export default class ScoreInput extends React.Component {
         onChangeText={value => {
           const goals = parseInt(value, 10);
           this.setState({ [key]: value });
-          if (!this.state[otherKey] && goals < 6) {
-            this.setState({ [otherKey]: goals === 5 ? '5' : '6' }, this.onSave);
+          if (!this.state[otherKey] && goals < WIN_GOALS) {
+            this.setState(
+              {
+                [otherKey]:
+                  WITH_DRAW && goals === DRAW_GOALS
+                    ? `${DRAW_GOALS}`
+                    : `${WIN_GOALS}`,
+              },
+              this.onSave,
+            );
           }
         }}
         style={styles.input}

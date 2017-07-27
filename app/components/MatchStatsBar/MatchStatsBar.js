@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { View, Text } from 'react-native';
-
+import { WITH_DRAW } from '../../config/settings';
 import styles from './styles';
 
 type MatchStatsBarProps = {
@@ -70,10 +70,11 @@ export default function MatchStatsBar(
         {props.stats.wins > 0 &&
           <Text style={styles.text}>{`${props.stats.wins}`}</Text>}
       </View>
-      <View style={draws}>
-        {props.stats.draws > 0 &&
-          <Text style={styles.text}>{`${props.stats.draws}`}</Text>}
-      </View>
+      {WITH_DRAW &&
+        <View style={draws}>
+          {props.stats.draws > 0 &&
+            <Text style={styles.text}>{`${props.stats.draws}`}</Text>}
+        </View>}
       <View style={lost}>
         {props.stats.lost > 0 &&
           <Text style={styles.text}>{`${props.stats.lost}`}</Text>}

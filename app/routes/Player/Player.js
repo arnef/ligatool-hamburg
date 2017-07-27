@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import * as PlayerActions from '../../redux/modules/player';
-import { DATE_FORMAT } from '../../config/settings';
+import { DATE_FORMAT, WITH_DRAW } from '../../config/settings';
 import {
   Container,
   MatchStatsBar,
@@ -137,9 +137,10 @@ class Player extends Component {
                   <Text
                     style={{ flex: 1, fontSize: 10 }}
                   >{`${stat.wins} Sieg${stat.wins !== 1 ? 'e' : ''}`}</Text>
-                  <Text
-                    style={{ flex: 1, fontSize: 10, textAlign: 'center' }}
-                  >{`${stat.draws} Unentschieden`}</Text>
+                  {WITH_DRAW &&
+                    <Text
+                      style={{ flex: 1, fontSize: 10, textAlign: 'center' }}
+                    >{`${stat.draws} Unentschieden`}</Text>}
                   <Text
                     style={{ flex: 1, fontSize: 10, textAlign: 'right' }}
                   >{`${stat.lost} Niederlage${stat.lost !== 1
