@@ -1,3 +1,26 @@
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/arnef/ligatool-hamburg/compare/v0.10.2...v0.11.0) (2017-07-30)
+
+
+### Bug Fixes
+
+* catch errors in manifest api calls ([73dae2b](https://github.com/arnef/ligatool-hamburg/commit/73dae2b))
+* don't use .bind(this) in render functions ([a68b2d2](https://github.com/arnef/ligatool-hamburg/commit/a68b2d2))
+* remove border in navbar ([6604169](https://github.com/arnef/ligatool-hamburg/commit/6604169))
+* update notifications and sync in background with server ([fd19e4d](https://github.com/arnef/ligatool-hamburg/commit/fd19e4d))
+
+
+### Features
+
+* add code push ([a4a5f27](https://github.com/arnef/ligatool-hamburg/commit/a4a5f27))
+* add sentry ([843e008](https://github.com/arnef/ligatool-hamburg/commit/843e008))
+* change match datetime ([52e16e6](https://github.com/arnef/ligatool-hamburg/commit/52e16e6))
+* impl redux-ducks and redux-saga ([f448828](https://github.com/arnef/ligatool-hamburg/commit/f448828))
+* save leagues for navigation ([febca99](https://github.com/arnef/ligatool-hamburg/commit/febca99))
+* use more settings ([7dc5774](https://github.com/arnef/ligatool-hamburg/commit/7dc5774))
+
+
+
 <a name="0.10.2"></a>
 ## 0.10.2 (2017-06-18)
 
