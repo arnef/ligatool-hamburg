@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
+import codePush from 'react-native-code-push';
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
 import store from './config/store';
@@ -29,7 +30,7 @@ class App extends Component<void, Props, State> {
     };
     persistStore(store, config, () => {
       this.setState({ rehydrated: true });
-    }).purge(['matches']);
+    });
   }
 
   render() {
@@ -45,4 +46,4 @@ class App extends Component<void, Props, State> {
   }
 }
 
-export default App;
+export default codePush(App);

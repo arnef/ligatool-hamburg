@@ -73,6 +73,7 @@ import com.android.build.OutputFile
  */
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply from: "../../node_modules/react-native-sentry/sentry.gradle"
 
 /**
@@ -147,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-code-push')
     compile project(':react-native-sentry')
     compile project(':react-native-http-cache')
     compile fileTree(dir: "libs", include: ["*.jar"])

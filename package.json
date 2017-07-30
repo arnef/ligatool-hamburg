@@ -22,6 +22,7 @@
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.45.1",
+    "react-native-code-push": "v3.0.1-beta",
     "react-native-fcm": "^7.1.0",
     "react-native-http-cache": "git+https://github.com/arnef/react-native-http-cache.git",
     "react-native-modal-datetime-picker": "^4.9.0",
