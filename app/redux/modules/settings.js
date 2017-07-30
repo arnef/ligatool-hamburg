@@ -22,6 +22,9 @@ const TOGGLE_GROUP_NOTIFICATION: TOGGLE_GROUP_NOTIFICATION =
   'ligatool/settings/TOGGLE_GROUP_NOTIFICATION';
 const SYNCHRONIZED: SYNCHRONIZED = 'ligatool/settings/SYNCHRONIZED';
 export const SET_FCM_TOKEN: SET_FCM_TOKEN = 'ligatool/settings/SET_FCM_TOKEN';
+export const COMPLETE_SETUP: COMPLETE_SETUP =
+  'ligatool/settings/COMPLETE_SETUP';
+const SET_NOTIFICATION: SET_NOTIFICATION = 'ligatool/settings/SET_NOTIFICATION';
 
 // Reducer
 export default function reducer(
@@ -76,6 +79,13 @@ export default function reducer(
     case SYNCHRONIZED:
       state = { ...state, changed: false };
       break;
+    case SET_NOTIFICATION:
+      state = {
+        ...state,
+        changed: true,
+        notification: { ...state.notification, ...action.payload },
+      };
+      break;
   }
   return state;
 }
@@ -103,4 +113,12 @@ export function synchronized() {
 
 export function setFCMToken(fcmToken: string) {
   return { type: SET_FCM_TOKEN, payload: { fcm_token: fcmToken } };
+}
+
+export function completeSetup() {
+  return { type: COMPLETE_SETUP };
+}
+
+export function setNotification(payload) {
+  return { type: SET_NOTIFICATION, payload };
 }

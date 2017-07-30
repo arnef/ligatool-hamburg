@@ -24,6 +24,7 @@
     "react-native": "^0.45.1",
     "react-native-fcm": "^7.1.0",
     "react-native-http-cache": "git+https://github.com/arnef/react-native-http-cache.git",
+    "react-native-modal-datetime-picker": "^4.9.0",
     "react-native-sentry": "^0.14.15",
     "react-native-vector-icons": "^4.2.0",
     "react-navigation": "^1.0.0-beta.11",

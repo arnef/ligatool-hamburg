@@ -1,19 +1,10 @@
 // @flow
+import { Image, ListItem, Separator, Text } from '../../components';
+
 import React from 'react';
+import S from '../../lib/strings';
 import { View } from 'react-native';
-import { ListItem, Image, Text, Separator } from '../../components';
-
 import styles from './styles';
-
-const weekdays = [
-  'Sonntag',
-  'Montag',
-  'Dienstag',
-  'Mittwoch',
-  'Donnerstag',
-  'Freitag',
-  'Samstag',
-];
 
 export default function TeamInfo(props): ReactElement<any> {
   return (
@@ -24,28 +15,36 @@ export default function TeamInfo(props): ReactElement<any> {
         </View>}
       <ListItem multiline>
         <View>
-          <Text bold>Name</Text>
+          <Text bold>
+            {S.NAME}
+          </Text>
           <Text>{`${props.team.name}`}</Text>
         </View>
       </ListItem>
       <ListItem multiline>
         <View>
-          <Text bold>Gruppe</Text>
+          <Text bold>
+            {S.GROUP}
+          </Text>
           <Text>{`${props.team.league.name} - ${props.team
-            .position}. Platz`}</Text>
+            .position}${S.DOT_POSITION}`}</Text>
         </View>
       </ListItem>
       <Separator />
       <ListItem multiline>
         <View>
-          <Text bold>Verein</Text>
+          <Text bold>
+            {S.CLUB}{' '}
+          </Text>
           <Text>{`${props.team.club.name}`}</Text>
         </View>
       </ListItem>
       <Separator />
       <ListItem multiline>
         <View>
-          <Text bold>Heimtisch</Text>
+          <Text bold>
+            {S.HOME_TABLE}
+          </Text>
           <Text>
             {props.team.table}
           </Text>
@@ -54,11 +53,13 @@ export default function TeamInfo(props): ReactElement<any> {
       <Separator />
       <ListItem multiline>
         <View>
-          <Text bold>Heimspielzeit</Text>
+          <Text bold>
+            {S.HOME_MATCH_TIME}
+          </Text>
           <Text>{`${!isNaN(parseInt(props.team.home_match_day, 10))
-            ? `${weekdays[props.team.home_match_day]} ${props.team
+            ? `${S.WEEKDAYS[props.team.home_match_day]} ${props.team
                 .home_match_time
-                ? `um ${props.team.home_match_time}`
+                ? `${S.TIME_AT} ${props.team.home_match_time}`
                 : ''}`
             : '-'}`}</Text>
         </View>

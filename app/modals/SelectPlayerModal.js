@@ -10,8 +10,14 @@ import { Container, ListItem, Text, Separator } from '../components';
 import NavHeader from '../Nav/NavHeader';
 import NavCloseIcon from '../Nav/NavCloseIcon';
 
+import S from '../lib/strings';
+
 class SelectPlayer extends Component {
-  constructor(props) {
+  state: { selected: { [string]: boolean } };
+  onPress: Function;
+  renderItem: Function;
+
+  constructor(props: any) {
     super(props);
     this.state = {
       selected: {},
@@ -65,7 +71,7 @@ class SelectPlayer extends Component {
 
   onPress(idx) {
     const { state } = this.props.navigation;
-    const { navigate, closeModal, setPlayer, matches } = this.props;
+    const { navigate, setPlayer, matches } = this.props;
     const { selected } = this.state;
 
     if (selected[idx]) {
@@ -99,7 +105,7 @@ class SelectPlayer extends Component {
             params: {
               ...state.params,
               team: 'away',
-              title: `${state.params.data.name} Gast`,
+              title: `${state.params.data.name} ${S.AWAY}`,
             },
           });
         }
@@ -122,7 +128,7 @@ export default StackNavigator(
     SelectPlayerView: {
       screen: connect(
         state => ({ matches: state.matches }),
-        dispatch => ({
+        (dispatch: Dispatch<any>) => ({
           navigate: route => dispatch(NavigationActions.navigate(route)),
           closeModal: () => dispatch(NavigationActions.hidePlayer()),
           setPlayer: (id, team, player, setsIdx) =>

@@ -1,4 +1,5 @@
 // @flow
+import { StatusBar } from 'react-native';
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist/constants';
@@ -11,6 +12,10 @@ import {
   SET_PLAYER,
   UPDATE_MATCH,
   SUGGEST_SCORE,
+  INSERT_RESULTS,
+  GET_MATCH,
+  GET_MATCH_DONE,
+  SUGGEST_DATETIME,
 } from './modules/matches';
 import { GET_MY_TEAM_MATCHES, MY_TEAM_MATCHES } from './modules/myteam';
 import {
@@ -26,7 +31,6 @@ import {
 import { LOGOUT, LOGOUT_DONE } from './modules/auth';
 import { CLEAR_CACHE } from './modules/settings';
 import * as LoadingActions from './modules/loading';
-import { GET_MATCH, GET_MATCH_DONE } from './modules/matches';
 import {
   GET_TEAM,
   GET_TEAM_DONE,
@@ -42,7 +46,7 @@ import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
 
 import { compareDays, getMatchDays } from '../Helper';
-import { currentRoute } from '../lib/NavUtils';
+import { currentRoute, findRouteKey } from '../lib/NavUtils';
 
 function* overview() {
   try {
@@ -63,7 +67,7 @@ function* overview() {
       if (!state.drawer[`${match.league.id}`]) {
         updateDrawer = true;
       }
-      match = MatchUtils.isAdmin(match, state.auth);
+      // match = MatchUtils.isAdmin(match, state.auth);
       const diff: number = compareDays(match.datetime, now);
       if ((match.live && diff > -2) || diff === 0) {
         data.today.push(`${match.id}`);
@@ -82,13 +86,7 @@ function* overview() {
     NotificationManager.removeAllNotifications();
     if (updateDrawer) {
       const leagues = yield call(api.getLeagues);
-      yield put(
-        DrawerActions.setLeagues(
-          _.keyBy(leagues.data, l => {
-            return `${l.id}`;
-          }),
-        ),
-      );
+      yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
     }
   } catch (ex) {
     console.warn(ex);
@@ -110,9 +108,9 @@ function* myTeam() {
       } else {
         payload.next.push(`${match.id}`);
       }
-      matches.push(MatchUtils.isAdmin(match, state.auth));
+      // matches.push(MatchUtils.isAdmin(match, state.auth));
     }
-    yield put({ type: GET_MATCHES, payload: matches });
+    yield put({ type: GET_MATCHES, payload: matchesData.data });
     yield put({ type: MY_TEAM_MATCHES, payload });
   } catch (ex) {
     console.warn(ex);
@@ -167,10 +165,14 @@ function* getMatch(action) {
     yield put(LoadingActions.show());
     const matchData = yield call(api.getMatch, action.params.id);
     const state = yield select();
-    const match = MatchUtils.isAdmin(matchData.data, state.auth);
+    let match = { ...matchData.data, type: MatchUtils.getType(matchData.data) };
+
+    if (match.set_points) {
+      match = { ...match, games: MatchUtils.sets(match) };
+    }
     yield put({
       type: GET_MATCH_DONE,
-      payload: { ...match, games: MatchUtils.sets(match) },
+      payload: match,
     });
   } catch (ex) {
     console.warn(ex);
@@ -198,8 +200,8 @@ function* getLeagueMatches(action) {
     yield put(LoadingActions.show());
     const state = yield select();
     const matches = yield call(api.getLeagueMatches, action.payload.id);
-    const m = matches.data.map(match => MatchUtils.isAdmin(match, state.auth));
-    yield put({ type: GET_MATCHES, payload: m });
+    // const m = matches.data.map(match => MatchUtils.isAdmin(match, state.auth));
+    yield put({ type: GET_MATCHES, payload: matches.data });
     yield put({
       type: GET_LEAGUE_MATCHES_DONE,
       payload: {
@@ -254,7 +256,7 @@ function* getTeamMatches(action) {
     const matches = yield call(api.getTeamMatches, action.payload.id);
     yield put({
       type: GET_MATCHES,
-      payload: matches.data.map(match => MatchUtils.isAdmin(match, state.auth)),
+      payload: matches.data,
     });
     yield put({
       type: GET_TEAM_MATCHES_DONE,
@@ -283,9 +285,13 @@ function* login(action) {
       AuthActions.setToken({
         expires: team.data.expires,
         token: team.data.token,
-        ids,
+        // ids,
       }),
     );
+    const state = yield select();
+    if (state.settings.notification.on) {
+      yield put(SettingsActions.setNotification({ matchdate: true }));
+    }
     yield put(NavigationActions.hideLogin(action.next));
   } catch (ex) {
     console.warn(ex);
@@ -298,10 +304,20 @@ function* login(action) {
 function* hideLogin() {
   try {
     const state = yield select();
+    const modal =
+      state.nav.navigation.routes[state.nav.navigation.index].routeName;
+    if (modal === Routes.MODAL_LOGIN) {
+      yield put({
+        type: NavigationActions.BACK,
+        key: findRouteKey(state.nav.navigation, Routes.MODAL_LOGIN),
+      });
+    } else {
+      yield put(NavigationActions.navigate({ routeName: 'SetupNotif' }));
+    }
     if (
       state.settings.team &&
-      state.myteam.next.length === 0 &&
-      state.myteam.played.length === 0
+      state.myTeam.next.length === 0 &&
+      state.myTeam.played.length === 0
     ) {
       yield myTeam();
     }
@@ -330,15 +346,15 @@ function* updateMatch(action) {
     if (action.type === SUGGEST_SCORE) {
       const state = yield select();
       const match = state.matches[`${action.payload.id}`];
-      if (match.can_suggest_score === 0) {
+      if (match.state === 0) {
         payload = { ...payload, score_suggest: true };
-      } else if (match.can_suggest_score === 2) {
+      } else if (match.state === 2) {
         payload = { ...payload, score_unconfirmed: false };
       }
     }
     const matchData = yield call(api.updateMatch, action.payload.id, payload);
     const state = yield select();
-    const match = MatchUtils.isAdmin(matchData.data, state.auth);
+    const match = matchData.data;
     yield put({
       type: GET_MATCH_DONE,
       payload: { ...match, games: MatchUtils.sets(match) },
@@ -385,6 +401,9 @@ function* navigate(action) {
         state.settings.notification,
       );
       yield put(SettingsActions.synchronized());
+    }
+    if (action.routeName === 'SelectGroup') {
+      StatusBar.setBarStyle('light-content');
     }
     switch (action.routeName) {
       case Routes.MATCH:
@@ -486,6 +505,7 @@ function* updateNotifications() {
   try {
     const state = yield select();
     if (state.settings.fcm_token) {
+      api.setFCM(state.settings.fcm_token);
       yield call(
         api.updateNotifications,
         state.settings.fcm_token,
@@ -500,23 +520,35 @@ function* updateNotifications() {
 function* rehydrate() {
   try {
     const state = yield select();
-    if (state.auth.api_key && state.auth.team) {
-      if (state.auth.team.expires < new Date().getTime()) {
-        yield put(LoadingActions.showModal());
-        const team = yield call(api.refreshAuthentication, state.auth.api_key);
-        const ids = team.data.ids.map(item => `${item}`);
-        yield put(
-          AuthActions.setToken({
-            expires: team.data.expires,
-            token: team.data.token,
-            ids,
-          }),
-        );
-      } else {
-        api.setSecret(state.auth.team.token);
+    if (_.size(state.settings.notification.leagues) > 0) {
+      StatusBar.setBarStyle('light-content');
+      if (state.auth.api_key && state.auth.team) {
+        if (state.auth.team.expires < new Date().getTime()) {
+          yield put(LoadingActions.showModal());
+          const team = yield call(
+            api.refreshAuthentication,
+            state.auth.api_key,
+          );
+          const ids = team.data.ids.map(item => `${item}`);
+          yield put(
+            AuthActions.setToken({
+              expires: team.data.expires,
+              token: team.data.token,
+              ids,
+            }),
+          );
+        } else {
+          api.setSecret(state.auth.team.token);
+        }
       }
+      yield overview();
+    } else {
+      yield put(
+        NavigationActions.navigate({ routeName: Routes.MODAL_FIRST_START }),
+      );
+      const leagues = yield call(api.getLeagues);
+      yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
     }
-    yield overview();
   } catch (ex) {
     console.warn(ex);
   } finally {
@@ -538,6 +570,57 @@ function* showLogin() {
   } catch (ex) {
     console.warn(ex);
   }
+}
+
+function* insertResults(action) {
+  try {
+    const state = yield select();
+    const match = state.matches[action.payload.id];
+    if (match) {
+      yield put({
+        type: GET_MATCH_DONE,
+        payload: { ...match, games: MatchUtils.sets(match) },
+      });
+    }
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* suggestDatetime(action) {
+  try {
+    yield put(LoadingActions.showModal());
+    const match = yield call(api.updateMatch, action.payload.id, {
+      datetime_suggestions: action.payload.datetime_suggestions,
+    });
+    yield put({ type: GET_MATCH_DONE, payload: match.data });
+    yield put({ type: NavigationActions.BACK });
+  } catch (ex) {
+    console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
+  } finally {
+    yield put(LoadingActions.hideModal());
+  }
+}
+
+function* hideStart() {
+  StatusBar.setBarStyle('light-content');
+  yield overview();
+}
+
+function* completeSetup() {
+  const state = yield select();
+  if (_.size(state.settings.notification.leagues) > 0) {
+    yield put(
+      SettingsActions.setNotification({
+        on: true,
+        live: true,
+        ended: true,
+        matchdate: state.auth.api_key ? true : false,
+      }),
+    );
+  }
+  yield put(NavigationActions.hideStart());
 }
 
 export default function* sagas(): any {
@@ -563,4 +646,8 @@ export default function* sagas(): any {
   yield takeEvery(REHYDRATE, rehydrate);
   yield takeEvery(SettingsActions.SET_FCM_TOKEN, updateNotifications);
   yield takeEvery(SUGGEST_SCORE, updateMatch);
+  yield takeEvery(INSERT_RESULTS, insertResults);
+  yield takeEvery(SUGGEST_DATETIME, suggestDatetime);
+  yield takeEvery(NavigationActions.HIDE_START_MODAL, hideStart);
+  yield takeEvery(SettingsActions.COMPLETE_SETUP, completeSetup);
 }

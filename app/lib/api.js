@@ -4,6 +4,7 @@ import { URL } from '../config/settings';
 
 const instance = axios.create({
   baseURL: `${URL}/index.php?option=com_sportsmanagerapi&q=`,
+  headers: { 'api-version': '2' },
 });
 
 instance.interceptors.request.use(
@@ -21,6 +22,10 @@ instance.interceptors.request.use(
 export function setHeader(name: string, value: string) {
   console.warn('using set header is depricated');
   instance.defaults.headers.common[name] = value;
+}
+
+export function setFCM(fcm: string) {
+  instance.defaults.headers.common['x-fcm'] = fcm;
 }
 
 export function setSecret(value: string) {
@@ -75,8 +80,13 @@ export function getMatch(id: number): Promise<*> {
 }
 
 // PUT /matches/{id}
-export function updateMatch(id: number, data: any): Promise<*> {
-  return instance.put(`/matches/${id}`, data);
+// export function updateMatch(id: number, data: any): Promise<*> {
+//   return instance.put(`/matches/${id}`, data);
+// }
+
+// PATCH /matches/{id}
+export function updateMatch(id: string, data: any): Promise<any> {
+  return instance.patch(`/matches/${id}`, data);
 }
 
 // GET /teams/{id}

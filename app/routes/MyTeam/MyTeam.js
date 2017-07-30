@@ -6,7 +6,7 @@ import NavTabBarTop from '../../Nav/NavTabBarTop';
 import { MatchList, Team } from '../../components';
 import * as MyTeamActions from '../../redux/modules/myteam';
 import Routes from '../../config/routes';
-import strings from '../../lib/strings';
+import S from '../../lib/strings';
 
 function MyTeam(props) {
   return <MatchList matches={props.matches} onRefresh={props.getMatches} />;
@@ -33,15 +33,15 @@ export default TabNavigator(
   {
     [Routes.TAB_MATCHES_PLAYED]: {
       screen: PlayedMatches,
-      navigationOptions: { title: strings.played },
+      navigationOptions: { title: S.PAST_MATCHES },
     },
     [Routes.TAB_MATCHES_NEXT]: {
       screen: NextMatches,
-      navigationOptions: { title: strings.next },
+      navigationOptions: { title: S.NEXT_MATCHES },
     },
     [Routes.TAB_MY_TEAM_INFO]: {
       screen: Team,
-      navigationOptions: { title: strings.team_info },
+      navigationOptions: { title: S.TEAM_INFO },
     },
   },
   {

@@ -10,5 +10,6 @@ export default StyleSheet.create({
     shadowOffset: { height: 0, width: 0 },
     shadowOpacity: 0.25,
     elevation: 2,
+    flex: 1,
   },
 });

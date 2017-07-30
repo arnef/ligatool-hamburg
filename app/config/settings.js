@@ -10,6 +10,7 @@ export const URL = __DEV__
   : 'https://kickern-hamburg.de/de/competitions';
 
 // date format
+export const DATETIME_DB = 'YYYY-MM-DD HH:mm:ss';
 export const DATETIME_FORMAT = 'dd. DD.MM.YY HH:mm';
 export const DATE_FORMAT = 'dd. DD.MM.YY';
 
@@ -17,3 +18,6 @@ export const DATE_FORMAT = 'dd. DD.MM.YY';
 export const WITH_DRAW = true;
 export const DRAW_GOALS = 5;
 export const WIN_GOALS = 6;
+
+// dateime
+export const MAX_DATETIME_SUGGESTIONS = 5;

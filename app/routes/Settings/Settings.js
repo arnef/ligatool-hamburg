@@ -13,7 +13,7 @@ import {
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as AuthActions from '../../redux/modules/auth';
 import * as SettingsActions from '../../redux/modules/settings';
-import strings from '../../lib/strings';
+import S from '../../lib/strings';
 
 import Routes from '../../config/routes';
 
@@ -36,9 +36,9 @@ class Settings extends React.Component {
   }
 
   onClearCache() {
-    Alert.alert(strings.clear_image_cache, strings.cache_information, [
-      { text: 'Abbrechen', onPress: () => {} },
-      { text: 'Löschen', onPress: this.props.clearCache },
+    Alert.alert(S.CLEAR_IMAGE_CACHE, S.CACHE_INFORMATION, [
+      { text: S.CANCEL, onPress: () => {} },
+      { text: S.DELETE, onPress: this.props.clearCache },
     ]);
   }
 
@@ -58,12 +58,16 @@ class Settings extends React.Component {
           {!auth.api_key &&
             <ListItem onPress={this.props.login}>
               <ListItem.Icon name="key" color={color} />
-              <Text>Zugangsdaten eingeben</Text>
+              <Text>
+                {S.ENTER_ACCESS_DATA}
+              </Text>
             </ListItem>}
           {!auth.api_key && <Separator image />}
           <ListItem onPress={this.props.logout}>
             <ListItem.Icon name="log-out" color={color} />
-            <Text>Abmelden</Text>
+            <Text>
+              {S.LOGOUT}
+            </Text>
           </ListItem>
         </View>
       );
@@ -72,7 +76,9 @@ class Settings extends React.Component {
     return (
       <ListItem onPress={this.props.login}>
         <ListItem.Icon name="log-in" color={color} />
-        <Text>Team wählen</Text>
+        <Text>
+          {S.SELECT_TEAM}
+        </Text>
       </ListItem>
     );
   }
@@ -83,25 +89,39 @@ class Settings extends React.Component {
 
     return (
       <ListItem.Group>
-        <ListItem.Header title="Benachrichtigungen" />
+        <ListItem.Header title={S.NOTIFICATIONS} />
         {this.renderCheckbox(
-          'Benachrichtigungen',
+          S.NOTIFICATIONS,
           notification.on,
           'on',
           !fcm_token,
         )}
         <Separator />
         {this.renderCheckbox(
-          'Live-Zwischenergebnis',
+          S.NOTIFICATION_LIVE,
           notification.live,
           'live',
           disabled,
         )}
         <Separator />
-        {this.renderCheckbox('Endstand', notification.ended, 'ended', disabled)}
+        {this.renderCheckbox(
+          S.NOTIFICATION_END,
+          notification.ended,
+          'ended',
+          disabled,
+        )}
+        <Separator />
+        {this.renderCheckbox(
+          S.NOTIFICATION_MATCH_DATE,
+          notification.matchdate,
+          'matchdate',
+          !this.props.auth.api_key,
+        )}
         <Separator />
         <ListItem onPress={this.onSelectGroups} disabled={disabled}>
-          <Text style={{ flex: 1 }}>Gruppen wählen</Text>
+          <Text style={{ flex: 1 }}>
+            {S.SELECT_GROUPS}
+          </Text>
           <ListItem.Icon name="caret-forward" right />
         </ListItem>
       </ListItem.Group>
@@ -125,18 +145,18 @@ class Settings extends React.Component {
     const { color } = this.props.settings;
     return (
       <ListItem.Group>
-        <ListItem.Header title="Informationen" />
+        <ListItem.Header title={S.INFORMATION} />
         <ListItem onPress={this.onClearCache}>
           <ListItem.Icon name="trash" color={color} />
           <Text>
-            {strings.clear_image_cache}
+            {S.CLEAR_IMAGE_CACHE}
           </Text>
         </ListItem>
         <Separator image />
         <ListItem>
           <ListItem.Icon name="information-circle" color={color} />
           <Text>
-            {strings.app_version}
+            {S.APP_VERSION}
           </Text>
         </ListItem>
       </ListItem.Group>
@@ -147,7 +167,7 @@ class Settings extends React.Component {
     return (
       <Container>
         <ListItem.Group>
-          <ListItem.Header title="Benutzerdaten" />
+          <ListItem.Header title={S.USER_DATA} />
           {this.renderUser()}
         </ListItem.Group>
         <Separator group />

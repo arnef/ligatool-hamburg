@@ -30,12 +30,16 @@ function Button(props: ButtonProps): ReactElement<any> {
   if (props.square) {
     btnStyle.push({ borderRadius: 0 });
   }
+  if (props.padding) {
+    btnStyle.push({ padding: props.padding });
+  }
   const isAndroid = Platform.OS === 'android';
   const Container = props.disabled || props.loading ? View : Touchable;
 
   return (
     <Container
       style={btnStyle}
+      button
       pressColor={props.outline ? props.color : 'rgba(255,255,255,0.7)'}
       onPress={props.onPress}
     >

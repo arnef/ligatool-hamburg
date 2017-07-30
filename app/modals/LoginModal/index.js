@@ -5,19 +5,21 @@ import LoginView from './LoginView';
 import NavHeader from '../../Nav/NavHeader';
 import NavCloseIcon from '../../Nav/NavCloseIcon';
 
+import S from '../../lib/strings';
+
 const NavStack = StackNavigator(
   {
     SelectGroup: {
       screen: SelectGroupView,
-      navigationOptions: NavCloseIcon('Gruppe wählen'),
+      navigationOptions: NavCloseIcon(S.SELECT_GROUP),
     },
     SelectTeam: {
       screen: SelectTeamView,
-      navigationOptions: { title: 'Team wählen' },
+      navigationOptions: { title: S.SELECT_TEAM },
     },
     LoginView: {
       screen: LoginView,
-      navigationOptions: NavCloseIcon('Login'),
+      navigationOptions: NavCloseIcon(S.LOGIN),
     },
   },
   NavHeader,

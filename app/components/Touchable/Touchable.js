@@ -11,6 +11,7 @@ type TouchableProps = {
   children: ReactElement<*>,
   style?: number | Array<*> | Object,
   pressColor?: string,
+  button?: boolean,
 };
 
 export default function Touchable(props: TouchableProps): ReactElement<any> {
@@ -22,9 +23,11 @@ export default function Touchable(props: TouchableProps): ReactElement<any> {
         {...rest}
         delayPressIn={25}
         background={TouchableNativeFeedback.Ripple(
-          pressColor || 'rgba(0,0,0,.2)',
-          true,
+          pressColor ||
+            (props.light ? 'rgba(255, 255, 255, .7)' : 'rgba(0,0,0,.2)'),
+          !props.button,
         )}
+        style={{ borderWidth: 1 }}
       >
         <View style={style}>
           {children}

@@ -32,6 +32,7 @@ const singleHeader = [
   Routes.SETTINGS,
   Routes.SETTINGS_NOTIFICATIONS,
   Routes.PLAYER,
+  Routes.MATCH_DATE,
   'SelectGroup',
   'SelectTeam',
   'LoginView',

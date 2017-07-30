@@ -11,7 +11,7 @@ import store from '../config/store';
 import * as SettingsActions from '../redux/modules/settings';
 import * as MatchesActions from '../redux/modules/matches';
 import Routes from '../config/routes';
-import { currentRoute } from '../Helper';
+import { currentRoute } from './NavUtils';
 
 export type Listener = {
   remove: Function,
@@ -50,11 +50,18 @@ function refreshTokenListener(): Listener {
 function receiveNotification(notif: Notification) {
   if (notif) {
     const route = currentRoute(store.getState().nav.navigation);
-    const id = parseInt(notif.id);
+    const id = notif.id;
     const matchOpen =
-      route.routeName === Routes.MATCH &&
+      (route.routeName === Routes.MATCH ||
+        route.routeName === Routes.MATCH_DATE) &&
       route.params &&
       route.params.id === id;
+    console.log(
+      route,
+      matchOpen,
+      Routes.MATCH,
+      route.routeName === Routes.MATCH,
+    );
     if (Platform.OS === 'ios') {
       switch (notif._notificationType) {
         case NotificationType.Remote:

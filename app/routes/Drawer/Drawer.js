@@ -10,6 +10,8 @@ import styles from './styles';
 import DrawerItem from './DrawerItem';
 import DrawerItemLeague from './DrawerItemLeague';
 
+import S from '../../lib/strings';
+
 function Drawer(props): ReactElement<any> {
   return (
     <View style={styles.container}>
@@ -31,12 +33,12 @@ function Drawer(props): ReactElement<any> {
         <DrawerItem
           routeName={Routes.OVERVIEW}
           icon="football"
-          name="Übersicht"
+          name={S.OVERVIEW}
         />
         <DrawerItem
           routeName={Routes.MY_TEAM}
           icon={props.team ? 'shirt' : 'log-in'}
-          name={props.team ? 'Mein Team' : 'Team wählen'}
+          name={props.team ? S.MY_TEAM : S.SELECT_TEAM}
         />
         <Separator full />
         {props.leagues.map(league =>
@@ -46,7 +48,7 @@ function Drawer(props): ReactElement<any> {
         <DrawerItem
           routeName={Routes.SETTINGS}
           icon="settings"
-          name="Einstellungen"
+          name={S.SETTINGS}
         />
       </Container>
     </View>

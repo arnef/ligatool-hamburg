@@ -10,6 +10,8 @@ import Score from '../Score';
 import ActionSheet from '../ActionSheet';
 import styles from './styles';
 
+import S from '../../lib/strings';
+
 type SetItemProps = {
   data: Sets,
   onSelect: Function,
@@ -27,7 +29,7 @@ function PlayerHome(props) {
       <Text center style={styles.textPlayer}>
         {`${props.player
           ? `${props.player.name} ${props.player.surname}`
-          : props.editable ? 'Bitte wählen' : ''}`}
+          : props.editable ? S.SELECT : ''}`}
       </Text>
       {props.player && <Image url={props.player.image} size={32} />}
     </View>
@@ -41,7 +43,7 @@ function PlayerAway(props) {
       <Text center style={styles.textPlayer}>
         {`${props.player
           ? `${props.player.name} ${props.player.surname}`
-          : props.editable ? 'Bitte wählen' : ''}`}
+          : props.editable ? S.SELECT : ''}`}
       </Text>
     </View>
   );
@@ -80,7 +82,7 @@ export default function SetItem(props: SetItemProps): ReactElement<any> {
   function showMenu() {
     ActionSheet.show(
       {
-        options: ['Spieler wählen', 'Ergebnis eintragen'],
+        options: [S.SELECT_PLAYER, S.INSERT_SCORE],
       },
       val => {
         if (val < 3) {

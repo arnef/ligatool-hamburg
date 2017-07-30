@@ -6,7 +6,7 @@ import { Container, Separator, ListItem, Text } from '../../components';
 import * as TeamsActions from '../../redux/modules/teams';
 import * as NavigationActions from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
-
+import S from '../../lib/strings';
 import TeamInfo from './TeamInfo';
 import TeamVenue from './TeamVenue';
 import TeamContact from './TeamContact';
@@ -33,7 +33,7 @@ function Team(props): ReactElement<any> {
             <TeamContact color={props.color} contacts={team.contact} />}
           {team.contact && <Separator group />}
           <ListItem.Group>
-            <ListItem.Header title="Spieler" />
+            <ListItem.Header title={S.PLAYER} />
             {team.player.map((player, index) =>
               <View key={`player-${player.id}`}>
                 <ListItem onPress={() => props.navigate(Routes.PLAYER, player)}>

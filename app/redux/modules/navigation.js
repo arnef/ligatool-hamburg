@@ -2,7 +2,7 @@
 import { NavigationActions } from 'react-navigation';
 import { Root } from '../../router';
 import Routes from '../../config/routes';
-import { currentRoute } from '../../Helper';
+import { currentRoute } from '../../lib/NavUtils';
 
 // Type Definitions
 type State = {
@@ -29,6 +29,8 @@ const SHOW_PLAYER_MODAL: SHOW_PLAYER_MODAL =
   'ligatool/modules/navigation/SHOW_PLAYER_MODAL';
 const HIDE_PLAYER_MODAL: HIDE_PLAYER_MODAL =
   'ligatool/modules/navigation/HIDE_PLAYER_MODAL';
+export const HIDE_START_MODAL: HIDE_START_MODAL =
+  'ligattol/navigation/HIDE_START_MODAL';
 
 // Reducer
 export default function reducer(
@@ -46,17 +48,17 @@ export default function reducer(
       };
       break;
 
-    case HIDE_LOG_IN_MODAL:
-      state = {
-        ...state,
-        navigation: Root.router.getStateForAction(
-          NavigationActions.back({
-            key: findRouteKey(state.navigation, Routes.MODAL_LOGIN),
-          }),
-          state.navigation,
-        ),
-      };
-      break;
+    // case HIDE_LOG_IN_MODAL:
+    //   state = {
+    //     ...state,
+    //     navigation: Root.router.getStateForAction(
+    //       NavigationActions.back({
+    //         key: findRouteKey(state.navigation, state.navigation),
+    //       }),
+    //       state.navigation,
+    //     ),
+    //   };
+    //   break;
 
     case SHOW_PLAYER_MODAL:
       state = {
@@ -80,6 +82,17 @@ export default function reducer(
         navigation: Root.router.getStateForAction(
           NavigationActions.back({
             key: findRouteKey(state.navigation, Routes.MODAL_SELECT_PLAYER),
+          }),
+          state.navigation,
+        ),
+      };
+      break;
+    case HIDE_START_MODAL:
+      state = {
+        ...state,
+        navigation: Root.router.getStateForAction(
+          NavigationActions.back({
+            key: findRouteKey(state.navigation, Routes.MODAL_FIRST_START),
           }),
           state.navigation,
         ),
@@ -150,6 +163,10 @@ export function showPlayer(matchId: number, data: Array<Player>): Action {
 
 export function hidePlayer() {
   return { type: HIDE_PLAYER_MODAL };
+}
+
+export function hideStart() {
+  return { type: HIDE_START_MODAL };
 }
 
 // helper

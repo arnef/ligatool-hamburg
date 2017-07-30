@@ -15,6 +15,7 @@ import { DATETIME_FORMAT } from '../../config/settings';
 import Routes from '../../config/routes';
 import * as NavigationActions from '../../redux/modules/navigation';
 import styles from './styles';
+import S from '../../lib/strings';
 
 type MatchItemProps = {
   data: Match,
@@ -23,68 +24,68 @@ type MatchItemProps = {
 };
 
 function MatchItem(props: MatchItemProps): ReactElement<any> {
-  const date = moment(props.data.datetime);
+  const date = moment(props.data.datetime, 'YYYY-MM-DD HH:mm:ss');
   return (
     <Card
       onPress={() => {
-        if (props.data.set_points) {
-          props.dispatch(
-            NavigationActions.navigate({
-              routeName: Routes.MATCH,
-              params: { id: props.data.id, title: props.data.league.name },
-            }),
-          );
-        } else {
-          const options = [
-            'Spielort anzeigen',
-            `${props.data.team_home.name} anzeigen`,
-            `${props.data.team_away.name} anzeigen`,
-          ];
-          if (props.data.is_admin) {
-            options.push('Ergebnis eintragen');
-          }
-          ActionSheet.show({ options }, index => {
-            if (index === 0) {
-              const address = `${props.data.venue.street}, ${props.data.venue
-                .zip_code} ${props.data.venue.city}`;
-              const uri =
-                Platform.OS === 'ios'
-                  ? 'http://maps.apple.com/?address='
-                  : 'geo:53.5586526,9.6476386?q=';
+        // if (props.data.set_points) {
+        props.dispatch(
+          NavigationActions.navigate({
+            routeName: Routes.MATCH,
+            params: { id: props.data.id, title: props.data.league.name },
+          }),
+        );
+        // } else {
+        //   const options = [
+        //     'Spielort anzeigen',
+        //     `${props.data.team_home.name} anzeigen`,
+        //     `${props.data.team_away.name} anzeigen`,
+        //   ];
+        //   if (props.data.is_admin) {
+        //     options.push('Ergebnis eintragen');
+        //   }
+        //   ActionSheet.show({ options }, index => {
+        //     if (index === 0) {
+        //       const address = `${props.data.venue.street}, ${props.data.venue
+        //         .zip_code} ${props.data.venue.city}`;
+        //       const uri =
+        //         Platform.OS === 'ios'
+        //           ? 'http://maps.apple.com/?address='
+        //           : 'geo:53.5586526,9.6476386?q=';
 
-              Linking.openURL(uri + encodeURI(address)).catch(() =>
-                Alert.alert('Keine Karten-App installiert.'),
-              );
-            } else if (index === 1) {
-              props.dispatch(
-                NavigationActions.navigate({
-                  routeName: Routes.TEAM,
-                  params: {
-                    team: props.data.team_home,
-                    title: props.data.team_home.name,
-                  },
-                }),
-              );
-            } else if (index === 2) {
-              props.dispatch(
-                NavigationActions.navigate({
-                  routeName: Routes.TEAM,
-                  params: {
-                    team: props.data.team_away,
-                    title: props.data.team_away.name,
-                  },
-                }),
-              );
-            } else if (index === 3) {
-              props.dispatch(
-                NavigationActions.navigate({
-                  routeName: Routes.MATCH,
-                  params: { id: props.data.id, title: props.data.league.name },
-                }),
-              );
-            }
-          });
-        }
+        //       Linking.openURL(uri + encodeURI(address)).catch(() =>
+        //         Alert.alert(S.MAPS_APP_NOT_FOUND),
+        //       );
+        //     } else if (index === 1) {
+        //       props.dispatch(
+        //         NavigationActions.navigate({
+        //           routeName: Routes.TEAM,
+        //           params: {
+        //             team: props.data.team_home,
+        //             title: props.data.team_home.name,
+        //           },
+        //         }),
+        //       );
+        //     } else if (index === 2) {
+        //       props.dispatch(
+        //         NavigationActions.navigate({
+        //           routeName: Routes.TEAM,
+        //           params: {
+        //             team: props.data.team_away,
+        //             title: props.data.team_away.name,
+        //           },
+        //         }),
+        //       );
+        //     } else if (index === 3) {
+        //       props.dispatch(
+        //         NavigationActions.navigate({
+        //           routeName: Routes.MATCH,
+        //           params: { id: props.data.id, title: props.data.league.name },
+        //         }),
+        //       );
+        //     }
+        //   });
+        // }
       }}
     >
       <View style={styles.container}>

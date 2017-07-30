@@ -17,11 +17,10 @@ export default function Score(props: ScoreProps): ReactElement<any> {
       <View>
         <View style={[styles.score, { marginTop: 8 }]}>
           <Text style={styles.scoreText}>
-            {`${props.setPoints.set_points_home != null
-              ? props.setPoints.set_points_home
-              : '-'}:${props.setPoints.set_points_away != null
-              ? props.setPoints.set_points_away
-              : '-'}`}
+            {`${props.setPoints.set_points
+              ? `${props.setPoints.set_points.home}:${props.setPoints.set_points
+                  .away}`
+              : '-:-'}`}
           </Text>
         </View>
         <Text

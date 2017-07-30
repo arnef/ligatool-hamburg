@@ -36,7 +36,9 @@ function MatchHeader(props: MatchHeaderProps): ReactElement<any> {
             : '-:-'}`}
         </Text>
         <Text small style={styles.textScore}>
-          {`(${props.goals
+          {`(${props.goals &&
+          props.goals.home != null &&
+          props.goals.away != null
             ? `${props.goals.home}:${props.goals.away}`
             : '-:-'})`}
         </Text>

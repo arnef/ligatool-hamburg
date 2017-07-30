@@ -13,7 +13,7 @@ import {
   ListItem,
   Separator,
 } from '../../components';
-import strings from '../../lib/strings';
+import S from '../../lib/strings';
 
 class Player extends Component {
   getPlayer: Function;
@@ -60,29 +60,26 @@ class Player extends Component {
   renderInformation(player) {
     return (
       <ListItem.Group>
-        <ListItem.Header title={strings.player_info} />
+        <ListItem.Header title={S.PLAYER_INFO} />
         <View style={{ flexDirection: 'row' }}>
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Image url={player.image} height={240} width={180} />
           </View>
         </View>
-        {this.renderItem('Name', `${player.name} ${player.surname}`)}
+        {this.renderItem(S.NAME, `${player.name} ${player.surname}`)}
         <Separator />
-        {this.renderItem('Einstufung', player.classification)}
+        {this.renderItem(S.CLASSIFICATION, player.classification)}
         <Separator />
-        {this.renderItem('Nationale Spielernr.', player.number)}
+        {this.renderItem(S.NATIONAL_NUMBER, player.number)}
         <Separator />
-        {this.renderItem(
-          'Internationale Spielernr.',
-          player.international_number,
-        )}
+        {this.renderItem(S.INTERNATIONAL_NUMBER, player.international_number)}
         <Separator />
         {player.teams.length > 0 &&
-          this.renderItem('Team', player.teams[0].name)}
+          this.renderItem(S.TEAM, player.teams[0].name)}
         {player.teams.length > 0 && <Separator />}
-        {this.renderItem('Verein', player.club.name)}
+        {this.renderItem(S.CLUB, player.club.name)}
         <Separator />
-        {this.renderItem('Verband', player.association.name, true)}
+        {this.renderItem(S.ASSOCIATION, player.association.name, true)}
       </ListItem.Group>
     );
   }
@@ -92,26 +89,26 @@ class Player extends Component {
       return stats.sort((a, b) => (a.name < b.name ? -1 : 1)).map((stat, idx) =>
         <View key={idx}>
           <ListItem.Group>
-            <ListItem.Header title={`Statistik ${stat.name}`} />
+            <ListItem.Header title={`${S.STATISTIC} ${stat.name}`} />
             <ListItem multiline>
               <View style={{ flex: 2, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
-                  Platz
+                  {S.POSITION}
                 </Text>
               </View>
               <View style={{ flex: 2, alignItems: 'center' }}>
                 <Text small numberOfLines={1}>
-                  Spiele
+                  {S.GAMES}
                 </Text>
               </View>
               <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text center small numberOfLines={1}>
-                  Spielpunkte Quote
+                  {S.SET_POINTS_RATE}
                 </Text>
               </View>
               <View style={{ flex: 3, alignItems: 'center' }}>
                 <Text bold small numberOfLines={1}>
-                  Leistungsindex
+                  {S.COMPETITIVE_INDEX}
                 </Text>
               </View>
             </ListItem>
@@ -136,15 +133,19 @@ class Player extends Component {
                 <View style={{ flexDirection: 'row' }}>
                   <Text
                     style={{ flex: 1, fontSize: 10 }}
-                  >{`${stat.wins} Sieg${stat.wins !== 1 ? 'e' : ''}`}</Text>
+                  >{`${stat.wins} ${S.WIN}${stat.wins !== 1
+                    ? S.WIN_POSTFIX
+                    : ''}`}</Text>
                   {WITH_DRAW &&
                     <Text
                       style={{ flex: 1, fontSize: 10, textAlign: 'center' }}
-                    >{`${stat.draws} Unentschieden`}</Text>}
+                    >{`${stat.draws} ${S.DRAW}${stat.draws !== 1
+                      ? S.DRAW_POSTFIX
+                      : ''}`}</Text>}
                   <Text
                     style={{ flex: 1, fontSize: 10, textAlign: 'right' }}
-                  >{`${stat.lost} Niederlage${stat.lost !== 1
-                    ? 'n'
+                  >{`${stat.lost} ${S.LOST}${stat.lost !== 1
+                    ? S.LOST_POSTFIX
                     : ''}`}</Text>
                 </View>
               </View>

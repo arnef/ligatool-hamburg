@@ -11,6 +11,7 @@ import {
 } from '../../components';
 import * as NavigatationActions from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
+import S from '../../lib/strings';
 import Player from './Player';
 import styles from './styles';
 
@@ -29,16 +30,16 @@ function PlayerStatsList(props): ReactElement<any> {
           <View style={styles.position} />
           <View style={styles.playerImage} />
           <Text small color="#fff" style={styles.playerName}>
-            Name
+            {S.NAME}
           </Text>
           <Text small color="#fff" style={styles.rate}>
-            Q
+            {S.RATE_SHORT}
           </Text>
           <Text small color="#fff" style={styles.matches} numberOfLines={1}>
-            Spiele
+            {S.GAMES}
           </Text>
           <Text small color="#fff" style={styles.competitiveIndex}>
-            LI
+            {S.COMPETITIVE_INDEX_SHORT}
           </Text>
         </View>
       </StaticListHeader>

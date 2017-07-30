@@ -4,21 +4,21 @@ import NavTabBarTop from '../../Nav/NavTabBarTop';
 import { MatchList, PlayerStatsList, Table } from '../../components';
 
 import Routes from '../../config/routes';
-import strings from '../../lib/strings';
+import S from '../../lib/strings';
 
 export default TabNavigator(
   {
     [Routes.TAB_LEAGUE_MATCHES]: {
       screen: MatchList.Selectable,
-      navigationOptions: { title: strings.matches },
+      navigationOptions: { title: S.MATCHES },
     },
     [Routes.TAB_TABLE]: {
       screen: Table,
-      navigationOptions: { title: strings.table },
+      navigationOptions: { title: S.TABLE },
     },
     [Routes.TAB_PLAYER_STATS]: {
       screen: PlayerStatsList,
-      navigationOptions: { title: strings.player_statistics },
+      navigationOptions: { title: S.STATISTICS },
     },
   },
   {

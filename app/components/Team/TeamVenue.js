@@ -2,6 +2,7 @@
 import React from 'react';
 import { Platform, Linking, Alert } from 'react-native';
 import { ListItem, Text } from '../../components';
+import S from '../../lib/strings';
 
 export default function TeamVenue(props): ReactElement<any> {
   function onPress() {
@@ -13,13 +14,13 @@ export default function TeamVenue(props): ReactElement<any> {
         : 'geo:53.5586526,9.6476386?q=';
 
     Linking.openURL(uri + encodeURI(address)).catch(() =>
-      Alert.alert('Keine Karten-App installiert.'),
+      Alert.alert(S.MAPS_APP_NOT_FOUND),
     );
   }
 
   return (
     <ListItem.Group>
-      <ListItem.Header title="Heimspielort" />
+      <ListItem.Header title={S.HOME_VENUE} />
       <ListItem multiline onPress={onPress}>
         <Text style={{ flex: 1 }}>{`${props.venue.name}\n${props.venue
           .street}, ${props.venue.zip_code} ${props.venue.city}`}</Text>

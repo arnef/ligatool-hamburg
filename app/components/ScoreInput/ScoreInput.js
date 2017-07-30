@@ -7,6 +7,7 @@ import Text from '../Text';
 import Icon from '../Icon';
 import { WITH_DRAW, WIN_GOALS, DRAW_GOALS } from '../../config/settings';
 import styles from './styles';
+import S from '../../lib/strings';
 
 export default class ScoreInput extends React.Component {
   state: {
@@ -104,8 +105,8 @@ export default class ScoreInput extends React.Component {
         <View style={styles.containerSet}>
           <Text bold secondary>{`${this.props.data.name} ${this.props.data.sets
             .length > 1
-            ? `- Ergebnis ${this.state.set + 1}. Satz`
-            : '- Ergebnis'}`}</Text>
+            ? `- ${S.RESULT} ${this.state.set + 1}${S.DOT_SET}`
+            : `- ${S.RESULT}`}`}</Text>
         </View>
         <View style={styles.containerPlayers}>
           <View style={styles.containerPlayer}>
@@ -138,22 +139,29 @@ export default class ScoreInput extends React.Component {
             {this.state.set > 0 &&
               <Touchable style={styles.buttonIcon} onPress={this.onPressBack}>
                 <Icon name="arrow-back" size={20} style={styles.iconButton} />
-                <Text style={styles.buttonText}>1. Satz</Text>
+                <Text style={styles.buttonText}>{`${this.state
+                  .set}${S.DOT_SET}`}</Text>
               </Touchable>}
           </View>
           <View style={styles.vSeparator}>
             <Touchable style={styles.button} onPress={this.props.onCancel}>
-              <Text style={styles.buttonText}>Abbrechen</Text>
+              <Text style={styles.buttonText}>
+                {S.CANCEL}
+              </Text>
             </Touchable>
           </View>
           {this.state.goals_home !== null &&
             this.state.goals_away !== null &&
             <Touchable onPress={this.onSave} style={styles.button}>
-              <Text style={styles.buttonText}>Speichern</Text>
+              <Text style={styles.buttonText}>
+                {S.SAVE}
+              </Text>
             </Touchable>}
           {(this.state.goals_home === null || this.state.goals_away === null) &&
             <View style={styles.buttonDisabled}>
-              <Text style={styles.buttonText}>Speichern</Text>
+              <Text style={styles.buttonText}>
+                {S.SAVE}
+              </Text>
             </View>}
         </View>
       </Card>

@@ -8,9 +8,11 @@ import { Container, ListItem, Text, Separator } from '../../components';
 class SelectGroupView extends React.Component {
   constructor(props) {
     super(props);
+
     this.renderItem = this.renderItem.bind(this);
   }
   render() {
+    console.log(this.props.leagues);
     return (
       <Container
         error={this.props.error}

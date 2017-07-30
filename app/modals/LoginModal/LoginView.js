@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, ListItem, Button, Text, Separator } from '../../components';
-import strings from '../../lib/strings';
+import S from '../../lib/strings';
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as AuthActions from '../../redux/modules/auth';
 
@@ -37,13 +37,13 @@ class LoginView extends Component {
         <ListItem.Group>
           <View style={{ padding: 12 }}>
             <Text>
-              {strings.login_info}
+              {S.LOGIN_INFO}
             </Text>
           </View>
           <View style={{ padding: isIOS ? 0 : 12 }}>
             {isIOS && <Separator full />}
             <TextInput
-              placeholder="Username"
+              placeholder={S.USERNAME}
               autoCapitalize="none"
               style={styles.input}
               underlineColorAndroid={colors.BACKGROUND}
@@ -61,7 +61,7 @@ class LoginView extends Component {
             />
             {isIOS && <Separator />}
             <TextInput
-              placeholder="Passwort"
+              placeholder={S.PASSWORD}
               ref={ref => (this.passwordInput = ref)}
               style={styles.input}
               selectTextOnFocus={true}
@@ -86,7 +86,7 @@ class LoginView extends Component {
                     onPress={() => {
                       this.closeLogin();
                     }}
-                    title={init ? 'Abbrechen' : 'Überspringen'}
+                    title={init ? S.CANCEL : S.SKIP}
                   />
                 </View>
                 <View style={styles.buttonSpace} />
@@ -94,7 +94,7 @@ class LoginView extends Component {
                   <Button
                     disabled={!this.state.user || !this.state.pass}
                     onPress={this.login}
-                    title="Anmelden"
+                    title={S.LOGIN}
                   />
                 </View>
               </View>
@@ -116,7 +116,7 @@ class LoginView extends Component {
           error &&
           <View style={{ padding: 12 }}>
             <Text color="red" center>
-              {strings.login_error}
+              {S.LOGIN_ERROR}
             </Text>
           </View>}
       </Container>

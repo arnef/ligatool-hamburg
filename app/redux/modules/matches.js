@@ -15,6 +15,9 @@ export const GET_MATCHES: GET_MATCHES = 'GET_MATCHES';
 export const GET_MATCH: GET_MATCH = 'ligatool/modules/GET_MATCH';
 export const GET_MATCH_DONE: GET_MATCH_DONE = 'ligatool/modules/GET_MATCH_DONE';
 export const SET_PLAYER: SET_PLAYER = 'ligatool/modules/matches/SET_PLAYER';
+export const INSERT_RESULTS: INSERT_RESULTS = 'ligatool/matches/INSERT_RESULTS';
+export const SUGGEST_DATETIME: SUGGEST_DATETIME =
+  'ligatool/matches/SUGGEST_DATETIME';
 export const UPDATE_MATCH: UPDATE_MATCH =
   'ligatool/modules/matches/UPDATE_MATCH';
 export const SUGGEST_SCORE: SUGGEST_SCORE = 'ligattol/matches/SUGGEST_SCORE';
@@ -55,9 +58,11 @@ export default function reducer(state: State = {}, action: Action): State {
           ...state,
           [action.payload.id]: {
             ...state[action.payload.id],
-            set_points: true,
-            set_points_home: parseInt(action.payload.set_points_home, 10),
-            set_points_away: parseInt(action.payload.set_points_away, 10),
+
+            set_points: {
+              home: parseInt(action.payload.set_points_home, 10),
+              away: parseInt(action.payload.set_points_away, 10),
+            },
             live: JSON.parse(action.payload.live) ? true : false,
           },
         };
@@ -109,12 +114,24 @@ export function setType(payload: {
   return { type: TOGGLE_MATCH_TYPE, payload };
 }
 
+export function suggestDatetime(id: string, datetime_suggestions: Array<any>) {
+  return { type: SUGGEST_DATETIME, payload: { id, datetime_suggestions } };
+}
+
 export function notification(payload: any) {
   if (payload.type === 'SCORE_CONFIRMED') {
     return { type: END_NOTIFICATION, payload };
-  } else {
+  } else if (
+    payload.type === 'LIVE_SCORE' ||
+    payload.type === 'SUGGEST_SCORE'
+  ) {
     return { type: LIVE_NOTIFICATION, payload };
   }
+  return { type: 'IGNORE' };
+}
+
+export function insertResults(id: string) {
+  return { type: INSERT_RESULTS, payload: { id } };
 }
 
 function getStateForAction(state: State, action: Action): State {

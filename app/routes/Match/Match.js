@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import {
   MatchHeader,
@@ -15,6 +15,8 @@ import * as MatchesActions from '../../redux/modules/matches';
 import * as NavigationActions from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
 import styles from './styles';
+import S from '../../lib/strings';
+import NoSets from './NoSets';
 
 class Match extends React.Component {
   state: {
@@ -113,7 +115,7 @@ class Match extends React.Component {
           <View style={styles.containerHalftime}>
             <View style={styles.separator} />
             <Text style={styles.halftime} bold secondary>
-              2. Halbzeit
+              {S.SECOND_HALFTIME}
             </Text>
             <View style={styles.separator} />
           </View>}
@@ -151,16 +153,8 @@ class Match extends React.Component {
         <MatchHeader
           home={match.team_home.name}
           away={match.team_away.name}
-          points={
-            match.set_points
-              ? { home: match.set_points_home, away: match.set_points_away }
-              : null
-          }
-          goals={
-            match.set_points
-              ? { home: match.goals_home, away: match.goals_away }
-              : null
-          }
+          points={match.set_points}
+          goals={match.goals}
           onPress={(team: string) => {
             this.props.openTeam(match[team]);
           }}
@@ -171,9 +165,12 @@ class Match extends React.Component {
           onRefresh={this.onRefresh}
           renderRow={this.renderItem}
           dataSource={match.games}
+          ListHeaderComponent={() => {
+            return match.sets ? <NoSets match={match} /> : <View />;
+          }}
         />
         {match.is_admin &&
-          match.can_suggest_score > -1 &&
+          match.state > -1 &&
           <Button
             onPress={() => {
               const match = this.props.matches[
@@ -183,19 +180,13 @@ class Match extends React.Component {
               this.props.suggestScore(match.id, match.sets);
             }}
             square
-            title={btnText[match.can_suggest_score]}
-            disabled={match.can_suggest_score === 1}
+            title={S.SCORE_BUTTON_TEXT[match.state]}
+            disabled={match.state === 1}
           />}
       </View>
     );
   }
 }
-
-const btnText = [
-  'Ergebnis vorschlagen',
-  'Ergebnis vorgeschlagen',
-  'Ergebnis akzeptieren',
-];
 
 export default connect(
   state => ({

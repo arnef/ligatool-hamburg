@@ -4,9 +4,12 @@ import { View, StyleSheet } from 'react-native';
 class ListItemGroup extends Component {
   render() {
     const { children } = this.props;
-
+    const style = [styles.group];
+    if (this.props.noPadding) {
+      style.push({ paddingTop: 0 });
+    }
     return (
-      <View style={styles.group}>
+      <View style={style}>
         {children}
       </View>
     );

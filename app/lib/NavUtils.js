@@ -18,3 +18,31 @@ export function currentRoute(navigation: any): NavigationRoute {
 
   return recursiveFindRoute(navigation); // || store.getState().nav.navigation);
 }
+
+const recursiveFindRoute = (route, name) => {
+  if (!route) {
+    return null;
+  } else if (route.routeName === name) {
+    return route;
+  } else if (!route.routes) {
+    return null;
+  } else {
+    for (let i = 0; i < route.routes.length; i++) {
+      const found = recursiveFindRoute(route.routes[i], name);
+      if (found) {
+        return found;
+      }
+    }
+  }
+
+  return null;
+};
+
+export const findRouteKey = (state: any, name: string): any => {
+  const found = recursiveFindRoute(state, name);
+  if (found) {
+    return found.key;
+  }
+
+  return null;
+};

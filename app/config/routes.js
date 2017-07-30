@@ -4,6 +4,7 @@ const routes = {
   APP: 'ligatool/routes/APP',
   MODAL_LOGIN: 'ligatool/routes/MODAL_LOGIN',
   MODAL_SELECT_PLAYER: 'ligatool/routes/MODAL_SELECT_PLAYER',
+  MODAL_FIRST_START: 'ligatool/routes/MODAL_FIRST_START',
   // tabs
   OVERVIEW: 'ligatool/routes/OVERVIEW',
   MY_TEAM: 'ligatool/routes/MY_TEAM',
@@ -17,6 +18,7 @@ const routes = {
   LEAGUE: 'ligatool/routes/LEAGUE',
   LEAGUE_CUP: 'ligatool/routes/LEAGUE_CUP',
   PLAYER: 'ligatool/routes/PLAYER',
+  MATCH_DATE: 'ligatool/routes/MATCH_DATE',
   // top tabs
   TAB_TABLE: 'ligatool/routes/TAB_TABLE',
   TAB_TEAM: 'ligatool/routes/TAB_TEAM',

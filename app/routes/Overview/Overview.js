@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // import MatchListView from '../../views/MatchListView';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
 import { TabNavigator } from 'react-navigation';
-import strings from '../../lib/strings';
+import S from '../../lib/strings';
 import Routes from '../../config/routes';
 import { MatchList } from '../../components';
 import * as OverviewActions from '../../redux/modules/overview';
@@ -32,22 +32,20 @@ export default TabNavigator(
   {
     [Routes.TAB_MATCHES_PLAYED]: {
       screen: createTab('played'),
-      navigationOptions: { title: strings.played },
+      navigationOptions: { title: S.PAST_MATCHES },
     },
     [Routes.TAB_MATCHES_TODAY]: {
       screen: createTab('today'),
-      navigationOptions: { title: strings.today },
+      navigationOptions: { title: S.TODAY },
     },
     [Routes.TAB_MATCHES_NEXT]: {
       screen: createTab('next'),
-      navigationOptions: { title: strings.next },
+      navigationOptions: { title: S.NEXT_MATCHES },
     },
   },
   {
     ...NavTabBarTop,
-    initialRouteName: __DEV__
-      ? Routes.TAB_MATCHES_PLAYED
-      : Routes.TAB_MATCHES_TODAY,
+    initialRouteName: Routes.TAB_MATCHES_TODAY,
     lazy: false,
   },
 );

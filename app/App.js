@@ -29,7 +29,7 @@ class App extends Component<void, Props, State> {
     };
     persistStore(store, config, () => {
       this.setState({ rehydrated: true });
-    });
+    }).purge(['matches']);
   }
 
   render() {

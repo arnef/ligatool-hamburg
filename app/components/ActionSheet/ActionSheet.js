@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import ListItem from '../ListItem';
 import Text from '../Text';
-
+import S from '../../lib/strings';
 import styles from './styles';
 
 const DEVICE_HEIGHT = Math.round(Dimensions.get('window').height * 0.8);
@@ -41,6 +41,7 @@ class ActionSheet extends Component<void, Props, State> {
     y: new Animated.Value(DEVICE_HEIGHT),
     callback: () => null,
   };
+  hide: Function;
 
   static actionsheetInstance;
 
@@ -48,7 +49,7 @@ class ActionSheet extends Component<void, Props, State> {
     this.actionsheetInstance.showActionSheet(config, callback);
   }
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.hide = this.hide.bind(this);
   }
@@ -58,9 +59,11 @@ class ActionSheet extends Component<void, Props, State> {
     callback: (index: number) => void,
   ) {
     if (Platform.OS === 'ios') {
-      let iosConfig = JSON.parse(JSON.stringify(config));
-      iosConfig.options.push('Abbrechen');
-      iosConfig.cancelButtonIndex = iosConfig.options.length - 1;
+      let iosConfig = {
+        ...config,
+        options: [...config.options, S.CANCEL],
+        cancelButtonIndex: config.options.length,
+      };
       ActionSheetIOS.showActionSheetWithOptions(
         iosConfig,
         this.callbackWrapper(iosConfig.cancelButtonIndex, callback),

@@ -6,7 +6,7 @@ import { MatchList, Team } from '../../components';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
 import * as TeamsActions from '../../redux/modules/teams';
 import Routes from '../../config/routes';
-import strings from '../../lib/strings';
+import S from '../../lib/strings';
 
 const TeamMatches = connect(
   state => ({
@@ -31,11 +31,11 @@ export default TabNavigator(
   {
     [Routes.TAB_TEAM]: {
       screen: Team,
-      navigationOptions: { title: strings.team_info },
+      navigationOptions: { title: S.TEAM_INFO },
     },
     [Routes.TAB_MATCHES]: {
       screen: TeamMatches,
-      navigationOptions: { title: strings.matches },
+      navigationOptions: { title: S.MATCHES },
     },
   },
   {

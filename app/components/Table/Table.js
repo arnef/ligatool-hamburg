@@ -6,7 +6,7 @@ import { Container, StaticListHeader, Text, Separator } from '../../components';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import * as NavigationActions from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
-
+import S from '../../lib/strings';
 import TableItem from './TableItem';
 import styles from './styles';
 
@@ -26,16 +26,16 @@ function Table(props): ReactElement<any> {
           <View style={styles.teamLogo} />
           <View style={styles.teamName} />
           <Text small color="#fff" style={styles.matches}>
-            Sp.
+            {S.GAMES_SHORT}
           </Text>
           <Text small color="#fff" style={styles.setPoints}>
-            Sätze
+            {S.SETS}
           </Text>
           <Text small color="#fff" style={styles.goals}>
-            Tore
+            {S.GOALS}
           </Text>
           <Text small color="#fff" style={styles.points}>
-            Pkt.
+            {S.POINTS_SHORT}
           </Text>
         </View>
       </StaticListHeader>

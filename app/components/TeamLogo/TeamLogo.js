@@ -18,14 +18,14 @@ export default function TeamLogo(props: TeamLogoProps): ReactElement<any> {
     return (
       <Image
         style={styles.image}
-        size={props.big ? bigIconSize : iconSize}
+        size={props.size || (props.big ? bigIconSize : iconSize)}
         url={props.team.image}
       />
     );
   } else {
     return (
       <Icon
-        size={props.big ? bigIconSize : iconSize}
+        size={props.size || (props.big ? bigIconSize : iconSize)}
         name={'shirt'}
         style={styles.icon}
       />

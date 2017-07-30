@@ -100,7 +100,7 @@ export default class KeyboardAwareList extends React.Component {
   }
 
   render() {
-    const { renderRow, dataSource, ...rest } = this.props;
+    const { ListHeaderComponent, renderRow, dataSource, ...rest } = this.props;
     const height =
       this.state.keyboardHeight > 0
         ? this.state.keyboardHeight - (Platform.OS === 'ios' ? 70 : 0)
@@ -112,7 +112,10 @@ export default class KeyboardAwareList extends React.Component {
         onScroll={this.onScroll}
         getRef={scrollview => (this.container = scrollview)}
       >
-        {(dataSource || []).map((item, index) => renderRow({ item, index }))}
+        {(!dataSource || dataSource.length === 0) && <ListHeaderComponent />}
+        {dataSource &&
+          dataSource.length > 0 &&
+          dataSource.map((item, index) => renderRow({ item, index }))}
         <View style={{ height }} />
       </Container>
     );
