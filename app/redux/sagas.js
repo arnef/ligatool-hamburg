@@ -100,7 +100,6 @@ function* myTeam() {
     yield put(LoadingActions.show());
     const state = yield select();
     const matchesData = yield call(api.getTeamMatches, state.settings.team.id);
-    const matches = [];
     const payload = { next: [], played: [] };
     for (let match: Match of matchesData.data) {
       if (match.set_points && !match.score_unconfirmed) {
@@ -108,7 +107,6 @@ function* myTeam() {
       } else {
         payload.next.push(`${match.id}`);
       }
-      // matches.push(MatchUtils.isAdmin(match, state.auth));
     }
     yield put({ type: GET_MATCHES, payload: matchesData.data });
     yield put({ type: MY_TEAM_MATCHES, payload });
@@ -164,7 +162,6 @@ function* getMatch(action) {
   try {
     yield put(LoadingActions.show());
     const matchData = yield call(api.getMatch, action.params.id);
-    const state = yield select();
     let match = { ...matchData.data, type: MatchUtils.getType(matchData.data) };
 
     if (match.set_points) {
@@ -198,9 +195,7 @@ function* getLeague(action) {
 function* getLeagueMatches(action) {
   try {
     yield put(LoadingActions.show());
-    const state = yield select();
     const matches = yield call(api.getLeagueMatches, action.payload.id);
-    // const m = matches.data.map(match => MatchUtils.isAdmin(match, state.auth));
     yield put({ type: GET_MATCHES, payload: matches.data });
     yield put({
       type: GET_LEAGUE_MATCHES_DONE,
@@ -252,7 +247,6 @@ function* getTeam(action) {
 function* getTeamMatches(action) {
   try {
     yield put(LoadingActions.show());
-    const state = yield select();
     const matches = yield call(api.getTeamMatches, action.payload.id);
     yield put({
       type: GET_MATCHES,
@@ -285,7 +279,7 @@ function* login(action) {
       AuthActions.setToken({
         expires: team.data.expires,
         token: team.data.token,
-        // ids,
+        ids,
       }),
     );
     const state = yield select();
@@ -353,7 +347,6 @@ function* updateMatch(action) {
       }
     }
     const matchData = yield call(api.updateMatch, action.payload.id, payload);
-    const state = yield select();
     const match = matchData.data;
     yield put({
       type: GET_MATCH_DONE,
@@ -520,7 +513,7 @@ function* updateNotifications() {
 function* rehydrate() {
   try {
     const state = yield select();
-    if (_.size(state.settings.notification.leagues) > 0) {
+    if (_.size(state.drawer) > 0) {
       StatusBar.setBarStyle('light-content');
       if (state.auth.api_key && state.auth.team) {
         if (state.auth.team.expires < new Date().getTime()) {
@@ -605,6 +598,7 @@ function* suggestDatetime(action) {
 
 function* hideStart() {
   StatusBar.setBarStyle('light-content');
+  yield put({ type: 'hideWizard' });
   yield overview();
 }
 
