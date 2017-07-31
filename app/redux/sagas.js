@@ -1,6 +1,7 @@
 // @flow
 import { StatusBar } from 'react-native';
 import { takeEvery, put, call, select } from 'redux-saga/effects';
+import moment from 'moment';
 import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist/constants';
 import * as CacheManager from 'react-native-http-cache';
@@ -44,7 +45,7 @@ import * as MatchUtils from '../lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
-
+import { DATETIME_DB } from '../config/settings';
 import { compareDays, getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 
@@ -59,7 +60,7 @@ function* overview() {
       played: [],
     };
     const matches = [];
-    const now = new Date().getTime();
+    const now = moment();
     const state = yield select();
     let updateDrawer = false;
 
@@ -68,7 +69,11 @@ function* overview() {
         updateDrawer = true;
       }
       // match = MatchUtils.isAdmin(match, state.auth);
-      const diff: number = compareDays(match.datetime, now);
+      // const diff: number = compareDays(match.datetime, now);
+      const diff: number = moment(match.datetime, DATETIME_DB).diff(
+        now,
+        'days',
+      );
       if ((match.live && diff > -2) || diff === 0) {
         data.today.push(`${match.id}`);
       } else if (match.set_points) {
