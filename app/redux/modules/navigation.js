@@ -20,17 +20,18 @@ const routes = [
 
 // Actions
 export const SHOW_LOG_IN_MODAL: SHOW_LOG_IN_MODAL =
-  'ligatool/modules/SHOW_LOG_IN_MODAL';
+  'ligatool/SHOW_LOG_IN_MODAL';
 export const HIDE_LOG_IN_MODAL: HIDE_LOG_IN_MODAL =
-  'ligatool/modules/HIDE_LOG_IN_MODAL';
+  'ligatool/HIDE_LOG_IN_MODAL';
 export const NAVIGATE: NAVIGATE = NavigationActions.NAVIGATE;
 export const BACK: BACK = NavigationActions.BACK;
 const SHOW_PLAYER_MODAL: SHOW_PLAYER_MODAL =
-  'ligatool/modules/navigation/SHOW_PLAYER_MODAL';
+  'ligatool/navigation/SHOW_PLAYER_MODAL';
 const HIDE_PLAYER_MODAL: HIDE_PLAYER_MODAL =
-  'ligatool/modules/navigation/HIDE_PLAYER_MODAL';
+  'ligatool/navigation/HIDE_PLAYER_MODAL';
 export const HIDE_START_MODAL: HIDE_START_MODAL =
-  'ligattol/navigation/HIDE_START_MODAL';
+  'ligatool/navigation/HIDE_START_MODAL';
+export const OPEN_MY_TEAM: OPEN_MY_TEAM = 'ligatool/navigation/OPEN_MY_TEAM';
 
 // Reducer
 export default function reducer(
@@ -47,18 +48,6 @@ export default function reducer(
         ),
       };
       break;
-
-    // case HIDE_LOG_IN_MODAL:
-    //   state = {
-    //     ...state,
-    //     navigation: Root.router.getStateForAction(
-    //       NavigationActions.back({
-    //         key: findRouteKey(state.navigation, state.navigation),
-    //       }),
-    //       state.navigation,
-    //     ),
-    //   };
-    //   break;
 
     case SHOW_PLAYER_MODAL:
       state = {
@@ -98,18 +87,30 @@ export default function reducer(
         ),
       };
       break;
-    case NavigationActions.NAVIGATE:
+    case OPEN_MY_TEAM:
       state = {
         ...state,
-        navigation: Root.router.getStateForAction(action, state.navigation),
+        activeItem: Routes.MY_TEAM,
+        navigation: Root.router.getStateForAction(
+          { type: NavigationActions.NAVIGATE, routeName: Routes.MY_TEAM },
+          state.navigation,
+        ),
       };
-      if (routes.indexOf(action.routeName) !== -1 && action.routeName) {
-        state.activeItem = action.routeName;
-        if (
-          action.routeName === Routes.LEAGUE ||
-          action.routeName === Routes.LEAGUE_CUP
-        ) {
-          state.activeItem = `${action.routeName}_${action.params.id}`;
+      break;
+    case NavigationActions.NAVIGATE:
+      if (action.routeName !== Routes.MY_TEAM) {
+        state = {
+          ...state,
+          navigation: Root.router.getStateForAction(action, state.navigation),
+        };
+        if (routes.indexOf(action.routeName) !== -1 && action.routeName) {
+          state.activeItem = action.routeName;
+          if (
+            action.routeName === Routes.LEAGUE ||
+            action.routeName === Routes.LEAGUE_CUP
+          ) {
+            state.activeItem = `${action.routeName}_${action.params.id}`;
+          }
         }
       }
       break;

@@ -305,6 +305,7 @@ function* hideLogin() {
         type: NavigationActions.BACK,
         key: findRouteKey(state.nav.navigation, Routes.MODAL_LOGIN),
       });
+      yield put({ type: NavigationActions.OPEN_MY_TEAM });
     } else {
       yield put(NavigationActions.navigate({ routeName: 'SetupNotif' }));
     }
@@ -386,7 +387,7 @@ function* setPlayer(action) {
 function* navigate(action) {
   try {
     yield put(LoadingActions.hide());
-    const state = yield select();
+    let state = yield select();
     if (state.settings.changed && state.settings.fcm_token) {
       yield call(
         api.updateNotifications,
@@ -408,11 +409,14 @@ function* navigate(action) {
       case Routes.MY_TEAM:
         if (!state.settings.team) {
           yield put(NavigationActions.showLogin());
-        } else if (
-          state.myTeam.next.length === 0 &&
-          state.myTeam.played.length === 0
-        ) {
-          yield myTeam();
+        } else {
+          yield put({ type: NavigationActions.OPEN_MY_TEAM });
+          if (
+            state.myTeam.next.length === 0 &&
+            state.myTeam.played.length === 0
+          ) {
+            yield myTeam();
+          }
         }
         break;
       case Routes.LEAGUE_CUP:
