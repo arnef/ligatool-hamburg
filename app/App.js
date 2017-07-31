@@ -4,6 +4,8 @@ import { AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import codePush from 'react-native-code-push';
+import { Sentry } from 'react-native-sentry';
+
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
 import store from './config/store';
@@ -45,5 +47,11 @@ class App extends Component<void, Props, State> {
     }
   }
 }
+
+codePush.getUpdateMetadata().then(update => {
+  if (update) {
+    Sentry.setVersion('codepush:' + update.label);
+  }
+});
 
 export default codePush(App);
