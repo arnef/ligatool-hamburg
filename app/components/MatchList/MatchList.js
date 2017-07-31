@@ -14,7 +14,7 @@ function MatchList(props): ReactElement<any> {
       error={props.error}
       refreshing={props.refreshing}
       onRefresh={props.onRefresh}
-      dataSource={props.matches.sort(sort(props.data))}
+      dataSource={(props.matches || []).sort(sort(props.data))}
       keyExtractor={item => `match-${item}`}
       ListEmptyComponent={() =>
         <Text secondary style={styles.emptyText}>
