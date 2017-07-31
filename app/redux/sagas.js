@@ -68,12 +68,9 @@ function* overview() {
       if (!state.drawer[`${match.league.id}`]) {
         updateDrawer = true;
       }
-      // match = MatchUtils.isAdmin(match, state.auth);
-      // const diff: number = compareDays(match.datetime, now);
-      const diff: number = moment(match.datetime, DATETIME_DB).diff(
-        now,
-        'days',
-      );
+      const diff: number =
+        parseInt(now.format('YYYYMMDD')) -
+        parseInt(moment(match.datetime, DATETIME_DB).format('YYYYMMDD'));
       if ((match.live && diff > -2) || diff === 0) {
         data.today.push(`${match.id}`);
       } else if (match.set_points) {
