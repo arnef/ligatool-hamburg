@@ -59,6 +59,12 @@ export default function reducer(
       };
       break;
     case TOGGLE_GROUP_NOTIFICATION:
+      if (!state.notification.leagues) {
+        state = {
+          ...state,
+          notification: { ...state.notification, leagues: {} },
+        };
+      }
       state = {
         ...state,
         changed: true,

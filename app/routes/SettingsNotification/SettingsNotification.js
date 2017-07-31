@@ -29,7 +29,7 @@ class SettingsNotification extends React.Component {
         <Switch
           title={item.name}
           value={groups[`${item.id}`]}
-          onValueChange={() => this.props.toggleNotification(item.id)}
+          onValueChange={() => this.props.toggleNotification(`${item.id}`)}
         />
       </ListItem>
     );
