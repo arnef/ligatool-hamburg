@@ -19,7 +19,13 @@ const NavStack = StackNavigator(
     },
     LoginView: {
       screen: LoginView,
-      navigationOptions: NavCloseIcon(S.LOGIN),
+      navigationOptions: args => {
+        if (args.navigation.state.params && args.navigation.state.params.init) {
+          return NavCloseIcon(S.LOGIN)(args);
+        } else {
+          return { title: S.LOGIN };
+        }
+      },
     },
   },
   NavHeader,
