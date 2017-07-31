@@ -1,3 +1,26 @@
+<a name="0.11.1"></a>
+## [0.11.1](https://github.com/arnef/ligatool-hamburg/compare/v0.10.2...v0.11.1) (2017-07-31)
+
+
+### Bug Fixes
+
+* change display name ([2fe7e5c](https://github.com/arnef/ligatool-hamburg/commit/2fe7e5c))
+* clear stored matches ([55fc1b7](https://github.com/arnef/ligatool-hamburg/commit/55fc1b7))
+* create blank object if leagues undefined ([7d8eaf8](https://github.com/arnef/ligatool-hamburg/commit/7d8eaf8))
+* open team route after login ([9bae670](https://github.com/arnef/ligatool-hamburg/commit/9bae670))
+* open wizard only on first start ([19af749](https://github.com/arnef/ligatool-hamburg/commit/19af749))
+* set welcome text ([3727bfc](https://github.com/arnef/ligatool-hamburg/commit/3727bfc))
+* Show back Button in LoginModal ([c080d44](https://github.com/arnef/ligatool-hamburg/commit/c080d44))
+* use empty array if props undefined ([ba9f557](https://github.com/arnef/ligatool-hamburg/commit/ba9f557))
+* use moment to order matches ([3c1d3b5](https://github.com/arnef/ligatool-hamburg/commit/3c1d3b5))
+
+
+### Features
+
+* send codepush version to sentry ([eb76f6f](https://github.com/arnef/ligatool-hamburg/commit/eb76f6f))
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/arnef/ligatool-hamburg/compare/v0.10.2...v0.11.0) (2017-07-30)
 
