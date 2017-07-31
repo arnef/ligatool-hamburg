@@ -522,7 +522,16 @@ function* updateNotifications() {
 function* rehydrate() {
   try {
     const state = yield select();
-    if (_.size(state.drawer) > 0) {
+    if (
+      _.size(state.settings.notification.leagues) === 0 &&
+      _.size(state.drawer) === 0
+    ) {
+      yield put(
+        NavigationActions.navigate({ routeName: Routes.MODAL_FIRST_START }),
+      );
+      const leagues = yield call(api.getLeagues);
+      yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
+    } else {
       StatusBar.setBarStyle('light-content');
       if (state.auth.api_key && state.auth.team) {
         if (state.auth.team.expires < new Date().getTime()) {
@@ -544,12 +553,6 @@ function* rehydrate() {
         }
       }
       yield overview();
-    } else {
-      yield put(
-        NavigationActions.navigate({ routeName: Routes.MODAL_FIRST_START }),
-      );
-      const leagues = yield call(api.getLeagues);
-      yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
     }
   } catch (ex) {
     console.warn(ex);
