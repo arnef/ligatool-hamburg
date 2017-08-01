@@ -1,4 +1,6 @@
 // @flow
+import moment from 'moment';
+import { DATETIME_DB } from '../config/settings';
 import MatchTypes from '../config/MatchTypes';
 
 export function sets(match: Match) {
@@ -219,19 +221,25 @@ export function sort(matches: MatchesState = {}): Function {
       (matchB.live ? 2 : matchB.set_points ? 1 : 0) -
       (matchA.live ? 2 : matchA.set_points ? 1 : 0);
     if (sort === 0) {
-      // if (
-      //   matchA.set_points &&
-      //   matchB.set_points &&
-      //   !matchA.live &&
-      //   !matchB.live
-      // ) {
-      //   sort = matchB.datetime - matchA.datetime;
-      // } else {
-      //   sort = matchA.datetime - matchB.datetime;
-      // }
+      if (
+        matchA.set_points &&
+        matchB.set_points &&
+        !matchA.live &&
+        !matchB.live
+      ) {
+        sort = moment(matchB.datetime, DATETIME_DB).diff(
+          moment(matchA.datetime),
+          'hours',
+        );
+      } else {
+        sort = moment(matchA.datetime, DATETIME_DB).diff(
+          moment(matchB.datetime),
+          'hours',
+        );
+      }
     }
     if (sort === 0) {
-      sort = matchA.id - matchB.id;
+      sort = parseInt(matchA.id) - parseInt(matchB.id);
     }
     return sort;
   };
