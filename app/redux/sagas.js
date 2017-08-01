@@ -46,7 +46,7 @@ import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
 import { DATETIME_DB } from '../config/settings';
-import { compareDays, getMatchDays } from '../Helper';
+import { getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 
 function* overview() {
@@ -60,7 +60,8 @@ function* overview() {
       played: [],
     };
     const matches = [];
-    const now = moment();
+    const DATEFORMAT = 'YYYY-MM-DD';
+    const now = moment(moment().format(DATEFORMAT), DATEFORMAT);
     const state = yield select();
     let updateDrawer = false;
 
@@ -68,9 +69,11 @@ function* overview() {
       if (!state.drawer[`${match.league.id}`]) {
         updateDrawer = true;
       }
-      const diff: number =
-        parseInt(now.format('YYYYMMDD')) -
-        parseInt(moment(match.datetime, DATETIME_DB).format('YYYYMMDD'));
+      const datetime = moment(
+        moment(match.datetime, DATETIME_DB).format(DATEFORMAT),
+        DATEFORMAT,
+      );
+      const diff: number = datetime.diff(now, 'days');
       if ((match.live && diff > -2) || diff === 0) {
         data.today.push(`${match.id}`);
       } else if (match.set_points) {
