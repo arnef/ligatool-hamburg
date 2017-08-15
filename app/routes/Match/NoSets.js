@@ -144,9 +144,11 @@ function NoSets(props: NoSetsProps): ReactElement<any> {
           )}`}
         />
         <ListItem onPress={onOpenVenue}>
-          <Text style={styles.option}>
-            {S.OPEN_VENUE}
-          </Text>
+          <View style={styles.option}>
+            <Text>{`${props.match.venue.name}`}</Text>
+            <Text>{`${props.match.venue.street}, ${props.match.venue
+              .zip_code} ${props.match.venue.city}`}</Text>
+          </View>
           <ListItem.Icon right color={props.color} name="pin" />
         </ListItem>
         {props.match.is_admin && <Separator />}
