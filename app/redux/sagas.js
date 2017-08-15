@@ -21,7 +21,6 @@ import {
 import { GET_MY_TEAM_MATCHES, MY_TEAM_MATCHES } from './modules/myteam';
 import {
   GET_LEAGUES,
-  LEAGUES,
   GET_LEAGUE,
   GET_LEAGUE_DONE,
   GET_LEAGUE_MATCHES,
@@ -46,6 +45,7 @@ import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
 import { DATETIME_DB } from '../config/settings';
+import { getType } from '../config/MatchTypes';
 import { getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 
@@ -74,13 +74,16 @@ function* overview() {
         DATEFORMAT,
       );
       const diff: number = datetime.diff(now, 'days');
-      if ((match.live && diff > -2) || diff === 0) {
-        data.today.push(`${match.id}`);
-      } else if (match.set_points) {
-        data.played.push(`${match.id}`);
-      } else if (diff > 0) {
-        data.next.push(`${match.id}`);
+      if (match.date_confirmed) {
+        if ((match.live && diff > -2) || diff === 0) {
+          data.today.push(`${match.id}`);
+        } else if (match.set_points) {
+          data.played.push(`${match.id}`);
+        } else if (diff > 0) {
+          data.next.push(`${match.id}`);
+        }
       }
+
       matches.push(match);
     }
     yield put({ type: GET_MATCHES, payload: matches });
@@ -127,10 +130,7 @@ function* leagues() {
   try {
     yield put(LoadingActions.show());
     const leagues = yield call(api.getLeagues);
-    yield put({
-      type: LEAGUES,
-      payload: _.keyBy(leagues.data, o => `${o.id}`),
-    });
+    yield put(DrawerActions.setLeagues(leagues.data));
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -167,8 +167,18 @@ function* getMatch(action) {
   try {
     yield put(LoadingActions.show());
     const matchData = yield call(api.getMatch, action.params.id);
-    let match = { ...matchData.data, type: MatchUtils.getType(matchData.data) };
+    let match = { ...matchData.data, type: getType(matchData.data) };
+    const state = yield select();
+    if (!state.matches[match.id]) {
+      const route = currentRoute(state.nav.navigation);
 
+      yield put(
+        NavigationActions.setParams({
+          params: { title: match.league.name },
+          key: route.key,
+        }),
+      );
+    }
     if (match.set_points) {
       match = { ...match, games: MatchUtils.sets(match) };
     }
