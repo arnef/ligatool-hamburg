@@ -8,7 +8,9 @@
     "flow": "flow --show-all-errors",
     "lint": "eslint app/ index.android.js index.ios.js",
     "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "hotfix-android": "code-push release-react ligatool-hamburg-android android --sourcemapOutput index.android.bundle.map && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-android android ./ --org arne-feil --project kickern-in-hamburg && rm index.android.bundle.map",
+    "hotfix-ios": "code-push release-react ligatool-hamburg-ios ios --sourcemapOutput index.ios.bundle.map && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-ios ios ./ --org arne-feil --project kickern-in-hamburg && rm index.ios.bundle.map"
   },
   "lint-staged": {
     "{index.{android,ios},app/**/*}.js": [
