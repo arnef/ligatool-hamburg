@@ -2,6 +2,7 @@
 import moment from 'moment';
 import { DATETIME_DB } from '../config/settings';
 import MatchTypes from '../config/MatchTypes';
+import { getType } from '../config/MatchTypes';
 
 export function sets(match: Match) {
   const matchSets = match.sets || {};
@@ -197,18 +198,18 @@ function checkLineUp(
   }
 }
 
-export function getType(match: Match): string {
-  let type: string = match.league.cup ? 'cup' : 'default';
-  const sets = match && match.sets ? match.sets : {};
+// export function getType(match: Match): string {
+//   let type: string = match.league.cup ? 'cup' : 'default';
+//   const sets = match && match.sets ? match.sets : {};
 
-  if (sets['5'] && sets['6']) {
-    if (sets['5'].player_2_home != null && sets['6'].player_2_away != null) {
-      type += '_d5';
-    }
-  }
+//   if (sets['5'] && sets['6']) {
+//     if (sets['5'].player_2_home != null && sets['6'].player_2_away != null) {
+//       type += '_d5';
+//     }
+//   }
 
-  return type;
-}
+//   return type;
+// }
 
 /**
  *
