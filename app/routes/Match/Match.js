@@ -144,15 +144,14 @@ class Match extends React.Component {
   }
 
   render() {
-    const match: Match = this.props.matches[
-      `${this.props.navigation.state.params.id}`
-    ];
+    const match: Match =
+      this.props.matches[`${this.props.navigation.state.params.id}`] || {};
 
     return (
       <View style={styles.container}>
         <MatchHeader
-          home={match.team_home.name}
-          away={match.team_away.name}
+          home={match.team_home ? match.team_home.name : ''}
+          away={match.team_away ? match.team_away.name : ''}
           points={match.set_points}
           goals={match.goals}
           onPress={(team: string) => {

@@ -56,12 +56,7 @@ function receiveNotification(notif: Notification) {
         route.routeName === Routes.MATCH_DATE) &&
       route.params &&
       route.params.id === id;
-    console.log(
-      route,
-      matchOpen,
-      Routes.MATCH,
-      route.routeName === Routes.MATCH,
-    );
+
     if (Platform.OS === 'ios') {
       switch (notif._notificationType) {
         case NotificationType.Remote:
@@ -107,14 +102,14 @@ function receiveNotification(notif: Notification) {
         );
       }
 
-      // const match = store.getState().matches[id];
+      const match = store.getState().matches[id];
 
       store.dispatch(
         NavigationActions.navigate({
           routeName: Routes.MATCH,
           params: {
             id,
-            // isAdmin: match && isAdminForMatch(match, store.getState().auth),
+            title: match ? match.league.name : null,
           },
         }),
       );

@@ -155,6 +155,10 @@ export function navigate(data: any) {
   return NavigationActions.navigate(data);
 }
 
+export function setParams(options: { params: any, key: string }) {
+  return NavigationActions.setParams(options);
+}
+
 export function showPlayer(matchId: number, data: Array<Player>): Action {
   return {
     type: SHOW_PLAYER_MODAL,
