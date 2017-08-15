@@ -5,9 +5,7 @@ import { Platform } from 'react-native';
 moment.locale('de');
 
 // api
-export const URL = __DEV__
-  ? `http://localhost${Platform.OS === 'android' ? ':3000' : ''}/liga-tool`
-  : 'https://kickern-hamburg.de/de/competitions';
+export const URL = 'https://kickern-hamburg.de/de/competitions';
 
 // date format
 export const DATETIME_DB = 'YYYY-MM-DD HH:mm:ss';
