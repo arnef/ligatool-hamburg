@@ -28,64 +28,12 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
   return (
     <Card
       onPress={() => {
-        // if (props.data.set_points) {
         props.dispatch(
           NavigationActions.navigate({
             routeName: Routes.MATCH,
             params: { id: props.data.id, title: props.data.league.name },
           }),
         );
-        // } else {
-        //   const options = [
-        //     'Spielort anzeigen',
-        //     `${props.data.team_home.name} anzeigen`,
-        //     `${props.data.team_away.name} anzeigen`,
-        //   ];
-        //   if (props.data.is_admin) {
-        //     options.push('Ergebnis eintragen');
-        //   }
-        //   ActionSheet.show({ options }, index => {
-        //     if (index === 0) {
-        //       const address = `${props.data.venue.street}, ${props.data.venue
-        //         .zip_code} ${props.data.venue.city}`;
-        //       const uri =
-        //         Platform.OS === 'ios'
-        //           ? 'http://maps.apple.com/?address='
-        //           : 'geo:53.5586526,9.6476386?q=';
-
-        //       Linking.openURL(uri + encodeURI(address)).catch(() =>
-        //         Alert.alert(S.MAPS_APP_NOT_FOUND),
-        //       );
-        //     } else if (index === 1) {
-        //       props.dispatch(
-        //         NavigationActions.navigate({
-        //           routeName: Routes.TEAM,
-        //           params: {
-        //             team: props.data.team_home,
-        //             title: props.data.team_home.name,
-        //           },
-        //         }),
-        //       );
-        //     } else if (index === 2) {
-        //       props.dispatch(
-        //         NavigationActions.navigate({
-        //           routeName: Routes.TEAM,
-        //           params: {
-        //             team: props.data.team_away,
-        //             title: props.data.team_away.name,
-        //           },
-        //         }),
-        //       );
-        //     } else if (index === 3) {
-        //       props.dispatch(
-        //         NavigationActions.navigate({
-        //           routeName: Routes.MATCH,
-        //           params: { id: props.data.id, title: props.data.league.name },
-        //         }),
-        //       );
-        //     }
-        //   });
-        // }
       }}
     >
       <View style={styles.container}>
@@ -95,7 +43,11 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
         {props.data.venue &&
           <Text secondary small>
             <Icon name={'pin'} />
-            {` ${props.data.venue.name} ${date.format(DATETIME_FORMAT)}`}
+            {` ${props.data.venue.name}  `}
+            <Icon name={'clock'} />{' '}
+            {`${props.data.date_confirmed ? '' : 'bisher '}${date.format(
+              DATETIME_FORMAT,
+            )}`}
           </Text>}
         <View style={styles.teams}>
           <View style={styles.team}>

@@ -75,14 +75,9 @@ export function getMatches(): Promise<*> {
 }
 
 // GET /matches/{id}
-export function getMatch(id: number): Promise<*> {
+export function getMatch(id: string): Promise<*> {
   return instance.get(`/matches/${id}`);
 }
-
-// PUT /matches/{id}
-// export function updateMatch(id: number, data: any): Promise<*> {
-//   return instance.put(`/matches/${id}`, data);
-// }
 
 // PATCH /matches/{id}
 export function updateMatch(id: string, data: any): Promise<any> {
