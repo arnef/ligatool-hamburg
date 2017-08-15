@@ -42,7 +42,10 @@ function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
     [Routes.MATCH]: {
       screen: Match,
       navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title || S.MATCH,
+        title:
+          navigation.state.params && navigation.state.params.title
+            ? navigation.state.params.title
+            : S.MATCH,
       }),
     },
     [Routes.TEAM]: {
@@ -131,7 +134,10 @@ export const App =
                 [Routes.MATCH]: {
                   screen: Match,
                   navigationOptions: ({ navigation }) => ({
-                    title: navigation.state.params.title || S.MATCH,
+                    title:
+                      navigation.state.params && navigation.state.params.title
+                        ? navigation.state.params.title
+                        : S.MATCH,
                   }),
                 },
                 [Routes.TEAM]: {
