@@ -9,8 +9,10 @@
     "lint": "eslint app/ index.android.js index.ios.js",
     "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'",
     "precommit": "lint-staged",
-    "hotfix-android": "code-push release-react ligatool-hamburg-android android --sourcemapOutput index.android.bundle.map && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-android android ./ --org arne-feil --project kickern-in-hamburg && rm index.android.bundle.map",
-    "hotfix-ios": "code-push release-react ligatool-hamburg-ios ios --sourcemapOutput index.ios.bundle.map && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-ios ios ./ --org arne-feil --project kickern-in-hamburg && rm index.ios.bundle.map"
+    "push-android": "rm -rf build/android && mkdir -p build/android && code-push release-react ligatool-hamburg-android android -o build/android && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-android android build/android",
+    "push-ios": "rm -rf build/ios && mkdir -p build/ios && code-push release-react ligatool-hamburg-ios ios -o build/ios && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-ios ios build/ios",
+    "ls-android": "code-push deployment ls ligatool-hamburg-android",
+    "ls-ios": "code-push deployment ls ligatool-hamburg-ios"
   },
   "lint-staged": {
     "{index.{android,ios},app/**/*}.js": [
