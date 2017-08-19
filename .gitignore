@@ -54,5 +54,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 
-settings.js
+app/config/settings.js
 .sentryclirc
