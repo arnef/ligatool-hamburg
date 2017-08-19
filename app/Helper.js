@@ -36,7 +36,8 @@ export function darken(color: string, amt: number): string {
   const darkColor = (((colorVal & 0x0000ff) - amt) |
     ((((colorVal >> 8) & 0x00ff) - amt) << 8) |
     (((colorVal >> 16) - amt) << 16)).toString(16);
-  return `#${darkColor}`;
+
+  return '#' + `000000${darkColor}`.slice(-6);
 }
 
 export function getMatchDays(matches: Array<Match>): any {
