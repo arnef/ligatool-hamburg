@@ -56,3 +56,4 @@ fastlane/screenshots
 
 app/config/settings.js
 .sentryclirc
+!yarn.lock
