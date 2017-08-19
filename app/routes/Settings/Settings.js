@@ -35,10 +35,7 @@ class Settings extends React.Component {
     codePush.getCurrentPackage().then(pkg => {
       if (pkg && !pkg.isPending && pkg.label && pkg.appVersion) {
         this.setState({
-          codepush: `App-Version ${pkg.appVersion}.${pkg.label.substring(
-            1,
-            pkg.label.length,
-          )}`,
+          codepush: `App-Version ${pkg.appVersion}-${pkg.label}`,
         });
       }
     });
