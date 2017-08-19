@@ -81,6 +81,6 @@ react-native run-android
 ```
 
 ## API Docs
-Docs for API Version 1 are available [here](https://arnef.hopto.org/kickernhh). The current Version of the App uses API Version 2 (not documented yet).
+Docs for API Version 1 are available [here](https://arnef.hopto.org/kickernhh/). The current Version of the App uses API Version 2 (not documented yet).
 
 
