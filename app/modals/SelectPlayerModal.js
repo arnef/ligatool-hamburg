@@ -13,14 +13,14 @@ import NavCloseIcon from '../Nav/NavCloseIcon';
 import S from '../lib/strings';
 
 class SelectPlayer extends Component {
-  state: { selected: { [string]: boolean } };
+  state: { selected: Array<number> };
   onPress: Function;
   renderItem: Function;
 
   constructor(props: any) {
     super(props);
     this.state = {
-      selected: {},
+      selected: [],
     };
     this.onPress = this.onPress.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -63,7 +63,11 @@ class SelectPlayer extends Component {
         <ListItem.Icon
           right
           size={24}
-          name={this.state.selected[index] ? 'checkbox' : 'square-outline'}
+          name={
+            this.state.selected.indexOf(index) !== -1
+              ? 'checkbox'
+              : 'square-outline'
+          }
         />
       </ListItem>
     );
@@ -74,20 +78,21 @@ class SelectPlayer extends Component {
     const { navigate, setPlayer, matches } = this.props;
     const { selected } = this.state;
 
-    if (selected[idx]) {
-      delete selected[idx];
+    const index = selected.indexOf(idx);
+    if (index !== -1) {
+      selected.splice(index, 1);
     } else {
-      selected[idx] = true;
+      selected.push(idx);
     }
     this.setState({ selected });
-    const selectionLength = Object.values(selected).length;
+    const selectionLength = selected.length;
 
     if (selectionLength === state.params.data.type) {
       const result = [];
       const player =
         matches[state.params.matchId][`team_${state.params.team}`].player;
 
-      for (let itemIdx in selected) {
+      for (let itemIdx of selected) {
         result.push(player[itemIdx]);
       }
 
@@ -110,10 +115,6 @@ class SelectPlayer extends Component {
           });
         }
       }, 10);
-    } else if (selectionLength > state.params.data.type) {
-      this.setState({
-        selected: { [idx]: true },
-      });
     }
   }
 }
