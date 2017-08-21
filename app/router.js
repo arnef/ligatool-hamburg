@@ -13,6 +13,7 @@ import NavHeader from './Nav/NavHeader';
 import NavDrawerIcon from './Nav/NavDrawerIcon';
 import NavIcon from './Nav/NavIcon';
 import NavTabBarBottom from './Nav/NavTabBarBottom';
+import NavCloseIcon from './Nav/NavCloseIcon';
 
 import Drawer, { DRAWER_WIDTH } from './routes/Drawer';
 
@@ -23,6 +24,8 @@ import Leagues from './routes/Leagues';
 import League from './routes/League';
 import Settings from './routes/Settings';
 import SettingsNotification from './routes/SettingsNotification';
+import Search from './routes/Search';
+import SearchHeader from './routes/Search/SearchHeader';
 
 import Team from './routes/Team';
 import LeagueCup from './routes/Cup';
@@ -215,12 +218,37 @@ export const App =
         },
       );
 
+export const SearchStack = StackNavigator(
+  {
+    SearchStart: {
+      screen: Search,
+    },
+    [Routes.TEAM]: {
+      screen: Team,
+      navigationOptions: ({ navigation }) => ({
+        title: navigation.state.params.title,
+      }),
+    },
+    [Routes.PLAYER]: {
+      screen: PlayerView,
+      navigationOptions: ({ navigation }) => ({
+        title: `${navigation.state.params.name} ${navigation.state.params
+          .surname}`,
+      }),
+    },
+  },
+  SearchHeader,
+);
+
 export const Root: StackNavigator = StackNavigator(
   {
     [Routes.APP]: { screen: App },
     [Routes.MODAL_LOGIN]: { screen: ModalLogin },
     [Routes.MODAL_SELECT_PLAYER]: { screen: ModalSelectPlayer },
     [Routes.MODAL_FIRST_START]: { screen: FirstStart },
+    [Routes.SEARCH]: {
+      screen: SearchStack,
+    },
   },
   {
     headerMode: 'none',

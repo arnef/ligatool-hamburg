@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Header } from 'react-navigation';
 import Routes from '../config/routes';
 import { colors } from '../config/styles';
+import { Icon, Touchable } from '../components';
 
 const white = 'rgba(255, 255, 255, .8)';
 
@@ -47,6 +48,20 @@ const ConnectHeader = connect(state => ({ color: state.settings.color }))(
   NavHeader,
 );
 
+function showSearch(route) {
+  return (
+    [
+      Routes.SEARCH,
+      Routes.SETTINGS,
+      Routes.SETTINGS_NOTIFICATIONS,
+      'SelectGroup',
+      'SelectTeam',
+      'LoginView',
+      'SelectPlayerView',
+    ].indexOf(route) === -1
+  );
+}
+
 export default {
   cardStyle: { backgroundColor: colors.BACKGROUND },
   navigationOptions: ({ navigation }: any) => {
@@ -65,6 +80,16 @@ export default {
       headerTintColor: '#fff',
       headerBackTitle: null,
       headerPressColorAndroid: white,
+      headerRight: showSearch(navigation.state.routeName)
+        ? <Touchable
+            borderless
+            style={{ marginRight: Platform.OS === 'android' ? 16 : 8 }}
+            light
+            onPress={() => navigation.navigate(Routes.SEARCH)}
+          >
+            <Icon name="search" color="#fff" size={24} />
+          </Touchable>
+        : null,
       headerStyle,
     };
   },

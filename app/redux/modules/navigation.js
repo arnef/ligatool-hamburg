@@ -29,6 +29,7 @@ const SHOW_PLAYER_MODAL: SHOW_PLAYER_MODAL =
   'ligatool/navigation/SHOW_PLAYER_MODAL';
 const HIDE_PLAYER_MODAL: HIDE_PLAYER_MODAL =
   'ligatool/navigation/HIDE_PLAYER_MODAL';
+const HIDE_SEARCH: HIDE_SEARCH = 'ligatool/navigation/HIDE_SEARCH';
 export const HIDE_START_MODAL: HIDE_START_MODAL =
   'ligatool/navigation/HIDE_START_MODAL';
 export const OPEN_MY_TEAM: OPEN_MY_TEAM = 'ligatool/navigation/OPEN_MY_TEAM';
@@ -71,6 +72,17 @@ export default function reducer(
         navigation: Root.router.getStateForAction(
           NavigationActions.back({
             key: findRouteKey(state.navigation, Routes.MODAL_SELECT_PLAYER),
+          }),
+          state.navigation,
+        ),
+      };
+      break;
+    case HIDE_SEARCH:
+      state = {
+        ...state,
+        navigation: Root.router.getStateForAction(
+          NavigationActions.back({
+            key: findRouteKey(state.navigation, Routes.SEARCH),
           }),
           state.navigation,
         ),
@@ -164,6 +176,10 @@ export function showPlayer(matchId: number, data: Array<Player>): Action {
     type: SHOW_PLAYER_MODAL,
     payload: { matchId, data },
   };
+}
+
+export function hideSearch() {
+  return { type: HIDE_SEARCH };
 }
 
 export function hidePlayer() {

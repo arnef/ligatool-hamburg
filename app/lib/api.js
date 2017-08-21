@@ -126,3 +126,8 @@ export function updateNotifications(
 ): Promise<*> {
   return instance.post('/notification', { fcm_token, notification });
 }
+
+// GET /search
+export function search(query: string) {
+  return instance.get('/search/' + encodeURI(query));
+}

@@ -106,6 +106,8 @@ const strings = {
   TODAY: 'Heute',
   RESULT: 'Ergebnis',
   DOT_SET: '. Satz',
+  SEARCH: 'Suche',
+  SEARCH_PLACEHOLDER: 'Spieler, Team',
 };
 
 export default strings;

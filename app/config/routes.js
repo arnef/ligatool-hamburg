@@ -11,6 +11,8 @@ const routes = {
   LEAGUES: 'ligatool/routes/LEAGUES',
   SETTINGS: 'ligatool/routes/SETTINGS',
   SETTINGS_NOTIFICATIONS: 'ligatool/routes/SETTINGS_NOTIFICATIONS',
+  //
+  SEARCH: 'ligatool/routes/SEARCH',
   // single views
   MATCH: 'ligatool/routes/MATCH',
   PREVIEW: 'ligatool/routes/PREVIEW',

@@ -43,6 +43,7 @@ import * as PlayerActions from './modules/player';
 import * as MatchUtils from '../lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
+import * as SearchActions from './modules/search';
 import Routes from '../config/routes';
 import { DATETIME_DB } from '../config/settings';
 import { getType } from '../config/MatchTypes';
@@ -639,6 +640,36 @@ function* completeSetup() {
   yield put(NavigationActions.hideStart());
 }
 
+function* search(action) {
+  if (action.payload.length < 3) {
+    yield put(SearchActions.setMessage('Suchbegriff zu kurz'));
+  } else {
+    try {
+      yield put(LoadingActions.show());
+      const { data: results } = yield call(api.search, action.payload);
+      if (results.length > 0) {
+        yield put(SearchActions.setResult(results));
+        if (results.length === 1) {
+          const route =
+            results[0].type === 'team'
+              ? {
+                  routeName: Routes.TEAM,
+                  params: { team: results[0], title: results[0].name },
+                }
+              : { routeName: Routes.PLAYER, params: results[0] };
+          yield put(NavigationActions.navigate(route));
+        }
+      } else {
+        yield put(SearchActions.setMessage('Keine Ergebnisse gefunden'));
+      }
+    } catch (ex) {
+      console.warn(ex);
+    } finally {
+      yield put(LoadingActions.hide());
+    }
+  }
+}
+
 export default function* sagas(): any {
   yield takeEvery(GET_OVERVIEW_MATCHES, overview);
   yield takeEvery(GET_MY_TEAM_MATCHES, myTeam);
@@ -666,4 +697,5 @@ export default function* sagas(): any {
   yield takeEvery(SUGGEST_DATETIME, suggestDatetime);
   yield takeEvery(NavigationActions.HIDE_START_MODAL, hideStart);
   yield takeEvery(SettingsActions.COMPLETE_SETUP, completeSetup);
+  yield takeEvery(SearchActions.SEARCH, search);
 }
