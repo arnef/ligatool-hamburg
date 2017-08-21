@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Platform } from 'react-native';
 import Card from '../Card';
 import Touchable from '../Touchable';
 import Text from '../Text';
@@ -101,7 +101,7 @@ export default class ScoreInput extends React.Component {
       ? this.props.data.sets[0].player_2_away
       : null;
     return (
-      <Card>
+      <Card style={{ flex: 0 }}>
         <View style={styles.containerSet}>
           <Text bold secondary>{`${this.props.data.name} ${this.props.data.sets
             .length > 1
@@ -139,14 +139,17 @@ export default class ScoreInput extends React.Component {
             {this.state.set > 0 &&
               <Touchable style={styles.buttonIcon} onPress={this.onPressBack}>
                 <Icon name="arrow-back" size={20} style={styles.iconButton} />
-                <Text style={styles.buttonText}>{`${this.state
-                  .set}${S.DOT_SET}`}</Text>
+                <Text style={styles.buttonText}>
+                  {`${this.state.set}${Platform.OS === 'android'
+                    ? S.DOT_SET.toUpperCase()
+                    : S.DOT_SET}`}
+                </Text>
               </Touchable>}
           </View>
           <View style={styles.vSeparator}>
             <Touchable style={styles.button} onPress={this.props.onCancel}>
               <Text style={styles.buttonText}>
-                {S.CANCEL}
+                {Platform.OS === 'android' ? S.CANCEL.toUpperCase() : S.CANCEL}
               </Text>
             </Touchable>
           </View>
@@ -154,13 +157,13 @@ export default class ScoreInput extends React.Component {
             this.state.goals_away !== null &&
             <Touchable onPress={this.onSave} style={styles.button}>
               <Text style={styles.buttonText}>
-                {S.SAVE}
+                {Platform.OS === 'android' ? S.SAVE.toUpperCase() : S.SAVE}
               </Text>
             </Touchable>}
           {(this.state.goals_home === null || this.state.goals_away === null) &&
             <View style={styles.buttonDisabled}>
               <Text style={styles.buttonText}>
-                {S.SAVE}
+                {Platform.OS === 'android' ? S.SAVE.toUpperCase() : S.SAVE}
               </Text>
             </View>}
         </View>

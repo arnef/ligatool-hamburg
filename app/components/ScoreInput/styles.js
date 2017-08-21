@@ -19,11 +19,13 @@ export default StyleSheet.create({
   containerPlayer: {
     alignItems: 'center',
     flex: 1,
+    paddingTop: 8,
   },
   containerScore: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    paddingBottom: 8,
   },
   button: {
     flex: 1,
@@ -48,7 +50,7 @@ export default StyleSheet.create({
   buttonText: {
     color: colors.TEXT_SECONDARY,
     fontWeight: 'bold',
-    marginVertical: 10,
+    marginVertical: 12,
     textAlign: 'center',
   },
   input: Platform.select({

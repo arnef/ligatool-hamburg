@@ -13,7 +13,7 @@ type CardProps = {
 export default function Card(props: CardProps): ReactElement<any> {
   const Container = props.onPress ? Touchable : View;
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, props.style]}>
       <Container onPress={props.onPress}>
         {props.children}
       </Container>

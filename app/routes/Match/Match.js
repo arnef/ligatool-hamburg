@@ -17,6 +17,7 @@ import Routes from '../../config/routes';
 import styles from './styles';
 import S from '../../lib/strings';
 import NoSets from './NoSets';
+import ScoreModal from '../../modals/ScoreInput';
 
 class Match extends React.Component {
   state: {
@@ -33,6 +34,7 @@ class Match extends React.Component {
     super(props);
     this.state = {
       scoreInput: -1,
+      data: null,
     };
 
     this.onRefresh = this.onRefresh.bind(this);
@@ -54,14 +56,15 @@ class Match extends React.Component {
         this.props.selectPlayer(matchId, data);
         break;
       case 1:
-        this.onToggleScoreInput(idx);
+        this.onToggleScoreInput(idx, data);
         break;
     }
   }
 
-  onToggleScoreInput(idx) {
+  onToggleScoreInput(idx, data) {
     this.setState({
       scoreInput: this.state.scoreInput === idx ? -1 : idx,
+      data: data,
     });
   }
 
@@ -85,30 +88,10 @@ class Match extends React.Component {
     }
     sets[idx] = set;
     this.props.updateSets(match.id, sets);
-    this.setState({ scoreInput: -1 });
+    this.setState({ scoreInput: -1, data: null });
   }
 
   renderItem({ item, index }) {
-    let childs = null;
-    if (this.state.scoreInput === index) {
-      childs = (
-        <ScoreInput
-          onCancel={() => this.onToggleScoreInput(-1)}
-          onSave={this.onSave}
-          data={item}
-        />
-      );
-    } else {
-      childs = (
-        <SetItem
-          data={item}
-          index={index}
-          openPlayer={this.openPlayer}
-          editable={item.editable}
-          onSelect={this.onSelect}
-        />
-      );
-    }
     return (
       <View key={`game-${index}`}>
         {item.halftime &&
@@ -138,7 +121,13 @@ class Match extends React.Component {
               }
             />
           </View>}
-        {childs}
+        <SetItem
+          data={item}
+          index={index}
+          openPlayer={this.openPlayer}
+          editable={item.editable}
+          onSelect={this.onSelect}
+        />
       </View>
     );
   }
@@ -158,13 +147,20 @@ class Match extends React.Component {
             this.props.openTeam(match[team]);
           }}
         />
-        <Container.KeyboardAwareList
+        {match.is_admin &&
+          <ScoreModal
+            data={this.state.data}
+            onCancel={() => this.onToggleScoreInput(-1, null)}
+            onSave={this.onSave}
+          />}
+        <Container
           error={null}
           refreshing={this.props.loading}
           onRefresh={this.onRefresh}
           renderRow={this.renderItem}
           dataSource={match.games}
-          ListHeaderComponent={() => {
+          keyExtractor={(item, idx) => `game-${idx}`}
+          ListEmptyComponent={() => {
             return match.sets ? <NoSets match={match} /> : <View />;
           }}
         />
