@@ -72,11 +72,9 @@ class MatchDate extends React.Component {
   }
 
   onRemove(index) {
-    console.log('remove index', index);
-    console.log(this.state.datetimes);
     const datetimes = [...this.state.datetimes];
     datetimes.splice(index, 1);
-    console.log(datetimes);
+
     this.setState({
       datetimes,
     });

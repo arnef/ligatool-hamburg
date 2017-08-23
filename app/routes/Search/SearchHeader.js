@@ -4,7 +4,6 @@ import { View, Platform } from 'react-native';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { colors } from '../../config/styles';
-import { Touchable, Icon } from '../../components';
 import Routes from '../../config/routes';
 
 class SearchHeader extends React.Component {
@@ -18,7 +17,6 @@ class SearchHeader extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const { state } = this.props.navigation;
     if (state.index === 0) {
       return this.renderSearchBar();
@@ -59,7 +57,9 @@ export default {
           }
         : null;
     return {
-      header: (props: any) => <ConnectHeader {...props} />,
+      header: function Header(props: any) {
+        return <ConnectHeader {...props} />;
+      },
       headerTintColor: '#fff',
       headerBackTitle: null,
       headerPressColorAndroid: 'rgba(255, 255, 255, .8)',

@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import {
   MatchHeader,
   Container,
-  ScoreInput,
   SetItem,
   Button,
   Text,

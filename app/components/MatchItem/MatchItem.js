@@ -1,21 +1,13 @@
 // @flow
 import React from 'react';
-import { View, Linking, Platform, Alert } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import {
-  Card,
-  Text,
-  Icon,
-  TeamLogo,
-  Score,
-  ActionSheet,
-} from '../../components';
+import { Card, Text, Icon, TeamLogo, Score } from '../../components';
 import { DATETIME_FORMAT } from '../../config/settings';
 import Routes from '../../config/routes';
 import * as NavigationActions from '../../redux/modules/navigation';
 import styles from './styles';
-import S from '../../lib/strings';
 
 type MatchItemProps = {
   data: Match,

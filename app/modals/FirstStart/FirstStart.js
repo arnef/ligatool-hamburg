@@ -4,15 +4,15 @@ import { View, Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import NavHeader from '../../Nav/NavHeader';
-import { Container, Text, Button } from '../../components';
+import { Text, Button } from '../../components';
 import S from '../../lib//strings';
 import styles from './styles';
 import * as NavigationActions from '../../redux/modules/navigation';
-import Routes from '../../config/routes';
 import SelectGroup from '../LoginModal/SelectGroupView';
 import SelectTeam from '../LoginModal/SelectTeamView';
 import Login from '../LoginModal/LoginView';
 import SettingsNotification from '../../routes/SettingsNotification';
+
 class FirstStart extends React.Component {
   render() {
     return (
@@ -46,14 +46,11 @@ class FirstStart extends React.Component {
 export default StackNavigator(
   {
     Welcome: {
-      screen: connect(
-        state => ({}),
-        (dispatch: Dispatch<any>) => ({
-          skip: () => dispatch(NavigationActions.hideStart()),
-          next: () =>
-            dispatch(NavigationActions.navigate({ routeName: 'SelectGroup' })),
-        }),
-      )(FirstStart),
+      screen: connect(null, (dispatch: Dispatch<any>) => ({
+        skip: () => dispatch(NavigationActions.hideStart()),
+        next: () =>
+          dispatch(NavigationActions.navigate({ routeName: 'SelectGroup' })),
+      }))(FirstStart),
       navigationOptions: { header: null, gesturesEnabled: false },
     },
     SelectGroup: {

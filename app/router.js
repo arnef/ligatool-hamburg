@@ -13,7 +13,6 @@ import NavHeader from './Nav/NavHeader';
 import NavDrawerIcon from './Nav/NavDrawerIcon';
 import NavIcon from './Nav/NavIcon';
 import NavTabBarBottom from './Nav/NavTabBarBottom';
-import NavCloseIcon from './Nav/NavCloseIcon';
 
 import Drawer, { DRAWER_WIDTH } from './routes/Drawer';
 

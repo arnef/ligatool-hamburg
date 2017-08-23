@@ -1,6 +1,4 @@
 // @flow
-const weekdays = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
-
 /**
  * Compare date day of two date.
  * 0 = same day

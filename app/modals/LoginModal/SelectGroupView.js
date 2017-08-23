@@ -12,7 +12,6 @@ class SelectGroupView extends React.Component {
     this.renderItem = this.renderItem.bind(this);
   }
   render() {
-    console.log(this.props.leagues);
     return (
       <Container
         error={this.props.error}

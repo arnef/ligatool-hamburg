@@ -7,12 +7,9 @@ import {
   Text,
   TeamLogo,
   Card,
-  Button,
-  Icon,
   ListItem,
   Image,
   Separator,
-  Score,
 } from '../../components';
 import S from '../../lib/strings';
 import styles from './styles';

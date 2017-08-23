@@ -76,7 +76,9 @@ export default {
             borderBottomWidth: 0,
           };
     return {
-      header: (props: any) => <ConnectHeader {...props} />,
+      header: function Header(props: any) {
+        return <ConnectHeader {...props} />;
+      },
       headerTintColor: '#fff',
       headerBackTitle: null,
       headerPressColorAndroid: white,

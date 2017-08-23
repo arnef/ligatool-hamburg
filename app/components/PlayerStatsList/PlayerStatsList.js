@@ -20,9 +20,11 @@ function PlayerStatsList(props): ReactElement<any> {
     props.navigate(Routes.PLAYER, player);
   }
 
-  const dataSource = props.leagues[props.navigation.state.params.id]
-    ? props.leagues[props.navigation.state.params.id].players || []
-    : [];
+  const dataSource =
+    props.leagues[props.navigation.state.params.id] &&
+    props.leagues[props.navigation.state.params.id].players
+      ? props.leagues[props.navigation.state.params.id].players
+      : [];
 
   return (
     <View style={styles.container}>
