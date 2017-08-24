@@ -45,7 +45,7 @@ import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import * as SearchActions from './modules/search';
 import Routes from '../config/routes';
-import { DATETIME_DB } from '../config/settings';
+import { DATETIME_DB, DATE_FORMAT } from '../config/settings';
 import { getType } from '../config/MatchTypes';
 import { getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
@@ -56,9 +56,9 @@ function* overview() {
     const matchesData = yield call(api.getMatches);
 
     const data = {
-      today: [],
-      next: [],
-      played: [],
+      today: {},
+      next: {},
+      played: {},
     };
     const matches = [];
     const DATEFORMAT = 'YYYY-MM-DD';
@@ -75,13 +75,23 @@ function* overview() {
         DATEFORMAT,
       );
       const diff: number = datetime.diff(now, 'days');
+      const key = moment(match.datetime, DATETIME_DB).format(DATE_FORMAT);
       if (match.date_confirmed) {
         if ((match.live && diff > -2) || diff === 0) {
-          data.today.push(`${match.id}`);
+          if (!data.today[key]) {
+            data.today[key] = [];
+          }
+          data.today[key].push(`${match.id}`);
         } else if (match.set_points) {
-          data.played.push(`${match.id}`);
+          if (!data.played[key]) {
+            data.played[key] = [];
+          }
+          data.played[key].push(`${match.id}`);
         } else if (diff > 0) {
-          data.next.push(`${match.id}`);
+          if (!data.next[key]) {
+            data.next[key] = [];
+          }
+          data.next[key].push(`${match.id}`);
         }
       }
 
@@ -89,7 +99,7 @@ function* overview() {
     }
     yield put({ type: GET_MATCHES, payload: matches });
 
-    yield put({ type: OVERVIEW_MATCHES, payload: data });
+    yield sortOverview(data);
 
     yield put(LoadingActions.hide());
     NotificationManager.removeAllNotifications();
@@ -102,6 +112,20 @@ function* overview() {
     yield put(LoadingActions.hide());
     yield put(LoadingActions.error(ex.message));
   }
+}
+
+function* sortOverview(data) {
+  const { matches, overview } = yield select();
+  if (!data) {
+    data = overview;
+  }
+  for (let key in data) {
+    for (let date in data[key]) {
+      data[key][date].sort(MatchUtils.sort(matches));
+    }
+  }
+
+  yield put({ type: OVERVIEW_MATCHES, payload: data });
 }
 
 function* myTeam() {
@@ -187,6 +211,7 @@ function* getMatch(action) {
       type: GET_MATCH_DONE,
       payload: match,
     });
+    yield sortOverview();
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -369,6 +394,7 @@ function* updateMatch(action) {
       type: GET_MATCH_DONE,
       payload: { ...match, games: MatchUtils.sets(match) },
     });
+    yield sortOverview();
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -663,6 +689,11 @@ function* search(action) {
         yield put(SearchActions.setMessage('Keine Ergebnisse gefunden'));
       }
     } catch (ex) {
+      yield put(
+        SearchActions.setMessage(
+          'Fehler bei der Suche. Versuche es später nochmal.',
+        ),
+      );
       console.warn(ex);
     } finally {
       yield put(LoadingActions.hide());

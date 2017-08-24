@@ -1,26 +1,120 @@
 /* @flow */
 import React from 'react';
+import { ListView, View, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
-// import MatchListView from '../../views/MatchListView';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
 import { TabNavigator } from 'react-navigation';
 import S from '../../lib/strings';
 import Routes from '../../config/routes';
-import { MatchList } from '../../components';
+import { MatchItem, Text } from '../../components';
+import ErrorFlash from '../../components/ErrorFlash';
 import * as OverviewActions from '../../redux/modules/overview';
+import { colors } from '../../config/styles';
+import { keys, size } from 'lodash';
 
 class Overview extends React.Component {
-  render() {
-    const { matches } = this.props;
+  constructor(props) {
+    super(props);
+    this.ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+      sectionHeaderHasChanged: (s1, s2) => s1 != s2,
+    });
+    this.state = {
+      data: this.ds.cloneWithRowsAndSections(
+        this.props.matches,
+        keys(this.props.matches),
+      ),
+    };
+    this.renderItem = this.renderItem.bind(this);
+    this.renderSectionHeader = this.renderSectionHeader.bind(this);
+    this.renderEmpty = this.renderEmpty.bind(this);
+  }
 
-    return <MatchList matches={matches} onRefresh={this.props.queryMatches} />;
+  componentWillReceiveProps(nextProps) {
+    if (this.props.matches !== nextProps.matches) {
+      this.setState({
+        data: this.ds.cloneWithRowsAndSections(
+          nextProps.matches,
+          keys(nextProps.matches),
+        ),
+      });
+    }
+    // console.log('next', nextProps);
+  }
+
+  renderItem(item) {
+    return <MatchItem data={this.props.data[item]} />;
+  }
+
+  renderSectionHeader(data, sectionId) {
+    return (
+      <View style={{ paddingTop: 4, elevation: 5, alignItems: 'center' }}>
+        <View
+          style={{
+            paddingVertical: 4,
+            paddingHorizontal: 8,
+            borderRadius: 6,
+            backgroundColor: colors.BACKGROUND,
+          }}
+        >
+          <Text bold>{`${sectionId}`}</Text>
+        </View>
+      </View>
+    );
+  }
+
+  renderEmpty() {
+    return (
+      <Text secondary style={{ padding: 16, textAlign: 'center' }}>{`${this
+        .props.loading
+        ? ''
+        : 'Keine Begegnungen'}`}</Text>
+    );
+  }
+
+  render() {
+    // const { matches } = this.props;
+    const Refresh = (
+      <RefreshControl
+        colors={[this.props.color]}
+        refreshing={this.props.loading}
+        onRefresh={this.props.queryMatches}
+      />
+    );
+    return (
+      <View style={{ flex: 1 }}>
+        <ErrorFlash
+          error={this.props.error}
+          onRefresh={this.props.queryMatches}
+        />
+        <ListView
+          refreshControl={Refresh}
+          style={{ flex: 1 }}
+          enableEmptySections={true}
+          renderHeader={
+            this.props.matches && size(this.props.matches) > 0
+              ? null
+              : this.renderEmpty
+          }
+          stickySectionHeadersEnabled={true}
+          dataSource={this.state.data}
+          renderSectionHeader={this.renderSectionHeader}
+          renderRow={this.renderItem}
+        />
+      </View>
+    );
+    // return <MatchList matches={matches} onRefresh={this.props.queryMatches} />;
   }
 }
 
 function createTab(keyName) {
   return connect(
     state => ({
+      error: state.loading.error,
+      loading: state.loading.list,
       matches: state.overview[keyName],
+      data: state.matches,
+      color: state.settings.color,
     }),
     (dispatch: Dispatch<*>) => ({
       queryMatches: () => dispatch(OverviewActions.getMatches()),
