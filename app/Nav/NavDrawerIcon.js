@@ -4,7 +4,8 @@ import { Icon, Touchable } from '../components';
 
 export default (title = null) => ({ navigation }) => {
   return {
-    title: title || navigation.state.params.title,
+    title:
+      title || (navigation.state.params ? navigation.state.params.title : null),
     headerLeft: (
       <Touchable
         borderless

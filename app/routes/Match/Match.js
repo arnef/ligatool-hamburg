@@ -160,7 +160,7 @@ class Match extends React.Component {
           dataSource={match.games}
           keyExtractor={(item, idx) => `game-${idx}`}
           ListEmptyComponent={() => {
-            return match.sets ? <NoSets match={match} /> : <View />;
+            return match && match.sets ? <NoSets match={match} /> : <View />;
           }}
         />
         {match.is_admin &&
