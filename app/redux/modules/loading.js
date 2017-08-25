@@ -14,6 +14,7 @@ const HIDE_LOADING_MODAL: HIDE_LOADING_MODAL =
 const SHOW_LOADING: SHOW_LOADING = 'ligatool/modules/SHOW_LOADING';
 const HIDE_LOADING: HIDE_LOADING = 'ligatool/modules/HIDE_LOADING';
 const SET_ERROR: SET_ERROR = 'ligatool/modules/loading/SET_ERROR';
+export const APP_STATE_CHANGED = 'ligatool/modules/loading/APP_STATE_CHANGED';
 
 // Reducer
 export default function reducer(
@@ -59,4 +60,8 @@ export function hide() {
 
 export function error(message: string) {
   return { type: SET_ERROR, payload: message };
+}
+
+export function appState(state: string) {
+  return { type: APP_STATE_CHANGED, payload: state };
 }

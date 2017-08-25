@@ -701,7 +701,23 @@ function* search(action) {
   }
 }
 
+function* checkChange(action) {
+  const { loading, overview: data, nav } = yield select();
+  const today = moment().format(DATE_FORMAT);
+  const route = currentRoute(nav.navigation);
+
+  if (
+    route.routeName === Routes.OVERVIEW &&
+    action.payload === 'active' &&
+    !loading.list &&
+    data.next[today]
+  ) {
+    yield overview();
+  }
+}
+
 export default function* sagas(): any {
+  yield takeEvery(LoadingActions.APP_STATE_CHANGED, checkChange);
   yield takeEvery(GET_OVERVIEW_MATCHES, overview);
   yield takeEvery(GET_MY_TEAM_MATCHES, myTeam);
   yield takeEvery(GET_LEAGUES, leagues);
