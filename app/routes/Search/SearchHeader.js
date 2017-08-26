@@ -8,12 +8,12 @@ import Routes from '../../config/routes';
 
 class SearchHeader extends React.Component {
   renderSearchBar() {
-    const height =
-      Platform.OS === 'ios' ||
-      (Platform.OS === 'android' && Platform.Version >= 21)
-        ? 20
-        : 0;
-    return <View style={{ backgroundColor: this.props.color, height }} />;
+    const height = Platform.OS === 'ios' ? 20 : Platform.Version >= 21 ? 24 : 0;
+    return (
+      <View
+        style={{ backgroundColor: this.props.color, height, elevation: 4 }}
+      />
+    );
   }
 
   render() {
