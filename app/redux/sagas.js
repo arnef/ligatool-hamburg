@@ -56,9 +56,9 @@ function* overview() {
     const matchesData = yield call(api.getMatches);
 
     const data = {
-      today: {},
-      next: {},
-      played: {},
+      today: { data: {}, sections: [] },
+      next: { data: {}, sections: [] },
+      played: { data: {}, sections: [] },
     };
     const matches = [];
     const DATEFORMAT = 'YYYY-MM-DD';
@@ -78,27 +78,29 @@ function* overview() {
       const key = moment(match.datetime, DATETIME_DB).format(DATE_FORMAT);
       if (match.date_confirmed) {
         if ((match.live && diff > -2) || diff === 0) {
-          if (!data.today[key]) {
-            data.today[key] = [];
+          if (!data.today.data[key]) {
+            data.today.data[key] = {};
+            data.today.sections.push(key);
           }
-          data.today[key].push(`${match.id}`);
+          data.today.data[key].push(`${match.id}`);
         } else if (match.set_points) {
-          if (!data.played[key]) {
-            data.played[key] = [];
+          if (!data.played.data[key]) {
+            data.played.data[key] = [];
+            data.played.sections.push(key);
           }
-          data.played[key].push(`${match.id}`);
+          data.played.data[key].push(`${match.id}`);
         } else if (diff > 0) {
-          if (!data.next[key]) {
-            data.next[key] = [];
+          if (!data.next.data[key]) {
+            data.next.data[key] = [];
+            data.next.sections.push(key);
           }
-          data.next[key].push(`${match.id}`);
+          data.next.data[key].push(`${match.id}`);
         }
       }
 
       matches.push(match);
     }
     yield put({ type: GET_MATCHES, payload: matches });
-
     yield sortOverview(data);
 
     yield put(LoadingActions.hide());
@@ -120,9 +122,18 @@ function* sortOverview(data) {
     data = overview;
   }
   for (let key in data) {
-    for (let date in data[key]) {
-      data[key][date].sort(MatchUtils.sort(matches));
+    for (let date in data[key].data) {
+      data[key].data[date].sort(MatchUtils.sort(matches));
     }
+    data[key].sections.sort((a, b) => {
+      const dateA = moment(a.substring(4), DATE_FORMAT.substring(4));
+      const dateB = moment(b.substring(4), DATE_FORMAT.substring(4));
+
+      const sort =
+        key === 'next' ? dateB.isBefore(dateA) : dateA.isBefore(dateB);
+
+      return sort ? 1 : -1;
+    });
   }
 
   yield put({ type: OVERVIEW_MATCHES, payload: data });

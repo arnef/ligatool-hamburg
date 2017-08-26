@@ -34,12 +34,11 @@ class Overview extends React.Component {
     if (this.props.matches !== nextProps.matches) {
       this.setState({
         data: this.ds.cloneWithRowsAndSections(
-          nextProps.matches,
-          keys(nextProps.matches),
+          nextProps.matches.data,
+          nextProps.matches.sections,
         ),
       });
     }
-    // console.log('next', nextProps);
   }
 
   renderItem(item) {
@@ -92,7 +91,7 @@ class Overview extends React.Component {
           style={{ flex: 1 }}
           enableEmptySections={true}
           renderHeader={
-            this.props.matches && size(this.props.matches) > 0
+            this.props.matches && size(this.props.matches.data) > 0
               ? null
               : this.renderEmpty
           }
@@ -115,6 +114,7 @@ function createTab(keyName) {
       matches: state.overview[keyName],
       data: state.matches,
       color: state.settings.color,
+      keyName,
     }),
     (dispatch: Dispatch<*>) => ({
       queryMatches: () => dispatch(OverviewActions.getMatches()),
