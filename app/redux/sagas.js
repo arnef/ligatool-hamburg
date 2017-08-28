@@ -79,7 +79,7 @@ function* overview() {
       if (match.date_confirmed) {
         if ((match.live && diff > -2) || diff === 0) {
           if (!data.today.data[key]) {
-            data.today.data[key] = {};
+            data.today.data[key] = [];
             data.today.sections.push(key);
           }
           data.today.data[key].push(`${match.id}`);
