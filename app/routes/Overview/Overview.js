@@ -95,9 +95,13 @@ class Overview extends React.Component {
               ? null
               : this.renderEmpty
           }
-          stickySectionHeadersEnabled={true}
           dataSource={this.state.data}
-          renderSectionHeader={this.renderSectionHeader}
+          renderSectionHeader={
+            this.props.matches.sections &&
+            this.props.matches.sections.length > 1
+              ? this.renderSectionHeader
+              : null
+          }
           renderRow={this.renderItem}
         />
       </View>
