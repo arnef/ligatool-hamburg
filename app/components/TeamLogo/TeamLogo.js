@@ -17,7 +17,10 @@ export default function TeamLogo(props: TeamLogoProps): ReactElement<any> {
   if (props.team.image) {
     return (
       <Image
-        style={styles.image}
+        style={[
+          styles.image,
+          props.left ? { marginHorizontal: 0, marginRight: 16 } : {},
+        ]}
         size={props.size || (props.big ? bigIconSize : iconSize)}
         url={props.team.image}
       />

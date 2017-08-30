@@ -61,7 +61,7 @@ class Settings extends React.Component {
       return (
         <View>
           <ListItem>
-            <TeamLogo team={team} />
+            <TeamLogo team={team} left />
             <Text>
               {team.name}
             </Text>
