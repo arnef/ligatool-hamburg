@@ -24,6 +24,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		145BE7761EA664EF00E58225 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 145BE7751EA664EF00E58225 /* GoogleService-Info.plist */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		14E341DD1F5954E3009CF317 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB61A68108700A75B9A /* Info.plist */; };
 		20DEF1E7E38E47259029400D /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 99A88911B2EB4D199A30FF22 /* Zocial.ttf */; };
 		2C73057998434F33B569A974 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6F752C0250D4292BE8918A8 /* SimpleLineIcons.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -783,6 +784,7 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = N72Q2QBAAY;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -1161,6 +1163,7 @@
 				A984F557FB81404184BFB00A /* Entypo.ttf in Resources */,
 				B217F60B3103430C8DDB29E4 /* EvilIcons.ttf in Resources */,
 				F531C50ECA95465AA62A733D /* FontAwesome.ttf in Resources */,
+				14E341DD1F5954E3009CF317 /* Info.plist in Resources */,
 				0A641368B2A14E4B90B54C80 /* Foundation.ttf in Resources */,
 				AB2357B9DA39480F8E4B8066 /* Ionicons.ttf in Resources */,
 				AD6A6922032F43C4B53CAB2D /* MaterialCommunityIcons.ttf in Resources */,
@@ -1344,6 +1347,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = N72Q2QBAAY;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1381,6 +1385,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = N72Q2QBAAY;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
@@ -1428,6 +1433,7 @@
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				INFOPLIST_FILE = arnefeilligatool/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1459,6 +1465,7 @@
 					"$(SRCROOT)/../node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				INFOPLIST_FILE = arnefeilligatool/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
