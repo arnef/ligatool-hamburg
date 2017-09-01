@@ -8,11 +8,16 @@ export default {
     settings: {
       ...state.settings,
       changed: true,
-      notification: {
-        ...state.settings.notification,
-        matchdate:
-          state.settings.notification.on && state.auth.api_key ? true : false,
-      },
+      notification:
+        state.settings && state.settings.notification
+          ? {
+              ...state.settings.notification,
+              matchdate:
+                state.settings.notification.on && state.auth.api_key
+                  ? true
+                  : false,
+            }
+          : {},
     },
   }),
 };
