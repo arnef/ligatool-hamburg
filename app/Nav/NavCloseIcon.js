@@ -8,10 +8,10 @@ export default (title, action) => ({ navigation }) => ({
   headerLeft: (
     <Touchable
       borderless
-      delayPressIn={0}
+      pressColor={'rgba(255, 255, 255, .8)'}
+      style={styles.container}
       onPress={() => {
         navigation.dispatch(action || NavigationActions.hideLogin());
-        // navigation.dispatch(NavigationActions.hidePlayer());
       }}
     >
       <Icon name="close" color="#fff" style={styles.icon} size={iconSize} />
@@ -21,9 +21,11 @@ export default (title, action) => ({ navigation }) => ({
 
 const iconSize = Platform.OS === 'android' ? 24 : 20;
 const styles = StyleSheet.create({
+  container: {
+    marginLeft: Platform.OS === 'android' ? 16 : 12,
+  },
   icon: {
     height: iconSize,
     width: iconSize,
-    margin: Platform.OS === 'android' ? 16 : 12,
   },
 });

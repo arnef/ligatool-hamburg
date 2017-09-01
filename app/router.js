@@ -135,25 +135,27 @@ export const App =
                 },
                 [Routes.MATCH]: {
                   screen: Match,
-                  navigationOptions: ({ navigation }) => ({
-                    title:
+                  navigationOptions: ({ navigation }) =>
+                    NavDrawerIcon(
                       navigation.state.params && navigation.state.params.title
                         ? navigation.state.params.title
                         : S.MATCH,
-                  }),
+                    )({ navigation }),
                 },
                 [Routes.TEAM]: {
                   screen: Team,
-                  navigationOptions: ({ navigation }) => ({
-                    title: navigation.state.params.title,
-                  }),
+                  navigationOptions: ({ navigation }) =>
+                    NavDrawerIcon(navigation.state.params.title)({
+                      navigation,
+                    }),
                 },
                 [Routes.PLAYER]: {
                   screen: PlayerView,
-                  navigationOptions: ({ navigation }) => ({
-                    title: `${navigation.state.params.name} ${navigation.state
-                      .params.surname}`,
-                  }),
+                  navigationOptions: ({ navigation }) =>
+                    NavDrawerIcon(
+                      `${navigation.state.params.name} ${navigation.state.params
+                        .surname}`,
+                    )({ navigation }),
                 },
                 [Routes.SETTINGS]: {
                   screen: Settings,
