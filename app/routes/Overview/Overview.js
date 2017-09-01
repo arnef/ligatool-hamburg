@@ -10,7 +10,7 @@ import { MatchItem, Text } from '../../components';
 import ErrorFlash from '../../components/ErrorFlash';
 import * as OverviewActions from '../../redux/modules/overview';
 import { colors } from '../../config/styles';
-import { keys, size } from 'lodash';
+import { size } from 'lodash';
 
 class Overview extends React.Component {
   constructor(props) {
@@ -19,10 +19,11 @@ class Overview extends React.Component {
       rowHasChanged: (r1, r2) => r1 !== r2,
       sectionHeaderHasChanged: (s1, s2) => s1 != s2,
     });
+
     this.state = {
       data: this.ds.cloneWithRowsAndSections(
-        this.props.matches,
-        keys(this.props.matches),
+        props.matches.data || {},
+        props.matches.sections || [],
       ),
     };
     this.renderItem = this.renderItem.bind(this);
@@ -31,7 +32,7 @@ class Overview extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.matches !== nextProps.matches) {
+    if (this.props.matches.data !== nextProps.matches.data) {
       this.setState({
         data: this.ds.cloneWithRowsAndSections(
           nextProps.matches.data,
@@ -118,7 +119,6 @@ function createTab(keyName) {
       matches: state.overview[keyName],
       data: state.matches,
       color: state.settings.color,
-      keyName,
     }),
     (dispatch: Dispatch<*>) => ({
       queryMatches: () => dispatch(OverviewActions.getMatches()),

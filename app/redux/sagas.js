@@ -122,20 +122,23 @@ function* sortOverview(data) {
     data = overview;
   }
   for (let key in data) {
-    for (let date in data[key].data) {
-      data[key].data[date].sort(MatchUtils.sort(matches));
+    for (let date in data[key]) {
+      if (data[key] && data[key].data && data[key].data[date]) {
+        data[key].data[date].sort(MatchUtils.sort(matches));
+      }
     }
-    data[key].sections.sort((a, b) => {
-      const dateA = moment(a.substring(4), DATE_FORMAT.substring(4));
-      const dateB = moment(b.substring(4), DATE_FORMAT.substring(4));
+    if (data[key] && data[key].sections) {
+      data[key].sections.sort((a, b) => {
+        const dateA = moment(a.substring(4), DATE_FORMAT.substring(4));
+        const dateB = moment(b.substring(4), DATE_FORMAT.substring(4));
 
-      const sort =
-        key === 'next' ? dateB.isBefore(dateA) : dateA.isBefore(dateB);
+        const sort =
+          key === 'next' ? dateB.isBefore(dateA) : dateA.isBefore(dateB);
 
-      return sort ? 1 : -1;
-    });
+        return sort ? 1 : -1;
+      });
+    }
   }
-
   yield put({ type: OVERVIEW_MATCHES, payload: data });
 }
 
