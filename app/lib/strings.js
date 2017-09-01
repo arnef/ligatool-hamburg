@@ -71,7 +71,8 @@ const strings = {
   DRAW_POSTFIX: '',
   LOST: 'Niederlage',
   LOST_POSTFIX: 'n',
-  APP_VERSION: 'App-Version ' + pkg.version,
+  APP_VERSION:
+    'App-Version ' + pkg.version.substring(0, pkg.version.length - 2),
   CACHE_INFORMATION:
     'Teamlogos und Spielerbilder werden Lokal gespeichert, um das Datenvolumen zu schonen. Sollten mal nicht die aktuellsten Bilder angezeigt werden, kann hier der Speicher gelöscht werden und die Bilder werden neu geladen.',
   INFORMATION: 'Informationen',
