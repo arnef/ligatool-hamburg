@@ -3,7 +3,7 @@
 ![App Icon](https://github.com/arnef/ligatool-hamburg/raw/master/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png "App Icon")
 
 All information about the foosball-league of Hamburg.
-Features der App:
+Features of the App:
 
 - All results from league and cup
 - Live score push notifications
