@@ -16,37 +16,37 @@ type MatchItemProps = {
 };
 
 function MatchItem(props: MatchItemProps): ReactElement<any> {
-  const date = moment(props.data.datetime, 'YYYY-MM-DD HH:mm:ss');
+  const date = moment(props.data.date, 'YYYY-MM-DD HH:mm:ss');
   return (
     <Card
       onPress={() => {
         props.dispatch(
           NavigationActions.navigate({
             routeName: Routes.MATCH,
-            params: { id: props.data.id, title: props.data.league.name },
+            params: { id: props.data.id, title: props.data.competitionName },
           }),
         );
       }}
     >
       <View style={styles.container}>
         <Text bold color={props.color}>
-          {`${props.data.league.name} (${props.data.match_day})`}
+          {`${props.data.competitionName} (${props.data.matchday})`}
         </Text>
-        {props.data.venue &&
+        {props.data.venueName &&
           <Text secondary small>
             <Icon name={'pin'} />
-            {` ${props.data.venue.name}  `}
+            {` ${props.data.venueName}  `}
             <Icon name={'clock'} />{' '}
-            {`${props.data.date_confirmed ? '' : 'bisher '}${date.format(
-              DATETIME_FORMAT,
-            )}`}
+            {`${props.data.status === 'POSTPONED'
+              ? 'bisher '
+              : ''}${date.format(DATETIME_FORMAT)}`}
           </Text>}
         <View style={styles.teams}>
           <View style={styles.team}>
-            <TeamLogo team={props.data.team_home} big />
+            <TeamLogo team={props.data.homeTeamLogo} big />
             <View style={styles.teamName}>
               <Text small center numberOfLines={2}>
-                {props.data.team_home.name}
+                {props.data.homeTeamName}
               </Text>
             </View>
           </View>
@@ -54,10 +54,10 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
             <Score setPoints={props.data} />
           </View>
           <View style={styles.team}>
-            <TeamLogo team={props.data.team_away} big />
+            <TeamLogo team={props.data.awayTeamLogo} big />
             <View style={styles.teamName}>
               <Text small center numberOfLines={2}>
-                {props.data.team_away.name}
+                {props.data.awayTeamName}
               </Text>
             </View>
           </View>

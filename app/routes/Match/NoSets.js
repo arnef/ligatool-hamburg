@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View, Linking, Alert, Platform } from 'react-native';
 import { connect } from 'react-redux';
@@ -17,14 +16,12 @@ import * as MatchesActions from '../../redux/modules/matches';
 import * as NavigationActions from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
 import { DATETIME_DB, DATETIME_FORMAT } from '../../config/settings';
-type NoSetsProps = {
-  match: Match,
-};
+import { setFixtureStatusInPlay } from '../../redux/modules/fixtures';
 
-function NoSets(props: NoSetsProps): ReactElement<any> {
+function NoSets(props) {
   function onOpenVenue() {
-    const address = `${props.match.venue.street}, ${props.match.venue
-      .zip_code} ${props.match.venue.city}`;
+    const address = `${props.venue.street}, ${props.venue.zipCode} ${props.venue
+      .city}`;
     const uri =
       Platform.OS === 'ios'
         ? 'http://maps.apple.com/?address='
@@ -44,22 +41,14 @@ function NoSets(props: NoSetsProps): ReactElement<any> {
   }
 
   function renderPlayer() {
-    const length = props.match.team_home.player
-      ? Math.max(
-          props.match.team_home.player.length,
-          props.match.team_away.player.length,
-        )
+    const { player } = props;
+    const length = player.home
+      ? Math.max(player.home.length, player.away.length)
       : 0;
     const childs = [];
     for (let i = 0; i < length; i++) {
-      const playerHome =
-        i < props.match.team_home.player.length
-          ? props.match.team_home.player[i]
-          : null;
-      const playerAway =
-        i < props.match.team_away.player.length
-          ? props.match.team_away.player[i]
-          : null;
+      const playerHome = i < player.home.length ? player.home[i] : null;
+      const playerAway = i < player.away.length ? player.away[i] : null;
       childs.push(
         <View style={styles.playerRow} key={`player-${i}`}>
           <View style={styles.player}>
@@ -98,31 +87,31 @@ function NoSets(props: NoSetsProps): ReactElement<any> {
     return childs;
   }
 
-  const date = moment(props.match.datetime, DATETIME_DB);
+  const date = moment(props.match.date, DATETIME_DB);
 
   return (
     <View style={styles.container}>
       <View style={styles.row}>
         <View style={styles.teamInfo}>
-          <TeamLogo team={props.match.team_home} size={90} />
+          <TeamLogo team={props.match.homeTeamLogo} size={90} />
         </View>
-        {!props.match.first_match &&
+        {!props.firstFixture &&
           <Text style={styles.teamVs} bold secondary>
             vs
           </Text>}
-        {props.match.first_match &&
+        {props.firstFixture &&
           <View style={styles.firstMatch}>
             <Text small secondary bold>
               {S.FIRST_MATCH}
             </Text>
             <View style={styles.firstMatchResult}>
               <Text style={styles.textFirstMatchResult}>
-                {`${props.match.first_match.set_points.away}:${props.match
-                  .first_match.set_points.home}`}
+                {`${props.firstFixture.setPointsAwayTeam}:${props.firstFixture
+                  .setPointsHomeTeam}`}
               </Text>
               <Text style={styles.textFirstMatchResult}>
-                {`(${props.match.first_match.goals.away}:${props.match
-                  .first_match.goals.home})`}
+                {`(${props.firstFixture.goalsAwayTeam}:${props.firstFixture
+                  .goalsHomeTeam})`}
               </Text>
             </View>
             <Text small secondary bold>
@@ -130,34 +119,35 @@ function NoSets(props: NoSetsProps): ReactElement<any> {
             </Text>
           </View>}
         <View style={styles.teamInfo}>
-          <TeamLogo team={props.match.team_away} size={90} />
+          <TeamLogo team={props.match.awayTeamLogo} size={90} />
         </View>
       </View>
 
       <ListItem.Group>
         <ListItem.Header
-          title={`${props.match.date_confirmed ? '' : S.SO_FAR}${date.format(
-            DATETIME_FORMAT,
-          )}`}
+          title={`${props.match.status == 'POSTPONED'
+            ? S.SO_FAR
+            : ''}${date.format(DATETIME_FORMAT)}`}
         />
-        <ListItem onPress={onOpenVenue}>
-          <View style={styles.option}>
-            <Text>{`${props.match.venue.name}`}</Text>
-            <Text>{`${props.match.venue.street}, ${props.match.venue
-              .zip_code} ${props.match.venue.city}`}</Text>
-          </View>
-          <ListItem.Icon right color={props.color} name="pin" />
-        </ListItem>
-        {props.match.is_admin && <Separator />}
-        {props.match.is_admin &&
+        {props.venue &&
+          <ListItem onPress={onOpenVenue}>
+            <View style={styles.option}>
+              <Text>{`${props.venue.name}`}</Text>
+              <Text>{`${props.venue.street}, ${props.venue.zipCode} ${props
+                .venue.city}`}</Text>
+            </View>
+            <ListItem.Icon right color={props.color} name="pin" />
+          </ListItem>}
+        {props.isAdmin && <Separator />}
+        {props.isAdmin &&
           <ListItem onPress={openDateChange}>
             <Text style={styles.option}>
               {S.CHANGE_MATCH_DATETIME}
             </Text>
             <ListItem.Icon right color={props.color} name="calendar" />
           </ListItem>}
-        {props.match.is_admin && <Separator />}
-        {props.match.is_admin &&
+        {props.isAdmin && <Separator />}
+        {props.isAdmin &&
           <ListItem
             onPress={insertResult}
             disabled={date.diff(moment(), 'days') > 0}
@@ -177,8 +167,8 @@ export default connect(
   state => ({
     color: state.settings.color,
   }),
-  (dispatch: Dispatch<any>) => ({
-    insertResult: (id: string) => dispatch(MatchesActions.insertResults(id)),
+  (dispatch, props) => ({
+    insertResult: () => dispatch(setFixtureStatusInPlay(props.match.id)),
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate({ routeName, params })),
   }),

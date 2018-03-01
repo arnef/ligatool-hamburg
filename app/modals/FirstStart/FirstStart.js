@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View, Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
@@ -16,7 +15,6 @@ import SettingsNotification from '../../routes/SettingsNotification';
 class FirstStart extends React.Component {
   render() {
     return (
-      // <Container style={{ flex: 1}}>
       <View style={styles.container}>
         <View style={{ alignItems: 'center' }}>
           <Image source={{ uri: 'loading' }} style={styles.icon} />

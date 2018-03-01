@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View, TextInput, Platform } from 'react-native';
 import Card from '../Card';
@@ -10,15 +9,7 @@ import styles from './styles';
 import S from '../../lib/strings';
 
 export default class ScoreInput extends React.Component {
-  state: {
-    goals_home: ?string,
-    goals_away: ?string,
-    set: number,
-  };
-  onSave: Function;
-  onPressBack: Function;
-
-  constructor(props: any) {
+  constructor(props) {
     super(props);
     this.state = {
       goals_home: null,
@@ -32,10 +23,11 @@ export default class ScoreInput extends React.Component {
 
   componentDidMount() {
     let idx = 0;
-    const { sets } = this.props.data;
+    const { gameNumbers } = this.props.data;
 
-    for (let i = 0; i < sets.length - 1; i++) {
-      if (sets[i].goals_home != null && sets[i].goals_away != null) {
+    for (let i = 0; i < gameNumbers.length - 1; i++) {
+      const set = this.props.getSet(gameNumbers[i]);
+      if (set.result) {
         idx = i + 1;
       }
     }
@@ -46,9 +38,9 @@ export default class ScoreInput extends React.Component {
 
   onSave() {
     this.props.onSave(this.props.data, {
-      goals_home: parseInt(this.state.goals_home, 10),
-      goals_away: parseInt(this.state.goals_away, 10),
-      set: this.state.set,
+      goalsHome: parseInt(this.state.goals_home, 10),
+      goalsAway: parseInt(this.state.goals_away, 10),
+      gameNumber: this.props.data.gameNumbers[this.state.set],
     });
   }
 
@@ -56,8 +48,28 @@ export default class ScoreInput extends React.Component {
     this.setState({ set: this.state.set - 1 });
   }
 
-  renderInput(key: string) {
-    const otherKey: string = key === 'goals_away' ? 'goals_home' : 'goals_away';
+  onTextChange(value, key, otherKey) {
+    const { type } = this.props.data;
+    const { doubles, singles } = this.props.modus;
+    const winGoals = Math.abs(type === 'DOUBLES' ? doubles : singles);
+    const withDraw = (type === 'DOUBLES' ? doubles : singles) < 0;
+    const goals = parseInt(value, 10);
+    this.setState({ [key]: value });
+    if (!this.state[otherKey] && goals < winGoals) {
+      this.setState(
+        {
+          [otherKey]:
+            withDraw && goals === winGoals - 1
+              ? `${winGoals - 1}`
+              : `${winGoals}`,
+        },
+        this.onSave,
+      );
+    }
+  }
+
+  renderInput(key) {
+    const otherKey = key === 'goals_away' ? 'goals_home' : 'goals_away';
 
     return (
       <TextInput
@@ -67,44 +79,23 @@ export default class ScoreInput extends React.Component {
         keyboardAppearance="dark"
         selectionColor="#fff"
         underlineColorAndroid="#666"
-        onChangeText={value => {
-          const goals = parseInt(value, 10);
-          this.setState({ [key]: value });
-          if (!this.state[otherKey] && goals < WIN_GOALS) {
-            this.setState(
-              {
-                [otherKey]:
-                  WITH_DRAW && goals === DRAW_GOALS
-                    ? `${DRAW_GOALS}`
-                    : `${WIN_GOALS}`,
-              },
-              this.onSave,
-            );
-          }
-        }}
+        onChangeText={value => this.onTextChange(value, key, otherKey)}
         style={styles.input}
       />
     );
   }
 
   render() {
-    const playerHome1 = this.props.data.sets
-      ? this.props.data.sets[0].player_1_home
-      : null;
-    const playerAway1 = this.props.data.sets
-      ? this.props.data.sets[0].player_1_away
-      : null;
-    const playerHome2 = this.props.data.sets
-      ? this.props.data.sets[0].player_2_home
-      : null;
-    const playerAway2 = this.props.data.sets
-      ? this.props.data.sets[0].player_2_away
-      : null;
+    const { getSet, data } = this.props;
+    const playerHome1 = getSet(data.gameNumbers[0]).homePlayer1;
+    const playerAway1 = getSet(data.gameNumbers[0]).awayPlayer1;
+    const playerHome2 = getSet(data.gameNumbers[0]).homePlayer2;
+    const playerAway2 = getSet(data.gameNumbers[0]).awayPlayer2;
     return (
       <Card style={{ flex: 0 }}>
         <View style={styles.containerSet}>
-          <Text bold secondary>{`${this.props.data.name} ${this.props.data.sets
-            .length > 1
+          <Text bold secondary>{`${this.props.data.name} ${this.props.data
+            .gameNumbers.length > 1
             ? `- ${S.RESULT} ${this.state.set + 1}${S.DOT_SET}`
             : `- ${S.RESULT}`}`}</Text>
         </View>

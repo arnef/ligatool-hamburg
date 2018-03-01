@@ -1,6 +1,6 @@
 {
   "name": "arnefeilligatool",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "private": true,
   "scripts": {
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
@@ -23,6 +23,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-preset-react-native": "^3.0.2",
+    "json_": "^1.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.12",

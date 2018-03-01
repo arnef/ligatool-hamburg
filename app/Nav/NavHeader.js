@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { connect } from 'react-redux';
@@ -6,11 +5,19 @@ import { Header } from 'react-navigation';
 import Routes from '../config/routes';
 import { colors } from '../config/styles';
 import { Icon, Touchable } from '../components';
+import {
+  notificationEnabled,
+  notificationSubscribedForFixture,
+  subscribeFixture,
+  unsubscribeFixture,
+} from '../redux/modules/settings';
+import { getFixture } from '../redux/modules/fixtures';
 
 const white = 'rgba(255, 255, 255, .8)';
 
 class NavHeader extends Component {
   render() {
+    console.log(this.props);
     const { style, ...rest } = this.props;
     const headerStyle = [style];
     headerStyle.push({
@@ -62,9 +69,49 @@ function showSearch(route) {
   );
 }
 
+const ToggleNotification = connect(
+  (state, props) => ({
+    showIcon:
+      notificationEnabled(state) &&
+      getFixture(state, props.fixtureId).status !== 'FINISHED' &&
+      getFixture(state, props.fixtureId).status !== 'CONFIRMED',
+    enabled: notificationSubscribedForFixture(state, props.fixtureId),
+  }),
+  (dispatch, props) => ({
+    subscribe: () => dispatch(subscribeFixture(props.fixtureId)),
+    unsubscribe: () => dispatch(unsubscribeFixture(props.fixtureId)),
+  }),
+)(function ToggleIcon(props) {
+  if (props.showIcon) {
+    return (
+      <Touchable
+        borderless
+        onPress={props.enabled ? props.unsubscribe : props.subscribe}
+        style={{ marginRight: Platform.OS === 'android' ? 16 : 8 }}
+        light
+      >
+        <Icon
+          name={props.enabled ? 'notifications' : 'notifications-off'}
+          color="#fff"
+          size={24}
+        />
+      </Touchable>
+    );
+  }
+  return null;
+});
+
+function showNotificationToggle(state) {
+  if (state.routeName === Routes.MATCH) {
+    return <ToggleNotification fixtureId={state.params.id} />;
+  }
+  // console.log(notification);
+  return null;
+}
+
 export default {
   cardStyle: { backgroundColor: colors.BACKGROUND },
-  navigationOptions: ({ navigation }: any) => {
+  navigationOptions: ({ navigation }) => {
     const headerStyle =
       singleHeader.indexOf(navigation.state.routeName) !== -1
         ? null
@@ -76,22 +123,13 @@ export default {
             borderBottomWidth: 0,
           };
     return {
-      header: function Header(props: any) {
+      header: function Header(props) {
         return <ConnectHeader {...props} />;
       },
       headerTintColor: '#fff',
       headerBackTitle: null,
       headerPressColorAndroid: white,
-      headerRight: showSearch(navigation.state.routeName)
-        ? <Touchable
-            borderless
-            style={{ marginRight: Platform.OS === 'android' ? 16 : 8 }}
-            light
-            onPress={() => navigation.navigate(Routes.SEARCH)}
-          >
-            <Icon name="search" color="#fff" size={24} />
-          </Touchable>
-        : null,
+      headerRight: showNotificationToggle(navigation.state),
       headerStyle,
     };
   },

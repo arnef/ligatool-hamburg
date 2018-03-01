@@ -178,6 +178,10 @@ export function showPlayer(matchId: number, data: Array<Player>): Action {
   };
 }
 
+export const back = () => ({
+  type: BACK,
+});
+
 export function hideSearch() {
   return { type: HIDE_SEARCH };
 }

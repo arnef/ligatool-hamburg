@@ -1,8 +1,6 @@
-// @flow
-
 export default {
-  '1': (state: any) => ({ ...state }),
-  '2': (state: any) => ({
+  '1': state => ({ ...state }),
+  '2': state => ({
     ...state,
     matches: {},
     settings: {
@@ -18,6 +16,19 @@ export default {
                   : false,
             }
           : {},
+    },
+  }),
+  '4': state => ({
+    ...state,
+    settings: {
+      ...state.settings,
+      notification: {
+        enabled: true,
+        sound: true,
+        interimResults: true,
+        finalResults: true,
+        fixtures: [],
+      },
     },
   }),
 };

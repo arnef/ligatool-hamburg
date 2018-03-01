@@ -1,34 +1,20 @@
-// @flow
 import * as MatchUtils from '../../lib/MatchUtils';
-// Type Definitions
-type State = {
-  +[string]: Match,
-};
-
-type Action = {
-  type: GET_MATCHES,
-  data: Array<Match>,
-};
 
 // Actions
-export const GET_MATCHES: GET_MATCHES = 'GET_MATCHES';
-export const GET_MATCH: GET_MATCH = 'ligatool/modules/GET_MATCH';
-export const GET_MATCH_DONE: GET_MATCH_DONE = 'ligatool/modules/GET_MATCH_DONE';
-export const SET_PLAYER: SET_PLAYER = 'ligatool/modules/matches/SET_PLAYER';
-export const INSERT_RESULTS: INSERT_RESULTS = 'ligatool/matches/INSERT_RESULTS';
-export const SUGGEST_DATETIME: SUGGEST_DATETIME =
-  'ligatool/matches/SUGGEST_DATETIME';
-export const UPDATE_MATCH: UPDATE_MATCH =
-  'ligatool/modules/matches/UPDATE_MATCH';
-export const SUGGEST_SCORE: SUGGEST_SCORE = 'ligattol/matches/SUGGEST_SCORE';
-export const TOGGLE_MATCH_TYPE: TOGGLE_MATCH_TYPE =
-  'ligatool/modules/matches/TOGGLE_TYPE';
-const LIVE_NOTIFICATION: LIVE_NOTIFICATION =
-  'ligatool/matches/LIVE_NOTIFICATION';
-const END_NOTIFICATION: END_NOTIFICATION = 'ligatool/matches/END_NOTIFICAION';
+export const GET_MATCHES = 'GET_MATCHES';
+export const GET_MATCH = 'ligatool/modules/GET_MATCH';
+export const GET_MATCH_DONE = 'ligatool/modules/GET_MATCH_DONE';
+export const SET_PLAYER = 'ligatool/modules/matches/SET_PLAYER';
+export const INSERT_RESULTS = 'ligatool/matches/INSERT_RESULTS';
+export const SUGGEST_DATETIME = 'ligatool/matches/SUGGEST_DATETIME';
+export const UPDATE_MATCH = 'ligatool/modules/matches/UPDATE_MATCH';
+export const SUGGEST_SCORE = 'ligattol/matches/SUGGEST_SCORE';
+export const TOGGLE_MATCH_TYPE = 'ligatool/modules/matches/TOGGLE_TYPE';
+const LIVE_NOTIFICATION = 'ligatool/matches/LIVE_NOTIFICATION';
+const END_NOTIFICATION = 'ligatool/matches/END_NOTIFICAION';
 
 // Reducer
-export default function reducer(state: State = {}, action: Action): State {
+export default function reducer(state = {}, action) {
   switch (action.type) {
     case GET_MATCHES:
       state = getStateForAction(state, action);
@@ -85,40 +71,31 @@ export default function reducer(state: State = {}, action: Action): State {
 }
 
 // Action Creators
-export function getMatch(id: number) {
+export function getMatch(id) {
   return { type: GET_MATCH, params: { id } };
 }
 
-export function setPlayer(payload: {
-  id: number,
-  team: Team,
-  player: Array<Player>,
-  setsIdx: Array<number>,
-}) {
+export function setPlayer(payload) {
   return { type: SET_PLAYER, payload };
 }
 
-export function update(payload: { id: number, sets: { [string]: Sets } }) {
+export function update(payload) {
   return { type: UPDATE_MATCH, payload };
 }
 
-export function suggest(payload: { id: number, sets: { [string]: Sets } }) {
+export function suggest(payload) {
   return { type: SUGGEST_SCORE, payload };
 }
 
-export function setType(payload: {
-  type: string,
-  id: number | string,
-  setsIdx: Array<number | string>,
-}) {
+export function setType(payload) {
   return { type: TOGGLE_MATCH_TYPE, payload };
 }
 
-export function suggestDatetime(id: string, datetime_suggestions: Array<any>) {
+export function suggestDatetime(id, datetime_suggestions) {
   return { type: SUGGEST_DATETIME, payload: { id, datetime_suggestions } };
 }
 
-export function notification(payload: any) {
+export function notification(payload) {
   if (payload.type === 'SCORE_CONFIRMED') {
     return { type: END_NOTIFICATION, payload };
   } else if (
@@ -130,12 +107,12 @@ export function notification(payload: any) {
   return { type: 'IGNORE' };
 }
 
-export function insertResults(id: string) {
+export function insertResults(id) {
   return { type: INSERT_RESULTS, payload: { id } };
 }
 
-function getStateForAction(state: State, action: Action): State {
-  for (let match: Match of action.payload) {
+function getStateForAction(state, action) {
+  for (let match of action.payload) {
     if (state[`${match.id}`]) {
       state = {
         ...state,

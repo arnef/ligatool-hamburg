@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import Container from '../Container';
@@ -8,7 +7,7 @@ import { sort } from '../../lib/MatchUtils';
 
 import styles from './styles';
 
-function MatchList(props): ReactElement<any> {
+function MatchList(props) {
   return (
     <Container
       error={props.error}
@@ -26,7 +25,7 @@ function MatchList(props): ReactElement<any> {
 }
 
 export default connect(state => ({
-  data: state.matches,
+  data: state.fixtures.data,
   error: state.loading.error,
   refreshing: state.loading.list,
 }))(MatchList);

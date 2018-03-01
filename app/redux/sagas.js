@@ -29,7 +29,6 @@ import {
   GET_LEAGUE_PLAYER_STATS_DONE,
 } from './modules/leagues';
 import { LOGOUT, LOGOUT_DONE } from './modules/auth';
-import { CLEAR_CACHE } from './modules/settings';
 import * as LoadingActions from './modules/loading';
 import {
   GET_TEAM,
@@ -50,6 +49,22 @@ import { getType } from '../config/MatchTypes';
 import { getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 
+import {
+  setFixtures,
+  setFixtureData,
+  setFixtureMeta,
+  SET_FIXTURE_GAME_RESULT,
+  getFixtureModus,
+  getFixtureGame,
+  getFixture,
+  setFixtureDates,
+  getFixtureDates,
+  SUGGEST_FIXTURE_DATES,
+  ACCEPT_FIXTURE_DATE,
+  SUGGEST_FIXTURE_RESULT,
+  ACCEPT_FIXTURE_RESULT,
+} from './modules/fixtures';
+
 function* overview() {
   try {
     yield put(LoadingActions.show());
@@ -66,41 +81,38 @@ function* overview() {
     const state = yield select();
     let updateDrawer = false;
 
-    for (let match: Match of matchesData.data) {
-      if (!state.drawer[`${match.league.id}`]) {
+    for (let match of matchesData.data) {
+      if (!state.drawer[match.competitionId]) {
         updateDrawer = true;
       }
       const datetime = moment(
-        moment(match.datetime, DATETIME_DB).format(DATEFORMAT),
+        moment(match.date, DATETIME_DB).format(DATEFORMAT),
         DATEFORMAT,
       );
-      const diff: number = datetime.diff(now, 'days');
-      const key = moment(match.datetime, DATETIME_DB).format(DATE_FORMAT);
-      if (match.date_confirmed) {
-        if ((match.live && diff > -2) || diff === 0) {
-          if (!data.today.data[key]) {
-            data.today.data[key] = [];
-            data.today.sections.push(key);
-          }
-          data.today.data[key].push(`${match.id}`);
-        } else if (match.set_points) {
-          if (!data.played.data[key]) {
-            data.played.data[key] = [];
-            data.played.sections.push(key);
-          }
-          data.played.data[key].push(`${match.id}`);
-        } else if (diff > 0) {
-          if (!data.next.data[key]) {
-            data.next.data[key] = [];
-            data.next.sections.push(key);
-          }
-          data.next.data[key].push(`${match.id}`);
+      const diff = datetime.diff(now, 'days');
+      const key = moment(match.date, DATETIME_DB).format(DATE_FORMAT);
+      if (diff === 0 || match.status === 'IN_PLAY') {
+        if (!data.today.data[key]) {
+          data.today.data[key] = [];
+          data.today.sections.push(key);
         }
+        data.today.data[key].push(match.id);
+      } else if (diff < 0 && match.result) {
+        if (!data.played.data[key]) {
+          data.played.data[key] = [];
+          data.played.sections.push(key);
+        }
+        data.played.data[key].push(match.id);
+      } else if (diff > 0) {
+        if (!data.next.data[key]) {
+          data.next.data[key] = [];
+          data.next.sections.push(key);
+        }
+        data.next.data[key].push(match.id);
       }
-
       matches.push(match);
     }
-    yield put({ type: GET_MATCHES, payload: matches });
+    yield put(setFixtures(_.keyBy(matches, 'id')));
     yield sortOverview(data);
 
     yield put(LoadingActions.hide());
@@ -146,16 +158,16 @@ function* myTeam() {
   try {
     yield put(LoadingActions.show());
     const state = yield select();
-    const matchesData = yield call(api.getTeamMatches, state.settings.team.id);
+    const { data } = yield call(api.getTeamMatches, state.settings.team.id);
     const payload = { next: [], played: [] };
-    for (let match: Match of matchesData.data) {
-      if (match.set_points && !match.score_unconfirmed) {
+    for (let match of data) {
+      if (match.result && match.status == 'CONFIRMED') {
         payload.played.push(`${match.id}`);
       } else {
         payload.next.push(`${match.id}`);
       }
     }
-    yield put({ type: GET_MATCHES, payload: matchesData.data });
+    yield put(setFixtures(_.keyBy(data, 'id')));
     yield put({ type: MY_TEAM_MATCHES, payload });
   } catch (ex) {
     console.warn(ex);
@@ -205,26 +217,10 @@ function* clearCache() {
 function* getMatch(action) {
   try {
     yield put(LoadingActions.show());
-    const matchData = yield call(api.getMatch, action.params.id);
-    let match = { ...matchData.data, type: getType(matchData.data) };
-    const state = yield select();
-    if (!state.matches[match.id]) {
-      const route = currentRoute(state.nav.navigation);
-
-      yield put(
-        NavigationActions.setParams({
-          params: { title: match.league.name },
-          key: route.key,
-        }),
-      );
-    }
-    if (match.set_points) {
-      match = { ...match, games: MatchUtils.sets(match) };
-    }
-    yield put({
-      type: GET_MATCH_DONE,
-      payload: match,
-    });
+    const { data, meta } = yield call(api.getMatch, action.params.id);
+    yield put(setFixtureData(data));
+    meta.games = _.keyBy(meta.games, 'gameNumber');
+    yield put(setFixtureMeta(data.id, meta));
     yield sortOverview();
   } catch (ex) {
     console.warn(ex);
@@ -238,7 +234,10 @@ function* getLeague(action) {
   try {
     yield put(LoadingActions.show());
     const league = yield call(api.getLeague, action.payload.id);
-    yield put({ type: GET_LEAGUE_DONE, payload: league.data });
+    yield put({
+      type: GET_LEAGUE_DONE,
+      payload: { ...league.data, table: league.meta.leagueTable },
+    });
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -251,11 +250,12 @@ function* getLeagueMatches(action) {
   try {
     yield put(LoadingActions.show());
     const matches = yield call(api.getLeagueMatches, action.payload.id);
-    yield put({ type: GET_MATCHES, payload: matches.data });
+    // yield put({ type: GET_MATCHES, payload: matches.meta.fixtures });
+    yield put(setFixtures(_.keyBy(matches.meta.fixtures, 'id')));
     yield put({
       type: GET_LEAGUE_MATCHES_DONE,
       payload: {
-        ...getMatchDays(matches.data),
+        ...getMatchDays(matches.meta.fixtures),
         id: `${action.payload.id}`,
       },
     });
@@ -286,10 +286,18 @@ function* getLeaguePlayerStats(action) {
 function* getTeam(action) {
   try {
     yield put(LoadingActions.show());
-    const team = yield call(api.getTeam, action.payload.id);
+    const { data, meta } = yield call(api.getTeam, action.payload.id);
     yield put({
       type: GET_TEAM_DONE,
-      payload: { ...team.data, id: `${team.data.id}` },
+      payload: {
+        ...data,
+        venue: meta.venue,
+        player: meta.player,
+        contact: meta.contact,
+        club: meta.club,
+        standing: meta.standing,
+        homeFixture: meta.homeFixture,
+      },
     });
   } catch (ex) {
     console.warn(ex);
@@ -326,10 +334,11 @@ function* login(action) {
   try {
     yield put(LoadingActions.show());
     const user = yield call(api.authenticate, action.payload);
-    const apiKey = user.data.access_key;
+    const apiKey = user.data.token;
     yield put(AuthActions.setApiKey(apiKey));
     const team = yield call(api.refreshAuthentication, apiKey);
-    const ids = team.data.ids.map(item => `${item}`);
+    // const ids = team.data.ids.map(item => `${item}`);
+    const ids = team.data.accessForTeams;
     yield put(
       AuthActions.setToken({
         expires: team.data.expires,
@@ -391,23 +400,42 @@ function* getPlayer(action) {
 
 function* updateMatch(action) {
   try {
-    yield put(LoadingActions.showModal());
-    let payload = { sets: action.payload.sets };
-    if (action.type === SUGGEST_SCORE) {
-      const state = yield select();
-      const match = state.matches[`${action.payload.id}`];
-      if (match.state === 0) {
-        payload = { ...payload, score_suggest: true };
-      } else if (match.state === 2) {
-        payload = { ...payload, score_unconfirmed: false };
-      }
+    const { id, sets } = action.payload;
+    const state = yield select();
+    const match = state.matches[id];
+    const payload = [];
+    for (let i in sets) {
+      const set = sets[i];
+      payload.push({
+        home_player_1_id: set.homePlayer1 ? set.homePlayer1.id : null,
+        home_player_2_id: set.homePlayer2 ? set.homePlayer2.id : null,
+        away_player_1_id: set.awayPlayer1 ? set.awayPlayer1.id : null,
+        away_player_2_id: set.awayPlayer2 ? set.awayPlayer2.id : null,
+        goals_home: set.result ? set.result.goalsHome : null,
+        goals_away: set.result ? set.result.goalsAway : null,
+        key: set.key,
+        game_number: set.gameNumber,
+      });
     }
-    const matchData = yield call(api.updateMatch, action.payload.id, payload);
-    const match = matchData.data;
-    yield put({
-      type: GET_MATCH_DONE,
-      payload: { ...match, games: MatchUtils.sets(match) },
-    });
+
+    const { data, meta } = yield call(api.patchFixtureGames, match, payload);
+    let newMatch = {
+      ...data,
+      sets: _.keyBy(meta.games, 'gameNumber'),
+      modus: meta.modus,
+      teamHome: { player: meta.player.home },
+      teamAway: { player: meta.player.away },
+    };
+    newMatch.isAdmin = true;
+    newMatch = {
+      ...newMatch,
+      games: MatchUtils.sets(
+        match,
+        meta.modus.lineUp[meta.modus.fixtureModus || 'default'],
+      ),
+    };
+
+    yield put({ type: GET_MATCH_DONE, payload: newMatch });
     yield sortOverview();
   } catch (ex) {
     console.warn(ex);
@@ -444,14 +472,14 @@ function* navigate(action) {
   try {
     yield put(LoadingActions.hide());
     let state = yield select();
-    if (state.settings.changed && state.settings.fcm_token) {
-      yield call(
-        api.updateNotifications,
-        state.settings.fcm_token,
-        state.settings.notification,
-      );
-      yield put(SettingsActions.synchronized());
-    }
+    // if (state.settings.changed && state.settings.fcm_token) {
+    //   yield call(
+    //     api.updateNotifications,
+    //     state.settings.fcm_token,
+    //     state.settings.notification,
+    //   );
+    //   yield put(SettingsActions.synchronized());
+    // }
     if (action.routeName === 'SelectGroup') {
       StatusBar.setBarStyle('light-content');
     }
@@ -548,7 +576,24 @@ function* navigate(action) {
           }
         }
         break;
+      case Routes.MATCH_DATE:
+        const id = action.params.id;
+        yield getFixtureDatesSaga({ payload: { id } });
+        break;
     }
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* getFixtureDatesSaga(action) {
+  try {
+    const { id } = action.payload;
+    const state = yield select();
+    const fixture = getFixture(state, id);
+    const { data, meta } = yield call(api.getFixtureDates, fixture);
+    console.log(data, meta);
+    yield put(setFixtureDates(id, { dates: data, meta }));
   } catch (ex) {
     console.warn(ex);
   }
@@ -558,12 +603,13 @@ function* updateNotifications() {
   try {
     const state = yield select();
     if (state.settings.fcm_token) {
-      api.setFCM(state.settings.fcm_token);
-      yield call(
-        api.updateNotifications,
-        state.settings.fcm_token,
-        state.settings.notification,
-      );
+      // api.setFCM(state.settings.fcm_token);
+      yield toggleNotificationSaga();
+      // yield call(
+      //   api.updateNotifications,
+      //   state.settings.fcm_token,
+      //   state.settings.notification,
+      // );
     }
   } catch (ex) {
     console.warn(ex);
@@ -600,7 +646,7 @@ function* rehydrate() {
             }),
           );
         } else {
-          api.setSecret(state.auth.team.token);
+          api.setAuthorization(state.auth.team.token);
         }
       }
       yield overview();
@@ -730,13 +776,170 @@ function* checkChange(action) {
   }
 }
 
-export default function* sagas(): any {
+function* fetchUserTeam(action) {
+  const { teamId } = action.payload;
+  try {
+    yield put(LoadingActions.showModal());
+    const { data } = yield call(api.getTeam, teamId);
+    yield put(SettingsActions.setTeam(data));
+    yield put(NavigationActions.navigate({ routeName: 'LoginView' }));
+  } catch (ex) {
+    console.warn(ex);
+  } finally {
+    yield put(LoadingActions.hideModal());
+  }
+}
+
+function* setFixtureGameResultSaga(action) {
+  try {
+    const { payload } = action;
+    const state = yield select();
+    const modus = getFixtureModus(state, payload.id);
+    const defaultModus =
+      modus.lineUp && modus.lineUp.default ? modus.lineUp.default : null;
+    const match = getFixture(state, payload.id);
+    if (defaultModus != null) {
+      const body = [];
+      for (let item of defaultModus) {
+        for (let gameNumber of item.gameNumbers) {
+          const game = getFixtureGame(state, payload.id, gameNumber);
+          if (game.result || (game.homePlayer1 && game.awayPlayer1)) {
+            body.push({
+              home_player_1_id: game.homePlayer1 ? game.homePlayer1.id : null,
+              home_player_2_id: game.homePlayer2 ? game.homePlayer2.id : null,
+              away_player_1_id: game.awayPlayer1 ? game.awayPlayer1.id : null,
+              away_player_2_id: game.awayPlayer2 ? game.awayPlayer2.id : null,
+              goals_home: game.result ? game.result.goalsHome : null,
+              goals_away: game.result ? game.result.goalsAway : null,
+              key: item.key,
+              game_number: gameNumber,
+            });
+          }
+        }
+      }
+      if (body.length > 0) {
+        yield put(LoadingActions.showModal());
+        if (action.type === SUGGEST_FIXTURE_RESULT) {
+          const { data, meta } = yield call(api.putFixtureGames, match, body);
+          yield put(setFixtureData(data));
+          yield put(setFixtureMeta(data.id, meta));
+        } else if (action.type === ACCEPT_FIXTURE_RESULT) {
+          const { data, meta } = yield call(api.postFixtureGames, match);
+          yield put(setFixtureData(data));
+        } else {
+          const { data, meta } = yield call(api.patchFixtureGames, match, body);
+          yield put(setFixtureData(data));
+          meta.games = _.keyBy(meta.games, 'gameNumber');
+          yield put(setFixtureMeta(data.id, meta));
+        }
+      }
+    }
+  } catch (ex) {
+    console.warn(ex);
+  } finally {
+    yield put(LoadingActions.hideModal());
+  }
+}
+
+function* toggleNotificationSaga() {
+  try {
+    const state = yield select();
+    const resp = yield call(
+      api.putNotification,
+      SettingsActions.getFCMToken(state),
+      SettingsActions.notificationEnabled(state),
+      SettingsActions.notificationSound(state),
+      SettingsActions.notificationInterimResults(state),
+      SettingsActions.notificationFinalResults(state),
+    );
+    api.setFCM(resp.token);
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* subscribeFixtureSaga(action) {
+  const { fixtureId } = action.payload;
+  try {
+    yield call(api.postNotificationFixture, fixtureId);
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* unsubscribeFixtureSaga(action) {
+  const { fixtureId } = action.payload;
+  try {
+    yield call(api.deleteNotificationFixture, fixtureId);
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* suggestFixtureDatesSaga(action) {
+  console.log(action);
+  try {
+    yield put(LoadingActions.showModal());
+    const { id } = action.payload;
+    const state = yield select();
+    const fixture = getFixture(state, id);
+    const fixtureDates = getFixtureDates(state, id);
+    const { data, meta } = yield call(
+      api.putFixtureDates,
+      fixture,
+      fixtureDates.dates,
+      fixtureDates.meta.minDates,
+      fixtureDates.meta.maxDates,
+    );
+    yield put(setFixtureDates(id, { dates: data, meta }));
+    console.log(data, meta);
+    yield put(LoadingActions.hideModal());
+    yield put(NavigationActions.back());
+  } catch (ex) {
+    console.warn(ex);
+    yield put(LoadingActions.hideModal());
+  }
+}
+
+function* acceptFixtureDateSaga(action) {
+  const { fixtureId, datetimeId } = action.payload;
+  try {
+    // yield put(Loading)
+    const state = yield select();
+    const fixture = getFixture(state, fixtureId);
+    const { data, meta } = yield call(
+      api.patchFixtureDate,
+      fixture,
+      datetimeId,
+    );
+    console.log(data, meta);
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* suggestFixtureResultSaga(action) {
+  const { id } = action.payload;
+  try {
+    const state = yield select();
+    const fixture = getFixture(state, id);
+    const modus = getFixtureModus(state, id);
+    const payload = [];
+    for (let game of modus.lineUp.default) {
+      payload.push({});
+    }
+    console.log(modus);
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+export default function* sagas() {
   yield takeEvery(LoadingActions.APP_STATE_CHANGED, checkChange);
   yield takeEvery(GET_OVERVIEW_MATCHES, overview);
   yield takeEvery(GET_MY_TEAM_MATCHES, myTeam);
   yield takeEvery(GET_LEAGUES, leagues);
   yield takeEvery(LOGOUT, logout);
-  yield takeEvery(CLEAR_CACHE, clearCache);
   yield takeEvery(GET_MATCH, getMatch);
   yield takeEvery(GET_LEAGUE, getLeague);
   yield takeEvery(GET_LEAGUE_MATCHES, getLeagueMatches);
@@ -747,8 +950,6 @@ export default function* sagas(): any {
   yield takeEvery(NavigationActions.HIDE_LOG_IN_MODAL, hideLogin);
   yield takeEvery(NavigationActions.SHOW_LOG_IN_MODAL, showLogin);
   yield takeEvery(PlayerActions.GET_PLAYER, getPlayer);
-  yield takeEvery(UPDATE_MATCH, updateMatch);
-  yield takeEvery(SET_PLAYER, setPlayer);
   yield takeEvery(NavigationActions.NAVIGATE, navigate);
   yield takeEvery(NavigationActions.BACK, navigate);
   yield takeEvery(REHYDRATE, rehydrate);
@@ -758,5 +959,14 @@ export default function* sagas(): any {
   yield takeEvery(SUGGEST_DATETIME, suggestDatetime);
   yield takeEvery(NavigationActions.HIDE_START_MODAL, hideStart);
   yield takeEvery(SettingsActions.COMPLETE_SETUP, completeSetup);
-  yield takeEvery(SearchActions.SEARCH, search);
+  yield takeEvery(SettingsActions.FETCH_USER_TEAM, fetchUserTeam);
+
+  yield takeEvery(SET_FIXTURE_GAME_RESULT, setFixtureGameResultSaga);
+  yield takeEvery(SettingsActions.TOGGLE_NOTIFICATION, toggleNotificationSaga);
+  yield takeEvery(SettingsActions.SUBSCRIBE_FIXTURE, subscribeFixtureSaga);
+  yield takeEvery(SettingsActions.UNSUBSCRIBE_FIXTURE, unsubscribeFixtureSaga);
+  yield takeEvery(SUGGEST_FIXTURE_DATES, suggestFixtureDatesSaga);
+  yield takeEvery(ACCEPT_FIXTURE_DATE, acceptFixtureDateSaga);
+  yield takeEvery(SUGGEST_FIXTURE_RESULT, setFixtureGameResultSaga);
+  yield takeEvery(ACCEPT_FIXTURE_RESULT, setFixtureGameResultSaga);
 }

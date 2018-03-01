@@ -12,6 +12,7 @@ import teams from './modules/teams';
 import players from './modules/player';
 import drawer from './modules/drawer';
 import search from './modules/search';
+import fixtures from './modules/fixtures';
 
 export default combineReducers({
   app: (state = {}) => state,
@@ -19,7 +20,7 @@ export default combineReducers({
   settings,
   auth,
   overview,
-  matches,
+  // matches,
   myTeam,
   leagues,
   loading,
@@ -27,4 +28,5 @@ export default combineReducers({
   players,
   drawer,
   search,
+  fixtures,
 });

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { sortBy } from 'lodash';
 import {
   Container,
@@ -30,47 +31,49 @@ class SelectTeamView extends Component {
   render() {
     const lid = this.props.navigation.state.params.id;
     const teams = sortBy(
-      this.props.leagues[lid] ? this.props.leagues[lid].table : [],
+      this.props.leagues[lid] ? this.props.leagues[lid].teams : [],
       'name',
     );
 
     return (
-      <Container
-        error={this.props.error}
-        refreshing={this.props.fetching}
-        onRefresh={this.getTeams}
-        dataSource={teams}
-        renderRow={this.renderItem}
-        getItemLayout={(data, index) => ({
-          length: ListItem.ITEM_HEIGHT,
-          offset: ListItem.ITEM_HEIGHT * index,
-          index,
-        })}
-        ItemSeparatorComponent={() => <Separator image />}
-        keyExtractor={item => item.id}
-      />
+      <View style={{ flex: 1 }}>
+        <Container
+          error={this.props.error}
+          refreshing={this.props.fetching}
+          onRefresh={this.getTeams}
+          dataSource={teams}
+          renderRow={this.renderItem}
+          getItemLayout={(data, index) => ({
+            length: ListItem.ITEM_HEIGHT,
+            offset: ListItem.ITEM_HEIGHT * index,
+            index,
+          })}
+          ItemSeparatorComponent={() => <Separator image />}
+          keyExtractor={item => item.id}
+        />
+      </View>
     );
   }
 
   renderItem({ item }) {
     return (
       <ListItem onPress={() => this.onPress(item)}>
-        <TeamLogo team={item} />
+        <TeamLogo team={item.emblemUrl} />
         <Text>{`${item.name}`}</Text>
       </ListItem>
     );
   }
 
   getTeams() {
-    const lid = this.props.navigation.state.params.id;
-    this.props.getLeague(lid);
+    // const lid = this.props.navigation.state.params.id;
+    // this.props.getLeague(lid);
   }
 
   onPress(team) {
     this.props.setUserTeam(team);
-    this.props.navigate({
-      routeName: 'LoginView',
-    });
+    // this.props.navigate({
+    //   routeName: 'LoginView',
+    // });
   }
 }
 
@@ -78,11 +81,11 @@ export default connect(
   state => ({
     error: state.loading.error,
     fetching: state.loading.list,
-    leagues: state.leagues,
+    leagues: state.drawer,
   }),
   dispatch => ({
     getLeague: id => dispatch(LeaguesActions.getLeague(id)),
-    setUserTeam: team => dispatch(SettingsActions.setTeam(team)),
+    setUserTeam: team => dispatch(SettingsActions.fetchUserTeam(team.id)),
     navigate: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(SelectTeamView);

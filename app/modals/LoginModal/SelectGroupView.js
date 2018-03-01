@@ -52,9 +52,7 @@ export default connect(
   state => ({
     error: state.loading.error,
     fetching: state.loading.list,
-    leagues: filter(sortBy(state.drawer, 'name'), o => {
-      return !o.cup;
-    }),
+    leagues: sortBy(state.drawer, 'name'),
   }),
   dispatch => ({
     getRankings: () => dispatch(LeaguesActions.getLeagues()),

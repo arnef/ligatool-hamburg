@@ -60,3 +60,8 @@ export function setToken(token: {
 }): Action {
   return { type: SET_TOKEN, payload: token };
 }
+
+export const accessForTeams = state =>
+  get(state).team && get(state).team.ids ? get(state).team.ids : [];
+
+const get = state => state.auth;

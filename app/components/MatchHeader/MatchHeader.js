@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -7,23 +6,14 @@ import Text from '../Text';
 
 import styles from './styles';
 
-type MatchHeaderProps = {
-  home: string,
-  away: string,
-  points?: { home: number, away: number },
-  goals?: { home: number, away: number },
-  onPress: Function,
-  color: string,
-};
-
-function MatchHeader(props: MatchHeaderProps): ReactElement<any> {
+function MatchHeader(props) {
   return (
     <View style={[styles.container, { backgroundColor: props.color }]}>
       <Touchable
         light
         borderless
         style={styles.containerTeam}
-        onPress={() => props.onPress('team_home')}
+        onPress={() => props.onPress('home')}
       >
         <Text style={styles.textTeam} numberOfLines={2}>
           {`${props.home}`}
@@ -31,15 +21,14 @@ function MatchHeader(props: MatchHeaderProps): ReactElement<any> {
       </Touchable>
       <View style={styles.containerScore}>
         <Text style={styles.textScore}>
-          {`${props.points
-            ? `${props.points.home}:${props.points.away}`
+          {`${props.result
+            ? `${props.result.setPointsHomeTeam}:${props.result
+                .setPointsAwayTeam}`
             : '-:-'}`}
         </Text>
         <Text small style={styles.textScore}>
-          {`(${props.goals &&
-          props.goals.home != null &&
-          props.goals.away != null
-            ? `${props.goals.home}:${props.goals.away}`
+          {`(${props.result
+            ? `${props.result.goalsHomeTeam}:${props.result.goalsAwayTeam}`
             : '-:-'})`}
         </Text>
       </View>
@@ -47,7 +36,7 @@ function MatchHeader(props: MatchHeaderProps): ReactElement<any> {
         light
         borderless
         style={styles.containerTeam}
-        onPress={() => props.onPress('team_away')}
+        onPress={() => props.onPress('away')}
       >
         <Text style={styles.textTeam} numberOfLines={2}>
           {`${props.away}`}

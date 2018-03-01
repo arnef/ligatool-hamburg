@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -10,9 +9,12 @@ import S from '../../lib/strings';
 import TableItem from './TableItem';
 import styles from './styles';
 
-function Table(props): ReactElement<any> {
+function Table(props) {
   function onPress(team) {
-    props.navigate(Routes.TEAM, { team, title: team.name });
+    props.navigate(Routes.TEAM, {
+      team: { id: team.teamId },
+      title: team.teamName,
+    });
   }
   const table = props.leagues[props.navigation.state.params.id]
     ? props.leagues[props.navigation.state.params.id].table || []
@@ -44,7 +46,7 @@ function Table(props): ReactElement<any> {
         refreshing={props.loading}
         onRefresh={() => props.getTable(props.navigation.state.params.id)}
         renderRow={({ item }) => <TableItem data={item} onPress={onPress} />}
-        keyExtractor={item => `${item.position}`}
+        keyExtractor={item => `${item.rank}`}
         ItemSeparatorComponent={() => <Separator table image />}
         dataSource={table}
       />
@@ -58,7 +60,7 @@ export default connect(
     loading: state.loading.list,
     leagues: state.leagues,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getTable: id => dispatch(LeaguesActions.getLeague(id)),
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate({ routeName, params })),

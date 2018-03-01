@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import Card from '../Card';
@@ -11,17 +10,8 @@ import ActionSheet from '../ActionSheet';
 import styles from './styles';
 
 import S from '../../lib/strings';
-
-type SetItemProps = {
-  data: Sets,
-  onSelect: Function,
-  editable: boolean,
-};
-
-type SetProps = {
-  editable: boolean,
-  openPlayer: Function,
-};
+import { connect } from 'react-redux';
+import { getFixtureGame } from '../../redux/modules/fixtures';
 
 function PlayerHome(props) {
   return (
@@ -49,34 +39,34 @@ function PlayerAway(props) {
   );
 }
 
-function Set(props: SetProps): ReactElement<any> {
+function Set(props) {
   const Container = props.editable ? View : Touchable;
   return (
     <View style={styles.containerPlayers}>
       <Container
-        onPress={() => props.openPlayer(props[`player_${props.idx + 1}_home`])}
+        onPress={() => props.openPlayer(props[`homePlayer${props.idx + 1}`])}
         style={styles.containerPlayer}
       >
         <PlayerHome
           editable={props.editable}
-          player={props[`player_${props.idx + 1}_home`]}
+          player={props[`homePlayer${props.idx + 1}`]}
         />
       </Container>
-      <Score goals={props} />
+      <Score goals={props.result} />
       <Container
-        onPress={() => props.openPlayer(props[`player_${props.idx + 1}_away`])}
+        onPress={() => props.openPlayer(props[`awayPlayer${props.idx + 1}`])}
         style={styles.containerPlayer}
       >
         <PlayerAway
           editable={props.editable}
-          player={props[`player_${props.idx + 1}_away`]}
+          player={props[`awayPlayer${props.idx + 1}`]}
         />
       </Container>
     </View>
   );
 }
 
-export default function SetItem(props: SetItemProps): ReactElement<any> {
+function SetItem(props) {
   const Container = props.editable ? Touchable : View;
 
   function showMenu() {
@@ -93,7 +83,8 @@ export default function SetItem(props: SetItemProps): ReactElement<any> {
   }
 
   function onPress() {
-    if (props.data.sets[0].player_1_home && props.data.sets[0].player_1_away) {
+    const { homePlayer1, awayPlayer1 } = props.set(props.data.gameNumbers[0]);
+    if (homePlayer1 && awayPlayer1) {
       props.onSelect(props.index, props.data, 1);
     } else {
       props.onSelect(props.index, props.data, 0);
@@ -110,16 +101,20 @@ export default function SetItem(props: SetItemProps): ReactElement<any> {
         </View>
       </Container>
       <Container onPress={onPress}>
-        {props.data.sets.map((set, idx) =>
+        {props.data.gameNumbers.map((gameNumber, idx) =>
           <Set
-            {...set}
+            {...props.set(gameNumber)}
             openPlayer={props.openPlayer}
             editable={props.editable}
             idx={idx}
-            key={`set-${idx}`}
+            key={`set-${gameNumber}`}
           />,
         )}
       </Container>
     </Card>
   );
 }
+
+export default connect((state, props) => ({
+  set: gameNumber => getFixtureGame(state, props.fixtureId, gameNumber),
+}))(SetItem);

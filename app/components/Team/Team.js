@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -11,7 +10,7 @@ import TeamInfo from './TeamInfo';
 import TeamVenue from './TeamVenue';
 import TeamContact from './TeamContact';
 
-function Team(props): ReactElement<any> {
+function Team(props) {
   const teamId = props.navigation.state.params
     ? props.navigation.state.params.team.id
     : props.myTeamId;
@@ -58,7 +57,7 @@ export default connect(
     color: state.settings.color,
     myTeamId: state.settings.team ? state.settings.team.id : null,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getTeam: id => dispatch(TeamsActions.getTeam(id)),
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate({ routeName, params })),

@@ -14,7 +14,7 @@ const iconSize = 32;
 const bigIconSize = 42;
 
 export default function TeamLogo(props: TeamLogoProps): ReactElement<any> {
-  if (props.team.image) {
+  if (props.team) {
     return (
       <Image
         style={[
@@ -22,7 +22,7 @@ export default function TeamLogo(props: TeamLogoProps): ReactElement<any> {
           props.left ? { marginHorizontal: 0, marginRight: 16 } : {},
         ]}
         size={props.size || (props.big ? bigIconSize : iconSize)}
-        url={props.team.image}
+        url={props.team}
       />
     );
   } else {

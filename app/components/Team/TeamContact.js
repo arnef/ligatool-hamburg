@@ -1,10 +1,9 @@
-// @flow
 import React from 'react';
 import { View, Linking, Alert } from 'react-native';
 import { ListItem, Touchable, Icon, Text, Separator } from '../../components';
 import S from '../../lib/strings';
 
-export default function TeamContact(props): ReactElement<any> {
+export default function TeamContact(props) {
   function call(number) {
     Linking.openURL('tel:' + number).catch(() =>
       Alert.alert(S.PHONE_APP_NOT_FOUND),
@@ -26,8 +25,8 @@ export default function TeamContact(props): ReactElement<any> {
             <Touchable
               style={{ flex: 1 }}
               onPress={() =>
-                contact.phone_number
-                  ? call(contact.phone_number)
+                contact.phoneNumber
+                  ? call(contact.phoneNumber)
                   : mail(contact.email)}
             >
               <View
@@ -38,12 +37,12 @@ export default function TeamContact(props): ReactElement<any> {
                 >{`${contact.name} ${contact.surname}`}</Text>
                 <Icon
                   color={props.color}
-                  name={contact.phone_number ? 'call' : 'mail'}
+                  name={contact.phoneNumber ? 'call' : 'mail'}
                   size={32}
                 />
               </View>
             </Touchable>
-            {!!contact.phone_number &&
+            {!!contact.phoneNumber &&
               <Touchable
                 onPress={() => mail(contact.email)}
                 style={{ paddingLeft: 16 }}

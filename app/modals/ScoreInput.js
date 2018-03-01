@@ -21,6 +21,8 @@ export default function ScoreInputModal(props) {
     >
       <Container behavior="height" style={styles.container}>
         <ScoreInput
+          modus={props.modus}
+          getSet={props.getSet}
           onCancel={props.onCancel}
           onSave={props.onSave}
           data={props.data}

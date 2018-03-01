@@ -1,31 +1,33 @@
 // @flow
 import axios from 'axios';
 import { URL } from '../config/settings';
+import json_ from 'json_';
+import _ from 'lodash';
 
 const instance = axios.create({
-  baseURL: `${URL}/index.php?option=com_sportsmanagerapi&q=`,
-  headers: { 'api-version': '2' },
+  baseURL: `${URL}/v1/`,
+  transformResponse: [
+    (data, headers) => {
+      if (
+        headers['content-type'] &&
+        headers['content-type'].indexOf('application/json') !== -1
+      ) {
+        data = json_.parse(data);
+        console.log(data);
+      }
+      return data;
+    },
+  ],
 });
 
-instance.interceptors.request.use(
-  config => {
-    if (config.method === 'get') {
-      config.url += `&timestamp=${new Date().getTime()}`;
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  },
-);
-
-export function setHeader(name: string, value: string) {
-  console.warn('using set header is depricated');
-  instance.defaults.headers.common[name] = value;
-}
+instance.interceptors.response.use(response => response.data);
 
 export function setFCM(fcm: string) {
   instance.defaults.headers.common['x-fcm'] = fcm;
+}
+
+export function setAuthorization(value) {
+  instance.defaults.headers.authorization = `Bearer ${value}`;
 }
 
 export function setSecret(value: string) {
@@ -33,18 +35,15 @@ export function setSecret(value: string) {
 }
 
 // POST /user/auth
-export function authenticate(user: {
-  username: string,
-  password: string,
-}): Promise<*> {
-  return instance.post('/user/auth', user);
+export function authenticate(user) {
+  return instance.post('/user/auth?assoc=tfvhh', user);
 }
 
 // POST /user/auth/refresh
 export function refreshAuthentication(access_key: string): Promise<*> {
   return new Promise((resolve, reject) => {
     instance
-      .post('/user/auth/refresh', { access_key })
+      .post('/user/auth/refresh?assoc=tfvhh', { access_key })
       .then(resp => {
         setSecret(resp.data.token);
         resolve(resp);
@@ -69,49 +68,115 @@ export function logout(): Promise<*> {
   });
 }
 
-// GET /matches
-export function getMatches(): Promise<*> {
-  return instance.get('/matches');
+// GET /fixtures?assoc=:config.assoc
+export function getMatches() {
+  return instance.get('/fixtures?assoc=tfvhh');
 }
 
-// GET /matches/{id}
-export function getMatch(id: string): Promise<*> {
-  return instance.get(`/matches/${id}`);
+// GET /fixtures/{id}
+export function getMatch(id) {
+  return instance.get(`/fixtures/${id}`);
 }
 
-// PATCH /matches/{id}
-export function updateMatch(id: string, data: any): Promise<any> {
-  return instance.patch(`/matches/${id}`, data);
+// // PATCH /fixtures/{id}/games
+// export function updateMatch(id, data) {
+//   return instance.patch(`/fixtures/${id}/games`, data);
+// }
+
+// PATCH /fixtures/:id/games?vid=:fixture.competitionId
+export function patchFixtureGames(fixture, payload) {
+  return instance.patch(
+    `/fixtures/${fixture.id}/games?vid=${fixture.competitionId}`,
+    payload,
+  );
+}
+
+// PUT /fixrures/:fixture.id/games?vid=:fixture.competitionId
+export function putFixtureGames(fixture, games) {
+  return new Promise((resolve, reject) => {
+    instance
+      .put(`/fixtures/${fixture.id}/games?vid=${fixture.competitionId}`, games)
+      .then(resp => {
+        console.log(resp);
+        resp.meta.games = _.keyBy(resp.meta.games, 'gameNumbers');
+        resolve(resp);
+      })
+      .catch(reject);
+  });
+}
+
+// POST /fixtures/:fixture.id/games?vid=:fixture.competitionId
+export function postFixtureGames(fixture) {
+  return new Promise((resolve, reject) => {
+    instance
+      .post(`/fixtures/${fixture.id}/games?vid=${fixture.competitionId}`)
+      .then(resp => {
+        console.log(resp);
+        // resp.meta.games = _.keyBy(resp.meta.games, 'gameNumbers');
+        resolve(resp);
+      })
+      .catch(reject);
+  });
+}
+
+// GET /fixtures/:id/dates?vid:=fixture.competitionId
+export function getFixtureDates(fixture) {
+  return instance.get(
+    `/fixtures/${fixture.id}/dates?vid=${fixture.competitionId}`,
+  );
+}
+
+// PUT /fixtures/:id/dates?vid=:fixture.comeptitionId
+export function putFixtureDates(fixture, dates, minDates, maxDates) {
+  console.log(dates, minDates, maxDates);
+  return instance.put(
+    `/fixtures/${fixture.id}/dates?vid=${fixture.competitionId}`,
+    {
+      dates,
+      min_dates: minDates,
+      max_dates: maxDates,
+    },
+  );
+}
+
+// PATCH /fixtures/:fixture.id/date?vid=:fixture.competitionId
+export function patchFixtureDate(fixture, datetimeId) {
+  return instance.patch(
+    `/fixtures/${fixture.id}/date?vid=${fixture.competitionId}`,
+    {
+      datetime: { id: datetimeId },
+    },
+  );
 }
 
 // GET /teams/{id}
-export function getTeam(id: number): Promise<*> {
+export function getTeam(id) {
   return instance.get(`/teams/${id}`);
 }
 
 // GET /teams/{id}/matches
-export function getTeamMatches(id: number): Promise<*> {
-  return instance.get(`/teams/${id}/matches`);
+export function getTeamMatches(id) {
+  return instance.get(`/teams/${id}/fixtures`);
 }
 
 // GET /leagues
-export function getLeagues(): Promise<*> {
-  return instance.get('/leagues');
+export function getLeagues() {
+  return instance.get('/competitions?assoc=tfvhh');
 }
 
 // GET /leagues/{id}
-export function getLeague(id: number): Promise<*> {
-  return instance.get(`/leagues/${id}`);
+export function getLeague(id) {
+  return instance.get(`/competitions/${id}`);
 }
 
 // GET /leagues/{id}/matches
-export function getLeagueMatches(id: number): Promise<*> {
-  return instance.get(`/leagues/${id}/matches`);
+export function getLeagueMatches(id) {
+  return instance.get(`/competitions/${id}`);
 }
 
 // GET /leagues/{id}/players
-export function getLeaguePlayers(id: number): Promise<*> {
-  return instance.get(`/leagues/${id}/players`);
+export function getLeaguePlayers(id) {
+  return instance.get(`/competitions/${id}/stats`);
 }
 
 // GET /players/{id}
@@ -119,15 +184,44 @@ export function getPlayer(id: number): Promise<*> {
   return instance.get(`/players/${id}`);
 }
 
-// POST /notification
-export function updateNotifications(
-  fcm_token: string,
-  notification: any,
-): Promise<*> {
-  return instance.post('/notification', { fcm_token, notification });
+/* Route Notifications */
+// PUT /notidications
+export function putNotification(
+  token,
+  enabled,
+  sound,
+  interimResults,
+  finalResults,
+) {
+  console.log(interimResults, finalResults);
+  return instance.put('/notifications?assoc=tfvhh', {
+    token,
+    enabled,
+    sound,
+    interim_results: interimResults,
+    final_results: finalResults,
+  });
 }
 
-// GET /search
-export function search(query: string) {
-  return instance.get('/search/' + encodeURI(query));
+// POST /notifications/fixture/:fixtureId
+export function postNotificationFixture(fixtureId) {
+  return instance.post(`/notifications/fixture/${fixtureId}`);
 }
+
+// DELETE /notifications/fixture/:fixtureId
+export function deleteNotificationFixture(fixtureId) {
+  return instance.delete(`/notifications/fixture/${fixtureId}`);
+}
+
+// POST /notification
+// export function updateNotifications(
+//   fcm_token: string,
+//   notification: any,
+// ): Promise<*> {
+//   return instance.post('/notification', { fcm_token, notification });
+// }
+
+// GET /search
+// export function search(query: string) {
+//   return instance.get('/search/' + encodeURI(query));
+// }

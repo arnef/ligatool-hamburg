@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
@@ -11,13 +10,14 @@ import NavHeader from '../Nav/NavHeader';
 import NavCloseIcon from '../Nav/NavCloseIcon';
 
 import S from '../lib/strings';
+import {
+  getFixturePlayerList,
+  setFixtureGameHomePlayer,
+  setFixtureGameAwayPlayer,
+} from '../redux/modules/fixtures';
 
 class SelectPlayer extends Component {
-  state: { selected: Array<number> };
-  onPress: Function;
-  renderItem: Function;
-
-  constructor(props: any) {
+  constructor(props) {
     super(props);
     this.state = {
       selected: [],
@@ -27,18 +27,19 @@ class SelectPlayer extends Component {
   }
 
   render() {
-    const { matches } = this.props;
+    // const { matches } = this.props;
     const { state } = this.props.navigation;
-    const match = matches[state.params.matchId];
-    const teamKey = `team_${state.params.team}`;
-    let items = match[teamKey] ? match[teamKey].player : [];
+    const { player } = this.props;
+    // const match = matches[state.params.matchId];
+    // const teamKey = `team${state.params.team}`;
+    // let items = match[teamKey] ? match[teamKey].player : [];
 
     return (
       <Container
-        dataSource={items}
+        dataSource={player}
         renderRow={this.renderItem}
         ItemSeparatorComponent={() => <Separator image />}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={player => `${player.id}`}
       />
     );
   }
@@ -75,7 +76,7 @@ class SelectPlayer extends Component {
 
   onPress(idx) {
     const { state } = this.props.navigation;
-    const { navigate, setPlayer, matches } = this.props;
+    const { navigate, setPlayer, player, closeModal } = this.props;
     const { selected } = this.state;
 
     const index = selected.indexOf(idx);
@@ -86,22 +87,12 @@ class SelectPlayer extends Component {
     }
     this.setState({ selected });
     const selectionLength = selected.length;
-
-    if (selectionLength === state.params.data.type) {
+    if (selectionLength === (state.params.data.type === 'DOUBLES' ? 2 : 1)) {
       const result = [];
-      const player =
-        matches[state.params.matchId][`team_${state.params.team}`].player;
-
       for (let itemIdx of selected) {
         result.push(player[itemIdx]);
       }
-
-      setPlayer(
-        state.params.matchId,
-        state.params.team,
-        result,
-        state.params.data.setsIdx,
-      );
+      setPlayer(state.params.data.gameNumbers, result);
       // wait animation done
       setTimeout(() => {
         if (state.params.team === 'home') {
@@ -113,6 +104,8 @@ class SelectPlayer extends Component {
               title: `${state.params.data.name} ${S.AWAY}`,
             },
           });
+        } else {
+          closeModal();
         }
       }, 10);
     }
@@ -128,12 +121,30 @@ export default StackNavigator(
   {
     SelectPlayerView: {
       screen: connect(
-        state => ({ matches: state.matches }),
-        (dispatch: Dispatch<any>) => ({
+        (state, props) => ({
+          player: getFixturePlayerList(
+            state,
+            props.navigation.state.params.matchId,
+            props.navigation.state.params.team,
+          ),
+        }),
+        (dispatch, props) => ({
           navigate: route => dispatch(NavigationActions.navigate(route)),
           closeModal: () => dispatch(NavigationActions.hidePlayer()),
-          setPlayer: (id, team, player, setsIdx) =>
-            dispatch(MatchActions.setPlayer({ id, team, player, setsIdx })),
+          setPlayer: (gameNumbers, player) =>
+            dispatch(
+              props.navigation.state.params.team === 'home'
+                ? setFixtureGameHomePlayer(
+                    props.navigation.state.params.matchId,
+                    gameNumbers,
+                    player,
+                  )
+                : setFixtureGameAwayPlayer(
+                    props.navigation.state.params.matchId,
+                    gameNumbers,
+                    player,
+                  ),
+            ),
           updateSets: (matchId, sets) =>
             dispatch(MatchActions.update({ id: matchId, sets })),
         }),

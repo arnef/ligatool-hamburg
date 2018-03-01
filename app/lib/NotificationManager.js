@@ -12,6 +12,7 @@ import * as SettingsActions from '../redux/modules/settings';
 import * as MatchesActions from '../redux/modules/matches';
 import Routes from '../config/routes';
 import { currentRoute } from './NavUtils';
+import { getFixture } from '../redux/modules/fixtures';
 
 export type Listener = {
   remove: Function,
@@ -48,9 +49,10 @@ function refreshTokenListener(): Listener {
  * handle notification
  */
 function receiveNotification(notif: Notification) {
+  console.log(notif);
   if (notif) {
     const route = currentRoute(store.getState().nav.navigation);
-    const id = notif.id;
+    const id = notif.fixture_id;
     const matchOpen =
       (route.routeName === Routes.MATCH ||
         route.routeName === Routes.MATCH_DATE) &&
@@ -79,6 +81,7 @@ function receiveNotification(notif: Notification) {
         FCM.presentLocalNotification({
           ...notif.fcm,
           id: notif.id,
+          fixture_id: notif.fixture_id,
           show_in_foreground: true,
           priority: 'high',
         });
@@ -86,11 +89,16 @@ function receiveNotification(notif: Notification) {
     }
 
     if (notif.type && !notif.local_notification) {
+      store.dispatch({
+        type: notif.type,
+        payload: notif,
+      });
       if (matchOpen) {
         store.dispatch(MatchesActions.getMatch(id));
-      } else {
-        store.dispatch(MatchesActions.notification(notif));
       }
+      // else {
+      //   store.dispatch(MatchesActions.notification(notif));
+      // }
     }
 
     if (notif.opened_from_tray && !matchOpen && id) {
@@ -102,14 +110,14 @@ function receiveNotification(notif: Notification) {
         );
       }
 
-      const match = store.getState().matches[id];
+      const match = getFixture(store.getState(), id);
 
       store.dispatch(
         NavigationActions.navigate({
           routeName: Routes.MATCH,
           params: {
             id,
-            title: match ? match.league.name : null,
+            title: match ? match.competitionName : null,
           },
         }),
       );
@@ -122,6 +130,7 @@ function receiveNotification(notif: Notification) {
  */
 function refreshToken(token: string) {
   if (token) {
+    console.log(token);
     store.dispatch(SettingsActions.setFCMToken(token));
   }
 }

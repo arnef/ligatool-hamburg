@@ -6,12 +6,12 @@ import S from '../../lib/strings';
 import { View } from 'react-native';
 import styles from './styles';
 
-export default function TeamInfo(props): ReactElement<any> {
+export default function TeamInfo(props) {
   return (
     <ListItem.Group>
-      {!!props.team.image &&
+      {!!props.team.emblemUrl &&
         <View style={styles.teamLogo}>
-          <Image url={props.team.image} size={240} />
+          <Image url={props.team.emblemUrl} size={240} />
         </View>}
       <ListItem multiline>
         <View>
@@ -21,16 +21,19 @@ export default function TeamInfo(props): ReactElement<any> {
           <Text>{`${props.team.name}`}</Text>
         </View>
       </ListItem>
-      <ListItem multiline>
+      {props.team.standing &&
         <View>
-          <Text bold>
-            {S.GROUP}
-          </Text>
-          <Text>{`${props.team.league.name} - ${props.team
-            .position}${S.DOT_POSITION}`}</Text>
-        </View>
-      </ListItem>
-      <Separator />
+          <ListItem multiline>
+            <View>
+              <Text bold>
+                {S.GROUP}
+              </Text>
+              <Text>{`${props.team.standing.competitionName} - ${props.team
+                .standing.rank}${S.DOT_POSITION}`}</Text>
+            </View>
+          </ListItem>
+          <Separator />
+        </View>}
       <ListItem multiline>
         <View>
           <Text bold>
@@ -46,7 +49,7 @@ export default function TeamInfo(props): ReactElement<any> {
             {S.HOME_TABLE}
           </Text>
           <Text>
-            {props.team.table}
+            {props.team.homeFixture.table}
           </Text>
         </View>
       </ListItem>
@@ -56,10 +59,10 @@ export default function TeamInfo(props): ReactElement<any> {
           <Text bold>
             {S.HOME_MATCH_TIME}
           </Text>
-          <Text>{`${!isNaN(parseInt(props.team.home_match_day, 10))
-            ? `${S.WEEKDAYS[props.team.home_match_day]} ${props.team
-                .home_match_time
-                ? `${S.TIME_AT} ${props.team.home_match_time}`
+          <Text>{`${!isNaN(parseInt(props.team.homeFixture.day, 10))
+            ? `${S.WEEKDAYS[props.team.homeFixture.day]} ${props.team
+                .homeFixture.time
+                ? `${S.TIME_AT} ${props.team.homeFixture.time}`
                 : ''}`
             : '-'}`}</Text>
         </View>

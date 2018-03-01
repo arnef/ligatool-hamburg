@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
@@ -10,15 +9,8 @@ import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
 import store from './config/store';
 
-type State = {
-  rehydrated: boolean,
-};
-type Props = {};
-
-class App extends Component<void, Props, State> {
-  state: State;
-
-  constructor(props: Props) {
+class App extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       rehydrated: false,
@@ -29,6 +21,7 @@ class App extends Component<void, Props, State> {
     const config = {
       storage: AsyncStorage,
       whitelist: ['app', 'settings', 'auth', 'matches', 'drawer'],
+      whitelist: ['app', 'settings', 'auth', 'drawer'],
     };
     persistStore(store, config, () => {
       this.setState({ rehydrated: true });

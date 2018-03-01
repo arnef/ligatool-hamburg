@@ -7,7 +7,7 @@ import * as NavigationActions from '../../redux/modules/navigation';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import Routes from '../../config/routes';
 
-function LeaguesView(props): ReactElement<any> {
+function LeaguesView(props) {
   return (
     <Container
       error={props.error}
@@ -19,7 +19,7 @@ function LeaguesView(props): ReactElement<any> {
       renderRow={({ item }) =>
         <ListItem
           onPress={() =>
-            props.navigate(item.cup ? Routes.LEAGUE_CUP : Routes.LEAGUE, {
+            props.navigate(!item.standing ? Routes.LEAGUE_CUP : Routes.LEAGUE, {
               id: item.id,
               title: item.name,
             })}

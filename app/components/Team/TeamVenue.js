@@ -1,13 +1,12 @@
-// @flow
 import React from 'react';
 import { Platform, Linking, Alert } from 'react-native';
 import { ListItem, Text } from '../../components';
 import S from '../../lib/strings';
 
-export default function TeamVenue(props): ReactElement<any> {
+export default function TeamVenue(props) {
   function onPress() {
-    const address = `${props.venue.street}, ${props.venue.zip_code} ${props
-      .venue.city}`;
+    const address = `${props.venue.street}, ${props.venue.zipCode} ${props.venue
+      .city}`;
     const uri =
       Platform.OS === 'ios'
         ? 'http://maps.apple.com/?address='
@@ -23,7 +22,7 @@ export default function TeamVenue(props): ReactElement<any> {
       <ListItem.Header title={S.HOME_VENUE} />
       <ListItem multiline onPress={onPress}>
         <Text style={{ flex: 1 }}>{`${props.venue.name}\n${props.venue
-          .street}, ${props.venue.zip_code} ${props.venue.city}`}</Text>
+          .street}, ${props.venue.zipCode} ${props.venue.city}`}</Text>
         <ListItem.Icon right name="pin" color={props.color} />
       </ListItem>
     </ListItem.Group>

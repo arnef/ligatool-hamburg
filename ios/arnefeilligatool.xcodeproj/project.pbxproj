@@ -532,6 +532,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		1400905B2047EA8300B72587 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				F51004A863A64225972DD914 /* libRNFIRMessaging.a */,
+				EA57189978684388BD85D8C6 /* libRNVectorIcons.a */,
+				595A793F233344649FC2B561 /* libRCTHttpCache.a */,
+				9EAF55E62B46469F8205A978 /* libRNSentry.a */,
+				D059C19EF14544708E17478F /* libCodePush.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		14283BF31ED5B8B400FCFA08 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -652,6 +664,7 @@
 				13EC08905B096EEFD579050B /* Pods */,
 				FDD642F9F69F11FBEF816D15 /* Frameworks */,
 				D809F58603E54892B0D1D181 /* Resources */,
+				1400905B2047EA8300B72587 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1241,13 +1254,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-arnefeilligatool-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BF1388D9604843BB869A5187 /* Upload Debug Symbols to Sentry */ = {

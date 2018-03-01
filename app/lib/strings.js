@@ -89,6 +89,7 @@ const strings = {
   NOTIFICATION_LIVE: 'Live-Zwischenergebnis',
   NOTIFICATION_END: 'Endstand',
   NOTIFICATION_MATCH_DATE: 'Termin Änderungen',
+  NOTIFICATION_SOUND: 'Sound/Vibration',
   OVERVIEW: 'Übersicht',
   PAST_MATCHES: 'Vergangene',
   NEXT_MATCHES: 'Kommende',

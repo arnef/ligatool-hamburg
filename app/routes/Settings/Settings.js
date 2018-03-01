@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View, Alert } from 'react-native';
 import { connect } from 'react-redux';
@@ -19,11 +18,6 @@ import S from '../../lib/strings';
 import Routes from '../../config/routes';
 
 class Settings extends React.Component {
-  state: { codepush: ?string };
-  onLogin: Function;
-  onSelectGroups: Function;
-  onClearCache: Function;
-
   constructor(props) {
     super(props);
     this.state = { codepush: null };
@@ -61,7 +55,7 @@ class Settings extends React.Component {
       return (
         <View>
           <ListItem>
-            <TeamLogo team={team} left />
+            <TeamLogo team={team.emblemUrl} left />
             <Text>
               {team.name}
             </Text>
@@ -97,45 +91,43 @@ class Settings extends React.Component {
 
   renderNotifications() {
     const { notification, fcm_token } = this.props.settings;
-    const disabled = !notification.on || !fcm_token;
 
+    const {
+      notificationEnabled,
+      notificationSound,
+      notificationInterim,
+      notificationFinal,
+    } = this.props;
     return (
       <ListItem.Group>
         <ListItem.Header title={S.NOTIFICATIONS} />
         {this.renderCheckbox(
           S.NOTIFICATIONS,
-          notification.on,
-          'on',
+          notificationEnabled,
+          'enabled',
           !fcm_token,
         )}
         <Separator />
         {this.renderCheckbox(
+          S.NOTIFICATION_SOUND,
+          notificationSound,
+          'sound',
+          !notificationEnabled,
+        )}
+        <Separator />
+        {this.renderCheckbox(
           S.NOTIFICATION_LIVE,
-          notification.live,
-          'live',
-          disabled,
+          notificationInterim,
+          'interimResults',
+          !notificationEnabled,
         )}
         <Separator />
         {this.renderCheckbox(
           S.NOTIFICATION_END,
-          notification.ended,
-          'ended',
-          disabled,
+          notificationFinal,
+          'finalResults',
+          !notificationEnabled,
         )}
-        <Separator />
-        {this.renderCheckbox(
-          S.NOTIFICATION_MATCH_DATE,
-          notification.matchdate,
-          'matchdate',
-          !this.props.auth.api_key,
-        )}
-        <Separator />
-        <ListItem onPress={this.onSelectGroups} disabled={disabled}>
-          <Text style={{ flex: 1 }}>
-            {S.SELECT_GROUPS}
-          </Text>
-          <ListItem.Icon name="caret-forward" right />
-        </ListItem>
       </ListItem.Group>
     );
   }
@@ -158,13 +150,6 @@ class Settings extends React.Component {
     return (
       <ListItem.Group>
         <ListItem.Header title={S.INFORMATION} />
-        <ListItem onPress={this.onClearCache}>
-          <ListItem.Icon name="trash" color={color} />
-          <Text>
-            {S.CLEAR_IMAGE_CACHE}
-          </Text>
-        </ListItem>
-        <Separator image />
         <ListItem>
           <ListItem.Icon name="information-circle" color={color} />
           <Text>
@@ -195,13 +180,16 @@ export default connect(
   state => ({
     auth: state.auth,
     settings: state.settings,
+    notificationEnabled: SettingsActions.notificationEnabled(state),
+    notificationSound: SettingsActions.notificationSound(state),
+    notificationInterim: SettingsActions.notificationInterimResults(state),
+    notificationFinal: SettingsActions.notificationFinalResults(state),
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     login: () => dispatch(NavigationActions.showLogin()),
     logout: () => dispatch(AuthActions.logout()),
     navigate: route => dispatch(NavigationActions.navigate(route)),
-    toggleNotification: (key: string) =>
+    toggleNotification: key =>
       dispatch(SettingsActions.toggleNotification(key)),
-    clearCache: () => dispatch(SettingsActions.clearCache()),
   }),
 )(Settings);

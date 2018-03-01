@@ -38,23 +38,23 @@ export function darken(color: string, amt: number): string {
   return '#' + `000000${darkColor}`.slice(-6);
 }
 
-export function getMatchDays(matches: Array<Match>): any {
-  const matchDays: any = {
+export function getMatchDays(matches) {
+  const matchDays = {
     matchdays: {},
     selected: null,
   };
 
-  for (let match: Match of matches) {
-    if (!matchDays.matchdays[match.match_day]) {
-      matchDays.matchdays[match.match_day] = [];
+  for (let match of matches) {
+    if (!matchDays.matchdays[match.matchday]) {
+      matchDays.matchdays[match.matchday] = [];
     }
-    matchDays.matchdays[match.match_day].push(`${match.id}`);
+    matchDays.matchdays[match.matchday].push(`${match.id}`);
     if (!match.set_points && !matchDays.selected) {
-      matchDays.selected = match.match_day;
+      matchDays.selected = match.matchday;
     }
   }
   if (!matchDays.selected) {
-    matchDays.selected = matches[matches.length - 1].match_day;
+    matchDays.selected = matches[matches.length - 1].matchday;
   }
 
   return { match_days: matchDays.matchdays, selected: matchDays.selected };

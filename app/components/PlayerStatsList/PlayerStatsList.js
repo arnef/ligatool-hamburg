@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -15,7 +14,7 @@ import S from '../../lib/strings';
 import Player from './Player';
 import styles from './styles';
 
-function PlayerStatsList(props): ReactElement<any> {
+function PlayerStatsList(props) {
   function onPress(player) {
     props.navigate(Routes.PLAYER, player);
   }
@@ -52,7 +51,7 @@ function PlayerStatsList(props): ReactElement<any> {
         onRefresh={() => {}}
         renderRow={({ item }) => <Player {...item} onPress={onPress} />}
         dataSource={dataSource}
-        keyExtractor={item => `${item.position}`}
+        keyExtractor={item => `${item.rank}`}
         ItemSeparatorComponent={() => <Separator table image />}
         getItemLayout={(data, index) => ({
           length: ListItem.ITEM_HEIGHT,
@@ -70,7 +69,7 @@ export default connect(
     loading: state.loading.list,
     leagues: state.leagues,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     navigate: (routeName, params) =>
       dispatch(NavigatationActions.navigate({ routeName, params })),
   }),

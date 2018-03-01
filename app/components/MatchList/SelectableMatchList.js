@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -17,15 +16,6 @@ import {
 import styles from './styles';
 
 class SelectableMatchList extends React.Component {
-  state: {
-    selectedMatchDay: ?string,
-  };
-  onOpenMenu: Function;
-  onSelectMatchDay: Function;
-  onRefresh: Function;
-  renderItem: Function;
-  container: Container;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +27,7 @@ class SelectableMatchList extends React.Component {
     this.renderItem = this.renderItem.bind(this);
   }
 
-  onOpenMenu(matchDays: Array<string>) {
+  onOpenMenu(matchDays) {
     ActionSheet.show(
       {
         options: matchDays,
@@ -46,7 +36,7 @@ class SelectableMatchList extends React.Component {
     );
   }
 
-  onSelectMatchDay(matchDay: string) {
+  onSelectMatchDay(matchDay) {
     this.setState({ selectedMatchDay: matchDay });
     if (this.container && this.container.scrollTo) {
       this.container.scrollTo({ x: 0, y: 0, animated: true });
@@ -104,10 +94,10 @@ export default connect(
     error: state.loading.error,
     loading: state.loading.list,
     leagues: state.leagues,
-    matches: state.matches,
+    matches: state.fixtures.data,
     color: state.settings.color,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getMatches: id => dispatch(LeaguesActions.getMatches(id)),
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate((routeName, params))),

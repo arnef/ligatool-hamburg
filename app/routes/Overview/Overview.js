@@ -11,6 +11,7 @@ import ErrorFlash from '../../components/ErrorFlash';
 import * as OverviewActions from '../../redux/modules/overview';
 import { colors } from '../../config/styles';
 import { size } from 'lodash';
+import { getFixture } from '../../redux/modules/fixtures';
 
 class Overview extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Overview extends React.Component {
   }
 
   renderItem(item) {
-    return <MatchItem data={this.props.data[item]} />;
+    return <MatchItem data={this.props.getFixture(item)} />;
   }
 
   renderSectionHeader(data, sectionId) {
@@ -117,7 +118,7 @@ function createTab(keyName) {
       error: state.loading.error,
       loading: state.loading.list,
       matches: state.overview[keyName],
-      data: state.matches,
+      getFixture: id => getFixture(state, id),
       color: state.settings.color,
     }),
     (dispatch: Dispatch<*>) => ({

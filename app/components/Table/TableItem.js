@@ -5,28 +5,28 @@ import { ListItem, Text, TeamLogo, MatchStatsBar } from '../../components';
 
 import styles from './styles';
 
-export default function TableItem(props): ReactElement<any> {
+export default function TableItem(props) {
   return (
     <ListItem onPress={() => props.onPress(props.data)}>
       <Text style={styles.position}>
-        {`${props.data.position}`}
+        {`${props.data.rank}`}
       </Text>
       <View style={styles.teamLogo}>
-        <TeamLogo team={props.data} />
+        <TeamLogo team={props.data.teamEmblemUrl} />
       </View>
       <View style={{ flex: 1 }}>
         <View style={styles.row}>
           <Text style={styles.teamName} numberOfLines={1}>
-            {props.data.name}
+            {props.data.teamName}
           </Text>
           <Text style={styles.matches}>
-            {`${props.data.matches}`}
+            {`${props.data.playedGames}`}
           </Text>
           <Text style={styles.setPoints}>
-            {`${props.data.set_points_diff}`}
+            {`${props.data.setPointsDifference}`}
           </Text>
           <Text style={styles.goals}>
-            {`${props.data.goals_diff}`}
+            {`${props.data.goalsDifference}`}
           </Text>
           <Text style={styles.points}>
             {`${props.data.points}`}
@@ -36,10 +36,10 @@ export default function TableItem(props): ReactElement<any> {
           <MatchStatsBar
             small
             stats={{
-              wins: props.data.wins,
-              lost: props.data.defeats,
-              draws: props.data.draws,
-              matches: props.data.matches,
+              wins: props.data.overallWin,
+              lost: props.data.overallLost,
+              draws: props.data.overallDraw,
+              matches: props.data.playedGames,
             }}
           />
         </View>

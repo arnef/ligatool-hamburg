@@ -15,7 +15,7 @@ type ImageProps = {
 };
 
 export default function Image(props: ImageProps): ReactElement<any> {
-  const source = props.url ? { uri: URL + props.url } : props.source;
+  const source = props.url ? { uri: props.url } : props.source;
 
   const imgStyle = [styles.image];
   if (props.size) {
