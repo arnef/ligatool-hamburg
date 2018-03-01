@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "613643338072",
-    "firebase_url": "https://ligatool-44145.firebaseio.com",
-    "project_id": "ligatool-44145",
-    "storage_bucket": "ligatool-44145.appspot.com"
+    "project_number": "809404459240",
+    "firebase_url": "https://kickern-app.firebaseio.com",
+    "project_id": "kickern-app",
+    "storage_bucket": "kickern-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:613643338072:android:5e798b9020542906",
+        "mobilesdk_app_id": "1:809404459240:android:04a7a9b94db7e558",
         "android_client_info": {
-          "package_name": "com.arnefeilligatool"
+          "package_name": "com.arnefeildtfb"
         }
       },
       "oauth_client": [
         {
-          "client_id": "613643338072-3mc395kh42nv5d6h0k7poefm3sgbuugj.apps.googleusercontent.com",
+          "client_id": "809404459240-5g533ofg97nrd0dmr1kqkirms2ugbvpr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBTdhRDCErV8S81Fu4fYLg-DMBqVqpsLoU"
+          "current_key": "AIzaSyDgw4wPbqN0wSinGHx4QrpEpuoqZ6sn0s8"
         }
       ],
       "services": {

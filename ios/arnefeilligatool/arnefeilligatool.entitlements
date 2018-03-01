@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)de.arnefeil.ligatoolhamburg</string>
+		<string>$(AppIdentifierPrefix)de.arnefeil.dtfbapp</string>
 	</array>
 </dict>
 </plist>

@@ -1,6 +1,6 @@
 // @flow
 import axios from 'axios';
-import { URL } from '../config/settings';
+import { URL, ASSOC } from '../config/settings';
 import json_ from 'json_';
 import _ from 'lodash';
 
@@ -36,14 +36,14 @@ export function setSecret(value: string) {
 
 // POST /user/auth
 export function authenticate(user) {
-  return instance.post('/user/auth?assoc=tfvhh', user);
+  return instance.post(`/user/auth?assoc=${ASSOC}`, user);
 }
 
 // POST /user/auth/refresh
 export function refreshAuthentication(access_key: string): Promise<*> {
   return new Promise((resolve, reject) => {
     instance
-      .post('/user/auth/refresh?assoc=tfvhh', { access_key })
+      .post(`/user/auth/refresh?assoc=${ASSOC}`, { access_key })
       .then(resp => {
         setSecret(resp.data.token);
         resolve(resp);
@@ -70,7 +70,7 @@ export function logout(): Promise<*> {
 
 // GET /fixtures?assoc=:config.assoc
 export function getMatches() {
-  return instance.get('/fixtures?assoc=tfvhh');
+  return instance.get(`/fixtures?assoc=${ASSOC}`);
 }
 
 // GET /fixtures/{id}
@@ -161,7 +161,7 @@ export function getTeamMatches(id) {
 
 // GET /leagues
 export function getLeagues() {
-  return instance.get('/competitions?assoc=tfvhh');
+  return instance.get(`/competitions?assoc=${ASSOC}`);
 }
 
 // GET /leagues/{id}
@@ -194,7 +194,7 @@ export function putNotification(
   finalResults,
 ) {
   console.log(interimResults, finalResults);
-  return instance.put('/notifications?assoc=tfvhh', {
+  return instance.put(`/notifications?assoc=${ASSOC}`, {
     token,
     enabled,
     sound,

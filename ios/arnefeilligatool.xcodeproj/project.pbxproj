@@ -40,8 +40,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* arnefeilligatoolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* arnefeilligatoolTests.m */; };
 		34AC58E655CB6BBB63924E92 /* libPods-arnefeilligatool.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DA8BD44B6F960C8DFB70B2A /* libPods-arnefeilligatool.a */; };
 		35EDEEB7A1684C499595379F /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A8FD35BC1C74A99A7518F15 /* MaterialIcons.ttf */; };
-		3D1545A14E3444F88A101F7A /* libRCTHttpCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 595A793F233344649FC2B561 /* libRCTHttpCache.a */; };
-		5A1F9E7055E2490FB1E40A03 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D059C19EF14544708E17478F /* libCodePush.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		7786026E6B9F49C09C6206C6 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA57189978684388BD85D8C6 /* libRNVectorIcons.a */; };
 		82732FDBEB9D4EED9A3EC821 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F135D42B247B992F70673 /* libz.tbd */; };
@@ -398,10 +396,8 @@
 				34AC58E655CB6BBB63924E92 /* libPods-arnefeilligatool.a in Frameworks */,
 				DD30C309B0CB450FB43C0AE9 /* libRNFIRMessaging.a in Frameworks */,
 				7786026E6B9F49C09C6206C6 /* libRNVectorIcons.a in Frameworks */,
-				3D1545A14E3444F88A101F7A /* libRCTHttpCache.a in Frameworks */,
 				900B6352630047F4BC28A957 /* libRNSentry.a in Frameworks */,
 				82732FDBEB9D4EED9A3EC821 /* libz.tbd in Frameworks */,
-				5A1F9E7055E2490FB1E40A03 /* libCodePush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1456,7 +1452,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.arnefeil.ligatoolhamburg;
+				PRODUCT_BUNDLE_IDENTIFIER = de.arnefeil.dtfbapp;
 				PRODUCT_NAME = arnefeilligatool;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1488,7 +1484,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.arnefeil.ligatoolhamburg;
+				PRODUCT_BUNDLE_IDENTIFIER = de.arnefeil.dtfbapp;
 				PRODUCT_NAME = arnefeilligatool;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";

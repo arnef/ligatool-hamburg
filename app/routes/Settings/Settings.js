@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import codePush from 'react-native-code-push';
 import {
   Container,
   ListItem,
@@ -18,35 +17,11 @@ import S from '../../lib/strings';
 import Routes from '../../config/routes';
 
 class Settings extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { codepush: null };
-    this.onSelectGroups = this.onSelectGroups.bind(this);
-    this.onClearCache = this.onClearCache.bind(this);
-  }
-
-  componentWillMount() {
-    codePush.getCurrentPackage().then(pkg => {
-      if (pkg && !pkg.isPending && pkg.label && pkg.appVersion) {
-        this.setState({
-          codepush: `App-Version ${pkg.appVersion} (${pkg.label})`,
-        });
-      }
-    });
-  }
-
-  onSelectGroups() {
+  onSelectGroups = () => {
     this.props.navigate({
       routeName: Routes.SETTINGS_NOTIFICATIONS,
     });
-  }
-
-  onClearCache() {
-    Alert.alert(S.CLEAR_IMAGE_CACHE, S.CACHE_INFORMATION, [
-      { text: S.CANCEL, onPress: () => {} },
-      { text: S.DELETE, onPress: this.props.clearCache },
-    ]);
-  }
+  };
 
   renderUser() {
     const { team, color } = this.props.settings;
@@ -108,13 +83,13 @@ class Settings extends React.Component {
           !fcm_token,
         )}
         <Separator />
-        {this.renderCheckbox(
+        {/* {this.renderCheckbox(
           S.NOTIFICATION_SOUND,
           notificationSound,
           'sound',
           !notificationEnabled,
         )}
-        <Separator />
+        <Separator /> */}
         {this.renderCheckbox(
           S.NOTIFICATION_LIVE,
           notificationInterim,
@@ -153,7 +128,7 @@ class Settings extends React.Component {
         <ListItem>
           <ListItem.Icon name="information-circle" color={color} />
           <Text>
-            {`${this.state.codepush ? this.state.codepush : S.APP_VERSION}`}
+            {`${S.APP_VERSION}`}
           </Text>
         </ListItem>
       </ListItem.Group>

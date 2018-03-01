@@ -28,14 +28,16 @@ export function compareDays(d1: number, d2: number): number {
   return diff;
 }
 
-export function darken(color: string, amt: number): string {
-  amt = Math.round(2.55 * amt);
-  const colorVal = parseInt(color.replace('#', ''), 16);
-  const darkColor = (((colorVal & 0x0000ff) - amt) |
-    ((((colorVal >> 8) & 0x00ff) - amt) << 8) |
-    (((colorVal >> 16) - amt) << 16)).toString(16);
+export function darken(color, amt) {
+  let r = parseInt(color.substring(1, 3), 10);
+  let g = parseInt(color.substring(3, 5), 10);
+  let b = parseInt(color.substring(5, 7), 10);
 
-  return '#' + `000000${darkColor}`.slice(-6);
+  r = Math.round(Math.max(r - r * (amt / 100), 0)).toString(16);
+  g = Math.round(Math.max(g - g * (amt / 100), 0)).toString(16);
+  b = Math.round(Math.max(b - b * (amt / 100), 0)).toString(16);
+
+  return '#' + ('0' + r).slice(-2) + ('0' + g).slice(-2) + ('0' + b).slice(-2);
 }
 
 export function getMatchDays(matches) {

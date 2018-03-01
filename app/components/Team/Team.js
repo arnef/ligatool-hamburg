@@ -35,7 +35,9 @@ function Team(props) {
             <ListItem.Header title={S.PLAYER} />
             {team.player.map((player, index) =>
               <View key={`player-${player.id}`}>
-                <ListItem onPress={() => props.navigate(Routes.PLAYER, player)}>
+                <ListItem
+                // onPress={() => props.navigate(Routes.PLAYER, player)}
+                >
                   <ListItem.Image url={player.image} />
                   <Text>{`${player.name} ${player.surname}`}</Text>
                 </ListItem>

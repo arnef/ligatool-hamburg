@@ -4,7 +4,6 @@ import { takeEvery, put, call, select } from 'redux-saga/effects';
 import moment from 'moment';
 import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist/constants';
-import * as CacheManager from 'react-native-http-cache';
 import * as api from '../lib/api';
 import * as NotificationManager from '../lib/NotificationManager';
 import { GET_OVERVIEW_MATCHES, OVERVIEW_MATCHES } from './modules/overview';
@@ -204,14 +203,14 @@ function* logout() {
 }
 
 function* clearCache() {
-  try {
-    yield put(LoadingActions.showModal());
-    yield call(CacheManager.clearCache);
-  } catch (ex) {
-    console.warn(ex);
-  } finally {
-    yield put(LoadingActions.hideModal());
-  }
+  // try {
+  //   yield put(LoadingActions.showModal());
+  //   yield call(CacheManager.clearCache);
+  // } catch (ex) {
+  //   console.warn(ex);
+  // } finally {
+  //   yield put(LoadingActions.hideModal());
+  // }
 }
 
 function* getMatch(action) {

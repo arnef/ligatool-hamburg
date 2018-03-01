@@ -16,10 +16,7 @@ function Drawer(props): ReactElement<any> {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: props.team ? 'turm_bw' : 'turm' }}
-          style={styles.image}
-        />
+        <Image source={{ uri: 'drawer' }} style={styles.image} />
         {!!props.team &&
           <View style={styles.teamContainer}>
             {!!props.team.image &&

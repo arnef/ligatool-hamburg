@@ -1,4 +1,4 @@
-package com.arnefeilligatool;
+package com.arnefeildtfb;
 
 import com.facebook.react.ReactActivity;
 

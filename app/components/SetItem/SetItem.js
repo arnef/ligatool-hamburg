@@ -40,11 +40,12 @@ function PlayerAway(props) {
 }
 
 function Set(props) {
-  const Container = props.editable ? View : Touchable;
+  // const Container = props.editable ? View : Touchable;
+  const Container = View;
   return (
     <View style={styles.containerPlayers}>
       <Container
-        onPress={() => props.openPlayer(props[`homePlayer${props.idx + 1}`])}
+        // onPress={() => props.openPlayer(props[`homePlayer${props.idx + 1}`])}
         style={styles.containerPlayer}
       >
         <PlayerHome
@@ -54,7 +55,7 @@ function Set(props) {
       </Container>
       <Score goals={props.result} />
       <Container
-        onPress={() => props.openPlayer(props[`awayPlayer${props.idx + 1}`])}
+        // onPress={() => props.openPlayer(props[`awayPlayer${props.idx + 1}`])}
         style={styles.containerPlayer}
       >
         <PlayerAway

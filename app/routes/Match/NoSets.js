@@ -54,9 +54,9 @@ function NoSets(props) {
           <View style={styles.player}>
             {playerHome &&
               <Card
-                onPress={() => {
-                  props.navigate(Routes.PLAYER, playerHome);
-                }}
+              // onPress={() => {
+              //   props.navigate(Routes.PLAYER, playerHome);
+              // }}
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerHome.image} size={90} />
@@ -69,9 +69,9 @@ function NoSets(props) {
           <View style={styles.player}>
             {playerAway &&
               <Card
-                onPress={() => {
-                  props.navigate(Routes.PLAYER, playerAway);
-                }}
+              // onPress={() => {
+              //   props.navigate(Routes.PLAYER, playerAway);
+              // }}
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerAway.image} size={90} />
@@ -139,14 +139,14 @@ function NoSets(props) {
             <ListItem.Icon right color={props.color} name="pin" />
           </ListItem>}
         {props.isAdmin && <Separator />}
-        {props.isAdmin &&
+        {/* {props.isAdmin &&
           <ListItem onPress={openDateChange}>
             <Text style={styles.option}>
               {S.CHANGE_MATCH_DATETIME}
             </Text>
             <ListItem.Icon right color={props.color} name="calendar" />
           </ListItem>}
-        {props.isAdmin && <Separator />}
+        {props.isAdmin && <Separator />} */}
         {props.isAdmin &&
           <ListItem
             onPress={insertResult}
