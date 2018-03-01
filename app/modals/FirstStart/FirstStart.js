@@ -20,12 +20,12 @@ class FirstStart extends React.Component {
       <View style={styles.container}>
         <View style={{ alignItems: 'center' }}>
           <Image source={{ uri: 'loading' }} style={styles.icon} />
-          <Text>Moin Moin</Text>
+          <Text style={{ padding: 16 }}>Moin Moin</Text>
           <Text style={{ padding: 32 }}>
             Im Folgenden kannst du nun die App einrichten. Wähle in den nächsten
             Schritten dein Team aus, um alle Informationen auf einen Blick zu
-            haben. Des Weiteren kannst du einstellen. für welche Gruppen dir
-            Benachrichtigungen geschickt werden.
+            haben. Des Weiteren kannst du einstellen, für welche Gruppen dir
+            Benachrichtigungen geschickt werden sollen.
           </Text>
 
           <View style={styles.buttons}>

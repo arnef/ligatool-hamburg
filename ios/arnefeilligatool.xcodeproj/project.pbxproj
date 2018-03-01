@@ -41,7 +41,6 @@
 		34AC58E655CB6BBB63924E92 /* libPods-arnefeilligatool.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DA8BD44B6F960C8DFB70B2A /* libPods-arnefeilligatool.a */; };
 		35EDEEB7A1684C499595379F /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A8FD35BC1C74A99A7518F15 /* MaterialIcons.ttf */; };
 		3D1545A14E3444F88A101F7A /* libRCTHttpCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 595A793F233344649FC2B561 /* libRCTHttpCache.a */; };
-		5A1F9E7055E2490FB1E40A03 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D059C19EF14544708E17478F /* libCodePush.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		7786026E6B9F49C09C6206C6 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA57189978684388BD85D8C6 /* libRNVectorIcons.a */; };
 		82732FDBEB9D4EED9A3EC821 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AC3F135D42B247B992F70673 /* libz.tbd */; };
@@ -155,13 +154,6 @@
 			remoteGlobalIDString = 139D7E881E25C6D100323FB7;
 			remoteInfo = "double-conversion";
 		};
-		14B0C64E1F48C73D001725C8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8512FB7818D84121AC862D48 /* CodePush.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6463C8241EBA0CB60095B8CD;
-			remoteInfo = "CodePush-tvOS";
-		};
 		14B0C66E1F48C73D001725C8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -182,13 +174,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSentry;
-		};
-		14B8F3421F2E822900C02005 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8512FB7818D84121AC862D48 /* CodePush.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = CodePush;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -355,7 +340,6 @@
 		666108EBD7244F41994243A8 /* RNFIRMessaging.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFIRMessaging.xcodeproj; path = "../node_modules/react-native-fcm/ios/RNFIRMessaging.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		8512FB7818D84121AC862D48 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		880C21EC640A47B69ACB7E75 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		91A5DB9411EE443DB5404FC4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		99A88911B2EB4D199A30FF22 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -401,7 +385,6 @@
 				3D1545A14E3444F88A101F7A /* libRCTHttpCache.a in Frameworks */,
 				900B6352630047F4BC28A957 /* libRNSentry.a in Frameworks */,
 				82732FDBEB9D4EED9A3EC821 /* libz.tbd in Frameworks */,
-				5A1F9E7055E2490FB1E40A03 /* libCodePush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,19 +558,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		149A667C204855B60099F52E /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				F51004A863A64225972DD914 /* libRNFIRMessaging.a */,
+				EA57189978684388BD85D8C6 /* libRNVectorIcons.a */,
+				595A793F233344649FC2B561 /* libRCTHttpCache.a */,
+				9EAF55E62B46469F8205A978 /* libRNSentry.a */,
+				D059C19EF14544708E17478F /* libCodePush.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		14B8F31C1F2E822900C02005 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				14B8F33D1F2E822900C02005 /* libRNSentry.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		14B8F33F1F2E822900C02005 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				14B8F3431F2E822900C02005 /* libCodePush.a */,
-				14B0C64F1F48C73D001725C8 /* libCodePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -628,7 +614,6 @@
 				B00A25EDD6264FF89C057832 /* RNVectorIcons.xcodeproj */,
 				542CFECB71524CBAAFE1F3BC /* RCTHttpCache.xcodeproj */,
 				DC545CC07A5B47B18651699C /* RNSentry.xcodeproj */,
-				8512FB7818D84121AC862D48 /* CodePush.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -652,6 +637,7 @@
 				13EC08905B096EEFD579050B /* Pods */,
 				FDD642F9F69F11FBEF816D15 /* Frameworks */,
 				D809F58603E54892B0D1D181 /* Resources */,
+				149A667C204855B60099F52E /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -823,10 +809,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 14B8F33F1F2E822900C02005 /* Products */;
-					ProjectRef = 8512FB7818D84121AC862D48 /* CodePush.xcodeproj */;
-				},
-				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -989,13 +971,6 @@
 			remoteRef = 14A86DD41EF5247A004A97CE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		14B0C64F1F48C73D001725C8 /* libCodePush.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCodePush.a;
-			remoteRef = 14B0C64E1F48C73D001725C8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		14B0C66F1F48C73D001725C8 /* libthird-party.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1015,13 +990,6 @@
 			fileType = archive.ar;
 			path = libRNSentry.a;
 			remoteRef = 14B8F33C1F2E822900C02005 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		14B8F3431F2E822900C02005 /* libCodePush.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCodePush.a;
-			remoteRef = 14B8F3421F2E822900C02005 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1241,13 +1209,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-arnefeilligatool-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BF1388D9604843BB869A5187 /* Upload Debug Symbols to Sentry */ = {

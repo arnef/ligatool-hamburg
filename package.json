@@ -1,6 +1,6 @@
 {
   "name": "arnefeilligatool",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "private": true,
   "scripts": {
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
@@ -8,11 +8,7 @@
     "flow": "flow --show-all-errors",
     "lint": "eslint app/ index.android.js index.ios.js",
     "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'",
-    "precommit": "lint-staged",
-    "push-android": "rm -rf build/android && mkdir -p build/android && code-push release-react ligatool-hamburg-android android -o build/android && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-android android build/android",
-    "push-ios": "rm -rf build/ios && mkdir -p build/ios && code-push release-react ligatool-hamburg-ios ios -o build/ios && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-ios ios build/ios",
-    "ls-android": "code-push deployment ls ligatool-hamburg-android",
-    "ls-ios": "code-push deployment ls ligatool-hamburg-ios"
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "{index.{android,ios},app/**/*}.js": [
@@ -27,7 +23,6 @@
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.47.2",
-    "react-native-code-push": "^5.0.0-beta",
     "react-native-fcm": "^9.1.0",
     "react-native-http-cache": "git+https://github.com/arnef/react-native-http-cache.git",
     "react-native-modal-datetime-picker": "^4.9.0",

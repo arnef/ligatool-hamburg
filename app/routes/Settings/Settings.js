@@ -1,8 +1,6 @@
-// @flow
 import React from 'react';
 import { View, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import codePush from 'react-native-code-push';
 import {
   Container,
   ListItem,
@@ -19,26 +17,10 @@ import S from '../../lib/strings';
 import Routes from '../../config/routes';
 
 class Settings extends React.Component {
-  state: { codepush: ?string };
-  onLogin: Function;
-  onSelectGroups: Function;
-  onClearCache: Function;
-
   constructor(props) {
     super(props);
-    this.state = { codepush: null };
     this.onSelectGroups = this.onSelectGroups.bind(this);
     this.onClearCache = this.onClearCache.bind(this);
-  }
-
-  componentWillMount() {
-    codePush.getCurrentPackage().then(pkg => {
-      if (pkg && !pkg.isPending && pkg.label && pkg.appVersion) {
-        this.setState({
-          codepush: `App-Version ${pkg.appVersion} (${pkg.label})`,
-        });
-      }
-    });
   }
 
   onSelectGroups() {
@@ -168,7 +150,7 @@ class Settings extends React.Component {
         <ListItem>
           <ListItem.Icon name="information-circle" color={color} />
           <Text>
-            {`${this.state.codepush ? this.state.codepush : S.APP_VERSION}`}
+            {`${S.APP_VERSION}`}
           </Text>
         </ListItem>
       </ListItem.Group>

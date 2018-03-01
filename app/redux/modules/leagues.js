@@ -22,6 +22,7 @@ type Action = GetLeaguesAction | LeaguesAction;
 export const GET_LEAGUES: GET_LEAGUES = 'ligatool/modules/GET_LEAGUES';
 export const LEAGUES: LEAGUES = 'ligatool/modules/LEAGUES';
 export const GET_LEAGUE: GET_LEAGUE = 'ligatool/modules/GET_LEAGUE';
+export const GET_LEAGUE_FIX = 'ligatool/modules/GET_LEAGUE_FIX';
 export const GET_LEAGUE_DONE: GET_LEAGUE_DONE =
   'ligatool/modules/GET_LEAGUE_DONE';
 export const GET_LEAGUE_MATCHES: GET_LEAGUE_MATCHES =
@@ -77,6 +78,13 @@ export function getLeagues(): GetLeaguesAction {
 
 export function getLeague(id: number | string): GetLeagueAction {
   return { type: GET_LEAGUE, payload: { id: `${id}` } };
+}
+
+export function getLeagueFix(id) {
+  return {
+    type: GET_LEAGUE_FIX,
+    payload: { id: `${id}` },
+  };
 }
 
 export function getMatches(id: number | string): Action {

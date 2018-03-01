@@ -1,4 +1,3 @@
-// @flow
 import { StatusBar } from 'react-native';
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import moment from 'moment';
@@ -27,6 +26,7 @@ import {
   GET_LEAGUE_MATCHES_DONE,
   GET_LEAGUE_PLAYER_STATS,
   GET_LEAGUE_PLAYER_STATS_DONE,
+  GET_LEAGUE_FIX,
 } from './modules/leagues';
 import { LOGOUT, LOGOUT_DONE } from './modules/auth';
 import { CLEAR_CACHE } from './modules/settings';
@@ -66,7 +66,7 @@ function* overview() {
     const state = yield select();
     let updateDrawer = false;
 
-    for (let match: Match of matchesData.data) {
+    for (let match of matchesData.data) {
       if (!state.drawer[`${match.league.id}`]) {
         updateDrawer = true;
       }
@@ -74,7 +74,7 @@ function* overview() {
         moment(match.datetime, DATETIME_DB).format(DATEFORMAT),
         DATEFORMAT,
       );
-      const diff: number = datetime.diff(now, 'days');
+      const diff = datetime.diff(now, 'days');
       const key = moment(match.datetime, DATETIME_DB).format(DATE_FORMAT);
       if (match.date_confirmed) {
         if ((match.live && diff > -2) || diff === 0) {
@@ -148,7 +148,7 @@ function* myTeam() {
     const state = yield select();
     const matchesData = yield call(api.getTeamMatches, state.settings.team.id);
     const payload = { next: [], played: [] };
-    for (let match: Match of matchesData.data) {
+    for (let match of matchesData.data) {
       if (match.set_points && !match.score_unconfirmed) {
         payload.played.push(`${match.id}`);
       } else {
@@ -239,6 +239,31 @@ function* getLeague(action) {
     yield put(LoadingActions.show());
     const league = yield call(api.getLeague, action.payload.id);
     yield put({ type: GET_LEAGUE_DONE, payload: league.data });
+  } catch (ex) {
+    console.warn(ex);
+    yield put(LoadingActions.error(ex.message));
+  } finally {
+    yield put(LoadingActions.hide());
+  }
+}
+
+function* getLeagueFix(action) {
+  try {
+    yield put(LoadingActions.show());
+    const { data } = yield call(api.getLeagueMatches, action.payload.id);
+    const { data: league } = yield call(api.getLeague, action.payload.id);
+
+    const teams = {};
+    for (let match of data) {
+      teams[match.team_home.id] = match.team_home;
+      teams[match.team_away.id] = match.team_away;
+    }
+    league.table = teams;
+    yield put({
+      type: GET_LEAGUE_DONE,
+      payload: league,
+    });
+    // console.log(matches);
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -730,7 +755,7 @@ function* checkChange(action) {
   }
 }
 
-export default function* sagas(): any {
+export default function* sagas() {
   yield takeEvery(LoadingActions.APP_STATE_CHANGED, checkChange);
   yield takeEvery(GET_OVERVIEW_MATCHES, overview);
   yield takeEvery(GET_MY_TEAM_MATCHES, myTeam);
@@ -739,6 +764,7 @@ export default function* sagas(): any {
   yield takeEvery(CLEAR_CACHE, clearCache);
   yield takeEvery(GET_MATCH, getMatch);
   yield takeEvery(GET_LEAGUE, getLeague);
+  yield takeEvery(GET_LEAGUE_FIX, getLeagueFix);
   yield takeEvery(GET_LEAGUE_MATCHES, getLeagueMatches);
   yield takeEvery(GET_LEAGUE_PLAYER_STATS, getLeaguePlayerStats);
   yield takeEvery(GET_TEAM, getTeam);
