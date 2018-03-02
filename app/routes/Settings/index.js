@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Container,
@@ -60,7 +60,19 @@ class Settings extends React.Component {
                 {!team.access &&
                   <ListItem.Icon name="key" color={team.color} />}
               </Touchable>
-              <Touchable onPress={() => this.props.removeTeam(idx)}>
+              <Touchable
+                onPress={() => {
+                  Alert.alert(
+                    'Team löschen?',
+                    `Soll das Team "${team.name}" aus deiner Liste entfernt werden?`,
+                    [
+                      { text: 'Nein' },
+                      { text: 'Ja', onPress: () => this.props.removeTeam(idx) },
+                    ],
+                    { cancelable: true },
+                  );
+                }}
+              >
                 <ListItem.Icon name="trash" right color={team.color} />
               </Touchable>
             </ListItem>,
