@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import ErrorFlash from '../ErrorFlash';
+import { getColor } from '../../redux/modules/user';
 
 class Container extends Component {
   constructor(props) {
@@ -87,5 +88,5 @@ class Container extends Component {
 }
 
 export default connect(state => ({
-  color: state.settings.color,
+  color: getColor(state),
 }))(Container);

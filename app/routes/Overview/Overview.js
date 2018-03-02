@@ -1,4 +1,3 @@
-/* @flow */
 import React from 'react';
 import { ListView, View, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ import * as OverviewActions from '../../redux/modules/overview';
 import { colors } from '../../config/styles';
 import { size } from 'lodash';
 import { getFixture } from '../../redux/modules/fixtures';
+import { getColor } from '../../redux/modules/user';
 
 class Overview extends React.Component {
   constructor(props) {
@@ -119,9 +119,9 @@ function createTab(keyName) {
       loading: state.loading.list,
       matches: state.overview[keyName],
       getFixture: id => getFixture(state, id),
-      color: state.settings.color,
+      color: getColor(state),
     }),
-    (dispatch: Dispatch<*>) => ({
+    dispatch => ({
       queryMatches: () => dispatch(OverviewActions.getMatches()),
     }),
   )(Overview);

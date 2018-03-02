@@ -1,17 +1,10 @@
-// @flow
 import React from 'react';
 import { Platform } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-type IconProps = {
-  name: string,
-  size: number,
-  color?: string,
-};
-
-export default function Icon(props: IconProps): ReactElement<any> {
+export default function Icon(props) {
   let iconName =
     Platform.OS === 'android' ? `md-${props.name}` : `ios-${props.name}`;
 

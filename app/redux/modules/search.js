@@ -1,17 +1,15 @@
-// @flow
-
 // Actions
-const SET_RESULTS: SET_RESULTS = 'ligatool/search/SET_RESULTS';
-const SET_MESSAGE: SET_MESSAGE = 'ligatool/search/SET_MESSAGE';
-const SET_QUERY: SET_QUERY = 'ligatool/search/SET_QUERY';
-export const SEARCH: SEARCH = 'ligatool/searc/SEARCH';
+const SET_RESULTS = 'ligatool/search/SET_RESULTS';
+const SET_MESSAGE = 'ligatool/search/SET_MESSAGE';
+// const SET_QUERY = 'ligatool/search/SET_QUERY';
+export const SEARCH = 'ligatool/searc/SEARCH';
 
 // Reducer
-const initialState = { results: null, message: null };
-export default function reducer(state = initialState, action) {
+const defaultState = { results: null, message: null };
+export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SEARCH:
-      state = { ...initialState };
+      state = { ...defaultState };
       break;
     case SET_RESULTS:
       state = { ...state, results: action.payload };
@@ -24,13 +22,13 @@ export default function reducer(state = initialState, action) {
 }
 
 // Action Creators
-export function setResult(results: Array<any>) {
+export function setResult(results) {
   return { type: SET_RESULTS, payload: results };
 }
-export function setMessage(message: string) {
+export function setMessage(message) {
   return { type: SET_MESSAGE, payload: message };
 }
 
-export function search(query: string) {
+export function search(query) {
   return { type: SEARCH, payload: query };
 }

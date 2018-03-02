@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { filter, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import { Container, ListItem, Text, Separator } from '../../components';
 

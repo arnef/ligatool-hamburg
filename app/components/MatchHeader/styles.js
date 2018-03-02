@@ -1,4 +1,3 @@
-// @flow
 import { StyleSheet, Platform } from 'react-native';
 
 const FONT_MONOSPACE = Platform.OS === 'ios' ? 'Courier New' : 'monospace';

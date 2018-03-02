@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -12,7 +11,7 @@ import DrawerItemLeague from './DrawerItemLeague';
 
 import S from '../../lib/strings';
 
-function Drawer(props): ReactElement<any> {
+function Drawer(props) {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>

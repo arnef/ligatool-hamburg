@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -8,14 +7,9 @@ import { DATETIME_FORMAT } from '../../config/settings';
 import Routes from '../../config/routes';
 import * as NavigationActions from '../../redux/modules/navigation';
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
 
-type MatchItemProps = {
-  data: Match,
-  color: string,
-  dispatch: Function,
-};
-
-function MatchItem(props: MatchItemProps): ReactElement<any> {
+function MatchItem(props) {
   const date = moment(props.data.date, 'YYYY-MM-DD HH:mm:ss');
   return (
     <Card
@@ -67,4 +61,4 @@ function MatchItem(props: MatchItemProps): ReactElement<any> {
   );
 }
 
-export default connect(state => ({ color: state.settings.color }))(MatchItem);
+export default connect(state => ({ color: getColor(state) }))(MatchItem);

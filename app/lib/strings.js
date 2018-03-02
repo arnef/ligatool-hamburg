@@ -1,4 +1,3 @@
-// @flow
 const pkg = require('../../package.json');
 
 const strings = {

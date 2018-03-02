@@ -1,4 +1,3 @@
-// @flow
 const routes = {
   // main
   APP: 'ligatool/routes/APP',

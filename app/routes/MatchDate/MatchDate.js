@@ -9,16 +9,10 @@ import {
   Container,
   ListItem,
   Touchable,
-  Separator,
   Icon,
 } from '../../components';
-import {
-  DATETIME_FORMAT,
-  DATETIME_DB,
-  MAX_DATETIME_SUGGESTIONS,
-} from '../../config/settings';
+import { DATETIME_FORMAT, DATETIME_DB } from '../../config/settings';
 import S from '../../lib/strings';
-import * as MatchActions from '../../redux/modules/matches';
 import { range } from 'lodash';
 import styles from './styles';
 import {
@@ -28,29 +22,11 @@ import {
   suggestFixtureDates,
   acceptFixtureDate,
 } from '../../redux/modules/fixtures';
+import { getColor } from '../../redux/modules/user';
 
 class MatchDate extends React.Component {
   constructor(props) {
     super(props);
-    // const match = {};//this.props.matches[this.props.navigation.state.params.id];
-    // const datetimes = [];
-    // match.datetime_suggestions.length > 0
-    //   ? match.datetime_suggestions
-    //   : [
-    //       {
-    //         datetime: moment(match.datetime, DATETIME_DB)
-    //           .add(7, 'days')
-    //           .format(DATETIME_DB),
-    //         comment: '',
-    //       },
-    //     ];
-    // this.state = {
-    //   datetimes,
-    //   accept: this.props.auth.ids.indexOf(match.datetime_suggest_team) !== -1,
-    //   datetime: moment(match.datetime, DATETIME_DB),
-    //   index: -1,
-    //   defaultDate: undefined,
-    // };
     this.state = {
       index: -1,
       defaultDate: undefined,
@@ -66,17 +42,6 @@ class MatchDate extends React.Component {
     const date = moment(d).seconds(0);
     this.props.setFixtureDate(this.state.index, date.format(DATETIME_DB));
     this.setState({ index: -1 });
-    console.log(date);
-    // const datetimes = [...this.state.datetimes];
-    // datetimes[this.state.index] = {
-    //   datetime: moment(date).format(DATETIME_DB),
-    //   comment: '',
-    // };
-    // this.setState({
-    //   datetimes,
-    //   index: -1,
-    //   accept: false,
-    // });
   }
 
   onCancel() {
@@ -85,12 +50,6 @@ class MatchDate extends React.Component {
 
   onRemove(index) {
     this.props.removeFixtureDate(index);
-    // const datetimes = [...this.state.datetimes];
-    // datetimes.splice(index, 1);
-
-    // this.setState({
-    //   datetimes,
-    // });
   }
 
   onPress() {
@@ -105,11 +64,6 @@ class MatchDate extends React.Component {
     if (date && date.id) {
       this.props.acceptDate(date.id);
     }
-    // const datetimes = [...this.state.datetimes];
-    // datetimes[index].accept = true;
-    // this.setState({ datetimes }, () => {
-    //   this.onPress();
-    // });
   }
 
   onPressDate = index => {
@@ -199,7 +153,7 @@ class MatchDate extends React.Component {
 export default connect(
   (state, props) => ({
     matches: state.matches,
-    color: state.settings.color,
+    color: getColor(state),
     auth: state.auth.team,
     dates: getFixtureDates(state, props.navigation.state.params.id),
     loading: !getFixtureDates(state, props.navigation.state.params.id),

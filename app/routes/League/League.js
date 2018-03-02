@@ -1,4 +1,3 @@
-// @flow
 import { TabNavigator } from 'react-navigation';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
 import { MatchList, PlayerStatsList, Table } from '../../components';

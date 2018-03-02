@@ -1,21 +1,12 @@
-// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import { ListItem, Text } from '../../components';
 import * as NavigationActions from '../../redux/modules/navigation';
 
 import { colors } from '../../config/styles';
+import { getColor } from '../../redux/modules/user';
 
-type DrawerItemProps = {
-  name: string,
-  routeName: string,
-  activeItem: string,
-  icon: string,
-  color: string,
-  navigate: Function,
-};
-
-function DrawerItem(props: DrawerItemProps): ReactElement<any> {
+function DrawerItem(props) {
   const active = props.routeName === props.activeItem;
   const color = active ? props.color : colors.TEXT_SECONDARY;
   return (
@@ -35,9 +26,9 @@ function DrawerItem(props: DrawerItemProps): ReactElement<any> {
 export default connect(
   state => ({
     activeItem: state.nav.activeItem,
-    color: state.settings.color,
+    color: getColor(state),
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     navigate: routeName => dispatch(NavigationActions.navigate({ routeName })),
   }),
 )(DrawerItem);

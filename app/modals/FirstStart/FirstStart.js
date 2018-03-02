@@ -44,7 +44,7 @@ class FirstStart extends React.Component {
 export default StackNavigator(
   {
     Welcome: {
-      screen: connect(null, (dispatch: Dispatch<any>) => ({
+      screen: connect(null, dispatch => ({
         skip: () => dispatch(NavigationActions.hideStart()),
         next: () =>
           dispatch(NavigationActions.navigate({ routeName: 'SelectGroup' })),

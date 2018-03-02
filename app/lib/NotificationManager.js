@@ -1,4 +1,3 @@
-// @flow
 import { Platform } from 'react-native';
 import FCM, {
   FCMEvent,
@@ -14,42 +13,24 @@ import Routes from '../config/routes';
 import { currentRoute } from './NavUtils';
 import { getFixture } from '../redux/modules/fixtures';
 
-export type Listener = {
-  remove: Function,
-};
-
-type Notification = {
-  collapse_key: string,
-  opened_from_tray: boolean,
-  from: string,
-  notification: {
-    title?: string,
-    body: string,
-    icon: string,
-  },
-  _notificationType: string,
-  finish(type?: string): void,
-};
-
 /**
  *
  */
-function notificationListener(): Listener {
+function notificationListener() {
   return FCM.on(FCMEvent.Notification, receiveNotification);
 }
 
 /**
  *
  */
-function refreshTokenListener(): Listener {
+function refreshTokenListener() {
   return FCM.on(FCMEvent.RefreshToken, refreshToken);
 }
 
 /**
  * handle notification
  */
-function receiveNotification(notif: Notification) {
-  console.log(notif);
+function receiveNotification(notif) {
   if (notif) {
     const route = currentRoute(store.getState().nav.navigation);
     const id = notif.fixture_id;
@@ -96,9 +77,6 @@ function receiveNotification(notif: Notification) {
       if (matchOpen) {
         store.dispatch(MatchesActions.getMatch(id));
       }
-      // else {
-      //   store.dispatch(MatchesActions.notification(notif));
-      // }
     }
 
     if (notif.opened_from_tray && !matchOpen && id) {
@@ -128,9 +106,8 @@ function receiveNotification(notif: Notification) {
 /**
  * update token and sync with server
  */
-function refreshToken(token: string) {
+function refreshToken(token) {
   if (token) {
-    console.log(token);
     store.dispatch(SettingsActions.setFCMToken(token));
   }
 }
@@ -138,7 +115,7 @@ function refreshToken(token: string) {
 /**
  * handle notification on app start
  */
-function getInitialNotification(notif: Notification) {
+function getInitialNotification(notif) {
   if (notif) {
     if (Platform.OS === 'ios') {
       // set to open match in app
@@ -164,7 +141,7 @@ function requestPermissions() {
  * remove notification with id from tray/center
  * BUG not working at the moment
  */
-export function removeNotification(id: number) {
+export function removeNotification(id) {
   FCM.removeDeliveredNotification(`${id}`);
 }
 

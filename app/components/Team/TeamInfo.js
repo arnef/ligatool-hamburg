@@ -1,4 +1,3 @@
-// @flow
 import { Image, ListItem, Separator, Text } from '../../components';
 
 import React from 'react';

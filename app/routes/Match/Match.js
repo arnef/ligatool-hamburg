@@ -6,7 +6,6 @@ import {
   Container,
   SetItem,
   Button,
-  Text,
   Switch,
 } from '../../components';
 import * as MatchesActions from '../../redux/modules/matches';
@@ -29,7 +28,7 @@ import {
   suggestFixtureResult,
   acceptFixtureResult,
 } from '../../redux/modules/fixtures';
-import { accessForTeams } from '../../redux/modules/auth';
+import { accessForTeams } from '../../redux/modules/user';
 
 class Match extends React.Component {
   constructor(props) {
@@ -52,7 +51,6 @@ class Match extends React.Component {
   }
 
   onSelect(idx, data, value) {
-    const matchId = `${this.props.navigation.state.params.id}`;
     switch (value) {
       case 0:
         this.props.selectPlayer(data);

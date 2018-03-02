@@ -1,17 +1,10 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import Text from '../Text';
 
 import styles from './styles';
 
-type ScoreProps = {
-  setPoints?: Match,
-  goals?: { goals_home?: number, goals_away?: number },
-  style?: number | Object,
-};
-
-export default function Score(props: ScoreProps): ReactElement<any> {
+export default function Score(props) {
   if (props.setPoints) {
     return (
       <View>

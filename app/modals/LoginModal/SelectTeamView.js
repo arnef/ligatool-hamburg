@@ -10,16 +10,9 @@ import {
 } from '../../components';
 import { connect } from 'react-redux';
 import * as LeaguesActions from '../../redux/modules/leagues';
-import * as SettingsActions from '../../redux/modules/settings';
 import { NavigationActions } from 'react-navigation';
 
 class SelectTeamView extends Component {
-  constructor(props) {
-    super(props);
-    this.renderItem = this.renderItem.bind(this);
-    this.getTeams = this.getTeams.bind(this);
-  }
-
   componentDidMount() {
     const id = this.props.navigation.state.params.id;
 
@@ -55,26 +48,18 @@ class SelectTeamView extends Component {
     );
   }
 
-  renderItem({ item }) {
+  renderItem = ({ item }) => {
     return (
       <ListItem onPress={() => this.onPress(item)}>
         <TeamLogo team={item.emblemUrl} />
         <Text>{`${item.name}`}</Text>
       </ListItem>
     );
-  }
+  };
 
-  getTeams() {
-    // const lid = this.props.navigation.state.params.id;
-    // this.props.getLeague(lid);
-  }
-
-  onPress(team) {
+  onPress = team => {
     this.props.setUserTeam(team);
-    // this.props.navigate({
-    //   routeName: 'LoginView',
-    // });
-  }
+  };
 }
 
 export default connect(
@@ -85,7 +70,8 @@ export default connect(
   }),
   dispatch => ({
     getLeague: id => dispatch(LeaguesActions.getLeague(id)),
-    setUserTeam: team => dispatch(SettingsActions.fetchUserTeam(team.id)),
+    setUserTeam: team =>
+      dispatch({ type: 'SELECT_USER_TEAM', payload: { id: team.id } }),
     navigate: route => dispatch(NavigationActions.navigate(route)),
   }),
 )(SelectTeamView);

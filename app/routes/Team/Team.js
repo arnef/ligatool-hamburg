@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import { TabNavigator } from 'react-navigation';
@@ -12,7 +11,7 @@ const TeamMatches = connect(
   state => ({
     teams: state.teams,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getMatches: id => dispatch(TeamsActions.getMatches(id)),
   }),
 )(function Team(props) {

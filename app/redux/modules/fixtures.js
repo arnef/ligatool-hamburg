@@ -1,4 +1,3 @@
-import _ from 'lodash';
 const FETCH_FIXTURES = 'fixtures/FETCH';
 const SET_FIXTURES = 'fixtures/SET';
 const SET_FIXTURE_DATA = 'fixtures/SET_DATA';

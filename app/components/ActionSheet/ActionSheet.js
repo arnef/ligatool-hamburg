@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import {
   ActionSheetIOS,
@@ -18,46 +17,19 @@ import styles from './styles';
 const DEVICE_HEIGHT = Math.round(Dimensions.get('window').height * 0.8);
 const DURATION = 250;
 
-type State = {
-  items: any[],
-  modalVisible: boolean,
-  callback: Function,
-  y: Animated.Value,
-};
-
-type Props = {
-  ref?: (instance: any) => void,
-};
-
-type ActionSheetConfig = {
-  options: string[],
-  cancelButtonIndex?: number,
-};
-
-class ActionSheet extends Component<void, Props, State> {
-  state: State = {
-    modalVisible: false,
-    items: [],
-    y: new Animated.Value(DEVICE_HEIGHT),
-    callback: () => null,
-  };
-  hide: Function;
-
+class ActionSheet extends Component {
   static actionsheetInstance;
 
-  static show(config: ActionSheetConfig, callback: (index: number) => void) {
+  static show(config, callback) {
     this.actionsheetInstance.showActionSheet(config, callback);
   }
 
-  constructor(props: any) {
+  constructor(props) {
     super(props);
     this.hide = this.hide.bind(this);
   }
 
-  showActionSheet(
-    config: ActionSheetConfig,
-    callback: (index: number) => void,
-  ) {
+  showActionSheet(config, callback) {
     if (Platform.OS === 'ios') {
       let iosConfig = {
         ...config,
@@ -78,8 +50,8 @@ class ActionSheet extends Component<void, Props, State> {
     }
   }
 
-  callbackWrapper(cancelIdx: number, callback: (index: number) => void) {
-    return (val: number) => {
+  callbackWrapper(cancelIdx, callback) {
+    return val => {
       if (val < cancelIdx) {
         callback(val);
       }

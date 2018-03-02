@@ -4,7 +4,6 @@ import Card from '../Card';
 import Touchable from '../Touchable';
 import Text from '../Text';
 import Icon from '../Icon';
-import { WITH_DRAW, WIN_GOALS, DRAW_GOALS } from '../../config/settings';
 import styles from './styles';
 import S from '../../lib/strings';
 

@@ -1,19 +1,13 @@
-// @flow
 import React from 'react';
 import Icon from '../Icon';
 import Image from '../Image';
 
 import styles from './styles';
 
-type TeamLogoProps = {
-  team: { image?: string },
-  big?: boolean,
-};
-
 const iconSize = 32;
 const bigIconSize = 42;
 
-export default function TeamLogo(props: TeamLogoProps): ReactElement<any> {
+export default function TeamLogo(props) {
   if (props.team) {
     return (
       <Image

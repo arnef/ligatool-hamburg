@@ -1,15 +1,12 @@
 {
     "extends": [
         "eslint:recommended",
-        "plugin:flowtype/recommended",
         "plugin:react/recommended",
         "plugin:react-native/all",
         "prettier",
-        "prettier/react",
-        "prettier/flowtype"
+        "prettier/react"
     ],
     "plugins": [
-        "flowtype",
         "react",
         "react-native"
     ],
@@ -29,8 +26,6 @@
     },
     "rules": {
         "no-console": [2, { "allow": ["warn", "error", "tron"] }],
-        "flowtype/no-primitive-constructor-types": 2,
-        "flowtype/require-valid-file-annotation": [2, "always"],
         "react/prop-types": 0,
         "react-native/no-inline-styles": 0,
         "react-native/no-color-literals": 0,

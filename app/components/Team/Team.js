@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { Container, Separator, ListItem, Text } from '../../components';
 import * as TeamsActions from '../../redux/modules/teams';
 import * as NavigationActions from '../../redux/modules/navigation';
-import Routes from '../../config/routes';
 import S from '../../lib/strings';
 import TeamInfo from './TeamInfo';
 import TeamVenue from './TeamVenue';
 import TeamContact from './TeamContact';
+import { getActiveTeam, getColor } from '../../redux/modules/user';
 
 function Team(props) {
   const teamId = props.navigation.state.params
@@ -56,8 +56,8 @@ export default connect(
     teams: state.teams,
     error: state.loading.error,
     loading: state.loading.list,
-    color: state.settings.color,
-    myTeamId: state.settings.team ? state.settings.team.id : null,
+    color: getColor(state),
+    myTeamId: getActiveTeam(state) ? getActiveTeam(state).id : null,
   }),
   dispatch => ({
     getTeam: id => dispatch(TeamsActions.getTeam(id)),

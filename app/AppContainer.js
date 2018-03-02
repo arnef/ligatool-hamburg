@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { View, BackHandler, AppState } from 'react-native';
 import { connect } from 'react-redux';
@@ -12,10 +11,6 @@ import * as LoadingActions from './redux/modules/loading';
 import { colors } from './config/styles';
 
 class AppContainer extends Component {
-  notificationListener: { remove: Function };
-  refreshTokenListener: { remove: Function };
-  appStateChanged: Function;
-
   constructor(props) {
     super(props);
     this.appStateChanged = this.appStateChanged.bind(this);

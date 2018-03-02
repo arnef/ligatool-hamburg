@@ -1,26 +1,14 @@
-// @flow
-// Type Definitions
-type State = {
-  modal: boolean,
-  list: boolean,
-  error: ?string,
-};
-type Action = { type: SHOW_LOADING_MODAL | HIDE_LOADING_MODAL };
 // Actions
-const SHOW_LOADING_MODAL: SHOW_LOADING_MODAL =
-  'ligatool/modules/SHOW_LOADING_MODAL';
-const HIDE_LOADING_MODAL: HIDE_LOADING_MODAL =
-  'ligatool/modules/HIDE_LOADING_MODAL';
-const SHOW_LOADING: SHOW_LOADING = 'ligatool/modules/SHOW_LOADING';
-const HIDE_LOADING: HIDE_LOADING = 'ligatool/modules/HIDE_LOADING';
-const SET_ERROR: SET_ERROR = 'ligatool/modules/loading/SET_ERROR';
+const SHOW_LOADING_MODAL = 'ligatool/modules/SHOW_LOADING_MODAL';
+const HIDE_LOADING_MODAL = 'ligatool/modules/HIDE_LOADING_MODAL';
+const SHOW_LOADING = 'ligatool/modules/SHOW_LOADING';
+const HIDE_LOADING = 'ligatool/modules/HIDE_LOADING';
+const SET_ERROR = 'ligatool/modules/loading/SET_ERROR';
 export const APP_STATE_CHANGED = 'ligatool/modules/loading/APP_STATE_CHANGED';
 
+const defaultState = { modal: false, list: false };
 // Reducer
-export default function reducer(
-  state: State = { modal: false, list: false },
-  action: Action,
-): State {
+export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SHOW_LOADING_MODAL:
       state = { ...state, modal: true };
@@ -58,10 +46,10 @@ export function hide() {
   return { type: HIDE_LOADING };
 }
 
-export function error(message: string) {
+export function error(message) {
   return { type: SET_ERROR, payload: message };
 }
 
-export function appState(state: string) {
+export function appState(state) {
   return { type: APP_STATE_CHANGED, payload: state };
 }

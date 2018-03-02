@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { Switch as RNSwitch, Platform, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -6,13 +5,9 @@ import Touchable from '../Touchable';
 import Text from '../Text';
 
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
 
-type SwitchProps = {
-  title: string,
-  color?: string,
-} & RNSwitch;
-
-function Switch(props: SwitchProps): ReactElement<any> {
+function Switch(props) {
   const { title, onValueChange, color, ...rest } = props;
 
   if (Platform.OS === 'android') {
@@ -37,5 +32,5 @@ function Switch(props: SwitchProps): ReactElement<any> {
 }
 
 export default connect(state => ({
-  color: state.settings.color,
+  color: getColor(state),
 }))(Switch);

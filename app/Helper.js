@@ -1,4 +1,3 @@
-// @flow
 /**
  * Compare date day of two date.
  * 0 = same day
@@ -8,22 +7,22 @@
  * @param  {Date} date2
  * @return {number}
  */
-export function compareDays(d1: number, d2: number): number {
-  const date1: Date = new Date(d1);
-  const date2: Date = new Date(d2);
-  const day1: number = parseInt(
+export function compareDays(d1, d2) {
+  const date1 = new Date(d1);
+  const date2 = new Date(d2);
+  const day1 = parseInt(
     date1.getFullYear() +
       ('0' + date1.getMonth()).slice(-2) +
       ('0' + date1.getDate()).slice(-2),
     10,
   );
-  const day2: number = parseInt(
+  const day2 = parseInt(
     date2.getFullYear() +
       ('0' + date2.getMonth()).slice(-2) +
       ('0' + date2.getDate()).slice(-2),
     10,
   );
-  const diff: number = day1 - day2;
+  const diff = day1 - day2;
 
   return diff;
 }

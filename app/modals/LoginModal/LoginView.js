@@ -13,6 +13,7 @@ import * as NavigationActions from '../../redux/modules/navigation';
 import * as AuthActions from '../../redux/modules/auth';
 
 import { colors } from '../../config/styles';
+import { getColor } from '../../redux/modules/user';
 
 class LoginView extends Component {
   constructor(props) {
@@ -165,7 +166,7 @@ export default connect(
     auth: state.auth,
     error: state.loading.error,
     loading: state.loading.list,
-    color: state.settings.color,
+    color: getColor(state),
   }),
   dispatch => ({
     hideLogin: next => dispatch(NavigationActions.hideLogin(next)),

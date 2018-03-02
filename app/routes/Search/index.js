@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import {
   Platform,
@@ -24,9 +23,10 @@ import S from '../../lib/strings';
 import Routes from '../../config/routes';
 
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
 
 class Search extends React.Component {
-  constructor(props: any) {
+  constructor(props) {
     super(props);
     this.state = {
       query: '',
@@ -156,13 +156,13 @@ class Search extends React.Component {
 
 export default connect(
   state => ({
-    color: state.settings.color,
+    color: getColor(state),
     loading: state.loading.list,
     results: state.search.results,
     message: state.search.message,
   }),
   dispatch => ({
-    search: (query: string) => dispatch(SearchActions.search(query)),
+    search: query => dispatch(SearchActions.search(query)),
     navigate: route => dispatch(NavigationActions.navigate(route)),
     close: () => dispatch(NavigationActions.hideSearch()),
   }),

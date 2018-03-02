@@ -1,6 +1,4 @@
-// @flow
-
-export function currentRoute(navigation: any): NavigationRoute {
+export function currentRoute(navigation) {
   const recursiveFindRoute = nav => {
     const subState =
       nav.routes[nav.index].routeName === 'DrawerOpen'
@@ -38,7 +36,7 @@ const recursiveFindRoute = (route, name) => {
   return null;
 };
 
-export const findRouteKey = (state: any, name: string): any => {
+export const findRouteKey = (state, name) => {
   const found = recursiveFindRoute(state, name);
   if (found) {
     return found.key;

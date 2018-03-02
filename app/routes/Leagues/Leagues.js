@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import { sortBy } from 'lodash';
@@ -38,7 +37,7 @@ export default connect(
     loading: state.loading.list,
     leagues: sortBy(state.drawer, 'name'),
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getLeagues: () => dispatch(LeaguesActions.getLeagues()),
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate({ routeName, params })),

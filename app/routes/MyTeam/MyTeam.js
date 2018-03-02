@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import { TabNavigator } from 'react-navigation';
@@ -16,7 +15,7 @@ const NextMatches = connect(
   state => ({
     matches: state.myTeam.next,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getMatches: () => dispatch(MyTeamActions.getMatches()),
   }),
 )(MyTeam);
@@ -24,7 +23,7 @@ const PlayedMatches = connect(
   state => ({
     matches: state.myTeam.played,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getMatches: () => dispatch(MyTeamActions.getMatches()),
   }),
 )(MyTeam);

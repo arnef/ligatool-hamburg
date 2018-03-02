@@ -14,6 +14,7 @@ import {
   MatchItem,
 } from '../../components';
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
 
 class SelectableMatchList extends React.Component {
   constructor(props) {
@@ -95,7 +96,7 @@ export default connect(
     loading: state.loading.list,
     leagues: state.leagues,
     matches: state.fixtures.data,
-    color: state.settings.color,
+    color: getColor(state),
   }),
   dispatch => ({
     getMatches: id => dispatch(LeaguesActions.getMatches(id)),

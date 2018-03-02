@@ -14,11 +14,11 @@
    viewBox="0 0 800.00001 800.00001"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="/Users/arne/Desktop/lt-ios-icons/app_icon60@3x.png"
-   inkscape:export-xdpi="20.25"
-   inkscape:export-ydpi="20.25">
+   inkscape:export-filename="/Users/arne/Desktop/tfvhh-app.png"
+   inkscape:export-xdpi="122.88"
+   inkscape:export-ydpi="122.88">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -29,18 +29,18 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
-     inkscape:cx="400"
+     inkscape:cx="96"
      inkscape:cy="496.96538"
      inkscape:document-units="px"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer5"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1276"
-     inkscape:window-height="756"
-     inkscape:window-x="4"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1920"
+     inkscape:window-height="1155"
+     inkscape:window-x="0"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
      units="px"
      borderlayer="false"
      inkscape:showpageshadow="false"
@@ -50,31 +50,36 @@
        orientation="1,0"
        id="guide3433"
        inkscape:label=""
-       inkscape:color="rgb(0,0,255)" />
+       inkscape:color="rgb(0,0,255)"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="738.00001,374.05949"
        orientation="1,0"
        id="guide3435"
        inkscape:label=""
-       inkscape:color="rgb(0,0,255)" />
+       inkscape:color="rgb(0,0,255)"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="323.85491,738.00001"
        orientation="0,1"
        id="guide3437"
        inkscape:label=""
-       inkscape:color="rgb(0,0,255)" />
+       inkscape:color="rgb(0,0,255)"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="330.92598,62.000001"
        orientation="0,1"
        id="guide3439"
        inkscape:label=""
-       inkscape:color="rgb(0,0,255)" />
+       inkscape:color="rgb(0,0,255)"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="400.00001,422.00001"
        orientation="1,0"
        id="guide3441"
        inkscape:label=""
-       inkscape:color="rgb(0,0,255)" />
+       inkscape:color="rgb(0,0,255)"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -84,7 +89,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -105,7 +110,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer1"
-     inkscape:label="background-ios">
+     inkscape:label="background-ios"
+     style="display:inline">
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1"
        id="rect4151"

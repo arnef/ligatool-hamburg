@@ -12,11 +12,11 @@ import {
 } from '../../components';
 import S from '../../lib/strings';
 import styles from './styles';
-import * as MatchesActions from '../../redux/modules/matches';
 import * as NavigationActions from '../../redux/modules/navigation';
-import Routes from '../../config/routes';
+// import Routes from '../../config/routes';
 import { DATETIME_DB, DATETIME_FORMAT } from '../../config/settings';
 import { setFixtureStatusInPlay } from '../../redux/modules/fixtures';
+import { getColor } from '../../redux/modules/user';
 
 function NoSets(props) {
   function onOpenVenue() {
@@ -36,9 +36,9 @@ function NoSets(props) {
     props.insertResult(props.match.id);
   }
 
-  function openDateChange() {
-    props.navigate(Routes.MATCH_DATE, { id: props.match.id });
-  }
+  // function openDateChange() {
+  //   props.navigate(Routes.MATCH_DATE, { id: props.match.id });
+  // }
 
   function renderPlayer() {
     const { player } = props;
@@ -130,6 +130,7 @@ function NoSets(props) {
             : ''}${date.format(DATETIME_FORMAT)}`}
         />
         {props.venue &&
+          !!props.venue.name &&
           <ListItem onPress={onOpenVenue}>
             <View style={styles.option}>
               <Text>{`${props.venue.name}`}</Text>
@@ -165,7 +166,7 @@ function NoSets(props) {
 
 export default connect(
   state => ({
-    color: state.settings.color,
+    color: getColor(state),
   }),
   (dispatch, props) => ({
     insertResult: () => dispatch(setFixtureStatusInPlay(props.match.id)),
