@@ -357,21 +357,12 @@ function* hideLogin() {
     const state = yield select();
     const modal =
       state.nav.navigation.routes[state.nav.navigation.index].routeName;
-    if (modal === Routes.MODAL_LOGIN) {
-      yield put({
-        type: NavigationActions.BACK,
-        key: findRouteKey(state.nav.navigation, Routes.MODAL_LOGIN),
-      });
-      // yield put({ type: NavigationActions.OPEN_MY_TEAM });
-    } else {
-      yield put(NavigationActions.navigate({ routeName: 'SetupNotif' }));
-    }
-    if (
-      state.settings.team &&
-      state.myTeam.next.length === 0 &&
-      state.myTeam.played.length === 0
-    ) {
-      yield myTeam();
+    yield put({
+      type: NavigationActions.BACK,
+      key: findRouteKey(state.nav.navigation, modal),
+    });
+    if (modal === Routes.MODAL_FIRST_START) {
+      yield overview();
     }
   } catch (ex) {
     console.warn(ex);
@@ -775,6 +766,7 @@ function* setFixtureGameResultSaga(action) {
       }
       if (body.length > 0) {
         yield put(LoadingActions.showModal());
+        yield refreshToken();
         if (action.type === SUGGEST_FIXTURE_RESULT) {
           const { data, meta } = yield call(api.putFixtureGames, match, body);
           yield put(setFixtureData(data));

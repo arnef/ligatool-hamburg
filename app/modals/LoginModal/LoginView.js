@@ -134,10 +134,10 @@ class LoginView extends Component {
         password: this.state.pass,
         username: this.state.user,
       };
-      const next = this.props.navigation.state.params
-        ? this.props.navigation.state.params.next
-        : null;
-      this.props.login(loginUser, next);
+      // const next = this.props.navigation.state.params
+      //   ? this.props.navigation.state.params.next
+      //   : null;
+      this.props.login(loginUser, null);
     }
   }
 }

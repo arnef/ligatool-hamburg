@@ -24,7 +24,10 @@ export default function TeamLogo(props) {
       <Icon
         size={props.size || (props.big ? bigIconSize : iconSize)}
         name={'shirt'}
-        style={styles.icon}
+        style={[
+          styles.icon,
+          props.left ? { marginHorizontal: 0, marginRight: 16 } : {},
+        ]}
       />
     );
   }

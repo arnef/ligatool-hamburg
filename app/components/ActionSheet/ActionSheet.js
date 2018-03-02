@@ -18,6 +18,12 @@ const DEVICE_HEIGHT = Math.round(Dimensions.get('window').height * 0.8);
 const DURATION = 250;
 
 class ActionSheet extends Component {
+  state = {
+    modalVisible: false,
+    items: [],
+    y: new Animated.Value(DEVICE_HEIGHT),
+    callback: () => null,
+  };
   static actionsheetInstance;
 
   static show(config, callback) {
