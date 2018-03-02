@@ -46,7 +46,7 @@ function Table(props) {
         refreshing={props.loading}
         onRefresh={() => props.getTable(props.navigation.state.params.id)}
         renderRow={({ item }) => <TableItem data={item} onPress={onPress} />}
-        keyExtractor={item => `${item.rank}`}
+        keyExtractor={(item, idx) => `${item.rank}-${idx}`}
         ItemSeparatorComponent={() => <Separator table image />}
         dataSource={table}
       />

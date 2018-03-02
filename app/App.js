@@ -19,6 +19,7 @@ class App extends Component {
     const config = {
       storage: AsyncStorage,
       whitelist: ['app', 'settings', 'drawer', 'user'],
+      // whitelist: ['app', 'settings', 'user'],
     };
     persistStore(store, config, () => {
       this.setState({ rehydrated: true });

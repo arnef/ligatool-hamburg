@@ -1,6 +1,6 @@
 import { TabNavigator } from 'react-navigation';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
-import { MatchList, PlayerStatsList, Table } from '../../components';
+import { MatchList, Table } from '../../components';
 
 import Routes from '../../config/routes';
 import S from '../../lib/strings';
@@ -15,10 +15,10 @@ export default TabNavigator(
       screen: Table,
       navigationOptions: { title: S.TABLE },
     },
-    [Routes.TAB_PLAYER_STATS]: {
-      screen: PlayerStatsList,
-      navigationOptions: { title: S.STATISTICS },
-    },
+    // [Routes.TAB_PLAYER_STATS]: {
+    //   screen: PlayerStatsList,
+    //   navigationOptions: { title: S.STATISTICS },
+    // },
   },
   {
     ...NavTabBarTop,

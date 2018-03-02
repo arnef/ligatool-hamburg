@@ -95,11 +95,12 @@ function NoSets(props) {
         <View style={styles.teamInfo}>
           <TeamLogo team={props.match.homeTeamLogo} size={90} />
         </View>
-        {!props.firstFixture &&
-          <Text style={styles.teamVs} bold secondary>
-            vs
-          </Text>}
-        {props.firstFixture &&
+        {/* {!props.firstFixture && */}
+        <Text style={styles.teamVs} bold secondary>
+          vs
+        </Text>
+        {/* } */}
+        {/* {props.firstFixture&&
           <View style={styles.firstMatch}>
             <Text small secondary bold>
               {S.FIRST_MATCH}
@@ -117,7 +118,7 @@ function NoSets(props) {
             <Text small secondary bold>
               {' '}
             </Text>
-          </View>}
+          </View>} */}
         <View style={styles.teamInfo}>
           <TeamLogo team={props.match.awayTeamLogo} size={90} />
         </View>
@@ -151,7 +152,10 @@ function NoSets(props) {
         {props.isAdmin &&
           <ListItem
             onPress={insertResult}
-            disabled={date.diff(moment(), 'days') > 0}
+            disabled={
+              false
+              // date.diff(moment(), 'days') > 0
+            }
           >
             <Text style={styles.option}>
               {S.INSERT_SCORE}

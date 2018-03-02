@@ -99,19 +99,19 @@ android {
         applicationId "com.arnefeildtfb"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 14
-        versionName "0.13"
+        versionCode 1
+        versionName "0.1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
     signingConfigs {
         release {
-            if (project.hasProperty('LIGATOOL_RELEASE_STORE_FILE')) {
-                storeFile file(LIGATOOL_RELEASE_STORE_FILE)
-                storePassword LIGATOOL_RELEASE_STORE_PASSWORD
-                keyAlias LIGATOOL_RELEASE_KEY_ALIAS
-                keyPassword LIGATOOL_RELEASE_KEY_PASSWORD
+            if (project.hasProperty('DTFB_RELEASE_STORE_FILE')) {
+                storeFile file(DTFB_RELEASE_STORE_FILE)
+                storePassword DTFB_RELEASE_PASSWORD
+                keyAlias DTFB_RELEASE_KEY_ALIAS
+                keyPassword DTFB_RELEASE_PASSWORD
             }
         }
     }
@@ -119,7 +119,7 @@ android {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
+            universalApk true  // If true, also generate a universal APK
             include "armeabi-v7a", "x86"
         }
     }
@@ -127,7 +127,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            if (project.hasProperty('LIGATOOL_RELEASE_STORE_FILE')) {
+            if (project.hasProperty('DTFB_RELEASE_STORE_FILE')) {
                 signingConfig signingConfigs.release
             }
         }
