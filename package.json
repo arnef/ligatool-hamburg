@@ -17,6 +17,7 @@
   "lint-staged": {
     "{index.{android,ios},app/**/*}.js": [
       "prettier --write --single-quote --trailing-comma=all --bracket-spacing",
+      "eslint -fix",
       "git add"
     ]
   },
