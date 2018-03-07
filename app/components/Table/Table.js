@@ -19,33 +19,38 @@ function Table(props) {
   const table = props.leagues[props.navigation.state.params.id]
     ? props.leagues[props.navigation.state.params.id].table || []
     : [];
-
+  const showDetails = props.leagues[props.navigation.state.params.id]
+    ? props.leagues[props.navigation.state.params.id].standing > 0
+    : false;
   return (
     <View style={styles.container}>
-      <StaticListHeader>
-        <View style={styles.header}>
-          <Text style={styles.position} />
-          <View style={styles.teamLogo} />
-          <View style={styles.teamName} />
-          <Text small color="#fff" style={styles.matches}>
-            {S.GAMES_SHORT}
-          </Text>
-          <Text small color="#fff" style={styles.setPoints}>
-            {S.SETS}
-          </Text>
-          <Text small color="#fff" style={styles.goals}>
-            {S.GOALS}
-          </Text>
-          <Text small color="#fff" style={styles.points}>
-            {S.POINTS_SHORT}
-          </Text>
-        </View>
-      </StaticListHeader>
+      {showDetails &&
+        <StaticListHeader>
+          <View style={styles.header}>
+            <Text style={styles.position} />
+            <View style={styles.teamLogo} />
+            <View style={styles.teamName} />
+            <Text small color="#fff" style={styles.matches}>
+              {S.GAMES_SHORT}
+            </Text>
+            <Text small color="#fff" style={styles.setPoints}>
+              {S.SETS}
+            </Text>
+            <Text small color="#fff" style={styles.goals}>
+              {/* {S.GOALS} */}
+              Spiele
+            </Text>
+            <Text small color="#fff" style={styles.points}>
+              {S.POINTS_SHORT}
+            </Text>
+          </View>
+        </StaticListHeader>}
       <Container
         error={props.error}
         refreshing={props.loading}
         onRefresh={() => props.getTable(props.navigation.state.params.id)}
-        renderRow={({ item }) => <TableItem data={item} onPress={onPress} />}
+        renderRow={({ item }) =>
+          <TableItem details={showDetails} data={item} onPress={onPress} />}
         keyExtractor={(item, idx) => `${item.rank}-${idx}`}
         ItemSeparatorComponent={() => <Separator table image />}
         dataSource={table}

@@ -10,6 +10,9 @@ import styles from './styles';
 import { getColor } from '../../redux/modules/user';
 
 function MatchItem(props) {
+  if (!props.data) {
+    return <View />;
+  }
   const date = moment(props.data.date, 'YYYY-MM-DD HH:mm:ss');
   return (
     <Card
@@ -26,15 +29,15 @@ function MatchItem(props) {
         <Text bold color={props.color}>
           {`${props.data.competitionName} (${props.data.matchday})`}
         </Text>
-        {props.data.venueName &&
-          <Text secondary small>
-            <Icon name={'pin'} />
-            {` ${props.data.venueName}  `}
-            <Icon name={'clock'} />{' '}
-            {`${props.data.status === 'POSTPONED'
-              ? 'bisher '
-              : ''}${date.format(DATETIME_FORMAT)}`}
-          </Text>}
+
+        <Text secondary small>
+          {props.data.venue && <Icon name={'pin'} />}
+          {props.data.venue ? ` ${props.data.venueName}  ` : ''}
+          <Icon name={'clock'} />{' '}
+          {`${props.data.status === 'POSTPONED' ? 'bisher ' : ''}${date.format(
+            DATETIME_FORMAT,
+          )}`}
+        </Text>
         <View style={styles.teams}>
           <View style={styles.team}>
             <TeamLogo team={props.data.homeTeamLogo} big />

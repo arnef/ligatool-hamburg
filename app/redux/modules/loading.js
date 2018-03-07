@@ -20,7 +20,7 @@ export default function reducer(state = defaultState, action) {
       state = { ...state, list: true, error: null };
       break;
     case HIDE_LOADING:
-      state = { ...state, list: false };
+      state = { ...state, list: false, modal: false };
       break;
     case SET_ERROR:
       state = { ...state, error: action.payload };

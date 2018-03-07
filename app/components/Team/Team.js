@@ -26,8 +26,8 @@ function Team(props) {
         <View>
           <TeamInfo team={team} />
           <Separator group />
-          <TeamVenue venue={team.venue} color={props.color} />
-          <Separator group />
+          {team.venue && <TeamVenue venue={team.venue} color={props.color} />}
+          {team.venue && <Separator group />}
           {team.contact &&
             <TeamContact color={props.color} contacts={team.contact} />}
           {team.contact && <Separator group />}

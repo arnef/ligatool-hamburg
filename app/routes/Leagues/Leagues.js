@@ -35,7 +35,7 @@ export default connect(
   state => ({
     error: state.loading.error,
     loading: state.loading.list,
-    leagues: sortBy(state.drawer, 'name'),
+    leagues: sortBy(state.drawer, 'id'),
   }),
   dispatch => ({
     getLeagues: () => dispatch(LeaguesActions.getLeagues()),

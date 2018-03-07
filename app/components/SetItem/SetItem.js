@@ -44,25 +44,43 @@ function Set(props) {
   const Container = View;
   return (
     <View style={styles.containerPlayers}>
-      <Container
-        // onPress={() => props.openPlayer(props[`homePlayer${props.idx + 1}`])}
-        style={styles.containerPlayer}
-      >
-        <PlayerHome
-          editable={props.editable}
-          player={props[`homePlayer${props.idx + 1}`]}
-        />
-      </Container>
+      <View style={{ flex: 2 }}>
+        <Container
+          // onPress={() => props.openPlayer(props[`homePlayer${props.idx + 1}`])}
+          style={styles.containerPlayer}
+        >
+          <PlayerHome
+            editable={props.editable}
+            player={props[`homePlayer${props.idx + 1}`]}
+          />
+        </Container>
+        {props.showDouble &&
+          <View style={styles.containerPlayer}>
+            <PlayerHome
+              editable={props.editable}
+              player={props[`homePlayer2`]}
+            />
+          </View>}
+      </View>
       <Score goals={props.result} />
-      <Container
-        // onPress={() => props.openPlayer(props[`awayPlayer${props.idx + 1}`])}
-        style={styles.containerPlayer}
-      >
-        <PlayerAway
-          editable={props.editable}
-          player={props[`awayPlayer${props.idx + 1}`]}
-        />
-      </Container>
+      <View style={{ flex: 2 }}>
+        <Container
+          // onPress={() => props.openPlayer(props[`awayPlayer${props.idx + 1}`])}
+          style={styles.containerPlayer}
+        >
+          <PlayerAway
+            editable={props.editable}
+            player={props[`awayPlayer${props.idx + 1}`]}
+          />
+        </Container>
+        {props.showDouble &&
+          <View style={styles.containerPlayer}>
+            <PlayerAway
+              editable={props.editable}
+              player={props['awayPlayer2']}
+            />
+          </View>}
+      </View>
     </View>
   );
 }
@@ -104,6 +122,9 @@ function SetItem(props) {
       <Container onPress={onPress}>
         {props.data.gameNumbers.map((gameNumber, idx) =>
           <Set
+            showDouble={
+              props.data.type == 'DOUBLES' && props.data.gameNumbers.length == 1
+            }
             {...props.set(gameNumber)}
             openPlayer={props.openPlayer}
             editable={props.editable}

@@ -83,6 +83,7 @@ export function getMatch(id) {
 
 // PATCH /fixtures/:id/games?vid=:fixture.competitionId
 export function patchFixtureGames(fixture, payload) {
+  // instance.defaults.headers.authorization = 'Bearer eyJzdWIiOiIxOTEiLCJleHAiOjE1MjAyMzUwMjh9.ZmQzZDA0ODI3MjI5MTRlYzNmNjg0YzBjNjZhNzczMmE5OGZhMWE0NTk0MzVmZjcwYzhhMzhkYmJhNGY0MWY1Ng=='
   return instance.patch(
     `/fixtures/${fixture.id}/games?vid=${fixture.competitionId}`,
     payload,
@@ -205,6 +206,11 @@ export function postNotificationFixture(fixtureId) {
 // DELETE /notifications/fixture/:fixtureId
 export function deleteNotificationFixture(fixtureId) {
   return instance.delete(`/notifications/fixture/${fixtureId}`);
+}
+
+// POST /notifications/team/:teamId
+export function postNotificationTeam(teamId) {
+  return instance.post(`/notifications/team/${teamId}`);
 }
 
 // POST /notification

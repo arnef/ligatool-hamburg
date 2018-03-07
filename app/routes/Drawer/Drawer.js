@@ -10,6 +10,7 @@ import DrawerItem from './DrawerItem';
 import DrawerItemLeague from './DrawerItemLeague';
 
 import S from '../../lib/strings';
+import { getActiveTeam } from '../../redux/modules/user';
 
 function Drawer(props) {
   return (
@@ -18,8 +19,8 @@ function Drawer(props) {
         <Image source={{ uri: 'drawer' }} style={styles.image} />
         {!!props.team &&
           <View style={styles.teamContainer}>
-            {!!props.team.image &&
-              <Image url={props.team.image} style={styles.teamLogo} />}
+            {!!props.team.emblemUrl &&
+              <Image url={props.team.emblemUrl} style={styles.teamLogo} />}
             <Text style={styles.teamName} numberOfLines={2}>
               {props.team.name}
             </Text>
@@ -52,6 +53,6 @@ function Drawer(props) {
 }
 
 export default connect(state => ({
-  team: state.settings.team,
+  team: getActiveTeam(state),
   leagues: sortBy(state.drawer, 'name'),
 }))(Drawer);

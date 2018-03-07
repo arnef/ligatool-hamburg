@@ -5,7 +5,7 @@ const SET_FIXTURE_META = 'fixtures/SET_META';
 const SET_FIXTURE_STATUS_IN_PLAY = 'fixtures/SET_STATUS_IN_PLAY';
 const SET_FIXTURE_MODUS = 'fixture/SET_FIXTURE_MODUS';
 const SET_FIXTURE_GAME_HOME_PLAYER = 'fixture/SET_GAME_HOME_PLAYER';
-const SET_FIXTURE_GAME_AWAY_PLAYER = 'fixture/SET_GAME_AWAY_PLATER';
+export const SET_FIXTURE_GAME_AWAY_PLAYER = 'fixture/SET_GAME_AWAY_PLATER';
 export const SET_FIXTURE_GAME_RESULT = 'fixture/SET_GAME_RESULT';
 const SET_FIXTURE_DATES = 'fixture/SET_DATES';
 const SET_FIXTURE_DATE = 'fixture/SET_DATE';
@@ -118,10 +118,14 @@ export default function reducer(state = defaultState, action) {
         ...state,
         data: { ...state.data, [payload.fixture.id]: payload.fixture },
       };
+
     case SET_FIXTURE_META:
       return {
         ...state,
-        meta: { ...state.meta, [payload.id]: payload.meta },
+        meta: {
+          ...state.meta,
+          [payload.id]: mergeGames(state.meta[payload.id], payload.meta),
+        },
       };
 
     case SET_FIXTURE_STATUS_IN_PLAY:
@@ -305,6 +309,12 @@ export const getFixtureModus = (state, id) =>
         lineUp: {},
       };
 export const getFixtureGames = (state, id) => get(state).meta[id].games || {};
+export const getFixtureDefaultLineUp = (state, id) =>
+  get(state).meta[id] &&
+  get(state).meta[id].modus.lineUp &&
+  get(state).meta[id].modus.lineUp.default
+    ? get(state).meta[id].modus.lineUp.default
+    : [];
 export const getFixtureGame = (state, id, gameNumber) =>
   getFixtureGames(state, id)[gameNumber] || {
     gameNumber,
@@ -333,3 +343,15 @@ export const getFixturePlayerList = (state, id, key) =>
     ? get(state).meta[id].player[key]
     : [];
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
+
+/* helper */
+function mergeGames(state, payload) {
+  if (!state) {
+    return payload;
+  }
+
+  return {
+    ...payload,
+    games: { ...state.games, ...payload.games },
+  };
+}

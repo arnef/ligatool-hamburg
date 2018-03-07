@@ -99,8 +99,8 @@ android {
         applicationId "com.arnefeildtfb"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "0.1.0"
+        versionCode 5
+        versionName "0.14"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
