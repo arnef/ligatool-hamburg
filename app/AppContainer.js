@@ -47,7 +47,6 @@ class AppContainer extends Component {
     const { dispatch, nav } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
-        <Loading />
         <ActionSheet
           ref={c => {
             ActionSheet.actionsheetInstance = c;
@@ -59,12 +58,14 @@ class AppContainer extends Component {
             state: nav,
           })}
         />
+        <Loading loading={this.props.loading} />
       </View>
     );
   }
 }
 
 export default connect(state => ({
+  loading: state.loading.modal,
   team: state.settings.team,
   auth: state.auth,
   nav: state.nav.navigation,

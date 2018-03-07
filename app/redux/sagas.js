@@ -57,12 +57,16 @@ import {
   ACCEPT_FIXTURE_DATE,
   SUGGEST_FIXTURE_RESULT,
   ACCEPT_FIXTURE_RESULT,
+  SET_FIXTURE_GAME_AWAY_PLAYER,
+  getFixtureGames,
+  getFixtureDefaultLineUp,
 } from './modules/fixtures';
 import {
   userAddTeam,
   userSetApiKey,
   userSetToken,
   getActiveTeam,
+  getUserTeams,
 } from './modules/user';
 
 function* overview() {
@@ -326,23 +330,10 @@ function* login(action) {
     yield put(LoadingActions.show());
     const { data } = yield call(api.authenticate, action.payload);
     const apiKey = data.token;
-    // yield put(AuthActions.setApiKey(apiKey));
     yield put(userSetApiKey(apiKey));
     const { data: token } = yield call(api.refreshAuthentication, apiKey);
 
     yield put(userSetToken(token.token, token.accessForTeams, token.expires));
-    // console.log(team);
-    // yield put(
-    //   AuthActions.setToken({
-    //     expires: team.data.expires,
-    //     token: team.data.token,
-    //     ids,
-    //   }),
-    // );
-    // const state = yield select();
-    // if (state.settings.notification.on) {
-    //   yield put(SettingsActions.setNotification({ matchdate: true }));
-    // }
     yield put(NavigationActions.hideLogin(action.next));
   } catch (ex) {
     console.warn(ex);
@@ -568,7 +559,7 @@ function* refreshToken() {
   try {
     const state = yield select();
     const team = getActiveTeam(state);
-    if (team && team.access && team.access.tokek && team.access.apiKey) {
+    if (team && team.access && team.access.token && team.access.apiKey) {
       if (team.access.expires < new Date().getTime()) {
         const { data } = yield call(
           api.refreshAuthentication,
@@ -599,37 +590,6 @@ function* rehydrate() {
       yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
     } else {
       StatusBar.setBarStyle('light-content');
-      // yield refreshToken();
-      // const team = getActiveTeam(state);
-      // if (team && team.access && team.access.token && team.access.apiKey) {
-
-      //   if (team.access.expires < new Date().getTime()) {
-      //     const { data } = yield call(api.refreshAuthentication, team.access.apiKey);
-      //     yield put(userSetToken(data.token, data.accessForTeams, data.expires));
-      //     api.setAuthorization(data.token);
-      //   } else {
-      //     api.setAuthorization(team.access.token);
-      //   }
-      // }
-      // if (state.auth.api_key && state.auth.team) {
-      //   if (state.auth.team.expires < new Date().getTime()) {
-      //     yield put(LoadingActions.showModal());
-      //     const team = yield call(
-      //       api.refreshAuthentication,
-      //       state.auth.api_key,
-      //     );
-      //     const ids = team.data.ids.map(item => `${item}`);
-      //     yield put(
-      //       AuthActions.setToken({
-      //         expires: team.data.expires,
-      //         token: team.data.token,
-      //         ids,
-      //       }),
-      //     );
-      //   } else {
-      //     api.setAuthorization(state.auth.team.token);
-      //   }
-      // }
       yield overview();
     }
   } catch (ex) {
@@ -739,6 +699,7 @@ function* fetchUserTeam(action) {
 
 function* setFixtureGameResultSaga(action) {
   try {
+    yield put(LoadingActions.showModal());
     const { payload } = action;
     const state = yield select();
     const modus = getFixtureModus(state, payload.id);
@@ -765,7 +726,6 @@ function* setFixtureGameResultSaga(action) {
         }
       }
       if (body.length > 0) {
-        yield put(LoadingActions.showModal());
         yield refreshToken();
         if (action.type === SUGGEST_FIXTURE_RESULT) {
           const { data, meta } = yield call(api.putFixtureGames, match, body);
@@ -782,11 +742,18 @@ function* setFixtureGameResultSaga(action) {
         }
       }
     }
-  } catch (ex) {
-    console.warn(ex);
-  } finally {
+    yield call(delay, 200); // FIX for ios
     yield put(LoadingActions.hideModal());
+  } catch (ex) {
+    yield put(LoadingActions.hideModal());
+    console.warn(ex);
   }
+}
+
+function delay(time) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  });
 }
 
 function* toggleNotificationSaga() {
@@ -801,6 +768,19 @@ function* toggleNotificationSaga() {
       SettingsActions.notificationFinalResults(state),
     );
     api.setFCM(resp.token);
+    const teams = getUserTeams(state);
+    for (let team of teams) {
+      yield subscribeTeamSaga({ payload: { teamId: team.id } });
+    }
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
+function* subscribeTeamSaga(action) {
+  try {
+    const { teamId } = action.payload;
+    yield call(api.postNotificationTeam, teamId);
   } catch (ex) {
     console.warn(ex);
   }
@@ -860,6 +840,49 @@ function* acceptFixtureDateSaga(action) {
   }
 }
 
+function* setPlayerAwaySaga(action) {
+  try {
+    const { id } = action.payload;
+    const state = yield select();
+    const fixture = getFixture(state, id);
+    if (fixture.result) {
+      yield setFixtureGameResultSaga(action);
+    } else {
+      const fixtureGames = getFixtureGames(state, id);
+      const fixtureLineUp = getFixtureDefaultLineUp(state, id);
+      let allPlayersSet = fixtureLineUp.length > 0;
+      for (let game of fixtureLineUp) {
+        for (let set of game.gameNumbers) {
+          allPlayersSet =
+            allPlayersSet &&
+            (fixtureGames[set] &&
+              fixtureGames[set].homePlayer1 &&
+              fixtureGames[set].awayPlayer1)
+              ? true
+              : false;
+          if (game.type == 'DOUBLES') {
+            allPlayersSet =
+              allPlayersSet &&
+              (fixtureGames[set] &&
+                fixtureGames[set].homePlayer2 &&
+                fixtureGames[set].awayPlayer2)
+                ? true
+                : false;
+          }
+        }
+        if (!allPlayersSet) {
+          break;
+        }
+      }
+      if (allPlayersSet) {
+        yield setFixtureGameResultSaga(action);
+      }
+    }
+  } catch (ex) {
+    console.warn(ex);
+  }
+}
+
 export default function* sagas() {
   yield takeEvery(LoadingActions.APP_STATE_CHANGED, checkChange);
   yield takeEvery(GET_OVERVIEW_MATCHES, overview);
@@ -896,4 +919,5 @@ export default function* sagas() {
   yield takeEvery(SUGGEST_FIXTURE_RESULT, setFixtureGameResultSaga);
   yield takeEvery(ACCEPT_FIXTURE_RESULT, setFixtureGameResultSaga);
   yield takeEvery('SELECT_USER_TEAM', fetchUserTeam);
+  yield takeEvery(SET_FIXTURE_GAME_AWAY_PLAYER, setPlayerAwaySaga);
 }
