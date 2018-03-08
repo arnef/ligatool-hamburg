@@ -1,7 +1,5 @@
 import moment from 'moment';
 import { DATETIME_DB } from '../config/settings';
-import MatchTypes from '../config/MatchTypes';
-import { getType } from '../config/MatchTypes';
 
 export function sets(match, format) {
   const matchSets = match.sets || {};
@@ -99,7 +97,7 @@ export function setPlayer(match, payload) {
   };
 }
 
-function checkLineUp(match) {
+function checkLineUp(/*match*/) {
   // let count = 0;
   // const playerCount = {};
   // const playerDisabled = {};
@@ -171,10 +169,10 @@ function checkLineUp(match) {
 /**
  *
  */
-export function sort(matches: MatchesState = {}): Function {
-  return (a: number, b: number): number => {
-    const matchA: Match = matches[a] || {};
-    const matchB: Match = matches[b] || {};
+export function sort(matches = {}) {
+  return (a, b) => {
+    const matchA = matches[a] || {};
+    const matchB = matches[b] || {};
     let sort =
       (matchB.live ? 2 : matchB.set_points ? 1 : 0) -
       (matchA.live ? 2 : matchA.set_points ? 1 : 0);
@@ -203,20 +201,20 @@ export function sort(matches: MatchesState = {}): Function {
   };
 }
 
-export const gamePayload = (state, fixtureId, game) => {
-  const payload = [];
-  for (let gameNumber of game.gameNumbers) {
-    const g = getFixtureGame(state, fixtureId, gameNumber);
-    payload.push({
-      home_player_1_id: g.homePlayer1 ? g.homePlayer1.id : null,
-      home_player_2_id: g.homePlayer2 ? g.homePlayer2.id : null,
-      away_player_1_id: g.awayPlayer1 ? g.awayPlayer1.id : null,
-      away_player_2_id: g.awayPlayer2 ? g.awayPlayer2.id : null,
-      goals_home: g.result ? g.result.goalsHome : null,
-      goals_away: g.result ? g.result.goalsAway : null,
-      key: game.key,
-      game_number: gameNumber,
-    });
-  }
-  return payload;
-};
+// export const gamePayload = (state, fixtureId, game) => {
+//   const payload = [];
+//   for (let gameNumber of game.gameNumbers) {
+//     const g = getFixtureGame(state, fixtureId, gameNumber);
+//     payload.push({
+//       home_player_1_id: g.homePlayer1 ? g.homePlayer1.id : null,
+//       home_player_2_id: g.homePlayer2 ? g.homePlayer2.id : null,
+//       away_player_1_id: g.awayPlayer1 ? g.awayPlayer1.id : null,
+//       away_player_2_id: g.awayPlayer2 ? g.awayPlayer2.id : null,
+//       goals_home: g.result ? g.result.goalsHome : null,
+//       goals_away: g.result ? g.result.goalsAway : null,
+//       key: game.key,
+//       game_number: gameNumber,
+//     });
+//   }
+//   return payload;
+// };

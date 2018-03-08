@@ -12,12 +12,12 @@ import {
   unsubscribeFixture,
 } from '../redux/modules/settings';
 import { getFixture } from '../redux/modules/fixtures';
+import { getColor } from '../redux/modules/user';
 
 const white = 'rgba(255, 255, 255, .8)';
 
 class NavHeader extends Component {
   render() {
-    console.log(this.props);
     const { style, ...rest } = this.props;
     const headerStyle = [style];
     headerStyle.push({
@@ -51,23 +51,7 @@ if (Platform.OS === 'android') {
   singleHeader.push(Routes.MATCH);
 }
 
-const ConnectHeader = connect(state => ({ color: state.settings.color }))(
-  NavHeader,
-);
-
-function showSearch(route) {
-  return (
-    [
-      Routes.SEARCH,
-      Routes.SETTINGS,
-      Routes.SETTINGS_NOTIFICATIONS,
-      'SelectGroup',
-      'SelectTeam',
-      'LoginView',
-      'SelectPlayerView',
-    ].indexOf(route) === -1
-  );
-}
+const ConnectHeader = connect(state => ({ color: getColor(state) }))(NavHeader);
 
 const ToggleNotification = connect(
   (state, props) => ({

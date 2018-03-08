@@ -4,7 +4,6 @@ import Card from '../Card';
 import Touchable from '../Touchable';
 import Text from '../Text';
 import Icon from '../Icon';
-import { WITH_DRAW, WIN_GOALS, DRAW_GOALS } from '../../config/settings';
 import styles from './styles';
 import S from '../../lib/strings';
 
@@ -55,7 +54,14 @@ export default class ScoreInput extends React.Component {
     const withDraw = (type === 'DOUBLES' ? doubles : singles) < 0;
     const goals = parseInt(value, 10);
     this.setState({ [key]: value });
-    if (!this.state[otherKey] && goals < winGoals) {
+    if (!this.state[otherKey] && goals == 2 && winGoals == 2) {
+      this.setState(
+        {
+          [otherKey]: `0`,
+        },
+        this.onSave,
+      );
+    } else if (!this.state[otherKey] && goals < winGoals) {
       this.setState(
         {
           [otherKey]:

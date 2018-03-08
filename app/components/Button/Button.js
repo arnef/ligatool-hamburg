@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
@@ -6,17 +5,9 @@ import Text from '../Text';
 import Touchable from '../Touchable';
 
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
 
-type ButtonProps = {
-  title: string,
-  onPress: Function,
-  color: string,
-  loading?: boolean,
-  outline?: boolean,
-  disabled?: boolean,
-};
-
-function Button(props: ButtonProps): ReactElement<any> {
+function Button(props) {
   const btnStyle = [
     styles.button,
     { borderColor: props.color, borderWidth: 1 },
@@ -51,5 +42,5 @@ function Button(props: ButtonProps): ReactElement<any> {
 }
 
 export default connect(state => ({
-  color: state.settings.color,
+  color: getColor(state),
 }))(Button);

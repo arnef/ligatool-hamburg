@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import { TabNavigator } from 'react-navigation';
@@ -7,21 +6,24 @@ import NavTabBarTop from '../../Nav/NavTabBarTop';
 import * as TeamsActions from '../../redux/modules/teams';
 import Routes from '../../config/routes';
 import S from '../../lib/strings';
+import { getFixtureByTeam } from '../../redux/modules/fixtures';
 
 const TeamMatches = connect(
-  state => ({
+  (state, props) => ({
     teams: state.teams,
+    fixtures: getFixtureByTeam(
+      state,
+      props.navigation.state.params.team.groupId ||
+        props.navigation.state.params.team.id,
+    ),
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     getMatches: id => dispatch(TeamsActions.getMatches(id)),
   }),
 )(function Team(props) {
-  const matches = props.teams[`${props.navigation.state.params.team.id}`]
-    ? props.teams[`${props.navigation.state.params.team.id}`].matches
-    : [];
   return (
     <MatchList
-      matches={matches}
+      matches={props.fixtures}
       onRefresh={() => props.getMatches(props.navigation.state.params.team.id)}
     />
   );

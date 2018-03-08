@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import {
   Keyboard,
@@ -13,18 +12,6 @@ import Container from './Container';
 const windowHeight = Dimensions.get('screen').height;
 
 export default class KeyboardAwareList extends React.Component {
-  state: {
-    scrollOffsetY: number,
-    keyboardHeight: number,
-  };
-  onScroll: Function;
-  onShowKeyboard: Function;
-  onHideKeyboard: Function;
-  scrollToInput: Function;
-  keyboardDidShowListener: { remove: Function };
-  keyboardWillHideListener: { remove: Function };
-  container: { scrollTo: Function };
-
   constructor(props) {
     super(props);
 

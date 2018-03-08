@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import Touchable from '../Touchable';
@@ -7,12 +6,7 @@ import Text from '../Text';
 
 import styles from './styles';
 
-type ErrorFlashProps = {
-  error?: string,
-  onRefresh: Function,
-};
-
-export default function ErrorFlash(props: ErrorFlashProps): ReactElement<any> {
+export default function ErrorFlash(props) {
   if (props.error) {
     const error = { color: 'orange', message: props.error };
 

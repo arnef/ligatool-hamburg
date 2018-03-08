@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -11,19 +10,18 @@ import DrawerItem from './DrawerItem';
 import DrawerItemLeague from './DrawerItemLeague';
 
 import S from '../../lib/strings';
+import { getActiveTeam } from '../../redux/modules/user';
+import { sortCompetition } from '../../Helper';
 
-function Drawer(props): ReactElement<any> {
+function Drawer(props) {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: props.team ? 'turm_bw' : 'turm' }}
-          style={styles.image}
-        />
+        <Image source={{ uri: 'drawer' }} style={styles.image} />
         {!!props.team &&
           <View style={styles.teamContainer}>
-            {!!props.team.image &&
-              <Image url={props.team.image} style={styles.teamLogo} />}
+            {!!props.team.emblemUrl &&
+              <Image url={props.team.emblemUrl} style={styles.teamLogo} />}
             <Text style={styles.teamName} numberOfLines={2}>
               {props.team.name}
             </Text>
@@ -56,6 +54,6 @@ function Drawer(props): ReactElement<any> {
 }
 
 export default connect(state => ({
-  team: state.settings.team,
-  leagues: sortBy(state.drawer, 'name'),
+  team: getActiveTeam(state),
+  leagues: sortBy(state.drawer, sortCompetition),
 }))(Drawer);

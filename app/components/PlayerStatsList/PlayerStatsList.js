@@ -13,6 +13,7 @@ import Routes from '../../config/routes';
 import S from '../../lib/strings';
 import Player from './Player';
 import styles from './styles';
+import { queryPlayerStats } from '../../redux/actions';
 
 function PlayerStatsList(props) {
   function onPress(player) {
@@ -27,28 +28,30 @@ function PlayerStatsList(props) {
 
   return (
     <View style={styles.container}>
-      <StaticListHeader>
-        <View style={styles.header}>
-          <View style={styles.position} />
-          <View style={styles.playerImage} />
-          <Text small color="#fff" style={styles.playerName}>
-            {S.NAME}
-          </Text>
-          <Text small color="#fff" style={styles.rate}>
-            {S.RATE_SHORT}
-          </Text>
-          <Text small color="#fff" style={styles.matches} numberOfLines={1}>
-            {S.GAMES}
-          </Text>
-          <Text small color="#fff" style={styles.competitiveIndex}>
-            {S.COMPETITIVE_INDEX_SHORT}
-          </Text>
-        </View>
-      </StaticListHeader>
+      {dataSource.length > 0 &&
+        <StaticListHeader>
+          <View style={styles.header}>
+            <View style={styles.position} />
+            <View style={styles.playerImage} />
+            <Text small color="#fff" style={styles.playerName}>
+              {S.NAME}
+            </Text>
+            <Text small color="#fff" style={styles.rate}>
+              {S.RATE_SHORT}
+            </Text>
+            <Text small color="#fff" style={styles.matches} numberOfLines={1}>
+              {S.GAMES}
+            </Text>
+            {!!dataSource[0].competitiveIndex &&
+              <Text small color="#fff" style={styles.competitiveIndex}>
+                {S.COMPETITIVE_INDEX_SHORT}
+              </Text>}
+          </View>
+        </StaticListHeader>}
       <Container
         error={props.error}
         refreshing={props.loading}
-        onRefresh={() => {}}
+        onRefresh={props.queryPlayerStats}
         renderRow={({ item }) => <Player {...item} onPress={onPress} />}
         dataSource={dataSource}
         keyExtractor={item => `${item.rank}`}
@@ -58,6 +61,17 @@ function PlayerStatsList(props) {
           offset: ListItem.ITEM_HEIGHT * index,
           index,
         })}
+        ListEmptyComponent={
+          <Text
+            secondary
+            style={{
+              padding: 16,
+              textAlign: 'center',
+            }}
+          >
+            {`${!props.loading ? 'Keine Spielerstatistiken' : ''}`}
+          </Text>
+        }
       />
     </View>
   );
@@ -69,7 +83,9 @@ export default connect(
     loading: state.loading.list,
     leagues: state.leagues,
   }),
-  dispatch => ({
+  (dispatch, props) => ({
+    queryPlayerStats: () =>
+      dispatch(queryPlayerStats(props.navigation.state.params.id)),
     navigate: (routeName, params) =>
       dispatch(NavigatationActions.navigate({ routeName, params })),
   }),

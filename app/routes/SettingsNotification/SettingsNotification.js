@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -14,8 +13,6 @@ import {
 import * as SettingsActions from '../../redux/modules/settings';
 
 class SettingsNotification extends React.Component {
-  renderItem: Function;
-
   constructor(props) {
     super(props);
     this.renderItem = this.renderItem.bind(this);
@@ -78,7 +75,7 @@ export default connect(
     leagues: sortBy(state.drawer, 'name'),
     notifications: state.settings.notification,
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     toggleNotification: key =>
       dispatch(SettingsActions.toggleGroupNotification(key)),
     completeSetup: () => dispatch(SettingsActions.completeSetup()),

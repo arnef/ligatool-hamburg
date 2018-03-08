@@ -1,21 +1,8 @@
-// @flow
 import React from 'react';
 import { View, Text } from 'react-native';
-import { WITH_DRAW } from '../../config/settings';
 import styles from './styles';
 
-type MatchStatsBarProps = {
-  stats: {
-    wins: number,
-    draws: number,
-    lost: number,
-    matches: number,
-  },
-};
-
-export default function MatchStatsBar(
-  props: MatchStatsBarProps,
-): ReactElement<any> {
+export default function MatchStatsBar(props) {
   const height = props.small ? 14 : 14;
   const wins = [
     styles.wins,
@@ -70,11 +57,10 @@ export default function MatchStatsBar(
         {props.stats.wins > 0 &&
           <Text style={styles.text}>{`${props.stats.wins}`}</Text>}
       </View>
-      {WITH_DRAW &&
-        <View style={draws}>
-          {props.stats.draws > 0 &&
-            <Text style={styles.text}>{`${props.stats.draws}`}</Text>}
-        </View>}
+      <View style={draws}>
+        {props.stats.draws > 0 &&
+          <Text style={styles.text}>{`${props.stats.draws}`}</Text>}
+      </View>
       <View style={lost}>
         {props.stats.lost > 0 &&
           <Text style={styles.text}>{`${props.stats.lost}`}</Text>}

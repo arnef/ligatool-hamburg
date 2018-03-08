@@ -1,10 +1,10 @@
-// @flow
 import React from 'react';
 import { View, Platform } from 'react-native';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 import { colors } from '../../config/styles';
 import Routes from '../../config/routes';
+import { getColor } from '../../redux/modules/user';
 
 class SearchHeader extends React.Component {
   renderSearchBar() {
@@ -40,7 +40,7 @@ class SearchHeader extends React.Component {
 }
 
 const ConnectHeader = connect(state => ({
-  color: state.settings.color,
+  color: getColor(state),
 }))(SearchHeader);
 
 export default {
@@ -57,7 +57,7 @@ export default {
           }
         : null;
     return {
-      header: function Header(props: any) {
+      header: function Header(props) {
         return <ConnectHeader {...props} />;
       },
       headerTintColor: '#fff',

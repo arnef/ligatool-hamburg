@@ -1,4 +1,3 @@
-// @flow
 import { Platform } from 'react-native';
 import {
   StackNavigator,
@@ -32,7 +31,7 @@ import PlayerView from './routes/Player';
 import MatchDate from './routes/MatchDate';
 import S from './lib/strings';
 
-function createTabStack(key: string, screen: any, optionalRoutes: ?any): any {
+function createTabStack(key, screen, optionalRoutes) {
   const name = key.split('/');
   const defaultRoutes = {
     [key]: {
@@ -241,7 +240,7 @@ export const SearchStack = StackNavigator(
   SearchHeader,
 );
 
-export const Root: StackNavigator = StackNavigator(
+export const Root = StackNavigator(
   {
     [Routes.APP]: { screen: App },
     [Routes.MODAL_LOGIN]: { screen: ModalLogin },

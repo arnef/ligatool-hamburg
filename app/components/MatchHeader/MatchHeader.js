@@ -5,6 +5,7 @@ import Touchable from '../Touchable';
 import Text from '../Text';
 
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
 
 function MatchHeader(props) {
   return (
@@ -47,5 +48,5 @@ function MatchHeader(props) {
 }
 
 export default connect(state => ({
-  color: state.settings.color,
+  color: getColor(state),
 }))(MatchHeader);

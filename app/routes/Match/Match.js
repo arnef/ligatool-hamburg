@@ -6,7 +6,6 @@ import {
   Container,
   SetItem,
   Button,
-  Text,
   Switch,
 } from '../../components';
 import * as MatchesActions from '../../redux/modules/matches';
@@ -29,7 +28,7 @@ import {
   suggestFixtureResult,
   acceptFixtureResult,
 } from '../../redux/modules/fixtures';
-import { accessForTeams } from '../../redux/modules/auth';
+import { accessForTeams } from '../../redux/modules/user';
 
 class Match extends React.Component {
   constructor(props) {
@@ -52,7 +51,6 @@ class Match extends React.Component {
   }
 
   onSelect(idx, data, value) {
-    const matchId = `${this.props.navigation.state.params.id}`;
     switch (value) {
       case 0:
         this.props.selectPlayer(data);
@@ -196,12 +194,14 @@ class Match extends React.Component {
             square
             title={
               S.SCORE_BUTTON_TEXT[
-                this.props.actionRequired
-                  ? match.status === 'IN_PLAY' ? 0 : 2
-                  : 1
+                match.status === 'IN_PLAY'
+                  ? 0
+                  : this.props.actionRequired ? 2 : 1
               ]
             }
-            disabled={!this.props.actionRequired}
+            disabled={
+              !(match.status === 'IN_PLAY' || this.props.actionRequired)
+            }
           />}
       </View>
     );
@@ -211,7 +211,9 @@ class Match extends React.Component {
 function showButton(state, id) {
   const fixture = getFixture(state, id);
   const modus = getFixtureModus(state, id);
-
+  if (!fixture.suggestingTeamId) {
+    return false;
+  }
   if (modus.fixture < 0) {
     return (
       fixture.result &&

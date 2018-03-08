@@ -6,7 +6,9 @@ import styles from './styles';
 
 export default function Player(props) {
   return (
-    <ListItem onPress={() => props.onPress(props.player)}>
+    <ListItem
+    // onPress={() => props.onPress(props.player)}
+    >
       <View style={styles.position}>
         <Text>{`${props.rank}`}</Text>
       </View>
@@ -20,9 +22,10 @@ export default function Player(props) {
           <Text style={styles.matches}>{`${props.overallWin +
             props.overallLost +
             props.overallDraw}`}</Text>
-          <Text
-            style={styles.competitiveIndex}
-          >{`${props.competitiveIndex.split('.')[0]}`}</Text>
+          {!!props.competitiveIndex &&
+            <Text
+              style={styles.competitiveIndex}
+            >{`${props.competitiveIndex.split('.')[0]}`}</Text>}
         </View>
         <View style={styles.row}>
           <MatchStatsBar

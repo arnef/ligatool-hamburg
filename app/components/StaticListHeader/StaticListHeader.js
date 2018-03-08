@@ -1,18 +1,12 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { darken } from '../../Helper';
 
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
 
-type StaticListHeaderProps = {
-  children: Array<ReactElement<any>>,
-  style: number | Object,
-  color: string,
-};
-
-function StaticListHeader(props: StaticListHeaderProps): ReactElement<any> {
+function StaticListHeader(props) {
   const headerStyle = [styles.row, { backgroundColor: darken(props.color, 5) }];
 
   if (props.style) {
@@ -26,6 +20,4 @@ function StaticListHeader(props: StaticListHeaderProps): ReactElement<any> {
   );
 }
 
-export default connect(state => ({ color: state.settings.color }))(
-  StaticListHeader,
-);
+export default connect(state => ({ color: getColor(state) }))(StaticListHeader);

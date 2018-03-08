@@ -1,11 +1,11 @@
-// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import { ListItem, Text } from '../../components';
 import * as NavigationActions from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
+import { getColor } from '../../redux/modules/user';
 
-function DrawerItemLeague(props): ReactElement<any> {
+function DrawerItemLeague(props) {
   const active = props.league.cup
     ? `${Routes.LEAGUE_CUP}_${props.league.id}` === props.activeItem
     : `${Routes.LEAGUE}_${props.league.id}` === props.activeItem;
@@ -35,9 +35,9 @@ function DrawerItemLeague(props): ReactElement<any> {
 export default connect(
   state => ({
     activeItem: state.nav.activeItem,
-    color: state.settings.color,
+    color: getColor(state),
   }),
-  (dispatch: Dispatch<any>) => ({
+  dispatch => ({
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate({ routeName, params })),
   }),

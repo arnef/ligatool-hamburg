@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import {
   Modal,
@@ -7,9 +6,8 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
-import { connect } from 'react-redux';
 
-function LoadingModal(props) {
+export default function LoadingModal(props) {
   return (
     <Modal
       animationType={'fade'}
@@ -46,7 +44,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-export default connect(state => ({
-  loading: state.loading.modal,
-}))(LoadingModal);

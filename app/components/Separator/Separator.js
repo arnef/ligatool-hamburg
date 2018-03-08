@@ -1,17 +1,9 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
 
-type SeparatorProps = {
-  image?: boolean,
-  table?: boolean,
-  full?: boolean,
-  group?: boolean,
-};
-
-export default function Separator(props: SeparatorProps): ReactElement<any> {
+export default function Separator(props) {
   const style = [styles.separator];
   let marginLeft = 16;
 

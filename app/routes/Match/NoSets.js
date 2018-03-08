@@ -12,11 +12,11 @@ import {
 } from '../../components';
 import S from '../../lib/strings';
 import styles from './styles';
-import * as MatchesActions from '../../redux/modules/matches';
 import * as NavigationActions from '../../redux/modules/navigation';
-import Routes from '../../config/routes';
+// import Routes from '../../config/routes';
 import { DATETIME_DB, DATETIME_FORMAT } from '../../config/settings';
 import { setFixtureStatusInPlay } from '../../redux/modules/fixtures';
+import { getColor } from '../../redux/modules/user';
 
 function NoSets(props) {
   function onOpenVenue() {
@@ -36,9 +36,9 @@ function NoSets(props) {
     props.insertResult(props.match.id);
   }
 
-  function openDateChange() {
-    props.navigate(Routes.MATCH_DATE, { id: props.match.id });
-  }
+  // function openDateChange() {
+  //   props.navigate(Routes.MATCH_DATE, { id: props.match.id });
+  // }
 
   function renderPlayer() {
     const { player } = props;
@@ -54,9 +54,9 @@ function NoSets(props) {
           <View style={styles.player}>
             {playerHome &&
               <Card
-                onPress={() => {
-                  props.navigate(Routes.PLAYER, playerHome);
-                }}
+              // onPress={() => {
+              //   props.navigate(Routes.PLAYER, playerHome);
+              // }}
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerHome.image} size={90} />
@@ -69,9 +69,9 @@ function NoSets(props) {
           <View style={styles.player}>
             {playerAway &&
               <Card
-                onPress={() => {
-                  props.navigate(Routes.PLAYER, playerAway);
-                }}
+              // onPress={() => {
+              //   props.navigate(Routes.PLAYER, playerAway);
+              // }}
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerAway.image} size={90} />
@@ -95,11 +95,12 @@ function NoSets(props) {
         <View style={styles.teamInfo}>
           <TeamLogo team={props.match.homeTeamLogo} size={90} />
         </View>
-        {!props.firstFixture &&
-          <Text style={styles.teamVs} bold secondary>
-            vs
-          </Text>}
-        {props.firstFixture &&
+        {/* {!props.firstFixture && */}
+        <Text style={styles.teamVs} bold secondary>
+          vs
+        </Text>
+        {/* } */}
+        {/* {props.firstFixture&&
           <View style={styles.firstMatch}>
             <Text small secondary bold>
               {S.FIRST_MATCH}
@@ -117,7 +118,7 @@ function NoSets(props) {
             <Text small secondary bold>
               {' '}
             </Text>
-          </View>}
+          </View>} */}
         <View style={styles.teamInfo}>
           <TeamLogo team={props.match.awayTeamLogo} size={90} />
         </View>
@@ -130,6 +131,7 @@ function NoSets(props) {
             : ''}${date.format(DATETIME_FORMAT)}`}
         />
         {props.venue &&
+          !!props.venue.name &&
           <ListItem onPress={onOpenVenue}>
             <View style={styles.option}>
               <Text>{`${props.venue.name}`}</Text>
@@ -139,14 +141,14 @@ function NoSets(props) {
             <ListItem.Icon right color={props.color} name="pin" />
           </ListItem>}
         {props.isAdmin && <Separator />}
-        {props.isAdmin &&
+        {/* {props.isAdmin &&
           <ListItem onPress={openDateChange}>
             <Text style={styles.option}>
               {S.CHANGE_MATCH_DATETIME}
             </Text>
             <ListItem.Icon right color={props.color} name="calendar" />
           </ListItem>}
-        {props.isAdmin && <Separator />}
+        {props.isAdmin && <Separator />} */}
         {props.isAdmin &&
           <ListItem
             onPress={insertResult}
@@ -165,7 +167,7 @@ function NoSets(props) {
 
 export default connect(
   state => ({
-    color: state.settings.color,
+    color: getColor(state),
   }),
   (dispatch, props) => ({
     insertResult: () => dispatch(setFixtureStatusInPlay(props.match.id)),

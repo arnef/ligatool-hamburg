@@ -1,16 +1,10 @@
-// @flow
-// Type Definitions
-type State = {
-  +[id: string]: any,
-};
-
 // Actions
-export const GET_PLAYER: GET_PLAYER = 'ligatool/modules/player/GET_PLAYER';
-export const GET_PLAYER_DONE: GET_PLAYER_DONE =
-  'ligatool/modules/player/GET_PLAYER_DONE';
+export const GET_PLAYER = 'ligatool/modules/player/GET_PLAYER';
+export const GET_PLAYER_DONE = 'ligatool/modules/player/GET_PLAYER_DONE';
 
+const defaultState = {};
 // Reducer
-export default function reducer(state: State = {}, action): State {
+export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case GET_PLAYER_DONE:
       state = { ...state, [`${action.payload.id}`]: action.payload };
@@ -21,6 +15,6 @@ export default function reducer(state: State = {}, action): State {
 }
 
 // Action Creators
-export function getPlayer(id: string) {
+export function getPlayer(id) {
   return { type: GET_PLAYER, payload: { id } };
 }

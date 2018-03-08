@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
@@ -16,14 +15,12 @@ import {
 import S from '../../lib/strings';
 
 class Player extends Component {
-  getPlayer: Function;
-
   constructor(props) {
     super(props);
     this.getPlayer = this.getPlayer.bind(this);
   }
 
-  renderItem(name: string, value: string) {
+  renderItem(name, value) {
     return (
       <ListItem multiline>
         <View>
@@ -332,7 +329,7 @@ export default connect(
     error: state.loading.error,
     players: state.players,
   }),
-  (dispatch: Dispatch<*>) => ({
-    getPlayer: (id: number) => dispatch(PlayerActions.getPlayer(id)),
+  dispatch => ({
+    getPlayer: id => dispatch(PlayerActions.getPlayer(id)),
   }),
 )(Player);

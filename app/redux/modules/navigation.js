@@ -1,14 +1,7 @@
-// @flow
 import { NavigationActions } from 'react-navigation';
 import { Root } from '../../router';
 import Routes from '../../config/routes';
 import { currentRoute } from '../../lib/NavUtils';
-
-// Type Definitions
-type State = {
-  navigation: ?any,
-  activeItem: string,
-};
 
 const routes = [
   Routes.OVERVIEW,
@@ -19,26 +12,19 @@ const routes = [
 ];
 
 // Actions
-export const SHOW_LOG_IN_MODAL: SHOW_LOG_IN_MODAL =
-  'ligatool/SHOW_LOG_IN_MODAL';
-export const HIDE_LOG_IN_MODAL: HIDE_LOG_IN_MODAL =
-  'ligatool/HIDE_LOG_IN_MODAL';
-export const NAVIGATE: NAVIGATE = NavigationActions.NAVIGATE;
-export const BACK: BACK = NavigationActions.BACK;
-const SHOW_PLAYER_MODAL: SHOW_PLAYER_MODAL =
-  'ligatool/navigation/SHOW_PLAYER_MODAL';
-const HIDE_PLAYER_MODAL: HIDE_PLAYER_MODAL =
-  'ligatool/navigation/HIDE_PLAYER_MODAL';
-const HIDE_SEARCH: HIDE_SEARCH = 'ligatool/navigation/HIDE_SEARCH';
-export const HIDE_START_MODAL: HIDE_START_MODAL =
-  'ligatool/navigation/HIDE_START_MODAL';
-export const OPEN_MY_TEAM: OPEN_MY_TEAM = 'ligatool/navigation/OPEN_MY_TEAM';
+export const SHOW_LOG_IN_MODAL = 'ligatool/SHOW_LOG_IN_MODAL';
+export const HIDE_LOG_IN_MODAL = 'ligatool/HIDE_LOG_IN_MODAL';
+export const NAVIGATE = NavigationActions.NAVIGATE;
+export const BACK = NavigationActions.BACK;
+const SHOW_PLAYER_MODAL = 'ligatool/navigation/SHOW_PLAYER_MODAL';
+export const HIDE_PLAYER_MODAL = 'ligatool/navigation/HIDE_PLAYER_MODAL';
+const HIDE_SEARCH = 'ligatool/navigation/HIDE_SEARCH';
+export const HIDE_START_MODAL = 'ligatool/navigation/HIDE_START_MODAL';
+export const OPEN_MY_TEAM = 'ligatool/navigation/OPEN_MY_TEAM';
 
+const defaultState = { navigation: null, activeItem: Routes.OVERVIEW };
 // Reducer
-export default function reducer(
-  state: State = { navigation: null, activeItem: Routes.OVERVIEW },
-  action: Action,
-) {
+export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case SHOW_LOG_IN_MODAL:
       state = {
@@ -159,19 +145,19 @@ export function showLogin() {
   return { type: SHOW_LOG_IN_MODAL };
 }
 
-export function hideLogin(nextRoute: ?string) {
+export function hideLogin(nextRoute) {
   return { type: HIDE_LOG_IN_MODAL, next: nextRoute };
 }
 
-export function navigate(data: any) {
+export function navigate(data) {
   return NavigationActions.navigate(data);
 }
 
-export function setParams(options: { params: any, key: string }) {
+export function setParams(options) {
   return NavigationActions.setParams(options);
 }
 
-export function showPlayer(matchId: number, data: Array<Player>): Action {
+export function showPlayer(matchId, data) {
   return {
     type: SHOW_PLAYER_MODAL,
     payload: { matchId, data },
@@ -214,7 +200,7 @@ const recursiveFindRoute = (route, name) => {
   return null;
 };
 
-const findRouteKey = (state: any, name: string): any => {
+const findRouteKey = (state, name) => {
   const found = recursiveFindRoute(state, name);
   if (found) {
     return found.key;

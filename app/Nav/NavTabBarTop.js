@@ -1,8 +1,8 @@
-// @flow
 import React, { Component } from 'react';
 import { Platform, Dimensions, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { TabBarTop } from 'react-navigation';
+import { getColor } from '../redux/modules/user';
 
 const white = 'rgba(255, 255, 255, .9)';
 
@@ -46,9 +46,7 @@ const styles = StyleSheet.create({
 });
 
 export default {
-  tabBarComponent: connect(state => ({ color: state.settings.color }))(
-    NavTabBarTop,
-  ),
+  tabBarComponent: connect(state => ({ color: getColor(state) }))(NavTabBarTop),
   tabBarPosition: 'top',
   swipeEnabled: true,
   animationEnabled: true,

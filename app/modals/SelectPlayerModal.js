@@ -27,12 +27,7 @@ class SelectPlayer extends Component {
   }
 
   render() {
-    // const { matches } = this.props;
-    const { state } = this.props.navigation;
     const { player } = this.props;
-    // const match = matches[state.params.matchId];
-    // const teamKey = `team${state.params.team}`;
-    // let items = match[teamKey] ? match[teamKey].player : [];
 
     return (
       <Container

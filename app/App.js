@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
-import codePush from 'react-native-code-push';
-import { Sentry } from 'react-native-sentry';
 
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
@@ -20,8 +18,8 @@ class App extends Component {
   componentDidMount() {
     const config = {
       storage: AsyncStorage,
-      whitelist: ['app', 'settings', 'auth', 'matches', 'drawer'],
-      whitelist: ['app', 'settings', 'auth', 'drawer'],
+      whitelist: ['app', 'settings', 'drawer', 'user'],
+      // whitelist: ['app', 'settings', 'user'],
     };
     persistStore(store, config, () => {
       this.setState({ rehydrated: true });
@@ -41,10 +39,4 @@ class App extends Component {
   }
 }
 
-codePush.getUpdateMetadata().then(update => {
-  if (update) {
-    Sentry.setVersion('codepush:' + update.label);
-  }
-});
-
-export default codePush(App);
+export default App;

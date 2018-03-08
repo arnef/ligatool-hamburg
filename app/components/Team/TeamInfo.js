@@ -1,4 +1,3 @@
-// @flow
 import { Image, ListItem, Separator, Text } from '../../components';
 
 import React from 'react';
@@ -21,6 +20,7 @@ export default function TeamInfo(props) {
           <Text>{`${props.team.name}`}</Text>
         </View>
       </ListItem>
+      <Separator />
       {props.team.standing &&
         <View>
           <ListItem multiline>

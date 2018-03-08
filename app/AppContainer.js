@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { View, BackHandler, AppState } from 'react-native';
 import { connect } from 'react-redux';
@@ -12,10 +11,6 @@ import * as LoadingActions from './redux/modules/loading';
 import { colors } from './config/styles';
 
 class AppContainer extends Component {
-  notificationListener: { remove: Function };
-  refreshTokenListener: { remove: Function };
-  appStateChanged: Function;
-
   constructor(props) {
     super(props);
     this.appStateChanged = this.appStateChanged.bind(this);
@@ -52,7 +47,6 @@ class AppContainer extends Component {
     const { dispatch, nav } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
-        <Loading />
         <ActionSheet
           ref={c => {
             ActionSheet.actionsheetInstance = c;
@@ -64,12 +58,14 @@ class AppContainer extends Component {
             state: nav,
           })}
         />
+        <Loading loading={this.props.loading} />
       </View>
     );
   }
 }
 
 export default connect(state => ({
+  loading: state.loading.modal,
   team: state.settings.team,
   auth: state.auth,
   nav: state.nav.navigation,

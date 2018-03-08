@@ -1,20 +1,9 @@
-// @flow
 import React from 'react';
 import { Image as RNImage } from 'react-native';
-import { URL } from '../../config/settings';
 
 import styles from './styles';
 
-type ImageProps = {
-  url?: string,
-  size?: number,
-  width?: number,
-  height?: number,
-  source?: any,
-  style?: number | Array<*> | Object,
-};
-
-export default function Image(props: ImageProps): ReactElement<any> {
+export default function Image(props) {
   const source = props.url ? { uri: props.url } : props.source;
 
   const imgStyle = [styles.image];

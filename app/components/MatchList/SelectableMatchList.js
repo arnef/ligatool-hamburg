@@ -14,6 +14,8 @@ import {
   MatchItem,
 } from '../../components';
 import styles from './styles';
+import { getColor } from '../../redux/modules/user';
+import { size } from 'lodash';
 
 class SelectableMatchList extends React.Component {
   constructor(props) {
@@ -61,27 +63,35 @@ class SelectableMatchList extends React.Component {
 
     return (
       <View style={styles.container}>
-        <StaticListHeader>
-          <Touchable onPress={() => this.onOpenMenu(keys(matchDays))}>
-            <View style={styles.matchDayButton}>
-              <Text style={styles.matchDayText}>
-                {this.state.selectedMatchDay || league.selected}
-              </Text>
-              <Icon
-                name="more"
-                size={22}
-                color={this.props.loading ? this.props.color : '#fff'}
-              />
-            </View>
-          </Touchable>
-        </StaticListHeader>
+        {size(matchDays) > 0 &&
+          <StaticListHeader>
+            <Touchable onPress={() => this.onOpenMenu(keys(matchDays))}>
+              <View style={styles.matchDayButton}>
+                <Text style={styles.matchDayText}>
+                  {this.state.selectedMatchDay || league.selected}
+                </Text>
+                <Icon
+                  name="more"
+                  size={22}
+                  color={this.props.loading ? this.props.color : '#fff'}
+                />
+              </View>
+            </Touchable>
+          </StaticListHeader>}
         <Container
           getRef={container => (this.container = container)}
           error={this.props.error}
           refreshing={this.props.loading}
           onRefresh={this.onRefresh}
           renderRow={this.renderItem}
-          dataSource={matchList}
+          ListEmptyComponent={
+            <View>
+              <Text secondary style={{ padding: 16, textAlign: 'center' }}>
+                Keine Begegnungen
+              </Text>
+            </View>
+          }
+          dataSource={size(matchDays) > 0 ? matchList : []}
           keyExtractor={item => `${item}`}
         />
       </View>
@@ -95,7 +105,7 @@ export default connect(
     loading: state.loading.list,
     leagues: state.leagues,
     matches: state.fixtures.data,
-    color: state.settings.color,
+    color: getColor(state),
   }),
   dispatch => ({
     getMatches: id => dispatch(LeaguesActions.getMatches(id)),

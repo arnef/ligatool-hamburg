@@ -1,38 +1,24 @@
-// @flow
-// Type Definitions
-type State = {
-  next: Array<number>,
-  played: Array<number>,
-};
-
-type Action = {
-  type: MY_TEAM_MATCHES,
-  payload: {
-    next: Array<number>,
-    played: Array<number>,
-  },
-};
-
 // Actions
-export const GET_MY_TEAM_MATCHES: GET_MY_TEAM_MATCHES =
-  'ligatool/modules/GET_MY_TEAM_MATCHES';
-export const MY_TEAM_MATCHES: MY_TEAM_MATCHES =
-  'ligatool/modules/MY_TEAM_MATCHES';
+export const GET_MY_TEAM_MATCHES = 'ligatool/modules/GET_MY_TEAM_MATCHES';
+export const MY_TEAM_MATCHES = 'ligatool/modules/MY_TEAM_MATCHES';
 
+const defaultState = {
+  next: [],
+  played: [],
+};
 // Reducer
-export default function reducer(
-  state: State = {
-    next: [],
-    played: [],
-  },
-  action: Action,
-): State {
-  switch (action.type) {
+export default function reducer(state = defaultState, action) {
+  const { type, payload } = action;
+  switch (type) {
     case MY_TEAM_MATCHES:
-      state = { ...state, ...action.payload };
-      break;
+      return { ...state, ...payload };
+
+    case 'user/SET_ACTIVE_TEAM':
+      return defaultState;
+
+    default:
+      return state;
   }
-  return state;
 }
 
 // Action Creators

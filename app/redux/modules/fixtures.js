@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import moment from 'moment';
+import { DATE_FORMAT, DATETIME_DB } from '../../config/settings';
 const FETCH_FIXTURES = 'fixtures/FETCH';
 const SET_FIXTURES = 'fixtures/SET';
 const SET_FIXTURE_DATA = 'fixtures/SET_DATA';
@@ -6,7 +7,7 @@ const SET_FIXTURE_META = 'fixtures/SET_META';
 const SET_FIXTURE_STATUS_IN_PLAY = 'fixtures/SET_STATUS_IN_PLAY';
 const SET_FIXTURE_MODUS = 'fixture/SET_FIXTURE_MODUS';
 const SET_FIXTURE_GAME_HOME_PLAYER = 'fixture/SET_GAME_HOME_PLAYER';
-const SET_FIXTURE_GAME_AWAY_PLAYER = 'fixture/SET_GAME_AWAY_PLATER';
+export const SET_FIXTURE_GAME_AWAY_PLAYER = 'fixture/SET_GAME_AWAY_PLATER';
 export const SET_FIXTURE_GAME_RESULT = 'fixture/SET_GAME_RESULT';
 const SET_FIXTURE_DATES = 'fixture/SET_DATES';
 const SET_FIXTURE_DATE = 'fixture/SET_DATE';
@@ -119,10 +120,14 @@ export default function reducer(state = defaultState, action) {
         ...state,
         data: { ...state.data, [payload.fixture.id]: payload.fixture },
       };
+
     case SET_FIXTURE_META:
       return {
         ...state,
-        meta: { ...state.meta, [payload.id]: payload.meta },
+        meta: {
+          ...state.meta,
+          [payload.id]: mergeGames(state.meta[payload.id], payload.meta),
+        },
       };
 
     case SET_FIXTURE_STATUS_IN_PLAY:
@@ -306,6 +311,12 @@ export const getFixtureModus = (state, id) =>
         lineUp: {},
       };
 export const getFixtureGames = (state, id) => get(state).meta[id].games || {};
+export const getFixtureDefaultLineUp = (state, id) =>
+  get(state).meta[id] &&
+  get(state).meta[id].modus.lineUp &&
+  get(state).meta[id].modus.lineUp.default
+    ? get(state).meta[id].modus.lineUp.default
+    : [];
 export const getFixtureGame = (state, id, gameNumber) =>
   getFixtureGames(state, id)[gameNumber] || {
     gameNumber,
@@ -334,3 +345,121 @@ export const getFixturePlayerList = (state, id, key) =>
     ? get(state).meta[id].player[key]
     : [];
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
+export const getFixtureByFilter = (state, filter) => {
+  // const fixtures = [];
+  const overview = { data: {}, sections: [] };
+  const today = moment();
+  for (let id in get(state).data) {
+    const fixture = getFixture(state, id);
+    const diff = today.diff(moment(fixture.date, DATETIME_DB), 'days');
+    const key = moment(fixture.date, DATETIME_DB).format(DATE_FORMAT);
+    if (filter === FILTER_TODAY) {
+      if (fixture.status === STATUS_IN_PLAY || diff === 0) {
+        // fixtures.push(fixture.id);
+        if (!overview.data[key]) {
+          overview.data[key] = [];
+          overview.sections.push(key);
+        }
+        overview.data[key].push(fixture);
+      }
+    } else if (filter === FILTER_PASSED) {
+      if (
+        (fixture.status === STATUS_CONFIRMED ||
+          fixture.status === STATUS_FINISHED) &&
+        (diff > 0 && diff < 15)
+      ) {
+        if (!overview.data[key]) {
+          overview.data[key] = [];
+          overview.sections.push(key);
+        }
+        overview.data[key].push(fixture);
+      }
+    } else if (filter === FILTER_UPCOMMING) {
+      if (
+        (fixture.status === STATUS_SCHEDUELED ||
+          fixture.status === STATUS_POSTPONED) &&
+        diff < 0 &&
+        diff > -15
+      ) {
+        if (!overview.data[key]) {
+          overview.data[key] = [];
+          overview.sections.push(key);
+        }
+        overview.data[key].push(fixture);
+      }
+    }
+  }
+  for (let key in overview.data) {
+    overview.data[key].sort(fixtureSort);
+  }
+  return overview;
+};
+export const getFixtureByTeam = (state, teamGoupId) => {
+  const fixtures = [];
+  for (let id in get(state).data) {
+    const fixture = getFixture(state, id);
+    if (
+      teamGoupId === fixture.homeTeamGroupId ||
+      teamGoupId === fixture.awayTeamGroupId ||
+      teamGoupId === fixture.homeTeamId ||
+      teamGoupId === fixture.awayTeamId
+    ) {
+      fixtures.push(fixture);
+    }
+  }
+  return fixtures.sort(fixtureSort);
+};
+//
+export const FILTER_TODAY = 'today';
+export const FILTER_PASSED = 'passed';
+export const FILTER_UPCOMMING = 'upcomming';
+
+export const STATUS_SCHEDUELED = 'SCHEDUELED';
+export const STATUS_POSTPONED = 'POSTPONED';
+export const STATUS_IN_PLAY = 'IN_PLAY';
+export const STATUS_FINISHED = 'FINISHED';
+export const STATUS_CONFIRMED = 'CONFIRMED';
+
+/* helper */
+function mergeGames(state, payload) {
+  if (!state) {
+    return payload;
+  }
+
+  return {
+    ...payload,
+    games: { ...state.games, ...payload.games },
+  };
+}
+const fixtureSort = (a, b) => {
+  let sort = statusValue(b.status) - statusValue(a.status);
+  if (sort === 0) {
+    if (
+      a.status === STATUS_IN_PLAY ||
+      a.status === STATUS_CONFIRMED ||
+      a.status === STATUS_FINISHED
+    ) {
+      sort =
+        moment(b.date, DATETIME_DB).unix() - moment(a.date, DATETIME_DB).unix();
+    } else {
+      sort =
+        moment(a.date, DATETIME_DB).unix() - moment(b.date, DATETIME_DB).unix();
+    }
+  }
+  return sort;
+};
+
+const statusValue = status => {
+  switch (status) {
+    case STATUS_IN_PLAY:
+      return 5;
+    case STATUS_FINISHED:
+      return 4;
+    case STATUS_POSTPONED:
+      return 3;
+    case STATUS_SCHEDUELED:
+      return 2;
+    case STATUS_CONFIRMED:
+      return 1;
+  }
+};

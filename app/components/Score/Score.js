@@ -1,17 +1,11 @@
-// @flow
 import React from 'react';
 import { View } from 'react-native';
 import Text from '../Text';
 
 import styles from './styles';
+import { STATUS_FINISHED, STATUS_IN_PLAY } from '../../redux/modules/fixtures';
 
-type ScoreProps = {
-  setPoints?: Match,
-  goals?: { goals_home?: number, goals_away?: number },
-  style?: number | Object,
-};
-
-export default function Score(props: ScoreProps): ReactElement<any> {
+export default function Score(props) {
   if (props.setPoints) {
     return (
       <View>
@@ -28,9 +22,13 @@ export default function Score(props: ScoreProps): ReactElement<any> {
           center
           small
           style={{ marginTop: 2 }}
-          color={props.setPoints.live ? '#555' : 'transparent'}
+          color={
+            props.status === STATUS_IN_PLAY || props.status === STATUS_FINISHED
+              ? '#555'
+              : 'transparent'
+          }
         >
-          LIVE
+          {`${props.status === STATUS_IN_PLAY ? 'LIVE' : 'Unbestätigt'}`}
         </Text>
       </View>
     );

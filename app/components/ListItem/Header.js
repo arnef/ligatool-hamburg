@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Text from '../Text';
+import { getColor } from '../../redux/modules/user';
 
 class ListItemHeader extends Component {
   render() {
@@ -31,5 +32,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => ({
-  color: state.settings.color,
+  color: getColor(state),
 }))(ListItemHeader);

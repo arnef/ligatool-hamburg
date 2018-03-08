@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import {
   View,
@@ -7,14 +6,7 @@ import {
   Platform,
 } from 'react-native';
 
-type TouchableProps = {
-  children: ReactElement<*>,
-  style?: number | Array<*> | Object,
-  pressColor?: string,
-  button?: boolean,
-};
-
-export default function Touchable(props: TouchableProps): ReactElement<any> {
+export default function Touchable(props) {
   const { style, pressColor, children, ...rest } = props;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {

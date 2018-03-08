@@ -1,6 +1,5 @@
-// @flow
 import axios from 'axios';
-import { URL } from '../config/settings';
+import { URL, ASSOC } from '../config/settings';
 import json_ from 'json_';
 import _ from 'lodash';
 
@@ -13,7 +12,6 @@ const instance = axios.create({
         headers['content-type'].indexOf('application/json') !== -1
       ) {
         data = json_.parse(data);
-        console.log(data);
       }
       return data;
     },
@@ -22,7 +20,7 @@ const instance = axios.create({
 
 instance.interceptors.response.use(response => response.data);
 
-export function setFCM(fcm: string) {
+export function setFCM(fcm) {
   instance.defaults.headers.common['x-fcm'] = fcm;
 }
 
@@ -30,20 +28,20 @@ export function setAuthorization(value) {
   instance.defaults.headers.authorization = `Bearer ${value}`;
 }
 
-export function setSecret(value: string) {
+export function setSecret(value) {
   instance.defaults.headers.common.Secret = value;
 }
 
 // POST /user/auth
 export function authenticate(user) {
-  return instance.post('/user/auth?assoc=tfvhh', user);
+  return instance.post(`/user/auth?assoc=${ASSOC}`, user);
 }
 
 // POST /user/auth/refresh
-export function refreshAuthentication(access_key: string): Promise<*> {
+export function refreshAuthentication(access_key) {
   return new Promise((resolve, reject) => {
     instance
-      .post('/user/auth/refresh?assoc=tfvhh', { access_key })
+      .post(`/user/auth/refresh?assoc=${ASSOC}`, { access_key })
       .then(resp => {
         setSecret(resp.data.token);
         resolve(resp);
@@ -53,7 +51,7 @@ export function refreshAuthentication(access_key: string): Promise<*> {
 }
 
 // DELETE /user/auth
-export function logout(): Promise<*> {
+export function logout() {
   return new Promise((resolve, reject) => {
     instance
       .delete('/user/auth')
@@ -70,7 +68,7 @@ export function logout(): Promise<*> {
 
 // GET /fixtures?assoc=:config.assoc
 export function getMatches() {
-  return instance.get('/fixtures?assoc=tfvhh');
+  return instance.get(`/fixtures?assoc=${ASSOC}`);
 }
 
 // GET /fixtures/{id}
@@ -85,6 +83,7 @@ export function getMatch(id) {
 
 // PATCH /fixtures/:id/games?vid=:fixture.competitionId
 export function patchFixtureGames(fixture, payload) {
+  // instance.defaults.headers.authorization = 'Bearer eyJzdWIiOiIxOTEiLCJleHAiOjE1MjAyMzUwMjh9.ZmQzZDA0ODI3MjI5MTRlYzNmNjg0YzBjNjZhNzczMmE5OGZhMWE0NTk0MzVmZjcwYzhhMzhkYmJhNGY0MWY1Ng=='
   return instance.patch(
     `/fixtures/${fixture.id}/games?vid=${fixture.competitionId}`,
     payload,
@@ -97,7 +96,6 @@ export function putFixtureGames(fixture, games) {
     instance
       .put(`/fixtures/${fixture.id}/games?vid=${fixture.competitionId}`, games)
       .then(resp => {
-        console.log(resp);
         resp.meta.games = _.keyBy(resp.meta.games, 'gameNumbers');
         resolve(resp);
       })
@@ -111,7 +109,6 @@ export function postFixtureGames(fixture) {
     instance
       .post(`/fixtures/${fixture.id}/games?vid=${fixture.competitionId}`)
       .then(resp => {
-        console.log(resp);
         // resp.meta.games = _.keyBy(resp.meta.games, 'gameNumbers');
         resolve(resp);
       })
@@ -128,7 +125,6 @@ export function getFixtureDates(fixture) {
 
 // PUT /fixtures/:id/dates?vid=:fixture.comeptitionId
 export function putFixtureDates(fixture, dates, minDates, maxDates) {
-  console.log(dates, minDates, maxDates);
   return instance.put(
     `/fixtures/${fixture.id}/dates?vid=${fixture.competitionId}`,
     {
@@ -161,7 +157,7 @@ export function getTeamMatches(id) {
 
 // GET /leagues
 export function getLeagues() {
-  return instance.get('/competitions?assoc=tfvhh');
+  return instance.get(`/competitions?assoc=${ASSOC}`);
 }
 
 // GET /leagues/{id}
@@ -180,7 +176,7 @@ export function getLeaguePlayers(id) {
 }
 
 // GET /players/{id}
-export function getPlayer(id: number): Promise<*> {
+export function getPlayer(id) {
   return instance.get(`/players/${id}`);
 }
 
@@ -193,8 +189,7 @@ export function putNotification(
   interimResults,
   finalResults,
 ) {
-  console.log(interimResults, finalResults);
-  return instance.put('/notifications?assoc=tfvhh', {
+  return instance.put(`/notifications?assoc=${ASSOC}`, {
     token,
     enabled,
     sound,
@@ -213,6 +208,14 @@ export function deleteNotificationFixture(fixtureId) {
   return instance.delete(`/notifications/fixture/${fixtureId}`);
 }
 
+// POST /notifications/team/:teamId
+export function postNotificationTeam(teamId) {
+  return instance.post(`/notifications/team/${teamId}`);
+}
+
+export function deleteNotificationTeam(teamId) {
+  return instance.delete(`/notifications/team/${teamId}`);
+}
 // POST /notification
 // export function updateNotifications(
 //   fcm_token: string,
