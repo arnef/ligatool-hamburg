@@ -152,10 +152,7 @@ function NoSets(props) {
         {props.isAdmin &&
           <ListItem
             onPress={insertResult}
-            disabled={
-              false
-              // date.diff(moment(), 'days') > 0
-            }
+            disabled={date.diff(moment(), 'days') > 0}
           >
             <Text style={styles.option}>
               {S.INSERT_SCORE}

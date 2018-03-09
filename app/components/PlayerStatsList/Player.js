@@ -22,9 +22,10 @@ export default function Player(props) {
           <Text style={styles.matches}>{`${props.overallWin +
             props.overallLost +
             props.overallDraw}`}</Text>
-          <Text
-            style={styles.competitiveIndex}
-          >{`${props.competitiveIndex.split('.')[0]}`}</Text>
+          {!!props.competitiveIndex &&
+            <Text
+              style={styles.competitiveIndex}
+            >{`${props.competitiveIndex.split('.')[0]}`}</Text>}
         </View>
         <View style={styles.row}>
           <MatchStatsBar

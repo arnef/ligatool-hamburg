@@ -44,6 +44,7 @@ const strings = {
   SELECT_GROUP: 'Gruppe wählen',
   SELECT_GROUPS: 'Gruppen wählen',
   SELECT_TEAM: 'Team wählen',
+  SELECT_TEAMS: 'Teams wählen',
   LOGIN: 'Anmelden',
   LOGOUT: 'Abmelden',
   LOGIN_INFO:

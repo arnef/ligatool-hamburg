@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import nav from './modules/navigation';
 import settings from './modules/settings';
 import auth from './modules/auth';
-import overview from './modules/overview';
 import myTeam from './modules/myteam';
 import leagues from './modules/leagues';
 import loading from './modules/loading';
@@ -18,7 +17,6 @@ export default combineReducers({
   nav,
   settings,
   auth,
-  overview,
   myTeam,
   leagues,
   loading,

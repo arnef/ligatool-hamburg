@@ -22,6 +22,7 @@ import Leagues from './routes/Leagues';
 import League from './routes/League';
 import Settings from './routes/Settings';
 import SettingsNotification from './routes/SettingsNotification';
+import SettingsNotificationTeams from './routes/SettingsNotification/SubscribeTeams';
 import Search from './routes/Search';
 import SearchHeader from './routes/Search/SearchHeader';
 
@@ -105,6 +106,12 @@ export const SettingStack = StackNavigator(
         title: S.NOTIFICATIONS,
       },
     },
+    [Routes.SETTINGS_NOTIFICATIONS_TEAMS]: {
+      screen: SettingsNotificationTeams,
+      navigationOptions: {
+        title: S.SELECT_TEAMS,
+      },
+    },
   },
   NavHeader,
 );
@@ -163,6 +170,10 @@ export const App =
                 [Routes.SETTINGS_NOTIFICATIONS]: {
                   screen: SettingsNotification,
                   navigationOptions: { title: S.NOTIFICATIONS },
+                },
+                [Routes.SETTINGS_NOTIFICATIONS_TEAMS]: {
+                  screen: SettingsNotificationTeams,
+                  navigationOptions: { title: S.SELECT_TEAMS },
                 },
                 [Routes.MATCH_DATE]: {
                   screen: MatchDate,

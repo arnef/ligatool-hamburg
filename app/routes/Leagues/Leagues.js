@@ -5,6 +5,7 @@ import { Container, ListItem, Text, Separator } from '../../components';
 import * as NavigationActions from '../../redux/modules/navigation';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import Routes from '../../config/routes';
+import { sortCompetition } from '../../Helper';
 
 function LeaguesView(props) {
   return (
@@ -35,7 +36,7 @@ export default connect(
   state => ({
     error: state.loading.error,
     loading: state.loading.list,
-    leagues: sortBy(state.drawer, 'id'),
+    leagues: sortBy(state.drawer, sortCompetition),
   }),
   dispatch => ({
     getLeagues: () => dispatch(LeaguesActions.getLeagues()),

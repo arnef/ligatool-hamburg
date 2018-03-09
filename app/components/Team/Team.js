@@ -31,21 +31,22 @@ function Team(props) {
           {team.contact &&
             <TeamContact color={props.color} contacts={team.contact} />}
           {team.contact && <Separator group />}
-          <ListItem.Group>
-            <ListItem.Header title={S.PLAYER} />
-            {team.player.map((player, index) =>
-              <View key={`player-${player.id}`}>
-                <ListItem
-                // onPress={() => props.navigate(Routes.PLAYER, player)}
-                >
-                  <ListItem.Image url={player.image} />
-                  <Text>{`${player.name} ${player.surname}`}</Text>
-                </ListItem>
-                {index < team.player.length - 1 && <Separator image />}
-              </View>,
-            )}
-          </ListItem.Group>
-          <Separator group />
+          {team.player.length > 0 &&
+            <ListItem.Group>
+              <ListItem.Header title={S.PLAYER} />
+              {team.player.map((player, index) =>
+                <View key={`player-${player.id}`}>
+                  <ListItem
+                  // onPress={() => props.navigate(Routes.PLAYER, player)}
+                  >
+                    <ListItem.Image url={player.image} />
+                    <Text>{`${player.name} ${player.surname}`}</Text>
+                  </ListItem>
+                  {index < team.player.length - 1 && <Separator image />}
+                </View>,
+              )}
+            </ListItem.Group>}
+          {team.player.length > 0 && <Separator group />}
         </View>}
     </Container>
   );

@@ -14,6 +14,8 @@ export const COMPLETE_SETUP = 'ligatool/settings/COMPLETE_SETUP';
 const SET_NOTIFICATION = 'ligatool/settings/SET_NOTIFICATION';
 export const SUBSCRIBE_FIXTURE = 'settings/SUBSCRIBE_FIXTURE';
 export const UNSUBSCRIBE_FIXTURE = 'settings/UNSUBSCRIBE_FIXTURE';
+export const SUBSCRIBE_TEAM = 'settings/SUBSCRIBE_TEAM';
+export const UNSUBSCRIBE_TEAM = 'settings/UNSUBSCRIBE/TEAM';
 
 const defaultState = {
   changed: false,
@@ -113,6 +115,30 @@ export default function reducer(state = defaultState, action) {
           ],
         },
       };
+    case SUBSCRIBE_TEAM:
+      return {
+        ...state,
+        notification: {
+          ...state.notification,
+          teams: [...state.notification.teams, payload.id],
+        },
+      };
+    case UNSUBSCRIBE_TEAM:
+      return {
+        ...state,
+        notification: {
+          ...state.notification,
+          teams: [
+            ...state.notification.teams.slice(
+              0,
+              state.notification.teams.indexOf(payload.id),
+            ),
+            ...state.notification.teams.slice(
+              state.notification.teams.indexOf(payload.id) + 1,
+            ),
+          ],
+        },
+      };
   }
   return state;
 }
@@ -160,6 +186,16 @@ export const unsubscribeFixture = fixtureId => ({
   payload: { fixtureId },
 });
 
+export const subscribeTeam = team => ({
+  type: SUBSCRIBE_TEAM,
+  payload: { id: team.groupId || team.id },
+});
+
+export const unsubscribeTeam = team => ({
+  type: UNSUBSCRIBE_TEAM,
+  payload: { id: team.groupId || team.id },
+});
+
 /* Selectors */
 const get = state => state.settings;
 export const getFCMToken = state => get(state).fcm_token;
@@ -173,3 +209,5 @@ export const notificationFinalResults = state =>
 export const notificationSubscribedForFixture = (state, fixtureId) =>
   get(state).notification.fixtures &&
   get(state).notification.fixtures.indexOf(fixtureId) !== -1;
+export const notificationSubscribedForTeam = (state, team) =>
+  get(state).notification.teams.indexOf(team.groupId || team.id) !== -1;

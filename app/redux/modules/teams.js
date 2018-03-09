@@ -1,8 +1,8 @@
 // Actions
 export const GET_TEAM = 'ligatool/modules/GET_TEAM';
 export const GET_TEAM_DONE = 'ligatool/modules/GET_TEAM_DONE';
-export const GET_TEAM_MATCHES = 'ligatool/modules_GET_TEAM_MATCHES';
-export const GET_TEAM_MATCHES_DONE = 'ligatool/modules_GET_TEAM_MATCHES_DONE';
+export const GET_TEAM_MATCHES = 'ligatool/modules/GET_TEAM_MATCHES';
+export const GET_TEAM_MATCHES_DONE = 'ligatool/modules/GET_TEAM_MATCHES_DONE';
 
 const defaultState = {};
 // Reducer

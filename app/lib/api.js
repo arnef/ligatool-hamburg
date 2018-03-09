@@ -213,6 +213,9 @@ export function postNotificationTeam(teamId) {
   return instance.post(`/notifications/team/${teamId}`);
 }
 
+export function deleteNotificationTeam(teamId) {
+  return instance.delete(`/notifications/team/${teamId}`);
+}
 // POST /notification
 // export function updateNotifications(
 //   fcm_token: string,

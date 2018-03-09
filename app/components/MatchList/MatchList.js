@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Container from '../Container';
 import Text from '../Text';
 import MatchItem from '../MatchItem';
-import { sort } from '../../lib/MatchUtils';
 
 import styles from './styles';
 
@@ -13,13 +12,13 @@ function MatchList(props) {
       error={props.error}
       refreshing={props.refreshing}
       onRefresh={props.onRefresh}
-      dataSource={(props.matches || []).sort(sort(props.data))}
-      keyExtractor={item => `match-${item}`}
+      dataSource={props.matches}
+      keyExtractor={item => `match-${item.id}`}
       ListEmptyComponent={() =>
         <Text secondary style={styles.emptyText}>
           {`${!props.refreshing ? 'Keine Begegnungen' : ''}`}
         </Text>}
-      renderRow={({ item }) => <MatchItem data={props.data[item]} />}
+      renderRow={({ item }) => <MatchItem data={item} />}
     />
   );
 }

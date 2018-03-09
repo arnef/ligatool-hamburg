@@ -67,7 +67,13 @@ class Settings extends React.Component {
                     `Soll das Team "${team.name}" aus deiner Liste entfernt werden?`,
                     [
                       { text: 'Nein' },
-                      { text: 'Ja', onPress: () => this.props.removeTeam(idx) },
+                      {
+                        text: 'Ja',
+                        onPress: () => {
+                          this.props.unsubscribeTeam(team);
+                          this.props.removeTeam(idx);
+                        },
+                      },
                     ],
                     { cancelable: true },
                   );
@@ -155,6 +161,11 @@ class Settings extends React.Component {
           'finalResults',
           !notificationEnabled,
         )}
+        <Separator />
+        <ListItem onPress={this.onSelectGroups} disabled={!notificationEnabled}>
+          <Text style={{ flex: 1 }}>Teams wählen</Text>
+          <ListItem.Icon right name="caret-forward" />
+        </ListItem>
       </ListItem.Group>
     );
   }
@@ -217,6 +228,7 @@ export default connect(
   }),
   dispatch => ({
     removeTeam: index => dispatch(userRemoveTeam(index)),
+    unsubscribeTeam: team => dispatch(SettingsActions.unsubscribeTeam(team)),
     setActiveTeam: index => dispatch(userSetActiveTeam(index)),
     login: () => dispatch(NavigationActions.showLogin()),
     logout: () => dispatch(AuthActions.logout()),

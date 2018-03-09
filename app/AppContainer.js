@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, BackHandler, AppState } from 'react-native';
+import { View, BackHandler, AppState, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import Loading from './modals/LoadingModal';
@@ -7,9 +7,9 @@ import { Root } from './router';
 import { ActionSheet } from './components';
 import NotificationManager from './lib/NotificationManager';
 import * as LoadingActions from './redux/modules/loading';
-
+import { getColor } from './redux/modules/user';
 import { colors } from './config/styles';
-
+import TaskDescriptionAndroid from 'react-native-android-taskdescription';
 class AppContainer extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +47,8 @@ class AppContainer extends Component {
     const { dispatch, nav } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
+        {Platform.OS === 'android' &&
+          <TaskDescriptionAndroid backgroundColor={this.props.color} />}
         <ActionSheet
           ref={c => {
             ActionSheet.actionsheetInstance = c;
@@ -69,4 +71,5 @@ export default connect(state => ({
   team: state.settings.team,
   auth: state.auth,
   nav: state.nav.navigation,
+  color: getColor(state),
 }))(AppContainer);

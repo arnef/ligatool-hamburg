@@ -12,7 +12,7 @@ import styles from './styles';
 function Table(props) {
   function onPress(team) {
     props.navigate(Routes.TEAM, {
-      team: { id: team.teamId },
+      team: { id: team.teamId, groupId: team.teamGroupId },
       title: team.teamName,
     });
   }
@@ -53,6 +53,17 @@ function Table(props) {
           <TableItem details={showDetails} data={item} onPress={onPress} />}
         keyExtractor={(item, idx) => `${item.rank}-${idx}`}
         ItemSeparatorComponent={() => <Separator table image />}
+        ListEmptyComponent={
+          <Text
+            secondary
+            style={{
+              padding: 16,
+              textAlign: 'center',
+            }}
+          >
+            {`${!props.loading ? 'Keine Tabelle' : ''}`}
+          </Text>
+        }
         dataSource={table}
       />
     </View>

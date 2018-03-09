@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { sortBy } from 'lodash';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import { Container, ListItem, Text, Separator } from '../../components';
+import { sortCompetition } from '../../Helper';
 
 class SelectGroupView extends React.Component {
   constructor(props) {
@@ -52,7 +53,7 @@ export default connect(
   state => ({
     error: state.loading.error,
     fetching: state.loading.list,
-    leagues: sortBy(state.drawer, 'name'),
+    leagues: sortBy(state.drawer, sortCompetition),
   }),
   dispatch => ({
     getRankings: () => dispatch(LeaguesActions.getLeagues()),

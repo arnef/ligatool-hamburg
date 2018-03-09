@@ -3,7 +3,7 @@ import { defaultColor } from '../../config/settings';
 const SET_API_KEY = 'user/ADD_API_KEY';
 const SET_TOKEN = 'user/SET_TOKEN';
 const USER_ADD_TEAM = 'user/ADD_TEAM';
-const USER_REMOVE_TEAM = 'user/REMOVE_TEAM';
+export const USER_REMOVE_TEAM = 'user/REMOVE_TEAM';
 const SET_ACTIVE_TEAM = 'user/SET_ACTIVE_TEAM';
 
 export const userSetApiKey = apiKey => ({
@@ -81,6 +81,7 @@ export default function reducer(state = defaultState, action) {
           ...state.teams,
           {
             id: payload.team.id,
+            groupId: payload.team.groupId,
             name: payload.team.name,
             emblemUrl: payload.team.emblemUrl,
             color: payload.team.color,
@@ -130,9 +131,26 @@ export const getColor = state =>
     ? get(state).teams[get(state).active].color
     : defaultColor;
 
-export const getUserTeams = state => get(state).teams;
+export const getUserTeams = state => (get(state) ? get(state).teams : null);
 
 export const getActiveTeam = state =>
   get(state).active > -1 && get(state).teams[get(state).active]
     ? get(state).teams[get(state).active]
     : null;
+
+export const getActiveTeamGroup = state => {
+  if (get(state).active > -1 && get(state).teams[get(state).active]) {
+    const team = get(state).teams[get(state).active];
+    if (team.id && team.groupId && team.groupId.indexOf('-') === -1) {
+      const prefix = team.id.split('-', 1);
+      return `${prefix}-${team.groupId}`;
+    } else {
+      return team.groupId || team.id;
+    }
+  }
+
+  return null;
+};
+// get(state).active > -1 && get(state).teams[get(state).active]
+//   ? (get(state).teams[get(state).active].groupId || get(state).teams[get(state).active].id)
+//   : null;

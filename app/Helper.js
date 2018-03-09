@@ -1,3 +1,5 @@
+import { ASSOC } from './config/settings';
+
 /**
  * Compare date day of two date.
  * 0 = same day
@@ -7,25 +9,25 @@
  * @param  {Date} date2
  * @return {number}
  */
-export function compareDays(d1, d2) {
-  const date1 = new Date(d1);
-  const date2 = new Date(d2);
-  const day1 = parseInt(
-    date1.getFullYear() +
-      ('0' + date1.getMonth()).slice(-2) +
-      ('0' + date1.getDate()).slice(-2),
-    10,
-  );
-  const day2 = parseInt(
-    date2.getFullYear() +
-      ('0' + date2.getMonth()).slice(-2) +
-      ('0' + date2.getDate()).slice(-2),
-    10,
-  );
-  const diff = day1 - day2;
+// export function compareDays(d1, d2) {
+//   const date1 = new Date(d1);
+//   const date2 = new Date(d2);
+//   const day1 = parseInt(
+//     date1.getFullYear() +
+//       ('0' + date1.getMonth()).slice(-2) +
+//       ('0' + date1.getDate()).slice(-2),
+//     10,
+//   );
+//   const day2 = parseInt(
+//     date2.getFullYear() +
+//       ('0' + date2.getMonth()).slice(-2) +
+//       ('0' + date2.getDate()).slice(-2),
+//     10,
+//   );
+//   const diff = day1 - day2;
 
-  return diff;
-}
+//   return diff;
+// }
 
 export function darken(color, amt) {
   let r = parseInt(color.substring(1, 3), 16);
@@ -44,19 +46,40 @@ export function getMatchDays(matches) {
     matchdays: {},
     selected: null,
   };
-
-  for (let match of matches) {
-    if (!matchDays.matchdays[match.matchday]) {
-      matchDays.matchdays[match.matchday] = [];
+  if (matches.length > 0) {
+    for (let match of matches) {
+      if (!matchDays.matchdays[match.matchday]) {
+        matchDays.matchdays[match.matchday] = [];
+      }
+      matchDays.matchdays[match.matchday].push(`${match.id}`);
+      if (!match.result && !matchDays.selected) {
+        matchDays.selected = match.matchday;
+      }
     }
-    matchDays.matchdays[match.matchday].push(`${match.id}`);
-    if (!match.set_points && !matchDays.selected) {
-      matchDays.selected = match.matchday;
+    if (!matchDays.selected) {
+      matchDays.selected = matches[matches.length - 1].matchday;
     }
-  }
-  if (!matchDays.selected) {
-    matchDays.selected = matches[matches.length - 1].matchday;
   }
 
   return { match_days: matchDays.matchdays, selected: matchDays.selected };
 }
+
+export const sortCompetition = c => {
+  if (ASSOC.indexOf('dtfb') !== -1) {
+    if (c.name.indexOf('Senioren') !== -1) {
+      return 10;
+    } else if (c.name.indexOf('Damen') !== -1) {
+      return 9;
+    }
+
+    if (c.name.indexOf('2.') !== -1) {
+      return 8;
+    }
+    if (c.name.indexOf('Vorrunde') !== -1) {
+      return 5;
+    }
+
+    return 0;
+  }
+  return c.name;
+};

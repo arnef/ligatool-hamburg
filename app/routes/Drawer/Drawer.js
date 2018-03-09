@@ -11,6 +11,7 @@ import DrawerItemLeague from './DrawerItemLeague';
 
 import S from '../../lib/strings';
 import { getActiveTeam } from '../../redux/modules/user';
+import { sortCompetition } from '../../Helper';
 
 function Drawer(props) {
   return (
@@ -54,5 +55,5 @@ function Drawer(props) {
 
 export default connect(state => ({
   team: getActiveTeam(state),
-  leagues: sortBy(state.drawer, 'name'),
+  leagues: sortBy(state.drawer, sortCompetition),
 }))(Drawer);
