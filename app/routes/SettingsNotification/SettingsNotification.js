@@ -58,13 +58,14 @@ class SettingsNotification extends React.Component {
           }}
           ItemSeparatorComponent={Separator}
         />
-        {isSetup &&
+        {isSetup && (
           <Button
             square
             onPress={this.props.completeSetup}
             title="Einrichtug abschließen"
             padding={12}
-          />}
+          />
+        )}
       </View>
     );
   }

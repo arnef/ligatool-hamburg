@@ -75,9 +75,7 @@ class Search extends React.Component {
     if (this.props.message) {
       return (
         <View style={styles.message}>
-          <Text>
-            {this.props.message}
-          </Text>
+          <Text>{this.props.message}</Text>
         </View>
       );
     }
@@ -89,9 +87,7 @@ class Search extends React.Component {
       return (
         <ListItem onPress={() => this.openTeam(item)}>
           <TeamLogo team={item} />
-          <Text>
-            {item.name}
-          </Text>
+          <Text>{item.name}</Text>
         </ListItem>
       );
     } else {
@@ -127,16 +123,22 @@ class Search extends React.Component {
               placeholder={S.SEARCH_PLACEHOLDER}
               onChangeText={query => this.setState({ query })}
             />
-            {this.props.loading &&
+            {this.props.loading && (
               <ActivityIndicator
                 color={this.props.color}
                 style={styles.loading}
-              />}
+              />
+            )}
             {!this.props.loading &&
-              !!this.state.query &&
-              <Touchable onPress={this.clear}>
-                <Icon name="close-circle" size={22} style={styles.clearIcon} />
-              </Touchable>}
+              !!this.state.query && (
+                <Touchable onPress={this.clear}>
+                  <Icon
+                    name="close-circle"
+                    size={22}
+                    style={styles.clearIcon}
+                  />
+                </Touchable>
+              )}
           </View>
           <Touchable light onPress={this.onSearch} style={styles.iconContainer}>
             <Icon name="search" size={26} color="#fff" />

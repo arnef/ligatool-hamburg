@@ -16,18 +16,18 @@ function LeaguesView(props) {
       keyExtractor={item => `${item.id}`}
       dataSource={props.leagues}
       ItemSeparatorComponent={Separator}
-      renderRow={({ item }) =>
+      renderRow={({ item }) => (
         <ListItem
           onPress={() =>
             props.navigate(!item.standing ? Routes.LEAGUE_CUP : Routes.LEAGUE, {
               id: item.id,
               title: item.name,
-            })}
+            })
+          }
         >
-          <Text>
-            {item.name}
-          </Text>
-        </ListItem>}
+          <Text>{item.name}</Text>
+        </ListItem>
+      )}
     />
   );
 }

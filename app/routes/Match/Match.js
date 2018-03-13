@@ -141,15 +141,17 @@ class Match extends React.Component {
               : modus.lineUp[modus.fixtureModus]
           }
           keyExtractor={(item, idx) => `game-${idx}`}
-          ListEmptyComponent={() => (
-            <NoSets
-              match={match}
-              isAdmin={isAdmin}
-              firstFixture={this.props.firstFixture}
-              player={this.props.player}
-              venue={this.props.venue}
-            />
-          )}
+          ListEmptyComponent={() =>
+            this.props.loading ? null : (
+              <NoSets
+                match={match}
+                isAdmin={isAdmin}
+                firstFixture={this.props.firstFixture}
+                player={this.props.player}
+                venue={this.props.venue}
+              />
+            )
+          }
         />
         {isAdmin &&
           showButton && (

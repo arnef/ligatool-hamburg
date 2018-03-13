@@ -18,14 +18,16 @@ function Drawer(props) {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: 'drawer' }} style={styles.image} />
-        {!!props.team &&
+        {!!props.team && (
           <View style={styles.teamContainer}>
-            {!!props.team.emblemUrl &&
-              <Image url={props.team.emblemUrl} style={styles.teamLogo} />}
+            {!!props.team.emblemUrl && (
+              <Image url={props.team.emblemUrl} style={styles.teamLogo} />
+            )}
             <Text style={styles.teamName} numberOfLines={2}>
               {props.team.name}
             </Text>
-          </View>}
+          </View>
+        )}
       </View>
       <Container>
         <DrawerItem
@@ -39,9 +41,9 @@ function Drawer(props) {
           name={props.team ? S.MY_TEAM : S.SELECT_TEAM}
         />
         <Separator full />
-        {props.leagues.map(league =>
-          <DrawerItemLeague key={`league-${league.id}`} league={league} />,
-        )}
+        {props.leagues.map(league => (
+          <DrawerItemLeague key={`league-${league.id}`} league={league} />
+        ))}
         <Separator full />
         <DrawerItem
           routeName={Routes.SETTINGS}

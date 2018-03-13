@@ -19,7 +19,7 @@ export default function TeamContact(props) {
   return (
     <ListItem.Group>
       <ListItem.Header title={S.CONTACT} />
-      {props.contacts.map((contact, index) =>
+      {props.contacts.map((contact, index) => (
         <View key={`contact-${index}`}>
           <ListItem>
             <Touchable
@@ -27,14 +27,15 @@ export default function TeamContact(props) {
               onPress={() =>
                 contact.phoneNumber
                   ? call(contact.phoneNumber)
-                  : mail(contact.email)}
+                  : mail(contact.email)
+              }
             >
               <View
                 style={{ flexDirection: 'row', alignItems: 'center', flex: 0 }}
               >
-                <Text
-                  style={{ flex: 1 }}
-                >{`${contact.name} ${contact.surname}`}</Text>
+                <Text style={{ flex: 1 }}>{`${contact.name} ${
+                  contact.surname
+                }`}</Text>
                 <Icon
                   color={props.color}
                   name={contact.phoneNumber ? 'call' : 'mail'}
@@ -42,17 +43,18 @@ export default function TeamContact(props) {
                 />
               </View>
             </Touchable>
-            {!!contact.phoneNumber &&
+            {!!contact.phoneNumber && (
               <Touchable
                 onPress={() => mail(contact.email)}
                 style={{ paddingLeft: 16 }}
               >
                 <Icon color={props.color} name="mail" size={32} />
-              </Touchable>}
+              </Touchable>
+            )}
           </ListItem>
           {index < props.contacts.length - 1 && <Separator />}
-        </View>,
-      )}
+        </View>
+      ))}
     </ListItem.Group>
   );
 }

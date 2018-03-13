@@ -13,15 +13,16 @@ import {
 import S from '../../lib/strings';
 import styles from './styles';
 import * as NavigationActions from '../../redux/modules/navigation';
-// import Routes from '../../config/routes';
-import { DATETIME_DB, DATETIME_FORMAT } from '../../config/settings';
+import Routes from '../../config/routes';
+import { DATETIME_DB, DATETIME_FORMAT, ASSOC } from '../../config/settings';
 import { setFixtureStatusInPlay } from '../../redux/modules/fixtures';
 import { getColor } from '../../redux/modules/user';
 
 function NoSets(props) {
   function onOpenVenue() {
-    const address = `${props.venue.street}, ${props.venue.zipCode} ${props.venue
-      .city}`;
+    const address = `${props.venue.street}, ${props.venue.zipCode} ${
+      props.venue.city
+    }`;
     const uri =
       Platform.OS === 'ios'
         ? 'http://maps.apple.com/?address='
@@ -36,9 +37,9 @@ function NoSets(props) {
     props.insertResult(props.match.id);
   }
 
-  // function openDateChange() {
-  //   props.navigate(Routes.MATCH_DATE, { id: props.match.id });
-  // }
+  function openDateChange() {
+    props.navigate(Routes.MATCH_DATE, { id: props.match.id });
+  }
 
   function renderPlayer() {
     const { player } = props;
@@ -52,7 +53,7 @@ function NoSets(props) {
       childs.push(
         <View style={styles.playerRow} key={`player-${i}`}>
           <View style={styles.player}>
-            {playerHome &&
+            {playerHome && (
               <Card
               // onPress={() => {
               //   props.navigate(Routes.PLAYER, playerHome);
@@ -60,14 +61,15 @@ function NoSets(props) {
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerHome.image} size={90} />
-                  <Text
-                    style={styles.playerText}
-                  >{`${playerHome.name} ${playerHome.surname}`}</Text>
+                  <Text style={styles.playerText}>{`${playerHome.name} ${
+                    playerHome.surname
+                  }`}</Text>
                 </View>
-              </Card>}
+              </Card>
+            )}
           </View>
           <View style={styles.player}>
-            {playerAway &&
+            {playerAway && (
               <Card
               // onPress={() => {
               //   props.navigate(Routes.PLAYER, playerAway);
@@ -75,11 +77,12 @@ function NoSets(props) {
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerAway.image} size={90} />
-                  <Text
-                    style={styles.playerText}
-                  >{`${playerAway.name} ${playerAway.surname}`}</Text>
+                  <Text style={styles.playerText}>{`${playerAway.name} ${
+                    playerAway.surname
+                  }`}</Text>
                 </View>
-              </Card>}
+              </Card>
+            )}
           </View>
         </View>,
       );
@@ -95,30 +98,33 @@ function NoSets(props) {
         <View style={styles.teamInfo}>
           <TeamLogo team={props.match.homeTeamLogo} size={90} />
         </View>
-        {/* {!props.firstFixture && */}
-        <Text style={styles.teamVs} bold secondary>
-          vs
-        </Text>
-        {/* } */}
-        {/* {props.firstFixture&&
+        {!props.firstFixture && (
+          <Text style={styles.teamVs} bold secondary>
+            vs
+          </Text>
+        )}
+        {props.firstFixture && (
           <View style={styles.firstMatch}>
             <Text small secondary bold>
               {S.FIRST_MATCH}
             </Text>
             <View style={styles.firstMatchResult}>
               <Text style={styles.textFirstMatchResult}>
-                {`${props.firstFixture.setPointsAwayTeam}:${props.firstFixture
-                  .setPointsHomeTeam}`}
+                {`${props.firstFixture.setPointsAwayTeam}:${
+                  props.firstFixture.setPointsHomeTeam
+                }`}
               </Text>
               <Text style={styles.textFirstMatchResult}>
-                {`(${props.firstFixture.goalsAwayTeam}:${props.firstFixture
-                  .goalsHomeTeam})`}
+                {`(${props.firstFixture.goalsAwayTeam}:${
+                  props.firstFixture.goalsHomeTeam
+                })`}
               </Text>
             </View>
             <Text small secondary bold>
               {' '}
             </Text>
-          </View>} */}
+          </View>
+        )}
         <View style={styles.teamInfo}>
           <TeamLogo team={props.match.awayTeamLogo} size={90} />
         </View>
@@ -126,39 +132,40 @@ function NoSets(props) {
 
       <ListItem.Group>
         <ListItem.Header
-          title={`${props.match.status == 'POSTPONED'
-            ? S.SO_FAR
-            : ''}${date.format(DATETIME_FORMAT)}`}
+          title={`${
+            props.match.status == 'POSTPONED' ? S.SO_FAR : ''
+          }${date.format(DATETIME_FORMAT)}`}
         />
         {props.venue &&
-          !!props.venue.name &&
-          <ListItem onPress={onOpenVenue}>
-            <View style={styles.option}>
-              <Text>{`${props.venue.name}`}</Text>
-              <Text>{`${props.venue.street}, ${props.venue.zipCode} ${props
-                .venue.city}`}</Text>
-            </View>
-            <ListItem.Icon right color={props.color} name="pin" />
-          </ListItem>}
+          !!props.venue.name && (
+            <ListItem onPress={onOpenVenue}>
+              <View style={styles.option}>
+                <Text>{`${props.venue.name}`}</Text>
+                <Text>{`${props.venue.street}, ${props.venue.zipCode} ${
+                  props.venue.city
+                }`}</Text>
+              </View>
+              <ListItem.Icon right color={props.color} name="pin" />
+            </ListItem>
+          )}
         {props.isAdmin && <Separator />}
-        {/* {props.isAdmin &&
-          <ListItem onPress={openDateChange}>
-            <Text style={styles.option}>
-              {S.CHANGE_MATCH_DATETIME}
-            </Text>
-            <ListItem.Icon right color={props.color} name="calendar" />
-          </ListItem>}
-        {props.isAdmin && <Separator />} */}
         {props.isAdmin &&
+          ASSOC.indexOf('tfvhh') !== -1 && (
+            <ListItem onPress={openDateChange}>
+              <Text style={styles.option}>{S.CHANGE_MATCH_DATETIME}</Text>
+              <ListItem.Icon right color={props.color} name="calendar" />
+            </ListItem>
+          )}
+        {props.isAdmin && ASSOC.indexOf('tfvhh') !== -1 && <Separator />}
+        {props.isAdmin && (
           <ListItem
             onPress={insertResult}
             disabled={date.diff(moment(), 'days') > 0}
           >
-            <Text style={styles.option}>
-              {S.INSERT_SCORE}
-            </Text>
+            <Text style={styles.option}>{S.INSERT_SCORE}</Text>
             <ListItem.Icon right color={props.color} name="create" />
-          </ListItem>}
+          </ListItem>
+        )}
       </ListItem.Group>
       {renderPlayer()}
     </View>

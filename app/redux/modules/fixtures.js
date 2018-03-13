@@ -347,8 +347,6 @@ export const getFixturePlayerList = (state, id, key) =>
     : [];
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
 export const getFixtureByFilter = (state, filter) => {
-  // const fixtures = [];
-  // const overview = { data: {}, sections: [] };
   const sections = {};
   const today = moment();
   for (let id in get(state).data) {
@@ -359,11 +357,6 @@ export const getFixtureByFilter = (state, filter) => {
     const key = moment(fixture.date, DATETIME_DB).format(DATE_FORMAT);
     if (filter === FILTER_TODAY) {
       if (fixture.status === STATUS_IN_PLAY || diff === 0) {
-        // if (!overview.data[key]) {
-        //   overview.data[key] = [];
-        //   overview.sections.push(key);
-        // }
-        // overview.data[key].push(fixture);
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
         }
@@ -375,11 +368,6 @@ export const getFixtureByFilter = (state, filter) => {
           fixture.status === STATUS_FINISHED) &&
         (diff > 0 && diff < 15)
       ) {
-        // if (!overview.data[key]) {
-        //   overview.data[key] = [];
-        //   overview.sections.push(key);
-        // }
-        // overview.data[key].push(fixture);
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
         }
@@ -392,11 +380,6 @@ export const getFixtureByFilter = (state, filter) => {
         diff < 0 &&
         diff > -15
       ) {
-        // if (!overview.data[key]) {
-        //   overview.data[key] = [];
-        //   overview.sections.push(key);
-        // }
-        // overview.data[key].push(fixture);
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
         }

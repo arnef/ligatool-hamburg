@@ -63,7 +63,10 @@ const ToggleNotification = connect(
       notificationEnabled(state) &&
       getFixture(state, props.fixtureId).status !== 'FINISHED' &&
       getFixture(state, props.fixtureId).status !== 'CONFIRMED',
-    enabled: notificationSubscribedForFixture(state, props.fixtureId),
+    enabled: notificationSubscribedForFixture(
+      state,
+      getFixture(state, props.fixtureId),
+    ),
   }),
   (dispatch, props) => ({
     subscribe: () => dispatch(subscribeFixture(props.fixtureId)),

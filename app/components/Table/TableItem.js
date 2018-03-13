@@ -8,9 +8,7 @@ export default function TableItem(props) {
   const { details } = props;
   return (
     <ListItem onPress={() => props.onPress(props.data)}>
-      <Text style={styles.position}>
-        {`${props.data.rank}`}
-      </Text>
+      <Text style={styles.position}>{`${props.data.rank}`}</Text>
       <View style={styles.teamLogo}>
         <TeamLogo team={props.data.teamEmblemUrl} />
       </View>
@@ -19,24 +17,22 @@ export default function TableItem(props) {
           <Text style={styles.teamName} numberOfLines={1}>
             {props.data.teamName}
           </Text>
-          {details &&
-            <Text style={styles.matches}>
-              {`${props.data.playedGames}`}
-            </Text>}
-          {details &&
+          {details && (
+            <Text style={styles.matches}>{`${props.data.playedGames}`}</Text>
+          )}
+          {details && (
             <Text style={styles.setPoints}>
               {`${props.data.setPointsDifference}`}
-            </Text>}
-          {details &&
-            <Text style={styles.goals}>
-              {`${props.data.goalsDifference}`}
-            </Text>}
-          {details &&
-            <Text style={styles.points}>
-              {`${props.data.points}`}
-            </Text>}
+            </Text>
+          )}
+          {details && (
+            <Text style={styles.goals}>{`${props.data.goalsDifference}`}</Text>
+          )}
+          {details && (
+            <Text style={styles.points}>{`${props.data.points}`}</Text>
+          )}
         </View>
-        {details &&
+        {details && (
           <View style={styles.row}>
             <MatchStatsBar
               small
@@ -47,7 +43,8 @@ export default function TableItem(props) {
                 matches: props.data.playedGames,
               }}
             />
-          </View>}
+          </View>
+        )}
       </View>
     </ListItem>
   );

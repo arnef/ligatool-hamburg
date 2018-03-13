@@ -18,6 +18,7 @@ import {
 import styles from './styles';
 import { getColor } from '../../redux/modules/user';
 import { getFixturesByCompetition } from '../../redux/modules/fixtures';
+import { sortBy } from 'lodash';
 
 class SelectableMatchList extends React.Component {
   constructor(props) {
@@ -113,7 +114,7 @@ const fixturesByMatchDate = (state, props) => {
       data.selected = fixture.matchday;
     }
   }
-  data.matchdays.sort();
+  data.matchdays = sortBy(data.matchdays, i => parseInt(i));
   if (!data.selected) {
     data.selected = data.matchdays[data.matchdays.length - 1];
   }

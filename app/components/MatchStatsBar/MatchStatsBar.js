@@ -54,16 +54,19 @@ export default function MatchStatsBar(props) {
   return (
     <View style={styles.barContainer}>
       <View style={wins}>
-        {props.stats.wins > 0 &&
-          <Text style={styles.text}>{`${props.stats.wins}`}</Text>}
+        {props.stats.wins > 0 && (
+          <Text style={styles.text}>{`${props.stats.wins}`}</Text>
+        )}
       </View>
       <View style={draws}>
-        {props.stats.draws > 0 &&
-          <Text style={styles.text}>{`${props.stats.draws}`}</Text>}
+        {props.stats.draws > 0 && (
+          <Text style={styles.text}>{`${props.stats.draws}`}</Text>
+        )}
       </View>
       <View style={lost}>
-        {props.stats.lost > 0 &&
-          <Text style={styles.text}>{`${props.stats.lost}`}</Text>}
+        {props.stats.lost > 0 && (
+          <Text style={styles.text}>{`${props.stats.lost}`}</Text>
+        )}
       </View>
     </View>
   );

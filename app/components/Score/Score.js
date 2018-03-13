@@ -11,10 +11,13 @@ export default function Score(props) {
       <View>
         <View style={[styles.score, { marginTop: 8 }]}>
           <Text style={styles.scoreText}>
-            {`${props.setPoints.result
-              ? `${props.setPoints.result.setPointsHomeTeam}:${props.setPoints
-                  .result.setPointsAwayTeam}`
-              : '-:-'}`}
+            {`${
+              props.setPoints.result
+                ? `${props.setPoints.result.setPointsHomeTeam}:${
+                    props.setPoints.result.setPointsAwayTeam
+                  }`
+                : '-:-'
+            }`}
           </Text>
         </View>
         <Text

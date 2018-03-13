@@ -16,6 +16,10 @@ export const SUBSCRIBE_FIXTURE = 'settings/SUBSCRIBE_FIXTURE';
 export const UNSUBSCRIBE_FIXTURE = 'settings/UNSUBSCRIBE_FIXTURE';
 export const SUBSCRIBE_TEAM = 'settings/SUBSCRIBE_TEAM';
 export const UNSUBSCRIBE_TEAM = 'settings/UNSUBSCRIBE/TEAM';
+export const DISABLE_NOTIFICATION_FIXTURE =
+  'settings/DISABLE_NOTIFICATION_FIXTURE';
+export const ENABLE_NOTIFICATION_FOR_FIXTURE =
+  'settings/ENABLE_NOTIFICATION_FOR_FIXTURE';
 
 const defaultState = {
   changed: false,
@@ -26,7 +30,8 @@ const defaultState = {
     interimResults: true,
     finalResults: true,
     fixtures: [],
-    leagues: {},
+    teams: [],
+    disabledFixtures: [],
   },
   fcm_token: null,
   team: null,
@@ -99,6 +104,17 @@ export default function reducer(state = defaultState, action) {
           fixtures: [...state.notification.fixtures, payload.fixtureId],
         },
       };
+    case DISABLE_NOTIFICATION_FIXTURE:
+      return {
+        ...state,
+        notification: {
+          ...state.notification,
+          disabledFixtures: [
+            ...state.notification.disabledFixtures,
+            payload.fixtureId,
+          ],
+        },
+      };
     case UNSUBSCRIBE_FIXTURE:
       return {
         ...state,
@@ -111,6 +127,23 @@ export default function reducer(state = defaultState, action) {
             ),
             ...state.notification.fixtures.slice(
               state.notification.fixtures.indexOf(payload.fixtureId) + 1,
+            ),
+          ],
+        },
+      };
+    case ENABLE_NOTIFICATION_FOR_FIXTURE:
+      return {
+        ...state,
+        notification: {
+          ...state.notification,
+          disabledFixtures: [
+            ...state.notification.disabledFixtures.slice(
+              0,
+              state.notification.disabledFixtures.indexOf(payload.fixtureId),
+            ),
+            ...state.notification.disabledFixtures.slice(
+              state.notification.disabledFixtures.indexOf(payload.fixtureId) +
+                1,
             ),
           ],
         },
@@ -186,6 +219,16 @@ export const unsubscribeFixture = fixtureId => ({
   payload: { fixtureId },
 });
 
+export const disableNotificationFixture = fixtureId => ({
+  type: DISABLE_NOTIFICATION_FIXTURE,
+  payload: { fixtureId },
+});
+
+export const enableNotificationFixture = fixtureId => ({
+  type: ENABLE_NOTIFICATION_FOR_FIXTURE,
+  payload: { fixtureId },
+});
+
 export const subscribeTeam = team => ({
   type: SUBSCRIBE_TEAM,
   payload: { id: team.groupId || team.id },
@@ -199,15 +242,37 @@ export const unsubscribeTeam = team => ({
 /* Selectors */
 const get = state => state.settings;
 export const getFCMToken = state => get(state).fcm_token;
+
 export const notificationEnabled = state =>
   get(state).fcm_token && get(state).notification.enabled;
+
 export const notificationSound = state => get(state).notification.sound;
+
 export const notificationInterimResults = state =>
   get(state).notification.interimResults;
+
 export const notificationFinalResults = state =>
   get(state).notification.finalResults;
-export const notificationSubscribedForFixture = (state, fixtureId) =>
+
+export const notificationSubscribedForFixtureByFixture = (state, fixture) =>
   get(state).notification.fixtures &&
-  get(state).notification.fixtures.indexOf(fixtureId) !== -1;
+  get(state).notification.fixtures.indexOf(fixture.id) !== -1;
+
+export const notificationDisabledFixture = (state, fixtureId) =>
+  get(state).notification.disabledFixtures &&
+  get(state).notification.disabledFixtures.indexOf(fixtureId) !== -1;
+
+export const notificationSubscribedForFixture = (state, fixture) =>
+  (notificationSubscribedForFixtureByFixture(state, fixture) ||
+    notificationSubscribedForFixtureByTeam(state, fixture)) &&
+  !notificationDisabledFixture(state, fixture.id);
+
+export const notificationSubscribedForFixtureByTeam = (state, fixture) =>
+  get(state).notification.teams &&
+  (get(state).notification.teams.indexOf(fixture.homeTeamId) !== -1 ||
+    get(state).notification.teams.indexOf(fixture.awayTeamId) !== -1 ||
+    get(state).notification.teams.indexOf(fixture.homeTeamGroupId) !== -1 ||
+    get(state).notification.teams.indexOf(fixture.awayTeamGroupId) !== -1);
+
 export const notificationSubscribedForTeam = (state, team) =>
   get(state).notification.teams.indexOf(team.groupId || team.id) !== -1;

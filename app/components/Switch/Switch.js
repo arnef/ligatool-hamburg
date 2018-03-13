@@ -13,18 +13,14 @@ function Switch(props) {
   if (Platform.OS === 'android') {
     return (
       <Touchable style={styles.container} onPress={onValueChange}>
-        <Text style={styles.title}>
-          {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
         <RNSwitch {...rest} onValueChange={onValueChange} />
       </Touchable>
     ); // onTintColor='#ccc' thumbTintColor={color} />
   } else {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>
-          {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
         <RNSwitch {...rest} onValueChange={onValueChange} onTintColor={color} />
       </View>
     );

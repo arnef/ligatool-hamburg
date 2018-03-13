@@ -724,7 +724,11 @@ function* subscribeTeamSaga(action) {
 
 function* subscribeFixtureSaga(action) {
   const { fixtureId } = action.payload;
+  const state = yield select();
   try {
+    if (SettingsActions.notificationDisabledFixture(state, fixtureId)) {
+      yield put(SettingsActions.enableNotificationFixture(fixtureId));
+    }
     yield call(api.postNotificationFixture, fixtureId);
   } catch (ex) {
     console.warn(ex);
@@ -733,7 +737,14 @@ function* subscribeFixtureSaga(action) {
 
 function* unsubscribeFixtureSaga(action) {
   const { fixtureId } = action.payload;
+  const state = yield select();
+  const fixture = getFixture(state, fixtureId);
   try {
+    if (
+      SettingsActions.notificationSubscribedForFixtureByTeam(state, fixture)
+    ) {
+      yield put(SettingsActions.disableNotificationFixture(fixtureId));
+    }
     yield call(api.deleteNotificationFixture, fixtureId);
   } catch (ex) {
     console.warn(ex);

@@ -14,10 +14,11 @@ function MatchList(props) {
       onRefresh={props.onRefresh}
       dataSource={props.matches}
       keyExtractor={item => `match-${item.id}`}
-      ListEmptyComponent={() =>
+      ListEmptyComponent={() => (
         <Text secondary style={styles.emptyText}>
           {`${!props.refreshing ? 'Keine Begegnungen' : ''}`}
-        </Text>}
+        </Text>
+      )}
       renderRow={({ item }) => <MatchItem data={item} />}
     />
   );

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, BackHandler, AppState, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
-import {  createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
 import Loading from './modals/LoadingModal';
 import { Root } from './router';
@@ -72,7 +72,6 @@ class AppContainer extends Component {
     );
   }
 }
-
 
 export default connect(state => ({
   loading: state.loading.modal,
