@@ -3,7 +3,10 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, StaticListHeader, Text, Separator } from '../../components';
 import * as LeaguesActions from '../../redux/modules/leagues';
-import * as NavigationActions from '../../redux/modules/navigation';
+import {
+  getNavigationStateParams,
+  navigate,
+} from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
 import S from '../../lib/strings';
 import TableItem from './TableItem';
@@ -16,15 +19,17 @@ function Table(props) {
       title: team.teamName,
     });
   }
-  const table = props.leagues[props.navigation.state.params.id]
-    ? props.leagues[props.navigation.state.params.id].table || []
+  const table = props.leagues[getNavigationStateParams(props.navigation).id]
+    ? props.leagues[getNavigationStateParams(props.navigation).id].table || []
     : [];
-  const showDetails = props.leagues[props.navigation.state.params.id]
-    ? props.leagues[props.navigation.state.params.id].standing > 0
+  const showDetails = props.leagues[
+    getNavigationStateParams(props.navigation).id
+  ]
+    ? props.leagues[getNavigationStateParams(props.navigation).id].standing > 0
     : false;
   return (
     <View style={styles.container}>
-      {showDetails &&
+      {showDetails && (
         <StaticListHeader>
           <View style={styles.header}>
             <Text style={styles.position} />
@@ -44,13 +49,15 @@ function Table(props) {
               {S.POINTS_SHORT}
             </Text>
           </View>
-        </StaticListHeader>}
+        </StaticListHeader>
+      )}
       <Container
         error={props.error}
         refreshing={props.loading}
-        onRefresh={() => props.getTable(props.navigation.state.params.id)}
-        renderRow={({ item }) =>
-          <TableItem details={showDetails} data={item} onPress={onPress} />}
+        onRefresh={props.getTable}
+        renderRow={({ item }) => (
+          <TableItem details={showDetails} data={item} onPress={onPress} />
+        )}
         keyExtractor={(item, idx) => `${item.rank}-${idx}`}
         ItemSeparatorComponent={() => <Separator table image />}
         ListEmptyComponent={
@@ -76,9 +83,11 @@ export default connect(
     loading: state.loading.list,
     leagues: state.leagues,
   }),
-  dispatch => ({
-    getTable: id => dispatch(LeaguesActions.getLeague(id)),
-    navigate: (routeName, params) =>
-      dispatch(NavigationActions.navigate({ routeName, params })),
+  (dispatch, props) => ({
+    getTable: () =>
+      dispatch(
+        LeaguesActions.getLeague(getNavigationStateParams(props.navigation).id),
+      ),
+    navigate: (routeName, params) => dispatch(navigate({ routeName, params })),
   }),
 )(Table);

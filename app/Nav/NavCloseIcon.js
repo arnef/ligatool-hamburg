@@ -1,17 +1,20 @@
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { Icon, Touchable } from '../components';
-import * as NavigationActions from '../redux/modules/navigation';
+import {
+  hideLogin,
+  getNavigationStateParams,
+} from '../redux/modules/navigation';
 
 export default (title, action) => ({ navigation }) => ({
-  title: title || navigation.state.params.title,
+  title: title || getNavigationStateParams(navigation).title,
   headerLeft: (
     <Touchable
       borderless
       pressColor={'rgba(255, 255, 255, .8)'}
       style={styles.container}
       onPress={() => {
-        navigation.dispatch(action || NavigationActions.hideLogin());
+        navigation.dispatch(action || hideLogin());
       }}
     >
       <Icon name="close" color="#fff" style={styles.icon} size={iconSize} />

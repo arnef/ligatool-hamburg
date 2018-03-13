@@ -4,8 +4,8 @@ import SelectTeamView from './SelectTeamView';
 import LoginView from './LoginView';
 import NavHeader from '../../Nav/NavHeader';
 import NavCloseIcon from '../../Nav/NavCloseIcon';
-
 import S from '../../lib/strings';
+import { getNavigationStateParams } from '../../redux/modules/navigation';
 
 const NavStack = StackNavigator(
   {
@@ -20,7 +20,10 @@ const NavStack = StackNavigator(
     LoginView: {
       screen: LoginView,
       navigationOptions: args => {
-        if (args.navigation.state.params && args.navigation.state.params.init) {
+        if (
+          getNavigationStateParams(args.navigation) &&
+          getNavigationStateParams(args.navigation).init
+        ) {
           return NavCloseIcon(S.LOGIN)(args);
         } else {
           return { title: S.LOGIN };

@@ -10,7 +10,10 @@ import {
 } from '../../components';
 import { connect } from 'react-redux';
 import * as LeaguesActions from '../../redux/modules/leagues';
-import { NavigationActions } from 'react-navigation';
+import {
+  navigate,
+  getNavigationStateParams,
+} from '../../redux/modules/navigation';
 
 class SelectTeamView extends Component {
   render() {
@@ -52,8 +55,8 @@ export default connect(
     error: state.loading.error,
     fetching: state.loading.list,
     teams: sortBy(
-      state.drawer[props.navigation.state.params.id]
-        ? state.drawer[props.navigation.state.params.id].teams
+      state.drawer[getNavigationStateParams(props.navigation).id]
+        ? state.drawer[getNavigationStateParams(props.navigation).id].teams
         : [],
       'name',
     ),
@@ -62,6 +65,6 @@ export default connect(
     getLeague: id => dispatch(LeaguesActions.getLeague(id)),
     setUserTeam: team =>
       dispatch({ type: 'SELECT_USER_TEAM', payload: { id: team.id } }),
-    navigate: route => dispatch(NavigationActions.navigate(route)),
+    navigate: route => dispatch(navigate(route)),
   }),
 )(SelectTeamView);

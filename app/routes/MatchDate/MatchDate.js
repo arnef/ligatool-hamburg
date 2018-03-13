@@ -23,6 +23,7 @@ import {
   acceptFixtureDate,
 } from '../../redux/modules/fixtures';
 import { getColor } from '../../redux/modules/user';
+import { getNavigationStateParams } from '../../redux/modules/navigation';
 
 class MatchDate extends React.Component {
   constructor(props) {
@@ -35,7 +36,6 @@ class MatchDate extends React.Component {
     this.onCancel = this.onCancel.bind(this);
     this.onRemove = this.onRemove.bind(this);
     this.onPress = this.onPress.bind(this);
-    // this.renderDatetime = this.renderDatetime.bind(this);
   }
 
   onConfirm(d) {
@@ -54,7 +54,7 @@ class MatchDate extends React.Component {
 
   onPress() {
     this.props.suggestDatetime(
-      this.props.navigation.state.params.id,
+      getNavigationStateParams(this.props.navigation).id,
       this.state.datetimes,
     );
   }
@@ -70,7 +70,10 @@ class MatchDate extends React.Component {
     const { dates } = this.props.dates;
     const date = dates[index]
       ? moment(dates[index], DATETIME_DB)
-      : moment().hour(20).minutes(0).seconds(0);
+      : moment()
+          .hour(20)
+          .minutes(0)
+          .seconds(0);
     this.setState({
       index,
       defaultDate: date.toDate(),
@@ -89,7 +92,7 @@ class MatchDate extends React.Component {
       <Container onRefresh={() => {}} refreshing={this.props.loading}>
         <ListItem.Group>
           <ListItem.Header title={S.DATETIME_SUGGESTIONS} />
-          {range(countDates).map(index =>
+          {range(countDates).map(index => (
             <View key={`${index}`}>
               <ListItem>
                 <Touchable
@@ -106,34 +109,38 @@ class MatchDate extends React.Component {
                   </Text>
                 </Touchable>
                 {data.meta.adminAccept &&
-                  index < data.dates.length &&
-                  <Touchable onPress={() => this.acceptDate(index)}>
-                    <ListItem.Icon
-                      right
-                      color={this.props.color}
-                      name="checkmark-circle"
-                    />
-                  </Touchable>}
+                  index < data.dates.length && (
+                    <Touchable onPress={() => this.acceptDate(index)}>
+                      <ListItem.Icon
+                        right
+                        color={this.props.color}
+                        name="checkmark-circle"
+                      />
+                    </Touchable>
+                  )}
                 {!data.meta.adminAccept &&
-                  index < data.dates.length &&
-                  <Touchable onPress={() => this.onRemove(index)}>
-                    <ListItem.Icon right color="red" name="remove-circle" />
-                  </Touchable>}
+                  index < data.dates.length && (
+                    <Touchable onPress={() => this.onRemove(index)}>
+                      <ListItem.Icon right color="red" name="remove-circle" />
+                    </Touchable>
+                  )}
               </ListItem>
-            </View>,
-          )}
+            </View>
+          ))}
           {data &&
-            !data.meta.adminAccept &&
-            <View style={{ padding: 16 }}>
-              <Button onPress={this.onPress} title={S.SUGGEST_DATETIMES} />
-            </View>}
+            !data.meta.adminAccept && (
+              <View style={{ padding: 16 }}>
+                <Button onPress={this.onPress} title={S.SUGGEST_DATETIMES} />
+              </View>
+            )}
         </ListItem.Group>
         {data &&
-          data.meta.adminAccept &&
-          <Text style={{ lineHeight: 24, margin: 12 }}>
-            Klicke auf <Icon name="checkmark-circle" size={22} /> um einen
-            Termin zu akzeptieren.
-          </Text>}
+          data.meta.adminAccept && (
+            <Text style={{ lineHeight: 24, margin: 12 }}>
+              Klicke auf <Icon name="checkmark-circle" size={22} /> um einen
+              Termin zu akzeptieren.
+            </Text>
+          )}
         <DateTimePicker
           cancelTextIOS={S.CANCEL}
           confirmTextIOS={S.CONFIRM}
@@ -155,17 +162,35 @@ export default connect(
     matches: state.matches,
     color: getColor(state),
     auth: state.auth.team,
-    dates: getFixtureDates(state, props.navigation.state.params.id),
-    loading: !getFixtureDates(state, props.navigation.state.params.id),
+    dates: getFixtureDates(
+      state,
+      getNavigationStateParams(props.navigation).id,
+    ),
+    loading: !getFixtureDates(
+      state,
+      getNavigationStateParams(props.navigation).id,
+    ),
   }),
   (dispatch, props) => ({
     setFixtureDate: (index, date) =>
-      dispatch(setFixtureDate(props.navigation.state.params.id, index, date)),
+      dispatch(
+        setFixtureDate(
+          getNavigationStateParams(props.navigation).id,
+          index,
+          date,
+        ),
+      ),
     removeFixtureDate: index =>
-      dispatch(removeFixtureDate(props.navigation.state.params.id, index)),
+      dispatch(
+        removeFixtureDate(getNavigationStateParams(props.navigation).id, index),
+      ),
     suggestDatetime: () =>
-      dispatch(suggestFixtureDates(props.navigation.state.params.id)),
+      dispatch(
+        suggestFixtureDates(getNavigationStateParams(props.navigation).id),
+      ),
     acceptDate: id =>
-      dispatch(acceptFixtureDate(props.navigation.state.params.id, id)),
+      dispatch(
+        acceptFixtureDate(getNavigationStateParams(props.navigation).id, id),
+      ),
   }),
 )(MatchDate);

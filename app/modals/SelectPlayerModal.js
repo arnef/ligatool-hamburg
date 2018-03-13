@@ -4,7 +4,11 @@ import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import * as MatchActions from '../redux/modules/matches';
 
-import * as NavigationActions from '../redux/modules/navigation';
+import {
+  navigate,
+  hidePlayer,
+  getNavigationStateParams,
+} from '../redux/modules/navigation';
 import { Container, ListItem, Text, Separator } from '../components';
 import NavHeader from '../Nav/NavHeader';
 import NavCloseIcon from '../Nav/NavCloseIcon';
@@ -107,10 +111,7 @@ class SelectPlayer extends Component {
   }
 }
 
-SelectPlayer.navigationOptions = NavCloseIcon(
-  null,
-  NavigationActions.hidePlayer(),
-);
+SelectPlayer.navigationOptions = NavCloseIcon(null, hidePlayer());
 
 export default StackNavigator(
   {
@@ -119,23 +120,23 @@ export default StackNavigator(
         (state, props) => ({
           player: getFixturePlayerList(
             state,
-            props.navigation.state.params.matchId,
-            props.navigation.state.params.team,
+            getNavigationStateParams(props.navigation).matchId,
+            getNavigationStateParams(props.navigation).team,
           ),
         }),
         (dispatch, props) => ({
-          navigate: route => dispatch(NavigationActions.navigate(route)),
-          closeModal: () => dispatch(NavigationActions.hidePlayer()),
+          navigate: route => dispatch(navigate(route)),
+          closeModal: () => dispatch(hidePlayer()),
           setPlayer: (gameNumbers, player) =>
             dispatch(
-              props.navigation.state.params.team === 'home'
+              getNavigationStateParams(props.navigation).team === 'home'
                 ? setFixtureGameHomePlayer(
-                    props.navigation.state.params.matchId,
+                    getNavigationStateParams(props.navigation).matchId,
                     gameNumbers,
                     player,
                   )
                 : setFixtureGameAwayPlayer(
-                    props.navigation.state.params.matchId,
+                    getNavigationStateParams(props.navigation).matchId,
                     gameNumbers,
                     player,
                   ),

@@ -2,7 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as LeaguesActions from '../../redux/modules/leagues';
-import * as NavigationActions from '../../redux/modules/navigation';
+import {
+  navigate,
+  getNavigationStateParams,
+} from '../../redux/modules/navigation';
 import {
   ActionSheet,
   Container,
@@ -24,7 +27,6 @@ class SelectableMatchList extends React.Component {
     };
     this.onOpenMenu = this.onOpenMenu.bind(this);
     this.onSelectMatchDay = this.onSelectMatchDay.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
     this.renderItem = this.renderItem.bind(this);
   }
 
@@ -42,10 +44,6 @@ class SelectableMatchList extends React.Component {
     if (this.container && this.container.scrollTo) {
       this.container.scrollTo({ x: 0, y: 0, animated: true });
     }
-  }
-
-  onRefresh() {
-    this.props.getMatches(this.props.navigation.state.params.id);
   }
 
   renderItem({ item }) {
@@ -78,7 +76,7 @@ class SelectableMatchList extends React.Component {
           getRef={container => (this.container = container)}
           error={this.props.error}
           refreshing={this.props.loading}
-          onRefresh={this.onRefresh}
+          onRefresh={this.props.getMatches}
           renderRow={this.renderItem}
           ListEmptyComponent={
             <View>
@@ -98,7 +96,7 @@ class SelectableMatchList extends React.Component {
 const fixturesByMatchDate = (state, props) => {
   const fixtures = getFixturesByCompetition(
     state,
-    props.navigation.state.params.id,
+    getNavigationStateParams(props.navigation).id,
   );
   const data = {
     data: {},
@@ -132,9 +130,13 @@ export default connect(
     matches: state.fixtures.data,
     color: getColor(state),
   }),
-  dispatch => ({
-    getMatches: id => dispatch(LeaguesActions.getMatches(id)),
-    navigate: (routeName, params) =>
-      dispatch(NavigationActions.navigate((routeName, params))),
+  (dispatch, props) => ({
+    getMatches: () =>
+      dispatch(
+        LeaguesActions.getMatches(
+          getNavigationStateParams(props.navigation).id,
+        ),
+      ),
+    navigate: (routeName, params) => dispatch(navigate((routeName, params))),
   }),
 )(SelectableMatchList);

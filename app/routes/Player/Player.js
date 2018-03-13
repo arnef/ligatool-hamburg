@@ -13,6 +13,7 @@ import {
   Separator,
 } from '../../components';
 import S from '../../lib/strings';
+import { getNavigationStateParams } from '../../redux/modules/navigation';
 
 class Player extends Component {
   constructor(props) {
@@ -24,24 +25,19 @@ class Player extends Component {
     return (
       <ListItem multiline>
         <View>
-          <Text bold>
-            {name}
-          </Text>
-          <Text>
-            {value ? value : '-'}
-          </Text>
+          <Text bold>{name}</Text>
+          <Text>{value ? value : '-'}</Text>
         </View>
       </ListItem>
     );
   }
 
   render() {
-    const { loading, error } = this.props;
-    const player = this.props.players[this.props.navigation.state.params.id];
+    const { loading, error, player } = this.props;
 
     return (
       <Container refreshing={loading} error={error} onRefresh={this.getPlayer}>
-        {player &&
+        {player && (
           <View>
             {this.renderInformation(player)}
             <Separator group />
@@ -49,7 +45,8 @@ class Player extends Component {
             {this.renderRanglists(player.ranglists)}
             {this.renderTournaments(player.tournament_participations)}
             {this.renderTeams(player.teams)}
-          </View>}
+          </View>
+        )}
       </Container>
     );
   }
@@ -83,74 +80,75 @@ class Player extends Component {
 
   renderStats(stats) {
     if (stats.length > 0) {
-      return stats.sort((a, b) => (a.name < b.name ? -1 : 1)).map((stat, idx) =>
-        <View key={idx}>
-          <ListItem.Group>
-            <ListItem.Header title={`${S.STATISTIC} ${stat.name}`} />
-            <ListItem multiline>
-              <View style={{ flex: 2, alignItems: 'center' }}>
-                <Text bold small numberOfLines={1}>
-                  {S.POSITION}
-                </Text>
-              </View>
-              <View style={{ flex: 2, alignItems: 'center' }}>
-                <Text small numberOfLines={1}>
-                  {S.GAMES}
-                </Text>
-              </View>
-              <View style={{ flex: 3, alignItems: 'center' }}>
-                <Text center small numberOfLines={1}>
-                  {S.SET_POINTS_RATE}
-                </Text>
-              </View>
-              <View style={{ flex: 3, alignItems: 'center' }}>
-                <Text bold small numberOfLines={1}>
-                  {S.COMPETITIVE_INDEX}
-                </Text>
-              </View>
-            </ListItem>
-            <Separator full />
-            <ListItem multiline>
-              <View style={{ flex: 2, alignItems: 'center' }}>
-                <Text bold center>{`${stat.position}`}</Text>
-              </View>
-              <View style={{ flex: 2, alignItems: 'center' }}>
-                <Text center>{`${stat.matches}`}</Text>
-              </View>
-              <View style={{ flex: 3, alignItems: 'center' }}>
-                <Text center>{`${stat.rate}`}</Text>
-              </View>
-              <View style={{ flex: 3, alignItems: 'center' }}>
-                <Text center bold>{`${stat.competitive_index}`}</Text>
-              </View>
-            </ListItem>
-            <ListItem multiline>
-              <View style={{ flex: 1 }}>
-                <MatchStatsBar stats={stat} />
-                <View style={{ flexDirection: 'row' }}>
-                  <Text
-                    style={{ flex: 1, fontSize: 10 }}
-                  >{`${stat.wins} ${S.WIN}${stat.wins !== 1
-                    ? S.WIN_POSTFIX
-                    : ''}`}</Text>
-                  {WITH_DRAW &&
-                    <Text
-                      style={{ flex: 1, fontSize: 10, textAlign: 'center' }}
-                    >{`${stat.draws} ${S.DRAW}${stat.draws !== 1
-                      ? S.DRAW_POSTFIX
-                      : ''}`}</Text>}
-                  <Text
-                    style={{ flex: 1, fontSize: 10, textAlign: 'right' }}
-                  >{`${stat.lost} ${S.LOST}${stat.lost !== 1
-                    ? S.LOST_POSTFIX
-                    : ''}`}</Text>
+      return stats
+        .sort((a, b) => (a.name < b.name ? -1 : 1))
+        .map((stat, idx) => (
+          <View key={idx}>
+            <ListItem.Group>
+              <ListItem.Header title={`${S.STATISTIC} ${stat.name}`} />
+              <ListItem multiline>
+                <View style={{ flex: 2, alignItems: 'center' }}>
+                  <Text bold small numberOfLines={1}>
+                    {S.POSITION}
+                  </Text>
                 </View>
-              </View>
-            </ListItem>
-          </ListItem.Group>
-          <Separator group />
-        </View>,
-      );
+                <View style={{ flex: 2, alignItems: 'center' }}>
+                  <Text small numberOfLines={1}>
+                    {S.GAMES}
+                  </Text>
+                </View>
+                <View style={{ flex: 3, alignItems: 'center' }}>
+                  <Text center small numberOfLines={1}>
+                    {S.SET_POINTS_RATE}
+                  </Text>
+                </View>
+                <View style={{ flex: 3, alignItems: 'center' }}>
+                  <Text bold small numberOfLines={1}>
+                    {S.COMPETITIVE_INDEX}
+                  </Text>
+                </View>
+              </ListItem>
+              <Separator full />
+              <ListItem multiline>
+                <View style={{ flex: 2, alignItems: 'center' }}>
+                  <Text bold center>{`${stat.position}`}</Text>
+                </View>
+                <View style={{ flex: 2, alignItems: 'center' }}>
+                  <Text center>{`${stat.matches}`}</Text>
+                </View>
+                <View style={{ flex: 3, alignItems: 'center' }}>
+                  <Text center>{`${stat.rate}`}</Text>
+                </View>
+                <View style={{ flex: 3, alignItems: 'center' }}>
+                  <Text center bold>{`${stat.competitive_index}`}</Text>
+                </View>
+              </ListItem>
+              <ListItem multiline>
+                <View style={{ flex: 1 }}>
+                  <MatchStatsBar stats={stat} />
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ flex: 1, fontSize: 10 }}>{`${stat.wins} ${
+                      S.WIN
+                    }${stat.wins !== 1 ? S.WIN_POSTFIX : ''}`}</Text>
+                    {WITH_DRAW && (
+                      <Text
+                        style={{ flex: 1, fontSize: 10, textAlign: 'center' }}
+                      >{`${stat.draws} ${S.DRAW}${
+                        stat.draws !== 1 ? S.DRAW_POSTFIX : ''
+                      }`}</Text>
+                    )}
+                    <Text
+                      style={{ flex: 1, fontSize: 10, textAlign: 'right' }}
+                    >{`${stat.lost} ${S.LOST}${
+                      stat.lost !== 1 ? S.LOST_POSTFIX : ''
+                    }`}</Text>
+                  </View>
+                </View>
+              </ListItem>
+            </ListItem.Group>
+            <Separator group />
+          </View>
+        ));
     }
     return <View />;
   }
@@ -244,9 +242,7 @@ class Player extends Component {
                     </View>
 
                     <View style={{ flex: 4 }}>
-                      <Text>
-                        {team.competitions.join('\n')}
-                      </Text>
+                      <Text>{team.competitions.join('\n')}</Text>
                     </View>
                   </ListItem>
                   {idx < teams.length - 1 && <Separator />}
@@ -291,8 +287,9 @@ class Player extends Component {
                 <View key={tournament.id}>
                   <ListItem multiline>
                     <View style={{ flex: 6 }}>
-                      <Text
-                      >{`${tournament.name} - ${tournament.discipline}`}</Text>
+                      <Text>{`${tournament.name} - ${
+                        tournament.discipline
+                      }`}</Text>
                       <Text>{`${tournament.location} ${moment(
                         tournament.date,
                       ).format(DATE_FORMAT)}`}</Text>
@@ -324,10 +321,11 @@ class Player extends Component {
 }
 
 export default connect(
-  state => ({
+  (state, props) => ({
     loading: state.loading.list,
     error: state.loading.error,
     players: state.players,
+    player: state.players[getNavigationStateParams(props.navigation).id],
   }),
   dispatch => ({
     getPlayer: id => dispatch(PlayerActions.getPlayer(id)),
