@@ -1,11 +1,10 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
     padding: 12,
     flex: 1,
-    // quick fix for ios
-    maxWidth: Dimensions.get('window').width - 24,
+    alignItems: 'flex-start',
   },
   teams: {
     flexDirection: 'row',
