@@ -22,32 +22,32 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.16.2",
-    "babel-preset-react-native": "^3.0.2",
+    "axios": "^0.18.0",
     "json_": "^1.0.0",
-    "lodash": "^4.17.4",
-    "moment": "^2.18.1",
+    "lodash": "^4.17.5",
+    "moment": "^2.21.0",
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.2",
     "react-native-android-taskdescription": "^1.0.3",
-    "react-native-fcm": "^9.1.0",
-    "react-native-modal-datetime-picker": "^4.9.0",
-    "react-native-vector-icons": "^4.3.0",
-    "react-navigation": "1.0.0-beta.11",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.1",
+    "react-native-fcm": "^14.1.0",
+    "react-native-modal-datetime-picker": "^4.13.0",
+    "react-native-vector-icons": "^4.5.0",
+    "react-navigation": "1.5.2",
+    "react-navigation-redux-helpers": "^1.0.3",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
     "redux-persist": "^4.9.1",
     "redux-persist-migrate": "^5.0.0",
-    "redux-saga": "^0.15.4"
+    "redux-saga": "^0.16.0"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^4.5.0",
-    "eslint-config-prettier": "^2.2.0",
-    "eslint-plugin-react": "^7.3.0",
-    "eslint-plugin-react-native": "^3.0.1",
-    "husky": "^0.14.1",
-    "lint-staged": "^4.0.4",
-    "prettier": "^1.5.2"
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.18.2",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-react-native": "^3.2.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-navigation';
@@ -16,25 +16,6 @@ import { getColor } from '../redux/modules/user';
 
 const white = 'rgba(255, 255, 255, .8)';
 
-class NavHeader extends Component {
-  render() {
-    const { style, ...rest } = this.props;
-    const headerStyle = [style];
-    headerStyle.push({
-      backgroundColor: this.props.color,
-    });
-    if (Platform.OS === 'android' && Platform.Version >= 21) {
-      headerStyle.push({
-        borderTopWidth: 20,
-        borderTopColor: this.props.color,
-        height: 56 + 20,
-      });
-    }
-
-    return <Header {...rest} style={headerStyle} />;
-  }
-}
-
 const singleHeader = [
   Routes.LEAGUES,
   Routes.SETTINGS,
@@ -51,7 +32,30 @@ if (Platform.OS === 'android') {
   singleHeader.push(Routes.MATCH);
 }
 
-const ConnectHeader = connect(state => ({ color: getColor(state) }))(NavHeader);
+const ConnectHeader = connect((state, props) => ({
+  getScreenDetails: scene => {
+    const details = props.getScreenDetails(scene);
+    const border =
+      Platform.OS === 'android' && Platform.Version >= 21
+        ? {
+            borderTopWidth: 20,
+            borderTopColor: getColor(state),
+            height: 56 + 20,
+          }
+        : {};
+    return {
+      ...details,
+      options: {
+        ...details.options,
+        headerStyle: {
+          ...details.options.headerStyle,
+          ...border,
+          backgroundColor: getColor(state),
+        },
+      },
+    };
+  },
+}))(Header);
 
 const ToggleNotification = connect(
   (state, props) => ({
@@ -89,7 +93,6 @@ function showNotificationToggle(state) {
   if (state.routeName === Routes.MATCH) {
     return <ToggleNotification fixtureId={state.params.id} />;
   }
-  // console.log(notification);
   return null;
 }
 
@@ -98,7 +101,7 @@ export default {
   navigationOptions: ({ navigation }) => {
     const headerStyle =
       singleHeader.indexOf(navigation.state.routeName) !== -1
-        ? null
+        ? {}
         : {
             elevation: 0,
             shadowOpacity: 0,
@@ -107,7 +110,7 @@ export default {
             borderBottomWidth: 0,
           };
     return {
-      header: function Header(props) {
+      header: function HeaderNew(props) {
         return <ConnectHeader {...props} />;
       },
       headerTintColor: '#fff',
