@@ -111,7 +111,6 @@ class Overview extends React.Component {
         />
       </View>
     );
-    // return <MatchList matches={matches} onRefresh={this.props.queryMatches} />;
   }
 }
 
