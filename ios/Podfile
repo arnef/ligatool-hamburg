@@ -9,4 +9,7 @@ target 'arnefeilligatool' do
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
 
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 end
