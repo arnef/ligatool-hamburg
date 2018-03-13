@@ -7,23 +7,18 @@ import S from '../../lib/strings';
 import Routes from '../../config/routes';
 import { MatchItem, Text } from '../../components';
 import ErrorFlash from '../../components/ErrorFlash';
+import * as OverviewActions from '../../redux/modules/overview';
 import { colors } from '../../config/styles';
 import { size } from 'lodash';
-import {
-  FILTER_TODAY,
-  getFixtureByFilter,
-  FILTER_PASSED,
-  FILTER_UPCOMMING,
-} from '../../redux/modules/fixtures';
+import { getFixture } from '../../redux/modules/fixtures';
 import { getColor } from '../../redux/modules/user';
-import { queryFixtureOverview } from '../../redux/actions';
 
 class Overview extends React.Component {
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+      sectionHeaderHasChanged: (s1, s2) => s1 != s2,
     });
 
     this.state = {
@@ -49,7 +44,7 @@ class Overview extends React.Component {
   }
 
   renderItem(item) {
-    return <MatchItem data={item} />;
+    return <MatchItem data={this.props.getFixture(item)} />;
   }
 
   renderSectionHeader(data, sectionId) {
@@ -78,6 +73,7 @@ class Overview extends React.Component {
   }
 
   render() {
+    // const { matches } = this.props;
     const Refresh = (
       <RefreshControl
         colors={[this.props.color]}
@@ -118,13 +114,14 @@ class Overview extends React.Component {
 function createTab(keyName) {
   return connect(
     state => ({
-      //   error: state.loading.error,
+      error: state.loading.error,
       loading: state.loading.list,
-      matches: getFixtureByFilter(state, keyName),
+      matches: state.overview[keyName],
+      getFixture: id => getFixture(state, id),
       color: getColor(state),
     }),
     dispatch => ({
-      queryMatches: () => dispatch(queryFixtureOverview()),
+      queryMatches: () => dispatch(OverviewActions.getMatches()),
     }),
   )(Overview);
 }
@@ -132,15 +129,15 @@ function createTab(keyName) {
 export default TabNavigator(
   {
     [Routes.TAB_MATCHES_PLAYED]: {
-      screen: createTab(FILTER_PASSED),
+      screen: createTab('played'),
       navigationOptions: { title: S.PAST_MATCHES },
     },
     [Routes.TAB_MATCHES_TODAY]: {
-      screen: createTab(FILTER_TODAY),
+      screen: createTab('today'),
       navigationOptions: { title: S.TODAY },
     },
     [Routes.TAB_MATCHES_NEXT]: {
-      screen: createTab(FILTER_UPCOMMING),
+      screen: createTab('next'),
       navigationOptions: { title: S.NEXT_MATCHES },
     },
   },

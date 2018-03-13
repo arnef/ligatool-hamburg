@@ -13,27 +13,12 @@ import * as LeaguesActions from '../../redux/modules/leagues';
 import { NavigationActions } from 'react-navigation';
 
 class SelectTeamView extends Component {
-  componentDidMount() {
-    const id = this.props.navigation.state.params.id;
-
-    if (!this.props.leagues[id]) {
-      this.getTeams();
-    }
-  }
-
   render() {
-    const lid = this.props.navigation.state.params.id;
-    const teams = sortBy(
-      this.props.leagues[lid] ? this.props.leagues[lid].teams : [],
-      'name',
-    );
+    const { teams } = this.props;
 
     return (
       <View style={{ flex: 1 }}>
         <Container
-          error={this.props.error}
-          refreshing={this.props.fetching}
-          onRefresh={this.getTeams}
           dataSource={teams}
           renderRow={this.renderItem}
           getItemLayout={(data, index) => ({
@@ -63,10 +48,15 @@ class SelectTeamView extends Component {
 }
 
 export default connect(
-  state => ({
+  (state, props) => ({
     error: state.loading.error,
     fetching: state.loading.list,
-    leagues: state.drawer,
+    teams: sortBy(
+      state.drawer[props.navigation.state.params.id]
+        ? state.drawer[props.navigation.state.params.id].teams
+        : [],
+      'name',
+    ),
   }),
   dispatch => ({
     getLeague: id => dispatch(LeaguesActions.getLeague(id)),

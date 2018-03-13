@@ -10,6 +10,7 @@ const routes = {
   LEAGUES: 'ligatool/routes/LEAGUES',
   SETTINGS: 'ligatool/routes/SETTINGS',
   SETTINGS_NOTIFICATIONS: 'ligatool/routes/SETTINGS_NOTIFICATIONS',
+  SETTINGS_NOTIFICATIONS_TEAMS: 'ligatool/routes/SETTINGS_NOTIFICATIONS_TEAMS',
   //
   SEARCH: 'ligatool/routes/SEARCH',
   // single views

@@ -6,9 +6,3 @@ export const queryPlayerStats = competitionId => ({
   type: QUERY_PLAYER_STATS,
   payload: { competitionId },
 });
-
-export const UNSUBSCRIBE_TEAM = 'app/notification/UNSUBSCRIBE_TEAM';
-export const unsubscribeTeam = teamId => ({
-  type: UNSUBSCRIBE_TEAM,
-  payload: { teamId },
-});

@@ -216,15 +216,3 @@ export function postNotificationTeam(teamId) {
 export function deleteNotificationTeam(teamId) {
   return instance.delete(`/notifications/team/${teamId}`);
 }
-// POST /notification
-// export function updateNotifications(
-//   fcm_token: string,
-//   notification: any,
-// ): Promise<*> {
-//   return instance.post('/notification', { fcm_token, notification });
-// }
-
-// GET /search
-// export function search(query: string) {
-//   return instance.get('/search/' + encodeURI(query));
-// }

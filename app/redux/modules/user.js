@@ -131,14 +131,26 @@ export const getColor = state =>
     ? get(state).teams[get(state).active].color
     : defaultColor;
 
-export const getUserTeams = state => get(state).teams;
+export const getUserTeams = state => (get(state) ? get(state).teams : null);
 
 export const getActiveTeam = state =>
   get(state).active > -1 && get(state).teams[get(state).active]
     ? get(state).teams[get(state).active]
     : null;
 
-export const getActiveTeamGroup = state =>
-  get(state).active > -1 && get(state).teams[get(state).active]
-    ? get(state).teams[get(state).active].groupId
-    : null;
+export const getActiveTeamGroup = state => {
+  if (get(state).active > -1 && get(state).teams[get(state).active]) {
+    const team = get(state).teams[get(state).active];
+    if (team.id && team.groupId && team.groupId.indexOf('-') === -1) {
+      const prefix = team.id.split('-', 1);
+      return `${prefix}-${team.groupId}`;
+    } else {
+      return team.groupId || team.id;
+    }
+  }
+
+  return null;
+};
+// get(state).active > -1 && get(state).teams[get(state).active]
+//   ? (get(state).teams[get(state).active].groupId || get(state).teams[get(state).active].id)
+//   : null;

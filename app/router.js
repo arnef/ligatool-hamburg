@@ -22,6 +22,7 @@ import Leagues from './routes/Leagues';
 import League from './routes/League';
 import Settings from './routes/Settings';
 import SettingsNotification from './routes/SettingsNotification';
+import SettingsNotificationTeams from './routes/SettingsNotification/SubscribeTeams';
 import Search from './routes/Search';
 import SearchHeader from './routes/Search/SearchHeader';
 
@@ -58,8 +59,9 @@ function createTabStack(key, screen, optionalRoutes) {
     [Routes.PLAYER]: {
       screen: PlayerView,
       navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.name} ${navigation.state.params
-          .surname}`,
+        title: `${navigation.state.params.name} ${
+          navigation.state.params.surname
+        }`,
       }),
     },
     [Routes.MATCH_DATE]: {
@@ -103,6 +105,12 @@ export const SettingStack = StackNavigator(
       screen: SettingsNotification,
       navigationOptions: {
         title: S.NOTIFICATIONS,
+      },
+    },
+    [Routes.SETTINGS_NOTIFICATIONS_TEAMS]: {
+      screen: SettingsNotificationTeams,
+      navigationOptions: {
+        title: S.SELECT_TEAMS,
       },
     },
   },
@@ -152,8 +160,9 @@ export const App =
                   screen: PlayerView,
                   navigationOptions: ({ navigation }) =>
                     NavDrawerIcon(
-                      `${navigation.state.params.name} ${navigation.state.params
-                        .surname}`,
+                      `${navigation.state.params.name} ${
+                        navigation.state.params.surname
+                      }`,
                     )({ navigation }),
                 },
                 [Routes.SETTINGS]: {
@@ -163,6 +172,10 @@ export const App =
                 [Routes.SETTINGS_NOTIFICATIONS]: {
                   screen: SettingsNotification,
                   navigationOptions: { title: S.NOTIFICATIONS },
+                },
+                [Routes.SETTINGS_NOTIFICATIONS_TEAMS]: {
+                  screen: SettingsNotificationTeams,
+                  navigationOptions: { title: S.SELECT_TEAMS },
                 },
                 [Routes.MATCH_DATE]: {
                   screen: MatchDate,
@@ -232,8 +245,9 @@ export const SearchStack = StackNavigator(
     [Routes.PLAYER]: {
       screen: PlayerView,
       navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.name} ${navigation.state.params
-          .surname}`,
+        title: `${navigation.state.params.name} ${
+          navigation.state.params.surname
+        }`,
       }),
     },
   },

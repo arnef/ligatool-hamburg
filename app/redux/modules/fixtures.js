@@ -351,11 +351,12 @@ export const getFixtureByFilter = (state, filter) => {
   const today = moment();
   for (let id in get(state).data) {
     const fixture = getFixture(state, id);
-    const diff = today.diff(moment(fixture.date, DATETIME_DB), 'days');
+    const diff =
+      parseInt(today.format('YYYYMMDD')) -
+      parseInt(moment(fixture.date, DATETIME_DB).format('YYYYMMDD'));
     const key = moment(fixture.date, DATETIME_DB).format(DATE_FORMAT);
     if (filter === FILTER_TODAY) {
       if (fixture.status === STATUS_IN_PLAY || diff === 0) {
-        // fixtures.push(fixture.id);
         if (!overview.data[key]) {
           overview.data[key] = [];
           overview.sections.push(key);
@@ -409,6 +410,18 @@ export const getFixtureByTeam = (state, teamGoupId) => {
   }
   return fixtures.sort(fixtureSort);
 };
+
+export const getFixturesByCompetition = (state, competitionId) => {
+  const fixtures = [];
+  for (let id in get(state).data) {
+    const fixture = getFixture(state, id);
+    if (fixture.competitionId === competitionId) {
+      fixtures.push(fixture);
+    }
+  }
+  return fixtures.sort(fixtureSort);
+};
+
 //
 export const FILTER_TODAY = 'today';
 export const FILTER_PASSED = 'passed';

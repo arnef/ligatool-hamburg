@@ -1,6 +1,5 @@
 import { StatusBar } from 'react-native';
 import { takeEvery, put, call, select } from 'redux-saga/effects';
-import moment from 'moment';
 import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist/constants';
 import * as api from '../lib/api';
@@ -31,7 +30,6 @@ import * as MatchUtils from '../lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
-import { DATE_FORMAT } from '../config/settings';
 import { getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 
@@ -58,13 +56,8 @@ import {
   userSetApiKey,
   userSetToken,
   getActiveTeam,
-  getUserTeams,
 } from './modules/user';
-import {
-  QUERY_FIXTURE_OVERVIEW,
-  QUERY_PLAYER_STATS,
-  UNSUBSCRIBE_TEAM,
-} from './actions';
+import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
 
 function* queryOverviewSaga() {
   try {
@@ -138,7 +131,7 @@ function* leagues() {
   try {
     yield put(LoadingActions.show());
     const leagues = yield call(api.getLeagues);
-    yield put(DrawerActions.setLeagues(leagues.data));
+    yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -146,19 +139,6 @@ function* leagues() {
     yield put(LoadingActions.hide());
   }
 }
-
-// function* logout() {
-//   try {
-//     yield put(LoadingActions.showModal());
-//     yield put({ type: MY_TEAM_MATCHES, payload: { next: [], played: [] } });
-//     yield call(api.logout);
-//   } catch (ex) {
-//     console.warn(ex);
-//   } finally {
-//     yield put({ type: LOGOUT_DONE });
-//     yield put(LoadingActions.hideModal());
-//   }
-// }
 
 function* getMatch(action) {
   try {
@@ -168,7 +148,6 @@ function* getMatch(action) {
     yield put(setFixtureData(data));
     meta.games = _.keyBy(meta.games, 'gameNumber');
     yield put(setFixtureMeta(data.id, meta));
-    // yield sortOverview();
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -522,10 +501,7 @@ function* refreshToken() {
 function* rehydrate() {
   try {
     const state = yield select();
-    if (
-      _.size(state.settings.notification.leagues) === 0 &&
-      _.size(state.drawer) === 0
-    ) {
+    if (_.size(state.drawer) === 0) {
       yield put(
         NavigationActions.navigate({ routeName: Routes.MODAL_FIRST_START }),
       );
@@ -533,6 +509,22 @@ function* rehydrate() {
       yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
     } else {
       StatusBar.setBarStyle('light-content');
+      //check teams has correct groupID
+      let update = false;
+      for (let cid in state.drawer) {
+        const c = state.drawer[cid];
+        for (let team of c.teams) {
+          if (team.groupId && team.groupId.indexOf('-') === -1) {
+            update = true;
+            break;
+          }
+        }
+        if (update) break;
+      }
+      if (update) {
+        const { data } = yield call(api.getLeagues);
+        yield put(DrawerActions.setLeagues(_.keyBy(data), 'id'));
+      }
       yield queryOverviewSaga();
     }
   } catch (ex) {
@@ -611,19 +603,19 @@ function* completeSetup() {
   yield put(NavigationActions.hideStart());
 }
 
-function* checkChange(action) {
-  const { loading, overview: data, nav } = yield select();
-  const today = moment().format(DATE_FORMAT);
-  const route = currentRoute(nav.navigation);
-
-  if (
-    route.routeName === Routes.OVERVIEW &&
-    action.payload === 'active' &&
-    !loading.list &&
-    data.next[today]
-  ) {
-    yield queryOverviewSaga();
-  }
+function* checkChange(/*action*/) {
+  // const { loading, overview: data, nav } = yield select();
+  // const today = moment().format(DATE_FORMAT);
+  // const route = currentRoute(nav.navigation);
+  //TODO check app change overview
+  // if (
+  //   route.routeName === Routes.OVERVIEW &&
+  //   action.payload === 'active' &&
+  //   !loading.list &&
+  //   data.next[today]
+  // ) {
+  //   yield queryOverviewSaga();
+  // }
 }
 
 function* fetchUserTeam(action) {
@@ -632,7 +624,7 @@ function* fetchUserTeam(action) {
     yield put(LoadingActions.showModal());
     const { data } = yield call(api.getTeam, id);
     yield put(userAddTeam(data));
-    yield toggleNotificationSaga();
+    yield subscribeTeamSaga({ payload: { id: data.groupId || data.id } });
     yield put(NavigationActions.navigate({ routeName: 'LoginView' }));
   } catch (ex) {
     console.warn(ex);
@@ -712,10 +704,10 @@ function* toggleNotificationSaga() {
       SettingsActions.notificationFinalResults(state),
     );
     api.setFCM(resp.token);
-    const teams = getUserTeams(state);
-    for (let team of teams) {
-      yield subscribeTeamSaga({ payload: { teamId: team.groupId || team.id } });
-    }
+    // const teams = getUserTeams(state);
+    // for (let team of teams) {
+    //   yield subscribeTeamSaga({ payload: { teamId: team.groupId || team.id } });
+    // }
   } catch (ex) {
     console.warn(ex);
   }
@@ -723,8 +715,8 @@ function* toggleNotificationSaga() {
 
 function* subscribeTeamSaga(action) {
   try {
-    const { teamId } = action.payload;
-    yield call(api.postNotificationTeam, teamId);
+    const { id } = action.payload;
+    yield call(api.postNotificationTeam, id);
   } catch (ex) {
     console.warn(ex);
   }
@@ -829,8 +821,8 @@ function* setPlayerAwaySaga(action) {
 
 function* unsubscribeTeamSaga(action) {
   try {
-    const { teamId } = action.payload;
-    yield call(api.deleteNotificationTeam, teamId);
+    const { id } = action.payload;
+    yield call(api.deleteNotificationTeam, id);
   } catch (ex) {
     console.warn(ex);
   }
@@ -865,8 +857,10 @@ export default function* sagas() {
 
   yield takeEvery(QUERY_FIXTURE_OVERVIEW, queryOverviewSaga);
   yield takeEvery(QUERY_PLAYER_STATS, getLeaguePlayerStats);
-  yield takeEvery(UNSUBSCRIBE_TEAM, unsubscribeTeamSaga);
+  // yield takeEvery(UNSUBSCRIBE_TEAM, unsubscribeTeamSaga);
 
+  yield takeEvery(SettingsActions.SUBSCRIBE_TEAM, subscribeTeamSaga);
+  yield takeEvery(SettingsActions.UNSUBSCRIBE_TEAM, unsubscribeTeamSaga);
   yield takeEvery(SET_FIXTURE_GAME_RESULT, setFixtureGameResultSaga);
   yield takeEvery(SettingsActions.TOGGLE_NOTIFICATION, toggleNotificationSaga);
   yield takeEvery(SettingsActions.SUBSCRIBE_FIXTURE, subscribeFixtureSaga);
