@@ -6,9 +6,7 @@ import styles from './styles';
 
 export default function Player(props) {
   return (
-    <ListItem
-    // onPress={() => props.onPress(props.player)}
-    >
+    <ListItem onPress={() => props.onPress(props.player)}>
       <View style={styles.position}>
         <Text>{`${props.rank}`}</Text>
       </View>
