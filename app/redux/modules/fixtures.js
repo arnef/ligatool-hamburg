@@ -364,9 +364,8 @@ export const getFixtureByFilter = (state, filter) => {
       }
     } else if (filter === FILTER_PASSED) {
       if (
-        (fixture.status === STATUS_CONFIRMED ||
-          fixture.status === STATUS_FINISHED) &&
-        (diff > 0 && diff < 15)
+        (fixture.status === STATUS_CONFIRMED && diff > 0 && diff < 15) ||
+        fixture.status === STATUS_FINISHED
       ) {
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
