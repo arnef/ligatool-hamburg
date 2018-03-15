@@ -1,7 +1,8 @@
 const pkg = require('../../package.json');
 
 const strings = {
-  ASSOCIATION: 'Verband',
+  // ASSOCIATION: 'Verband',
+  ASSOCIATION: 'Organisation',
   CONFIRM: 'Bestätigen',
   AWAY: 'Gast',
   HOME: 'Heim',

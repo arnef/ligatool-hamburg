@@ -12,6 +12,7 @@ import TeamInfo from './TeamInfo';
 import TeamVenue from './TeamVenue';
 import TeamContact from './TeamContact';
 import { getActiveTeam, getColor } from '../../redux/modules/user';
+import Routes from '../../config/routes';
 
 function Team(props) {
   const teamId = getNavigationStateParams(props.navigation)
@@ -41,7 +42,7 @@ function Team(props) {
               {team.player.map((player, index) => (
                 <View key={`player-${player.id}`}>
                   <ListItem
-                  // onPress={() => props.navigate(Routes.PLAYER, player)}
+                    onPress={() => props.navigate(Routes.PLAYER, player)}
                   >
                     <ListItem.Image url={player.image} />
                     <Text>{`${player.name} ${player.surname}`}</Text>

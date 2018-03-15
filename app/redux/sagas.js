@@ -285,8 +285,8 @@ function* hideLogin() {
 function* getPlayer(action) {
   try {
     yield put(LoadingActions.show());
-    const player = yield call(api.getPlayer, action.payload.id);
-    yield put({ type: PlayerActions.GET_PLAYER_DONE, payload: player.data });
+    const { data, meta } = yield call(api.getPlayer, action.payload.id);
+    yield put({ type: PlayerActions.GET_PLAYER_DONE, payload: { data, meta } });
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -526,6 +526,7 @@ function* rehydrate() {
         yield put(DrawerActions.setLeagues(_.keyBy(data), 'id'));
       }
       yield queryOverviewSaga();
+      yield refreshToken();
     }
   } catch (ex) {
     console.warn(ex);
