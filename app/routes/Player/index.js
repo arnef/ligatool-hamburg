@@ -184,95 +184,103 @@ class PlayerDetails extends Component {
               </ListItem.Group>
               <Separator group />
 
-              <ListItem.Group>
-                <ListItem.Header
-                  title={`Ranglistenplatzierung ${
-                    player.meta.rankings[0].season
-                  }`}
-                />
-                <ListItem multiline>
-                  <Text bold small numberOfLines={1} style={{ flex: 6 }}>
-                    Rangliste
-                  </Text>
-                  <Text
-                    bold
-                    small
-                    numberOfLines={1}
-                    style={{ flex: 1, textAlign: 'right' }}
-                  >
-                    Platz
-                  </Text>
-                  <Text
-                    bold
-                    small
-                    numberOfLines={1}
-                    style={{ flex: 3, textAlign: 'right' }}
-                  >
-                    Meldungen
-                  </Text>
-                </ListItem>
-                <Separator full />
-                {player.meta.rankings.map((r, i) => (
-                  <View key={`ranking-${i}`}>
+              {player.meta.rankings &&
+                player.meta.rankings.length > 0 && (
+                  <ListItem.Group>
+                    <ListItem.Header
+                      title={`Ranglistenplatzierung ${
+                        player.meta.rankings[0].season
+                      }`}
+                    />
                     <ListItem multiline>
-                      <Text style={{ flex: 6 }}>{`${r.name}`}</Text>
-                      <Text style={{ flex: 1, textAlign: 'right' }}>{`${
-                        r.rank
-                      }`}</Text>
-                      <Text style={{ flex: 3, textAlign: 'right' }}>{`${
-                        r.participants
-                      }`}</Text>
+                      <Text bold small numberOfLines={1} style={{ flex: 6 }}>
+                        Rangliste
+                      </Text>
+                      <Text
+                        bold
+                        small
+                        numberOfLines={1}
+                        style={{ flex: 1, textAlign: 'right' }}
+                      >
+                        Platz
+                      </Text>
+                      <Text
+                        bold
+                        small
+                        numberOfLines={1}
+                        style={{ flex: 3, textAlign: 'right' }}
+                      >
+                        Meldungen
+                      </Text>
                     </ListItem>
-                    {i < player.meta.rankings.length - 1 && <Separator />}
-                  </View>
-                ))}
-              </ListItem.Group>
-              <Separator group />
-
-              <ListItem.Group>
-                <ListItem.Header title="Turniermeldungen" />
-                <ListItem multiline>
-                  <Text bold small numberOfLines={1} style={{ flex: 6 }}>
-                    Turnier
-                  </Text>
-                  <Text
-                    bold
-                    small
-                    numberOfLines={1}
-                    style={{ flex: 1, textAlign: 'right' }}
-                  >
-                    Platz
-                  </Text>
-                  <Text
-                    bold
-                    small
-                    numberOfLines={1}
-                    style={{ flex: 3, textAlign: 'right' }}
-                  >
-                    Meldungen
-                  </Text>
-                </ListItem>
-                <Separator full />
-                {player.meta.tournaments.map((t, i) => (
-                  <View key={`tournament-${i}`}>
-                    <ListItem multiline>
-                      <View style={{ flex: 6 }}>
-                        <Text>{`${t.name} - ${t.discipline}`}</Text>
-                        <Text small>{`${t.location} ${moment(t.date).format(
-                          DATE_FORMAT,
-                        )}`}</Text>
+                    <Separator full />
+                    {player.meta.rankings.map((r, i) => (
+                      <View key={`ranking-${i}`}>
+                        <ListItem multiline>
+                          <Text style={{ flex: 6 }}>{`${r.name}`}</Text>
+                          <Text style={{ flex: 1, textAlign: 'right' }}>{`${
+                            r.rank
+                          }`}</Text>
+                          <Text style={{ flex: 3, textAlign: 'right' }}>{`${
+                            r.participants
+                          }`}</Text>
+                        </ListItem>
+                        {i < player.meta.rankings.length - 1 && <Separator />}
                       </View>
-                      <Text style={{ flex: 1, textAlign: 'right' }}>{`${
-                        t.rank
-                      }`}</Text>
-                      <Text style={{ flex: 3, textAlign: 'right' }}>{`${
-                        t.participants
-                      }`}</Text>
+                    ))}
+                  </ListItem.Group>
+                )}
+              {player.meta.rankings &&
+                player.meta.rankings.length > 0 && <Separator group />}
+
+              {player.meta.tournaments &&
+                player.meta.tournaments.length > 0 && (
+                  <ListItem.Group>
+                    <ListItem.Header title="Turniermeldungen" />
+                    <ListItem multiline>
+                      <Text bold small numberOfLines={1} style={{ flex: 6 }}>
+                        Turnier
+                      </Text>
+                      <Text
+                        bold
+                        small
+                        numberOfLines={1}
+                        style={{ flex: 1, textAlign: 'right' }}
+                      >
+                        Platz
+                      </Text>
+                      <Text
+                        bold
+                        small
+                        numberOfLines={1}
+                        style={{ flex: 3, textAlign: 'right' }}
+                      >
+                        Meldungen
+                      </Text>
                     </ListItem>
-                  </View>
-                ))}
-              </ListItem.Group>
-              <Separator group />
+                    <Separator full />
+                    {player.meta.tournaments.map((t, i) => (
+                      <View key={`tournament-${i}`}>
+                        <ListItem multiline>
+                          <View style={{ flex: 6 }}>
+                            <Text>{`${t.name} - ${t.discipline}`}</Text>
+                            <Text small>{`${t.location} ${moment(t.date).format(
+                              DATE_FORMAT,
+                            )}`}</Text>
+                          </View>
+                          <Text style={{ flex: 1, textAlign: 'right' }}>{`${
+                            t.rank
+                          }`}</Text>
+                          <Text style={{ flex: 3, textAlign: 'right' }}>{`${
+                            t.participants
+                          }`}</Text>
+                        </ListItem>
+                      </View>
+                    ))}
+                  </ListItem.Group>
+                )}
+              {player.meta.tournaments &&
+                player.meta.tournaments.length > 0 && <Separator group />}
 
               <ListItem.Group>
                 <ListItem.Header title="Letzte Einzel" />

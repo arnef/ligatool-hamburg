@@ -55,9 +55,9 @@ function NoSets(props) {
           <View style={styles.player}>
             {playerHome && (
               <Card
-              // onPress={() => {
-              //   props.navigate(Routes.PLAYER, playerHome);
-              // }}
+                onPress={() => {
+                  props.navigate(Routes.PLAYER, playerHome);
+                }}
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerHome.image} size={90} />
@@ -71,9 +71,9 @@ function NoSets(props) {
           <View style={styles.player}>
             {playerAway && (
               <Card
-              // onPress={() => {
-              //   props.navigate(Routes.PLAYER, playerAway);
-              // }}
+                onPress={() => {
+                  props.navigate(Routes.PLAYER, playerAway);
+                }}
               >
                 <View style={styles.playerContainer}>
                   <Image url={playerAway.image} size={90} />

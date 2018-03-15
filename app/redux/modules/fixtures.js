@@ -343,7 +343,7 @@ export const getFixturePlayerList = (state, id, key) =>
   get(state).meta[id] &&
   get(state).meta[id].player &&
   get(state).meta[id].player[key]
-    ? get(state).meta[id].player[key]
+    ? _.sortBy(get(state).meta[id].player[key], 'name')
     : [];
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
 export const getFixtureByFilter = (state, filter) => {
