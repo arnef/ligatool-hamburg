@@ -25,6 +25,9 @@ export default function Player(props) {
               props.competitiveIndex.split('.')[0]
             }`}</Text>
           )}
+          {!props.competitiveIndex && (
+            <Text style={styles.competitiveIndex}>{`${props.pointsWin}`}</Text>
+          )}
         </View>
         <View style={styles.row}>
           <MatchStatsBar

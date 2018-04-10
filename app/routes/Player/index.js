@@ -4,7 +4,14 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import * as PlayerActions from '../../redux/modules/player';
 import { DATE_FORMAT } from '../../config/settings';
-import { Container, Text, Image, ListItem, Separator } from '../../components';
+import {
+  Container,
+  Text,
+  Image,
+  ListItem,
+  Separator,
+  Score,
+} from '../../components';
 import S from '../../lib/strings';
 import { getNavigationStateParams } from '../../redux/modules/navigation';
 
@@ -45,27 +52,23 @@ function Item(props) {
 
 function Singles(props) {
   const { data, id } = props;
+  const result =
+    data.result === 'DRAW'
+      ? { goalsHome: 1, goalsAway: 1 }
+      : (data.result === 'WIN' && id === data.homePlayer.id) ||
+        (data.result == 'LOST' && id != data.homePlayer.id)
+        ? { goalsHome: 1, goalsAway: 0 }
+        : { goalsHome: 0, goalsAway: 1 };
   return (
     <ListItem multiline>
       <View style={{ flex: 1 }}>
-        <Text bold>{`${data.competitionName} - ${data.round}`}</Text>
+        <Text bold style={{ paddingBottom: 12 }}>{`${data.competitionName} - ${
+          data.round
+        }`}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Player
-            winner={
-              (data.result == 'WIN' && id == data.homePlayer.id) ||
-              (data.result == 'LOST' && id != data.homePlayer.id)
-            }
-            player={data.homePlayer}
-            reverse
-          />
-          <Text bold>:</Text>
-          <Player
-            winner={
-              (data.result == 'WIN' && id == data.awayPlayer.id) ||
-              (data.result == 'LOST' && id != data.awayPlayer.id)
-            }
-            player={data.awayPlayer}
-          />
+          <Player player={data.homePlayer} reverse />
+          <Score goals={result} />
+          <Player player={data.awayPlayer} />
         </View>
       </View>
     </ListItem>
@@ -74,65 +77,31 @@ function Singles(props) {
 
 function Doubles(props) {
   const { data } = props;
+  const result =
+    data.result === 'DRAW'
+      ? { goalsHome: 1, goalsAway: 1 }
+      : (data.result === 'WIN' &&
+          (props.id == data.homePlayer1.id ||
+            props.id == data.homePlayer2.id)) ||
+        (data.result == 'LOST' &&
+          (props.id != data.homePlayer1.id && props.id != data.homePlayer2.id))
+        ? { goalsHome: 1, goalsAway: 1 }
+        : { goalsHome: 0, goalsAway: 1 };
   return (
     <ListItem multiline>
       <View style={{ flex: 1 }}>
-        <Text bold>{`${props.data.competitionName} - ${
-          props.data.round
-        }`}</Text>
+        <Text bold style={{ paddingBottom: 12 }}>{`${
+          props.data.competitionName
+        } - ${props.data.round}`}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flex: 1 }}>
-            <Player
-              winner={
-                (data.result == 'WIN' &&
-                  (props.id == data.homePlayer1.id ||
-                    props.id == data.homePlayer2.id)) ||
-                (data.result == 'LOST' &&
-                  (props.id != data.homePlayer1.id &&
-                    props.id != data.homePlayer2.id))
-              }
-              reverse
-              player={data.homePlayer1}
-            />
-            <Player
-              winner={
-                (data.result == 'WIN' &&
-                  (props.id == data.homePlayer1.id ||
-                    props.id == data.homePlayer2.id)) ||
-                (data.result == 'LOST' &&
-                  (props.id != data.homePlayer1.id &&
-                    props.id != data.homePlayer2.id))
-              }
-              reverse
-              player={data.homePlayer2}
-            />
+            <Player reverse player={data.homePlayer1} />
+            <Player reverse player={data.homePlayer2} />
           </View>
-          <Text bold style={{ margin: 3 }}>
-            :
-          </Text>
+          <Score goals={result} />
           <View style={{ flex: 1 }}>
-            <Player
-              winner={
-                (data.result == 'WIN' &&
-                  (props.id == data.awayPlayer1.id ||
-                    props.id == data.awayPlayer2.id)) ||
-                (data.result == 'LOST' &&
-                  (props.id != data.awayPlayer1.id &&
-                    props.id != data.awayPlayer2.id))
-              }
-              player={data.awayPlayer1}
-            />
-            <Player
-              winner={
-                (data.result == 'WIN' &&
-                  (props.id == data.awayPlayer1.id ||
-                    props.id == data.awayPlayer2.id)) ||
-                (data.result == 'LOST' &&
-                  (props.id != data.awayPlayer1.id &&
-                    props.id != data.awayPlayer2.id))
-              }
-              player={data.awayPlayer2}
-            />
+            <Player player={data.awayPlayer1} />
+            <Player player={data.awayPlayer2} />
           </View>
         </View>
       </View>
@@ -337,6 +306,7 @@ class PlayerDetails extends Component {
                   </View>
                 ))}
               </ListItem.Group>
+              <Separator group />
             </View>
           )}
       </Container>

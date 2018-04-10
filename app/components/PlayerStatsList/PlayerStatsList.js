@@ -50,6 +50,11 @@ function PlayerStatsList(props) {
                 {S.COMPETITIVE_INDEX_SHORT}
               </Text>
             )}
+            {!dataSource[0].competitiveIndex && (
+              <Text small color="#fff" style={styles.competitiveIndex}>
+                {`SP+`}
+              </Text>
+            )}
           </View>
         </StaticListHeader>
       )}

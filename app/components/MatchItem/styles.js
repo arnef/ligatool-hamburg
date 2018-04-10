@@ -23,6 +23,7 @@ export default StyleSheet.create({
   },
   score: {
     flex: 0,
+    marginHorizontal: 4,
     alignItems: 'center',
   },
 });

@@ -56,6 +56,7 @@ import {
   userSetApiKey,
   userSetToken,
   getActiveTeam,
+  USER_REMOVE_TEAM,
 } from './modules/user';
 import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
 
@@ -254,8 +255,8 @@ function* login(action) {
     const apiKey = data.token;
     yield put(userSetApiKey(apiKey));
     const { data: token } = yield call(api.refreshAuthentication, apiKey);
-
     yield put(userSetToken(token.token, token.accessForTeams, token.expires));
+    api.setAuthorization(token.token);
     yield put(NavigationActions.hideLogin(action.next));
   } catch (ex) {
     console.warn(ex);
@@ -840,6 +841,10 @@ function* unsubscribeTeamSaga(action) {
   }
 }
 
+function removeTeamSaga() {
+  api.unsetAuthorization();
+}
+
 export default function* sagas() {
   yield takeEvery(LoadingActions.APP_STATE_CHANGED, checkChange);
   // yield takeEvery(GET_OVERVIEW_MATCHES, overview);
@@ -883,4 +888,5 @@ export default function* sagas() {
   yield takeEvery(ACCEPT_FIXTURE_RESULT, setFixtureGameResultSaga);
   yield takeEvery('SELECT_USER_TEAM', fetchUserTeam);
   yield takeEvery(SET_FIXTURE_GAME_AWAY_PLAYER, setPlayerAwaySaga);
+  yield takeEvery(USER_REMOVE_TEAM, removeTeamSaga);
 }
