@@ -7,7 +7,7 @@ const defaultState = {};
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case GET_PLAYER_DONE:
-      state = { ...state, [`${action.payload.id}`]: action.payload };
+      state = { ...state, [`${action.payload.data.id}`]: action.payload };
       break;
   }
 

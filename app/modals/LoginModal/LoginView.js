@@ -9,7 +9,11 @@ import {
 import { connect } from 'react-redux';
 import { Container, ListItem, Button, Text, Separator } from '../../components';
 import S from '../../lib/strings';
-import * as NavigationActions from '../../redux/modules/navigation';
+import {
+  navigate,
+  hideLogin,
+  getNavigationStateParams,
+} from '../../redux/modules/navigation';
 import * as AuthActions from '../../redux/modules/auth';
 
 import { colors } from '../../config/styles';
@@ -29,17 +33,15 @@ class LoginView extends Component {
   render() {
     const { loading, error } = this.props;
     const init =
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.init;
+      getNavigationStateParams(this.props.navigation) &&
+      getNavigationStateParams(this.props.navigation).init;
 
     const isIOS = Platform.OS === 'ios';
     return (
       <Container>
         <ListItem.Group>
           <View style={{ padding: 12 }}>
-            <Text>
-              {S.LOGIN_INFO}
-            </Text>
+            <Text>{S.LOGIN_INFO}</Text>
           </View>
           <View style={{ padding: isIOS ? 0 : 12 }}>
             {isIOS && <Separator full />}
@@ -78,7 +80,7 @@ class LoginView extends Component {
             />
             {isIOS && <Separator full />}
           </View>
-          {!loading &&
+          {!loading && (
             <View style={{ padding: 12 }}>
               <View style={{ flexDirection: 'row' }}>
                 <View style={styles.column}>
@@ -99,8 +101,9 @@ class LoginView extends Component {
                   />
                 </View>
               </View>
-            </View>}
-          {loading &&
+            </View>
+          )}
+          {loading && (
             <View style={{ padding: 12 }}>
               <View
                 style={{
@@ -111,15 +114,17 @@ class LoginView extends Component {
               >
                 <ActivityIndicator color={this.props.color} size={'large'} />
               </View>
-            </View>}
+            </View>
+          )}
         </ListItem.Group>
         {!loading &&
-          error &&
-          <View style={{ padding: 12 }}>
-            <Text color="red" center>
-              {S.LOGIN_ERROR}
-            </Text>
-          </View>}
+          error && (
+            <View style={{ padding: 12 }}>
+              <Text color="red" center>
+                {S.LOGIN_ERROR}
+              </Text>
+            </View>
+          )}
       </Container>
     );
   }
@@ -134,9 +139,6 @@ class LoginView extends Component {
         password: this.state.pass,
         username: this.state.user,
       };
-      // const next = this.props.navigation.state.params
-      //   ? this.props.navigation.state.params.next
-      //   : null;
       this.props.login(loginUser, null);
     }
   }
@@ -169,8 +171,8 @@ export default connect(
     color: getColor(state),
   }),
   dispatch => ({
-    hideLogin: next => dispatch(NavigationActions.hideLogin(next)),
+    hideLogin: next => dispatch(hideLogin(next)),
     login: (user, next) => dispatch(AuthActions.login(user, next)),
-    navigate: route => dispatch(NavigationActions.navigate(route)),
+    navigate: route => dispatch(navigate(route)),
   }),
 )(LoginView);

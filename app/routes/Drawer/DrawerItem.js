@@ -13,7 +13,9 @@ function DrawerItem(props) {
     <ListItem
       maxHeight={48}
       active={active}
-      onPress={active ? null : () => props.navigate(props.routeName)}
+      onPress={
+        active ? props.hideDrawer : () => props.navigate(props.routeName)
+      }
     >
       <ListItem.Icon name={props.icon} color={color} />
       <Text bold color={active ? color : null}>
@@ -29,6 +31,7 @@ export default connect(
     color: getColor(state),
   }),
   dispatch => ({
+    hideDrawer: () => dispatch(NavigationActions.back()),
     navigate: routeName => dispatch(NavigationActions.navigate({ routeName })),
   }),
 )(DrawerItem);

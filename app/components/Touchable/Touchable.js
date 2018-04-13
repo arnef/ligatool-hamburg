@@ -21,9 +21,7 @@ export default function Touchable(props) {
         )}
         style={{ borderWidth: 1 }}
       >
-        <View style={style}>
-          {children}
-        </View>
+        <View style={style}>{children}</View>
       </TouchableNativeFeedback>
     );
   } else {

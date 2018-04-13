@@ -19,11 +19,6 @@
         "__DEV__": true
     },
     "parser": "babel-eslint",
-    "settings": {
-        "flowtype": {
-            "onlyFilesWithFlowAnnotation": true
-        }
-    },
     "rules": {
         "no-console": [2, { "allow": ["warn", "error", "tron"] }],
         "react/prop-types": 0,

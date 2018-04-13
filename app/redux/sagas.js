@@ -1,6 +1,5 @@
 import { StatusBar } from 'react-native';
 import { takeEvery, put, call, select } from 'redux-saga/effects';
-// import moment from 'moment';
 import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist/constants';
 import * as api from '../lib/api';
@@ -31,7 +30,6 @@ import * as MatchUtils from '../lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
-// import { DATE_FORMAT } from '../config/settings';
 import { getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 
@@ -58,6 +56,7 @@ import {
   userSetApiKey,
   userSetToken,
   getActiveTeam,
+  USER_REMOVE_TEAM,
 } from './modules/user';
 import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
 
@@ -133,7 +132,7 @@ function* leagues() {
   try {
     yield put(LoadingActions.show());
     const leagues = yield call(api.getLeagues);
-    yield put(DrawerActions.setLeagues(leagues.data));
+    yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -141,19 +140,6 @@ function* leagues() {
     yield put(LoadingActions.hide());
   }
 }
-
-// function* logout() {
-//   try {
-//     yield put(LoadingActions.showModal());
-//     yield put({ type: MY_TEAM_MATCHES, payload: { next: [], played: [] } });
-//     yield call(api.logout);
-//   } catch (ex) {
-//     console.warn(ex);
-//   } finally {
-//     yield put({ type: LOGOUT_DONE });
-//     yield put(LoadingActions.hideModal());
-//   }
-// }
 
 function* getMatch(action) {
   try {
@@ -163,7 +149,6 @@ function* getMatch(action) {
     yield put(setFixtureData(data));
     meta.games = _.keyBy(meta.games, 'gameNumber');
     yield put(setFixtureMeta(data.id, meta));
-    // yield sortOverview();
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -270,8 +255,8 @@ function* login(action) {
     const apiKey = data.token;
     yield put(userSetApiKey(apiKey));
     const { data: token } = yield call(api.refreshAuthentication, apiKey);
-
     yield put(userSetToken(token.token, token.accessForTeams, token.expires));
+    api.setAuthorization(token.token);
     yield put(NavigationActions.hideLogin(action.next));
   } catch (ex) {
     console.warn(ex);
@@ -301,8 +286,8 @@ function* hideLogin() {
 function* getPlayer(action) {
   try {
     yield put(LoadingActions.show());
-    const player = yield call(api.getPlayer, action.payload.id);
-    yield put({ type: PlayerActions.GET_PLAYER_DONE, payload: player.data });
+    const { data, meta } = yield call(api.getPlayer, action.payload.id);
+    yield put({ type: PlayerActions.GET_PLAYER_DONE, payload: { data, meta } });
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -542,6 +527,7 @@ function* rehydrate() {
         yield put(DrawerActions.setLeagues(_.keyBy(data), 'id'));
       }
       yield queryOverviewSaga();
+      yield refreshToken();
     }
   } catch (ex) {
     console.warn(ex);
@@ -740,7 +726,11 @@ function* subscribeTeamSaga(action) {
 
 function* subscribeFixtureSaga(action) {
   const { fixtureId } = action.payload;
+  const state = yield select();
   try {
+    if (SettingsActions.notificationDisabledFixture(state, fixtureId)) {
+      yield put(SettingsActions.enableNotificationFixture(fixtureId));
+    }
     yield call(api.postNotificationFixture, fixtureId);
   } catch (ex) {
     console.warn(ex);
@@ -749,7 +739,14 @@ function* subscribeFixtureSaga(action) {
 
 function* unsubscribeFixtureSaga(action) {
   const { fixtureId } = action.payload;
+  const state = yield select();
+  const fixture = getFixture(state, fixtureId);
   try {
+    if (
+      SettingsActions.notificationSubscribedForFixtureByTeam(state, fixture)
+    ) {
+      yield put(SettingsActions.disableNotificationFixture(fixtureId));
+    }
     yield call(api.deleteNotificationFixture, fixtureId);
   } catch (ex) {
     console.warn(ex);
@@ -844,6 +841,10 @@ function* unsubscribeTeamSaga(action) {
   }
 }
 
+function removeTeamSaga() {
+  api.unsetAuthorization();
+}
+
 export default function* sagas() {
   yield takeEvery(LoadingActions.APP_STATE_CHANGED, checkChange);
   // yield takeEvery(GET_OVERVIEW_MATCHES, overview);
@@ -887,4 +888,5 @@ export default function* sagas() {
   yield takeEvery(ACCEPT_FIXTURE_RESULT, setFixtureGameResultSaga);
   yield takeEvery('SELECT_USER_TEAM', fetchUserTeam);
   yield takeEvery(SET_FIXTURE_GAME_AWAY_PLAYER, setPlayerAwaySaga);
+  yield takeEvery(USER_REMOVE_TEAM, removeTeamSaga);
 }

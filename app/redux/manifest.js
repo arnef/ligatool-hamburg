@@ -56,6 +56,16 @@ export default {
       },
     };
   },
+  '6': state => ({
+    ...state,
+    settings: {
+      ...state.settings,
+      notification: {
+        ...state.settings.notification,
+        disabledFixtures: [],
+      },
+    },
+  }),
 };
 
 export const APP_KEY = 'app';

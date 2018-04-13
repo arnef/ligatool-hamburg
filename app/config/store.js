@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import { autoRehydrate } from 'redux-persist';
 import createMigration from 'redux-persist-migrate';
 import createSagaMiddleware from 'redux-saga';
@@ -6,9 +7,11 @@ import createSagaMiddleware from 'redux-saga';
 import manifest, { APP_KEY } from '../redux/manifest';
 import sagas from '../redux/sagas';
 import reducer from '../redux/reducer';
-
 const sagaMiddleware = createSagaMiddleware();
-const middleware = [sagaMiddleware];
+const middleware = [
+  sagaMiddleware,
+  createReactNavigationReduxMiddleware('root', state => state.nav.navigation),
+];
 
 const migration = createMigration(manifest, APP_KEY);
 

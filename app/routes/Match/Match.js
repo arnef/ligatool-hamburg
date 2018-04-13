@@ -9,7 +9,11 @@ import {
   Switch,
 } from '../../components';
 import * as MatchesActions from '../../redux/modules/matches';
-import * as NavigationActions from '../../redux/modules/navigation';
+import {
+  showPlayer,
+  navigate,
+  getNavigationStateParams,
+} from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
 import styles from './styles';
 import S from '../../lib/strings';
@@ -37,17 +41,11 @@ class Match extends React.Component {
       scoreInput: -1,
       data: null,
     };
-
-    this.onRefresh = this.onRefresh.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onToggleScoreInput = this.onToggleScoreInput.bind(this);
     this.onSave = this.onSave.bind(this);
     this.openPlayer = this.props.openPlayer.bind(this);
     this.renderItem = this.renderItem.bind(this);
-  }
-
-  onRefresh() {
-    this.props.getMatch(this.props.navigation.state.params.id);
   }
 
   onSelect(idx, data, value) {
@@ -77,32 +75,6 @@ class Match extends React.Component {
       scoreInput: -1,
       data: null,
     });
-    // TODO saga handle this
-    // const match = this.props.matches[
-    //   `${this.props.navigation.state.params.id}`
-    // ];
-    // console.log(data);
-    // const sets = { ...match.sets };
-    // const idx = data.gameNumbers[score.set];
-    // const set = { ...data.sets[score.set] };
-
-    // set.number = idx;
-    // set.key = data.key;
-    // set.result = {
-    //   goalsHome: score.goalsHome,
-    //   goalsAway: score.goalsAway,
-    // };
-    // // set.goals_home = score.goals_home;
-    // // set.goals_away = score.goals_away;
-    // if (!set.homePlayer1 && !set.awayPlayer1) {
-    //   set.homePlayer1 = { id: 0 };
-    //   set.homePlayer2 = { id: 0 };
-    //   set.awayPlayer1 = { id: 0 };
-    //   set.awayPlayer2 = { id: 0 };
-    // }
-    // sets[idx] = set;
-    // this.props.updateSets(match.id, sets);
-    // this.setState({ scoreInput: -1, data: null });
   }
 
   renderItem({ item, index }) {
@@ -110,16 +82,17 @@ class Match extends React.Component {
     return (
       <View key={`game-${index}`}>
         {isAdmin &&
-          item.toggle &&
-          <View style={styles.containerToggle}>
-            <Switch
-              title={item.toggle.title}
-              onValueChange={() => {
-                this.props.setType(item.toggle.type, item.toggle.clear);
-              }}
-              value={modus.fixtureModus === item.toggle.active}
-            />
-          </View>}
+          item.toggle && (
+            <View style={styles.containerToggle}>
+              <Switch
+                title={item.toggle.title}
+                onValueChange={() => {
+                  this.props.setType(item.toggle.type, item.toggle.clear);
+                }}
+                value={modus.fixtureModus === item.toggle.active}
+              />
+            </View>
+          )}
         <SetItem
           data={item}
           fixtureId={this.props.match.id}
@@ -148,18 +121,19 @@ class Match extends React.Component {
             }
           }}
         />
-        {isAdmin &&
+        {isAdmin && (
           <ScoreModal
             data={this.state.data}
             modus={modus}
             onCancel={() => this.onToggleScoreInput(-1, null)}
             getSet={this.props.getSet}
             onSave={this.onSave}
-          />}
+          />
+        )}
         <Container
           error={null}
           refreshing={this.props.loading}
-          onRefresh={this.onRefresh}
+          onRefresh={this.props.getMatch}
           renderRow={this.renderItem}
           dataSource={
             match.status == 'SCHEDUELED' || match.status == 'POSTPONED'
@@ -168,41 +142,40 @@ class Match extends React.Component {
           }
           keyExtractor={(item, idx) => `game-${idx}`}
           ListEmptyComponent={() =>
-            <NoSets
-              match={match}
-              isAdmin={isAdmin}
-              firstFixture={this.props.firstFixture}
-              player={this.props.player}
-              venue={this.props.venue}
-            />}
+            this.props.loading ? null : (
+              <NoSets
+                match={match}
+                isAdmin={isAdmin}
+                firstFixture={this.props.firstFixture}
+                player={this.props.player}
+                venue={this.props.venue}
+              />
+            )
+          }
         />
         {isAdmin &&
-          showButton &&
-          <Button
-            onPress={() => {
-              if (match.status === 'IN_PLAY') {
-                this.props.suggestResult();
-              } else if (match.status === 'FINISHED') {
-                this.props.acceptResult();
+          showButton && (
+            <Button
+              onPress={() => {
+                if (match.status === 'IN_PLAY') {
+                  this.props.suggestResult();
+                } else if (match.status === 'FINISHED') {
+                  this.props.acceptResult();
+                }
+              }}
+              square
+              title={
+                S.SCORE_BUTTON_TEXT[
+                  match.status === 'IN_PLAY'
+                    ? 0
+                    : this.props.actionRequired ? 2 : 1
+                ]
               }
-              // const match = this.props.matches[
-              //   `${this.props.navigation.state.params.id}`
-              // ];
-
-              // this.props.suggestScore(match.id, match.sets);
-            }}
-            square
-            title={
-              S.SCORE_BUTTON_TEXT[
-                match.status === 'IN_PLAY'
-                  ? 0
-                  : this.props.actionRequired ? 2 : 1
-              ]
-            }
-            disabled={
-              !(match.status === 'IN_PLAY' || this.props.actionRequired)
-            }
-          />}
+              disabled={
+                !(match.status === 'IN_PLAY' || this.props.actionRequired)
+              }
+            />
+          )}
       </View>
     );
   }
@@ -240,28 +213,54 @@ function isAdmin(state, id) {
 export default connect(
   (state, props) => ({
     loading: state.loading.list,
-    match: getFixture(state, props.navigation.state.params.id),
-    modus: getFixtureModus(state, props.navigation.state.params.id),
+    match: getFixture(state, getNavigationStateParams(props.navigation).id),
+    modus: getFixtureModus(
+      state,
+      getNavigationStateParams(props.navigation).id,
+    ),
     getSet: gameNumber =>
-      getFixtureGame(state, props.navigation.state.params.id, gameNumber),
+      getFixtureGame(
+        state,
+        getNavigationStateParams(props.navigation).id,
+        gameNumber,
+      ),
     player: {
-      home: getFixturePlayerHomeList(state, props.navigation.state.params.id),
-      away: getFixturePlayerAwayList(state, props.navigation.state.params.id),
+      home: getFixturePlayerHomeList(
+        state,
+        getNavigationStateParams(props.navigation).id,
+      ),
+      away: getFixturePlayerAwayList(
+        state,
+        getNavigationStateParams(props.navigation).id,
+      ),
     },
-    venue: getFixtureVenue(state, props.navigation.state.params.id),
-    firstFixture: getFirstFixture(state, props.navigation.state.params.id),
-    showButton: showButton(state, props.navigation.state.params.id),
-    isAdmin: isAdmin(state, props.navigation.state.params.id),
+    venue: getFixtureVenue(
+      state,
+      getNavigationStateParams(props.navigation).id,
+    ),
+    firstFixture: getFirstFixture(
+      state,
+      getNavigationStateParams(props.navigation).id,
+    ),
+    showButton: showButton(
+      state,
+      getNavigationStateParams(props.navigation).id,
+    ),
+    isAdmin: isAdmin(state, getNavigationStateParams(props.navigation).id),
     actionRequired:
       accessForTeams(state).indexOf(
-        getFixture(state, props.navigation.state.params.id).suggestingTeamId,
+        getFixture(state, getNavigationStateParams(props.navigation).id)
+          .suggestingTeamId,
       ) === -1,
   }),
   (dispatch, props) => ({
-    getMatch: id => dispatch(MatchesActions.getMatch(id)),
+    getMatch: () =>
+      dispatch(
+        MatchesActions.getMatch(getNavigationStateParams(props.navigation).id),
+      ),
     openPlayer: player =>
       dispatch(
-        NavigationActions.navigate({
+        navigate({
           routeName: Routes.PLAYER,
           params: player,
         }),
@@ -269,24 +268,26 @@ export default connect(
     setGameResult: (gameNumber, result) =>
       dispatch(
         setFixtureGameResult(
-          props.navigation.state.params.id,
+          getNavigationStateParams(props.navigation).id,
           gameNumber,
           result,
         ),
       ),
     selectPlayer: data =>
-      dispatch(
-        NavigationActions.showPlayer(props.navigation.state.params.id, data),
-      ),
+      dispatch(showPlayer(getNavigationStateParams(props.navigation).id, data)),
     updateSets: (id, sets) => dispatch(MatchesActions.update({ id, sets })),
     // suggestScore: (id, sets) => dispatch(MatchesActions.suggest({ id, sets })),
     suggestResult: () =>
-      dispatch(suggestFixtureResult(props.navigation.state.params.id)),
+      dispatch(
+        suggestFixtureResult(getNavigationStateParams(props.navigation).id),
+      ),
     acceptResult: () =>
-      dispatch(acceptFixtureResult(props.navigation.state.params.id)),
+      dispatch(
+        acceptFixtureResult(getNavigationStateParams(props.navigation).id),
+      ),
     openTeam: (id, name) =>
       dispatch(
-        NavigationActions.navigate({
+        navigate({
           routeName: Routes.TEAM,
           params: { team: { id }, title: name },
         }),
@@ -294,7 +295,7 @@ export default connect(
     setType: (modus, resetGameNumbers) =>
       dispatch(
         setFixtureModus(
-          props.navigation.state.params.id,
+          getNavigationStateParams(props.navigation).id,
           modus,
           resetGameNumbers,
         ),

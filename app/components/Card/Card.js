@@ -8,9 +8,7 @@ export default function Card(props) {
   const Container = props.onPress ? Touchable : View;
   return (
     <View style={[styles.card, props.style]}>
-      <Container onPress={props.onPress}>
-        {props.children}
-      </Container>
+      <Container onPress={props.onPress}>{props.children}</Container>
     </View>
   );
 }

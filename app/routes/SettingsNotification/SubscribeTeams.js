@@ -12,6 +12,7 @@ import {
   subscribeTeam,
   unsubscribeTeam,
 } from '../../redux/modules/settings';
+import { getNavigationStateParams } from '../../redux/modules/navigation';
 class SubscribeTeam extends Component {
   toggleNotification = team => {
     if (team.subscribed) {
@@ -48,8 +49,11 @@ class SubscribeTeam extends Component {
 }
 
 const mapSubscribedTeams = (state, props) => {
-  const teams = state.drawer[props.navigation.state.params.competitionId]
-    ? state.drawer[props.navigation.state.params.competitionId].teams
+  const teams = state.drawer[
+    getNavigationStateParams(props.navigation).competitionId
+  ]
+    ? state.drawer[getNavigationStateParams(props.navigation).competitionId]
+        .teams
     : [];
   const mapedTeams = [];
   for (let team of teams) {

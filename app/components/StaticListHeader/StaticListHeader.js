@@ -13,11 +13,7 @@ function StaticListHeader(props) {
     headerStyle.push(props.style);
   }
 
-  return (
-    <View style={headerStyle}>
-      {props.children}
-    </View>
-  );
+  return <View style={headerStyle}>{props.children}</View>;
 }
 
 export default connect(state => ({ color: getColor(state) }))(StaticListHeader);

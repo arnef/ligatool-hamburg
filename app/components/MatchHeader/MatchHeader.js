@@ -22,15 +22,20 @@ function MatchHeader(props) {
       </Touchable>
       <View style={styles.containerScore}>
         <Text style={styles.textScore}>
-          {`${props.result
-            ? `${props.result.setPointsHomeTeam}:${props.result
-                .setPointsAwayTeam}`
-            : '-:-'}`}
+          {`${
+            props.result
+              ? `${props.result.setPointsHomeTeam}:${
+                  props.result.setPointsAwayTeam
+                }`
+              : '-:-'
+          }`}
         </Text>
         <Text small style={styles.textScore}>
-          {`(${props.result
-            ? `${props.result.goalsHomeTeam}:${props.result.goalsAwayTeam}`
-            : '-:-'})`}
+          {`(${
+            props.result
+              ? `${props.result.goalsHomeTeam}:${props.result.goalsAwayTeam}`
+              : '-:-'
+          })`}
         </Text>
       </View>
       <Touchable

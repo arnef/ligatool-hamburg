@@ -7,14 +7,15 @@ import * as TeamsActions from '../../redux/modules/teams';
 import Routes from '../../config/routes';
 import S from '../../lib/strings';
 import { getFixtureByTeam } from '../../redux/modules/fixtures';
+import { getNavigationStateParams } from '../../redux/modules/navigation';
 
 const TeamMatches = connect(
   (state, props) => ({
     teams: state.teams,
     fixtures: getFixtureByTeam(
       state,
-      props.navigation.state.params.team.groupId ||
-        props.navigation.state.params.team.id,
+      getNavigationStateParams(props.navigation).team.groupId ||
+        getNavigationStateParams(props.navigation).team.id,
     ),
   }),
   dispatch => ({
@@ -24,7 +25,9 @@ const TeamMatches = connect(
   return (
     <MatchList
       matches={props.fixtures}
-      onRefresh={() => props.getMatches(props.navigation.state.params.team.id)}
+      onRefresh={() =>
+        props.getMatches(getNavigationStateParams(props.navigation).team.id)
+      }
     />
   );
 });

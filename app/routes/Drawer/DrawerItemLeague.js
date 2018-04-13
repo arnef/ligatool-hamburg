@@ -6,9 +6,10 @@ import Routes from '../../config/routes';
 import { getColor } from '../../redux/modules/user';
 
 function DrawerItemLeague(props) {
-  const active = props.league.cup
-    ? `${Routes.LEAGUE_CUP}_${props.league.id}` === props.activeItem
-    : `${Routes.LEAGUE}_${props.league.id}` === props.activeItem;
+  const active =
+    props.league.standing === 0
+      ? `${Routes.LEAGUE_CUP}_${props.league.id}` === props.activeItem
+      : `${Routes.LEAGUE}_${props.league.id}` === props.activeItem;
 
   return (
     <ListItem
@@ -16,10 +17,12 @@ function DrawerItemLeague(props) {
       active={active}
       onPress={
         active
-          ? null
+          ? () => {
+              props.hideDrawer();
+            }
           : () => {
               props.navigate(
-                props.league.cup ? Routes.LEAGUE_CUP : Routes.LEAGUE,
+                props.league.standing === 0 ? Routes.LEAGUE_CUP : Routes.LEAGUE,
                 { title: props.league.name, id: props.league.id },
               );
             }
@@ -38,6 +41,7 @@ export default connect(
     color: getColor(state),
   }),
   dispatch => ({
+    hideDrawer: () => dispatch(NavigationActions.back()),
     navigate: (routeName, params) =>
       dispatch(NavigationActions.navigate({ routeName, params })),
   }),

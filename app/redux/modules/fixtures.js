@@ -16,6 +16,7 @@ export const SUGGEST_FIXTURE_DATES = 'fixture/SUGGEST_DATES';
 export const ACCEPT_FIXTURE_DATE = 'fixture/ACCEPT_DATE';
 export const SUGGEST_FIXTURE_RESULT = 'fixture/SUGGEST_RESULT';
 export const ACCEPT_FIXTURE_RESULT = 'fixture/ACCEPT_RESULT';
+import _ from 'lodash';
 
 // notif actions
 const FIXTURE_RESULT_CHANGED = 'FIXTURE_RESULT_CHANGED';
@@ -342,12 +343,11 @@ export const getFixturePlayerList = (state, id, key) =>
   get(state).meta[id] &&
   get(state).meta[id].player &&
   get(state).meta[id].player[key]
-    ? get(state).meta[id].player[key]
+    ? _.sortBy(get(state).meta[id].player[key], 'name')
     : [];
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
 export const getFixtureByFilter = (state, filter) => {
-  // const fixtures = [];
-  const overview = { data: {}, sections: [] };
+  const sections = {};
   const today = moment();
   for (let id in get(state).data) {
     const fixture = getFixture(state, id);
@@ -357,23 +357,20 @@ export const getFixtureByFilter = (state, filter) => {
     const key = moment(fixture.date, DATETIME_DB).format(DATE_FORMAT);
     if (filter === FILTER_TODAY) {
       if (fixture.status === STATUS_IN_PLAY || diff === 0) {
-        if (!overview.data[key]) {
-          overview.data[key] = [];
-          overview.sections.push(key);
+        if (!sections[key]) {
+          sections[key] = { data: [], title: key };
         }
-        overview.data[key].push(fixture);
+        sections[key].data.push(fixture);
       }
     } else if (filter === FILTER_PASSED) {
       if (
-        (fixture.status === STATUS_CONFIRMED ||
-          fixture.status === STATUS_FINISHED) &&
-        (diff > 0 && diff < 15)
+        (fixture.status === STATUS_CONFIRMED && diff > 0 && diff < 15) ||
+        fixture.status === STATUS_FINISHED
       ) {
-        if (!overview.data[key]) {
-          overview.data[key] = [];
-          overview.sections.push(key);
+        if (!sections[key]) {
+          sections[key] = { data: [], title: key };
         }
-        overview.data[key].push(fixture);
+        sections[key].data.push(fixture);
       }
     } else if (filter === FILTER_UPCOMMING) {
       if (
@@ -382,18 +379,17 @@ export const getFixtureByFilter = (state, filter) => {
         diff < 0 &&
         diff > -15
       ) {
-        if (!overview.data[key]) {
-          overview.data[key] = [];
-          overview.sections.push(key);
+        if (!sections[key]) {
+          sections[key] = { data: [], title: key };
         }
-        overview.data[key].push(fixture);
+        sections[key].data.push(fixture);
       }
     }
   }
-  for (let key in overview.data) {
-    overview.data[key].sort(fixtureSort);
+  for (let key in sections) {
+    sections[key].data.sort(fixtureSort);
   }
-  return overview;
+  return _.values(sections);
 };
 export const getFixtureByTeam = (state, teamGoupId) => {
   const fixtures = [];

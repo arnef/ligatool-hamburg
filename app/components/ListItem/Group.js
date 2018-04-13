@@ -8,11 +8,7 @@ class ListItemGroup extends Component {
     if (this.props.noPadding) {
       style.push({ paddingTop: 0 });
     }
-    return (
-      <View style={style}>
-        {children}
-      </View>
-    );
+    return <View style={style}>{children}</View>;
   }
 }
 

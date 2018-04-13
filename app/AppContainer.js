@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, BackHandler, AppState, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+
 import Loading from './modals/LoadingModal';
 import { Root } from './router';
 import { ActionSheet } from './components';
@@ -10,6 +12,9 @@ import * as LoadingActions from './redux/modules/loading';
 import { getColor } from './redux/modules/user';
 import { colors } from './config/styles';
 import TaskDescriptionAndroid from 'react-native-android-taskdescription';
+
+const addListener = createReduxBoundAddListener('root');
+
 class AppContainer extends Component {
   constructor(props) {
     super(props);
@@ -47,8 +52,9 @@ class AppContainer extends Component {
     const { dispatch, nav } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
-        {Platform.OS === 'android' &&
-          <TaskDescriptionAndroid backgroundColor={this.props.color} />}
+        {Platform.OS === 'android' && (
+          <TaskDescriptionAndroid backgroundColor={this.props.color} />
+        )}
         <ActionSheet
           ref={c => {
             ActionSheet.actionsheetInstance = c;
@@ -58,6 +64,7 @@ class AppContainer extends Component {
           navigation={addNavigationHelpers({
             dispatch,
             state: nav,
+            addListener,
           })}
         />
         <Loading loading={this.props.loading} />

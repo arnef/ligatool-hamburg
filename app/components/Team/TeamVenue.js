@@ -5,8 +5,9 @@ import S from '../../lib/strings';
 
 export default function TeamVenue(props) {
   function onPress() {
-    const address = `${props.venue.street}, ${props.venue.zipCode} ${props.venue
-      .city}`;
+    const address = `${props.venue.street}, ${props.venue.zipCode} ${
+      props.venue.city
+    }`;
     const uri =
       Platform.OS === 'ios'
         ? 'http://maps.apple.com/?address='
@@ -21,8 +22,9 @@ export default function TeamVenue(props) {
     <ListItem.Group>
       <ListItem.Header title={S.HOME_VENUE} />
       <ListItem multiline onPress={onPress}>
-        <Text style={{ flex: 1 }}>{`${props.venue.name}\n${props.venue
-          .street}, ${props.venue.zipCode} ${props.venue.city}`}</Text>
+        <Text style={{ flex: 1 }}>{`${props.venue.name}\n${
+          props.venue.street
+        }, ${props.venue.zipCode} ${props.venue.city}`}</Text>
         <ListItem.Icon right name="pin" color={props.color} />
       </ListItem>
     </ListItem.Group>

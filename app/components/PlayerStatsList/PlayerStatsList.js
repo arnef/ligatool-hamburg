@@ -8,7 +8,10 @@ import {
   Text,
   Separator,
 } from '../../components';
-import * as NavigatationActions from '../../redux/modules/navigation';
+import {
+  navigate,
+  getNavigationStateParams,
+} from '../../redux/modules/navigation';
 import Routes from '../../config/routes';
 import S from '../../lib/strings';
 import Player from './Player';
@@ -16,19 +19,15 @@ import styles from './styles';
 import { queryPlayerStats } from '../../redux/actions';
 
 function PlayerStatsList(props) {
-  function onPress(player) {
-    props.navigate(Routes.PLAYER, player);
-  }
-
   const dataSource =
-    props.leagues[props.navigation.state.params.id] &&
-    props.leagues[props.navigation.state.params.id].players
-      ? props.leagues[props.navigation.state.params.id].players
+    props.leagues[getNavigationStateParams(props.navigation).id] &&
+    props.leagues[getNavigationStateParams(props.navigation).id].players
+      ? props.leagues[getNavigationStateParams(props.navigation).id].players
       : [];
 
   return (
     <View style={styles.container}>
-      {dataSource.length > 0 &&
+      {dataSource.length > 0 && (
         <StaticListHeader>
           <View style={styles.header}>
             <View style={styles.position} />
@@ -42,17 +41,26 @@ function PlayerStatsList(props) {
             <Text small color="#fff" style={styles.matches} numberOfLines={1}>
               {S.GAMES}
             </Text>
-            {!!dataSource[0].competitiveIndex &&
+            {!!dataSource[0].competitiveIndex && (
               <Text small color="#fff" style={styles.competitiveIndex}>
                 {S.COMPETITIVE_INDEX_SHORT}
-              </Text>}
+              </Text>
+            )}
+            {!dataSource[0].competitiveIndex && (
+              <Text small color="#fff" style={styles.competitiveIndex}>
+                {`SP+`}
+              </Text>
+            )}
           </View>
-        </StaticListHeader>}
+        </StaticListHeader>
+      )}
       <Container
         error={props.error}
         refreshing={props.loading}
         onRefresh={props.queryPlayerStats}
-        renderRow={({ item }) => <Player {...item} onPress={onPress} />}
+        renderRow={({ item }) => (
+          <Player {...item} onPress={props.openPlayer} />
+        )}
         dataSource={dataSource}
         keyExtractor={item => `${item.rank}`}
         ItemSeparatorComponent={() => <Separator table image />}
@@ -85,8 +93,9 @@ export default connect(
   }),
   (dispatch, props) => ({
     queryPlayerStats: () =>
-      dispatch(queryPlayerStats(props.navigation.state.params.id)),
-    navigate: (routeName, params) =>
-      dispatch(NavigatationActions.navigate({ routeName, params })),
+      dispatch(queryPlayerStats(getNavigationStateParams(props.navigation).id)),
+    navigate: (routeName, params) => dispatch(navigate({ routeName, params })),
+    openPlayer: player =>
+      dispatch(navigate({ routeName: Routes.PLAYER, params: player })),
   }),
 )(PlayerStatsList);

@@ -31,6 +31,7 @@ import LeagueCup from './routes/Cup';
 import PlayerView from './routes/Player';
 import MatchDate from './routes/MatchDate';
 import S from './lib/strings';
+import { getNavigationStateParams } from './redux/modules/navigation';
 
 function createTabStack(key, screen, optionalRoutes) {
   const name = key.split('/');
@@ -45,22 +46,24 @@ function createTabStack(key, screen, optionalRoutes) {
       screen: Match,
       navigationOptions: ({ navigation }) => ({
         title:
-          navigation.state.params && navigation.state.params.title
-            ? navigation.state.params.title
+          getNavigationStateParams(navigation) &&
+          getNavigationStateParams(navigation).title
+            ? getNavigationStateParams(navigation).title
             : S.MATCH,
       }),
     },
     [Routes.TEAM]: {
       screen: Team,
       navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title,
+        title: getNavigationStateParams(navigation).title,
       }),
     },
     [Routes.PLAYER]: {
       screen: PlayerView,
       navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.name} ${navigation.state.params
-          .surname}`,
+        title: `${getNavigationStateParams(navigation).name} ${
+          getNavigationStateParams(navigation).surname
+        }`,
       }),
     },
     [Routes.MATCH_DATE]: {
@@ -81,13 +84,13 @@ export const LeaguesStack = createTabStack(Routes.LEAGUES, Leagues, {
   [Routes.LEAGUE]: {
     screen: League,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.title,
+      title: getNavigationStateParams(navigation).title,
     }),
   },
   [Routes.LEAGUE_CUP]: {
     screen: LeagueCup,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.title,
+      title: getNavigationStateParams(navigation).title,
     }),
   },
 });
@@ -143,15 +146,16 @@ export const App =
                   screen: Match,
                   navigationOptions: ({ navigation }) =>
                     NavDrawerIcon(
-                      navigation.state.params && navigation.state.params.title
-                        ? navigation.state.params.title
+                      getNavigationStateParams(navigation) &&
+                      getNavigationStateParams(navigation).title
+                        ? getNavigationStateParams(navigation).title
                         : S.MATCH,
                     )({ navigation }),
                 },
                 [Routes.TEAM]: {
                   screen: Team,
                   navigationOptions: ({ navigation }) =>
-                    NavDrawerIcon(navigation.state.params.title)({
+                    NavDrawerIcon(getNavigationStateParams(navigation).title)({
                       navigation,
                     }),
                 },
@@ -159,8 +163,9 @@ export const App =
                   screen: PlayerView,
                   navigationOptions: ({ navigation }) =>
                     NavDrawerIcon(
-                      `${navigation.state.params.name} ${navigation.state.params
-                        .surname}`,
+                      `${getNavigationStateParams(navigation).name} ${
+                        getNavigationStateParams(navigation).surname
+                      }`,
                     )({ navigation }),
                 },
                 [Routes.SETTINGS]: {
@@ -237,14 +242,15 @@ export const SearchStack = StackNavigator(
     [Routes.TEAM]: {
       screen: Team,
       navigationOptions: ({ navigation }) => ({
-        title: navigation.state.params.title,
+        title: getNavigationStateParams(navigation).title,
       }),
     },
     [Routes.PLAYER]: {
       screen: PlayerView,
       navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.name} ${navigation.state.params
-          .surname}`,
+        title: `${getNavigationStateParams(navigation).name} ${
+          getNavigationStateParams(navigation).surname
+        }`,
       }),
     },
   },

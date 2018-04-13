@@ -100,48 +100,50 @@ export default class ScoreInput extends React.Component {
     return (
       <Card style={{ flex: 0 }}>
         <View style={styles.containerSet}>
-          <Text bold secondary>{`${this.props.data.name} ${this.props.data
-            .gameNumbers.length > 1
-            ? `- ${S.RESULT} ${this.state.set + 1}${S.DOT_SET}`
-            : `- ${S.RESULT}`}`}</Text>
+          <Text bold secondary>{`${this.props.data.name} ${
+            this.props.data.gameNumbers.length > 1
+              ? `- ${S.RESULT} ${this.state.set + 1}${S.DOT_SET}`
+              : `- ${S.RESULT}`
+          }`}</Text>
         </View>
         <View style={styles.containerPlayers}>
           <View style={styles.containerPlayer}>
-            {playerHome1 &&
+            {playerHome1 && (
               <Text center>
                 {`${playerHome1.name} ${playerHome1.surname}`}
                 {playerHome2 &&
                   `\n-\n${playerHome2.name} ${playerHome2.surname}`}
-              </Text>}
+              </Text>
+            )}
           </View>
           <View style={styles.containerPlayer}>
-            {playerAway1 &&
+            {playerAway1 && (
               <Text center>
                 {`${playerAway1.name} ${playerAway1.surname}`}
                 {playerAway2 &&
                   `\n-\n${playerAway2.name} ${playerAway2.surname}`}
-              </Text>}
+              </Text>
+            )}
           </View>
         </View>
         <View style={styles.containerScore}>
-          <View style={styles.score}>
-            {this.renderInput('goals_home')}
-          </View>
-          <View style={styles.score}>
-            {this.renderInput('goals_away')}
-          </View>
+          <View style={styles.score}>{this.renderInput('goals_home')}</View>
+          <View style={styles.score}>{this.renderInput('goals_away')}</View>
         </View>
         <View style={styles.buttonRow}>
           <View style={styles.button}>
-            {this.state.set > 0 &&
+            {this.state.set > 0 && (
               <Touchable style={styles.buttonIcon} onPress={this.onPressBack}>
                 <Icon name="arrow-back" size={20} style={styles.iconButton} />
                 <Text style={styles.buttonText}>
-                  {`${this.state.set}${Platform.OS === 'android'
-                    ? S.DOT_SET.toUpperCase()
-                    : S.DOT_SET}`}
+                  {`${this.state.set}${
+                    Platform.OS === 'android'
+                      ? S.DOT_SET.toUpperCase()
+                      : S.DOT_SET
+                  }`}
                 </Text>
-              </Touchable>}
+              </Touchable>
+            )}
           </View>
           <View style={styles.vSeparator}>
             <Touchable style={styles.button} onPress={this.props.onCancel}>
@@ -151,18 +153,21 @@ export default class ScoreInput extends React.Component {
             </Touchable>
           </View>
           {this.state.goals_home !== null &&
-            this.state.goals_away !== null &&
-            <Touchable onPress={this.onSave} style={styles.button}>
-              <Text style={styles.buttonText}>
-                {Platform.OS === 'android' ? S.SAVE.toUpperCase() : S.SAVE}
-              </Text>
-            </Touchable>}
-          {(this.state.goals_home === null || this.state.goals_away === null) &&
+            this.state.goals_away !== null && (
+              <Touchable onPress={this.onSave} style={styles.button}>
+                <Text style={styles.buttonText}>
+                  {Platform.OS === 'android' ? S.SAVE.toUpperCase() : S.SAVE}
+                </Text>
+              </Touchable>
+            )}
+          {(this.state.goals_home === null ||
+            this.state.goals_away === null) && (
             <View style={styles.buttonDisabled}>
               <Text style={styles.buttonText}>
                 {Platform.OS === 'android' ? S.SAVE.toUpperCase() : S.SAVE}
               </Text>
-            </View>}
+            </View>
+          )}
         </View>
       </Card>
     );

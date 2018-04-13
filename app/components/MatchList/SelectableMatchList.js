@@ -2,7 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as LeaguesActions from '../../redux/modules/leagues';
-import * as NavigationActions from '../../redux/modules/navigation';
+import {
+  navigate,
+  getNavigationStateParams,
+} from '../../redux/modules/navigation';
 import {
   ActionSheet,
   Container,
@@ -15,6 +18,7 @@ import {
 import styles from './styles';
 import { getColor } from '../../redux/modules/user';
 import { getFixturesByCompetition } from '../../redux/modules/fixtures';
+import { sortBy } from 'lodash';
 
 class SelectableMatchList extends React.Component {
   constructor(props) {
@@ -24,7 +28,6 @@ class SelectableMatchList extends React.Component {
     };
     this.onOpenMenu = this.onOpenMenu.bind(this);
     this.onSelectMatchDay = this.onSelectMatchDay.bind(this);
-    this.onRefresh = this.onRefresh.bind(this);
     this.renderItem = this.renderItem.bind(this);
   }
 
@@ -44,10 +47,6 @@ class SelectableMatchList extends React.Component {
     }
   }
 
-  onRefresh() {
-    this.props.getMatches(this.props.navigation.state.params.id);
-  }
-
   renderItem({ item }) {
     return <MatchItem data={item} />;
   }
@@ -58,7 +57,7 @@ class SelectableMatchList extends React.Component {
     const matchList = data[this.state.selectedMatchDay || selected] || [];
     return (
       <View style={styles.container}>
-        {matchdays.length > 0 &&
+        {matchdays.length > 0 && (
           <StaticListHeader>
             <Touchable onPress={() => this.onOpenMenu(matchdays)}>
               <View style={styles.matchDayButton}>
@@ -72,12 +71,13 @@ class SelectableMatchList extends React.Component {
                 />
               </View>
             </Touchable>
-          </StaticListHeader>}
+          </StaticListHeader>
+        )}
         <Container
           getRef={container => (this.container = container)}
           error={this.props.error}
           refreshing={this.props.loading}
-          onRefresh={this.onRefresh}
+          onRefresh={this.props.getMatches}
           renderRow={this.renderItem}
           ListEmptyComponent={
             <View>
@@ -97,7 +97,7 @@ class SelectableMatchList extends React.Component {
 const fixturesByMatchDate = (state, props) => {
   const fixtures = getFixturesByCompetition(
     state,
-    props.navigation.state.params.id,
+    getNavigationStateParams(props.navigation).id,
   );
   const data = {
     data: {},
@@ -114,7 +114,7 @@ const fixturesByMatchDate = (state, props) => {
       data.selected = fixture.matchday;
     }
   }
-  data.matchdays.sort();
+  data.matchdays = sortBy(data.matchdays, i => parseInt(i));
   if (!data.selected) {
     data.selected = data.matchdays[data.matchdays.length - 1];
   }
@@ -131,9 +131,13 @@ export default connect(
     matches: state.fixtures.data,
     color: getColor(state),
   }),
-  dispatch => ({
-    getMatches: id => dispatch(LeaguesActions.getMatches(id)),
-    navigate: (routeName, params) =>
-      dispatch(NavigationActions.navigate((routeName, params))),
+  (dispatch, props) => ({
+    getMatches: () =>
+      dispatch(
+        LeaguesActions.getMatches(
+          getNavigationStateParams(props.navigation).id,
+        ),
+      ),
+    navigate: (routeName, params) => dispatch(navigate((routeName, params))),
   }),
 )(SelectableMatchList);

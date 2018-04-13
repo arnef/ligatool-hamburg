@@ -35,9 +35,9 @@ function MatchItem(props) {
           {!!props.data.venueName && <Icon name={'pin'} />}
           {props.data.venueName ? ` ${props.data.venueName}  ` : ''}
           <Icon name={'clock'} />{' '}
-          {`${props.data.status === STATUS_POSTPONED
-            ? 'bisher '
-            : ''}${date.format(DATETIME_FORMAT)}`}
+          {`${
+            props.data.status === STATUS_POSTPONED ? 'bisher ' : ''
+          }${date.format(DATETIME_FORMAT)}`}
         </Text>
         {__DEV__ && <Text>{`${props.data.status}`}</Text>}
         <View style={styles.teams}>

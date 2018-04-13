@@ -28,9 +28,13 @@ export function setAuthorization(value) {
   instance.defaults.headers.authorization = `Bearer ${value}`;
 }
 
-export function setSecret(value) {
-  instance.defaults.headers.common.Secret = value;
+export function unsetAuthorization() {
+  instance.defaults.headers.authorization = undefined;
 }
+
+// export function setSecret(value) {
+//   instance.defaults.headers.common.Secret = value;
+// }
 
 // POST /user/auth
 export function authenticate(user) {
@@ -43,7 +47,7 @@ export function refreshAuthentication(access_key) {
     instance
       .post(`/user/auth/refresh?assoc=${ASSOC}`, { access_key })
       .then(resp => {
-        setSecret(resp.data.token);
+        // setSecret(resp.data.token);
         resolve(resp);
       })
       .catch(reject);
@@ -216,15 +220,3 @@ export function postNotificationTeam(teamId) {
 export function deleteNotificationTeam(teamId) {
   return instance.delete(`/notifications/team/${teamId}`);
 }
-// POST /notification
-// export function updateNotifications(
-//   fcm_token: string,
-//   notification: any,
-// ): Promise<*> {
-//   return instance.post('/notification', { fcm_token, notification });
-// }
-
-// GET /search
-// export function search(query: string) {
-//   return instance.get('/search/' + encodeURI(query));
-// }

@@ -4,21 +4,21 @@ import { colors } from '../../config/styles';
 export default StyleSheet.create({
   container: {
     padding: 12,
+    paddingBottom: 9,
   },
   containerTitle: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   containerPlayers: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 12,
+    flex: 2,
+    justifyContent: 'space-around',
   },
   containerPlayer: {
     flexDirection: 'row',
     flex: 2,
-    paddingHorizontal: 6,
+    marginVertical: 4,
+    paddingHorizontal: 8,
     alignItems: 'center',
   },
   textPlayer: {

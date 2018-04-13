@@ -36,7 +36,7 @@ class Settings extends React.Component {
     if (teams.length > 0) {
       return (
         <View>
-          {teams.map((team, idx) =>
+          {teams.map((team, idx) => (
             <ListItem key={team.id}>
               <TeamLogo team={team.emblemUrl} left />
               <Touchable
@@ -48,23 +48,25 @@ class Settings extends React.Component {
                   }
                 }}
               >
-                {active === idx &&
+                {active === idx && (
                   <Icon
                     style={{ marginRight: 4 }}
                     color={team.color}
                     name="checkmark-circle"
-                  />}
-                <Text style={{ flex: 1 }}>
-                  {team.name}
-                </Text>
-                {!team.access &&
-                  <ListItem.Icon name="key" color={team.color} />}
+                  />
+                )}
+                <Text style={{ flex: 1 }}>{team.name}</Text>
+                {!team.access && (
+                  <ListItem.Icon name="key" color={team.color} />
+                )}
               </Touchable>
               <Touchable
                 onPress={() => {
                   Alert.alert(
                     'Team löschen?',
-                    `Soll das Team "${team.name}" aus deiner Liste entfernt werden?`,
+                    `Soll das Team "${
+                      team.name
+                    }" aus deiner Liste entfernt werden?`,
                     [
                       { text: 'Nein' },
                       {
@@ -81,19 +83,18 @@ class Settings extends React.Component {
               >
                 <ListItem.Icon name="trash" right color={team.color} />
               </Touchable>
-            </ListItem>,
-          )}
-          {teams[teams.length - 1].access &&
+            </ListItem>
+          ))}
+          {teams[teams.length - 1].access && (
             <View>
               <Separator image />
 
               <ListItem onPress={this.props.login}>
                 <ListItem.Icon name="add" color={color} />
-                <Text>
-                  {`Weiteres Team hinzufügen`}
-                </Text>
+                <Text>{`Weiteres Team hinzufügen`}</Text>
               </ListItem>
-            </View>}
+            </View>
+          )}
           {/* {!auth.api_key &&
             <ListItem onPress={this.props.login}>
               <ListItem.Icon name="key" color={color} />
@@ -115,9 +116,7 @@ class Settings extends React.Component {
     return (
       <ListItem onPress={this.props.login}>
         <ListItem.Icon name="add" color={color} />
-        <Text>
-          {S.SELECT_TEAM}
-        </Text>
+        <Text>{S.SELECT_TEAM}</Text>
       </ListItem>
     );
   }
@@ -190,9 +189,7 @@ class Settings extends React.Component {
         <ListItem.Header title={S.INFORMATION} />
         <ListItem>
           <ListItem.Icon name="information-circle" color={color} />
-          <Text>
-            {`${S.APP_VERSION}`}
-          </Text>
+          <Text>{`${S.APP_VERSION}`}</Text>
         </ListItem>
       </ListItem.Group>
     );

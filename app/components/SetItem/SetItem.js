@@ -17,9 +17,11 @@ function PlayerHome(props) {
   return (
     <View style={styles.containerPlayer}>
       <Text center style={styles.textPlayer}>
-        {`${props.player
-          ? `${props.player.name} ${props.player.surname}`
-          : props.editable ? S.SELECT : ''}`}
+        {`${
+          props.player
+            ? `${props.player.name} ${props.player.surname}`
+            : props.editable ? S.SELECT : ''
+        }`}
       </Text>
       {props.player && <Image url={props.player.image} size={32} />}
     </View>
@@ -31,9 +33,11 @@ function PlayerAway(props) {
     <View style={styles.containerPlayer}>
       {props.player && <Image url={props.player.image} size={32} />}
       <Text center style={styles.textPlayer}>
-        {`${props.player
-          ? `${props.player.name} ${props.player.surname}`
-          : props.editable ? S.SELECT : ''}`}
+        {`${
+          props.player
+            ? `${props.player.name} ${props.player.surname}`
+            : props.editable ? S.SELECT : ''
+        }`}
       </Text>
     </View>
   );
@@ -54,13 +58,14 @@ function Set(props) {
             player={props[`homePlayer${props.idx + 1}`]}
           />
         </Container>
-        {props.showDouble &&
+        {props.showDouble && (
           <View style={styles.containerPlayer}>
             <PlayerHome
               editable={props.editable}
               player={props[`homePlayer2`]}
             />
-          </View>}
+          </View>
+        )}
       </View>
       <Score goals={props.result} />
       <View style={{ flex: 2 }}>
@@ -73,13 +78,14 @@ function Set(props) {
             player={props[`awayPlayer${props.idx + 1}`]}
           />
         </Container>
-        {props.showDouble &&
+        {props.showDouble && (
           <View style={styles.containerPlayer}>
             <PlayerAway
               editable={props.editable}
               player={props['awayPlayer2']}
             />
-          </View>}
+          </View>
+        )}
       </View>
     </View>
   );
@@ -113,14 +119,16 @@ function SetItem(props) {
     <Card>
       <Container onPress={showMenu} style={styles.container}>
         <View style={styles.containerTitle}>
-          <Text bold secondary style={styles.textTitle}>{`${props.data
-            .name}`}</Text>
-          {props.editable &&
-            <Icon style={styles.iconTitle} name="more" size={16} />}
+          <Text bold secondary style={styles.textTitle}>{`${
+            props.data.name
+          }`}</Text>
+          {props.editable && (
+            <Icon style={styles.iconTitle} name="more" size={16} />
+          )}
         </View>
       </Container>
       <Container onPress={onPress}>
-        {props.data.gameNumbers.map((gameNumber, idx) =>
+        {props.data.gameNumbers.map((gameNumber, idx) => (
           <Set
             showDouble={
               props.data.type == 'DOUBLES' && props.data.gameNumbers.length == 1
@@ -130,8 +138,8 @@ function SetItem(props) {
             editable={props.editable}
             idx={idx}
             key={`set-${gameNumber}`}
-          />,
-        )}
+          />
+        ))}
       </Container>
     </Card>
   );

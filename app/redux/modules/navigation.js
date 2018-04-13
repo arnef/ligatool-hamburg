@@ -180,6 +180,10 @@ export function hideStart() {
   return { type: HIDE_START_MODAL };
 }
 
+/* selectors */
+export const getNavigationStateParams = navigation =>
+  navigation.state && navigation.state.params ? navigation.state.params : null;
+
 // helper
 const recursiveFindRoute = (route, name) => {
   if (!route) {

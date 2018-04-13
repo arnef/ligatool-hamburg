@@ -85,27 +85,14 @@
       "scale" : "2x"
     },
     {
-      "size" : "76x76",
-      "idiom" : "ipad",
-      "filename" : "dtfb-app-76.png",
-      "scale" : "1x"
+      "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "app_icon60@3x.png",
+      "scale" : "3x"
     },
     {
-      "size" : "76x76",
-      "idiom" : "ipad",
-      "filename" : "dtfb-app-76@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "size" : "83.5x83.5",
-      "idiom" : "ipad",
-      "filename" : "dtfb-app-83.5@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "dtfb-app-1024.png",
+      "size" : "1024x1024",
       "scale" : "1x"
     }
   ],
