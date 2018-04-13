@@ -87,32 +87,6 @@ function* queryOverviewSaga() {
   }
 }
 
-// function* sortOverview(data) {
-//   const { matches, overview } = yield select();
-//   if (!data) {
-//     data = overview;
-//   }
-//   for (let key in data) {
-//     for (let date in data[key]) {
-//       if (data[key] && data[key].data && data[key].data[date]) {
-//         data[key].data[date].sort(MatchUtils.sort(matches));
-//       }
-//     }
-//     if (data[key] && data[key].sections) {
-//       data[key].sections.sort((a, b) => {
-//         const dateA = moment(a.substring(4), DATE_FORMAT.substring(4));
-//         const dateB = moment(b.substring(4), DATE_FORMAT.substring(4));
-
-//         const sort =
-//           key === 'next' ? dateB.isBefore(dateA) : dateA.isBefore(dateB);
-
-//         return sort ? 1 : -1;
-//       });
-//     }
-//   }
-//   yield put({ type: OVERVIEW_MATCHES, payload: data });
-// }
-
 function* myTeam() {
   try {
     yield put(LoadingActions.show());
@@ -870,11 +844,9 @@ export default function* sagas() {
   yield takeEvery(SUGGEST_DATETIME, suggestDatetime);
   yield takeEvery(NavigationActions.HIDE_START_MODAL, hideStart);
   yield takeEvery(SettingsActions.COMPLETE_SETUP, completeSetup);
-  // yield takeEvery(SettingsActions.FETCH_USER_TEAM, fetchUserTeam);
 
   yield takeEvery(QUERY_FIXTURE_OVERVIEW, queryOverviewSaga);
   yield takeEvery(QUERY_PLAYER_STATS, getLeaguePlayerStats);
-  // yield takeEvery(UNSUBSCRIBE_TEAM, unsubscribeTeamSaga);
 
   yield takeEvery(SettingsActions.SUBSCRIBE_TEAM, subscribeTeamSaga);
   yield takeEvery(SettingsActions.UNSUBSCRIBE_TEAM, unsubscribeTeamSaga);

@@ -12,6 +12,7 @@ import DrawerItemLeague from './DrawerItemLeague';
 import S from '../../lib/strings';
 import { getActiveTeam } from '../../redux/modules/user';
 import { sortCompetition } from '../../Helper';
+import { getLeagues } from '../../redux/modules/leagues';
 
 function Drawer(props) {
   return (
@@ -29,33 +30,38 @@ function Drawer(props) {
           </View>
         )}
       </View>
-      <Container>
-        <DrawerItem
-          routeName={Routes.OVERVIEW}
-          icon="football"
-          name={S.OVERVIEW}
-        />
-        <DrawerItem
-          routeName={Routes.MY_TEAM}
-          icon={props.team ? 'shirt' : 'log-in'}
-          name={props.team ? S.MY_TEAM : S.SELECT_TEAM}
-        />
-        <Separator full />
+      <DrawerItem
+        routeName={Routes.OVERVIEW}
+        icon="football"
+        name={S.OVERVIEW}
+      />
+      <DrawerItem
+        routeName={Routes.MY_TEAM}
+        icon={props.team ? 'shirt' : 'log-in'}
+        name={props.team ? S.MY_TEAM : S.SELECT_TEAM}
+      />
+      <Separator full />
+      <Container onRefresh={props.queryCompetitions}>
         {props.leagues.map(league => (
           <DrawerItemLeague key={`league-${league.id}`} league={league} />
         ))}
-        <Separator full />
-        <DrawerItem
-          routeName={Routes.SETTINGS}
-          icon="settings"
-          name={S.SETTINGS}
-        />
       </Container>
+      <Separator full />
+      <DrawerItem
+        routeName={Routes.SETTINGS}
+        icon="settings"
+        name={S.SETTINGS}
+      />
     </View>
   );
 }
 
-export default connect(state => ({
-  team: getActiveTeam(state),
-  leagues: sortBy(state.drawer, sortCompetition),
-}))(Drawer);
+export default connect(
+  state => ({
+    team: getActiveTeam(state),
+    leagues: sortBy(state.drawer, sortCompetition),
+  }),
+  dispatch => ({
+    queryCompetitions: () => dispatch(getLeagues()),
+  }),
+)(Drawer);

@@ -11,7 +11,6 @@ function DrawerItem(props) {
   const color = active ? props.color : colors.TEXT_SECONDARY;
   return (
     <ListItem
-      maxHeight={48}
       active={active}
       onPress={
         active ? props.hideDrawer : () => props.navigate(props.routeName)

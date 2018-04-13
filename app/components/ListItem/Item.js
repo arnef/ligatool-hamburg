@@ -54,10 +54,11 @@ const styles = StyleSheet.create({
     android: {
       alignItems: 'center',
       borderWidth: 0,
-      flex: 1,
+      flex: -1,
       flexDirection: 'row',
       height: 48,
-
+      minHeight: 48,
+      flexGrow: 1,
       paddingVertical: 14,
       paddingHorizontal: 16,
     },
