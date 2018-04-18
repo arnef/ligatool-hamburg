@@ -345,12 +345,12 @@ function* navigate(action) {
         }
         break;
       case Routes.LEAGUE_CUP:
-        if (
-          !state.leagues[`${action.params.id}`] ||
-          !state.leagues[`${action.params.id}`].match_days
-        ) {
-          yield getLeagueMatches({ payload: { id: action.params.id } });
-        }
+        // if (
+        //   !state.leagues[`${action.params.id}`] ||
+        //   !state.leagues[`${action.params.id}`].match_days
+        // ) {
+        yield getLeagueMatches({ payload: { id: action.params.id } });
+        // }
         break;
       case Routes.LEAGUE:
         {

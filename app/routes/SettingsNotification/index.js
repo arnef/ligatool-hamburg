@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Text, ListItem, Separator } from '../../components';
+import { Text, ListItem, Separator, Content } from '../../components';
 import { sortCompetition } from '../../Helper';
 import { sortBy } from 'lodash';
 import { navigate } from '../../redux/modules/navigation';
@@ -20,11 +20,10 @@ class SettingsNotification extends Component {
   render() {
     const { competitions } = this.props;
     return (
-      <Container
-        dataSource={competitions}
-        renderRow={this.renderRow}
-        keyExtractor={item => `competition-${item.id}`}
-        ItemSeparatorComponent={Separator}
+      <Content
+        data={competitions}
+        renderItem={this.renderRow}
+        renderSeparator={Separator}
       />
     );
   }

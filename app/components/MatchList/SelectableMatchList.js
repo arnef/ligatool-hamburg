@@ -8,17 +8,18 @@ import {
 } from '../../redux/modules/navigation';
 import {
   ActionSheet,
-  Container,
   StaticListHeader,
   Touchable,
   Text,
   Icon,
   MatchItem,
+  Content,
 } from '../../components';
 import styles from './styles';
 import { getColor } from '../../redux/modules/user';
 import { getFixturesByCompetition } from '../../redux/modules/fixtures';
 import { sortBy } from 'lodash';
+import S from '../../lib/strings';
 
 class SelectableMatchList extends React.Component {
   constructor(props) {
@@ -26,35 +27,32 @@ class SelectableMatchList extends React.Component {
     this.state = {
       selectedMatchDay: null,
     };
-    this.onOpenMenu = this.onOpenMenu.bind(this);
-    this.onSelectMatchDay = this.onSelectMatchDay.bind(this);
-    this.renderItem = this.renderItem.bind(this);
   }
 
-  onOpenMenu(matchDays) {
+  onOpenMenu = matchDays => {
     ActionSheet.show(
       {
         options: matchDays,
       },
       index => this.onSelectMatchDay(matchDays[index]),
     );
-  }
+  };
 
-  onSelectMatchDay(matchDay) {
+  onSelectMatchDay = matchDay => {
     this.setState({ selectedMatchDay: matchDay });
-    if (this.container && this.container.scrollTo) {
-      this.container.scrollTo({ x: 0, y: 0, animated: true });
+    if (this.container && this.container.scrollToOffset) {
+      this.container.scrollToOffset({ x: 0, y: 0, animated: true });
     }
-  }
+  };
 
-  renderItem({ item }) {
+  renderItem = ({ item }) => {
     return <MatchItem data={item} />;
-  }
+  };
 
   render() {
     const { matchdays, selected, data } = this.props;
 
-    const matchList = data[this.state.selectedMatchDay || selected] || [];
+    const matchList = data[this.state.selectedMatchDay || selected];
     return (
       <View style={styles.container}>
         {matchdays.length > 0 && (
@@ -73,21 +71,14 @@ class SelectableMatchList extends React.Component {
             </Touchable>
           </StaticListHeader>
         )}
-        <Container
-          getRef={container => (this.container = container)}
-          error={this.props.error}
-          refreshing={this.props.loading}
+        <Content
           onRefresh={this.props.getMatches}
-          renderRow={this.renderItem}
-          ListEmptyComponent={
-            <View>
-              <Text secondary style={{ padding: 16, textAlign: 'center' }}>
-                Keine Begegnungen
-              </Text>
-            </View>
-          }
-          dataSource={matchList}
-          keyExtractor={item => `fixture-${item.id}`}
+          renderItem={this.renderItem}
+          listEmptyText={S.NO_FIXTURES}
+          data={matchList}
+          reference={container => {
+            this.container = container;
+          }}
         />
       </View>
     );
@@ -125,8 +116,6 @@ const fixturesByMatchDate = (state, props) => {
 export default connect(
   (state, props) => ({
     ...fixturesByMatchDate(state, props),
-    error: state.loading.error,
-    loading: state.loading.list,
     leagues: state.leagues,
     matches: state.fixtures.data,
     color: getColor(state),

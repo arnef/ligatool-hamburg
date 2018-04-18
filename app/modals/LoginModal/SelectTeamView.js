@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import { sortBy } from 'lodash';
-import {
-  Container,
-  TeamLogo,
-  ListItem,
-  Text,
-  Separator,
-} from '../../components';
+import { TeamLogo, ListItem, Text, Separator, Content } from '../../components';
 import { connect } from 'react-redux';
 import * as LeaguesActions from '../../redux/modules/leagues';
 import {
@@ -20,19 +13,11 @@ class SelectTeamView extends Component {
     const { teams } = this.props;
 
     return (
-      <View style={{ flex: 1 }}>
-        <Container
-          dataSource={teams}
-          renderRow={this.renderItem}
-          getItemLayout={(data, index) => ({
-            length: ListItem.ITEM_HEIGHT,
-            offset: ListItem.ITEM_HEIGHT * index,
-            index,
-          })}
-          ItemSeparatorComponent={() => <Separator image />}
-          keyExtractor={item => item.id}
-        />
-      </View>
+      <Content
+        renderItem={this.renderItem}
+        renderSeparator={() => <Separator image />}
+        data={teams}
+      />
     );
   }
 

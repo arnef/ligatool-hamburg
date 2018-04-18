@@ -23,8 +23,6 @@ import League from './routes/League';
 import Settings from './routes/Settings';
 import SettingsNotification from './routes/SettingsNotification';
 import SettingsNotificationTeams from './routes/SettingsNotification/SubscribeTeams';
-import Search from './routes/Search';
-import SearchHeader from './routes/Search/SearchHeader';
 
 import Team from './routes/Team';
 import LeagueCup from './routes/Cup';
@@ -234,38 +232,12 @@ export const App =
         },
       );
 
-export const SearchStack = StackNavigator(
-  {
-    SearchStart: {
-      screen: Search,
-    },
-    [Routes.TEAM]: {
-      screen: Team,
-      navigationOptions: ({ navigation }) => ({
-        title: getNavigationStateParams(navigation).title,
-      }),
-    },
-    [Routes.PLAYER]: {
-      screen: PlayerView,
-      navigationOptions: ({ navigation }) => ({
-        title: `${getNavigationStateParams(navigation).name} ${
-          getNavigationStateParams(navigation).surname
-        }`,
-      }),
-    },
-  },
-  SearchHeader,
-);
-
 export const Root = StackNavigator(
   {
     [Routes.APP]: { screen: App },
     [Routes.MODAL_LOGIN]: { screen: ModalLogin },
     [Routes.MODAL_SELECT_PLAYER]: { screen: ModalSelectPlayer },
     [Routes.MODAL_FIRST_START]: { screen: FirstStart },
-    [Routes.SEARCH]: {
-      screen: SearchStack,
-    },
   },
   {
     headerMode: 'none',

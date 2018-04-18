@@ -1,4 +1,3 @@
-import Container from './Container';
 import LaunchScreen from './LaunchScreen';
 import MatchItem from './MatchItem';
 import TeamLogo from './TeamLogo';
@@ -25,10 +24,11 @@ import Table from './Table';
 import Team from './Team';
 import Score from './Score';
 
+import Content from './Content';
+
 export {
   MatchHeader,
   MatchStatsBar,
-  Container,
   LaunchScreen,
   MatchItem,
   TeamLogo,
@@ -50,4 +50,5 @@ export {
   Table,
   Team,
   Score,
+  Content,
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { sortBy } from 'lodash';
-import { Container, Image, Text, Separator } from '../../components';
+import { Content, Image, Text, Separator } from '../../components';
 import Routes from '../../config/routes';
 
 import styles from './styles';
@@ -41,11 +41,11 @@ function Drawer(props) {
         name={props.team ? S.MY_TEAM : S.SELECT_TEAM}
       />
       <Separator full />
-      <Container onRefresh={props.queryCompetitions}>
-        {props.leagues.map(league => (
-          <DrawerItemLeague key={`league-${league.id}`} league={league} />
-        ))}
-      </Container>
+      <Content
+        onRefresh={props.queryCompetitions}
+        renderItem={({ item }) => <DrawerItemLeague league={item} />}
+        data={props.leagues}
+      />
       <Separator full />
       <DrawerItem
         routeName={Routes.SETTINGS}

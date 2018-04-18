@@ -34,9 +34,21 @@ export function darken(color, amt) {
   let g = parseInt(color.substring(3, 5), 16);
   let b = parseInt(color.substring(5, 7), 16);
 
-  r = Math.max(Math.round(r - r * (amt / 100)), 0).toString(16);
-  g = Math.max(Math.round(g - g * (amt / 100)), 0).toString(16);
-  b = Math.max(Math.round(b - b * (amt / 100)), 0).toString(16);
+  r = Math.max(Math.round(r - (255 * amt)), 0).toString(16);
+  g = Math.max(Math.round(g - (255 * amt)), 0).toString(16);
+  b = Math.max(Math.round(b - (255 * amt)), 0).toString(16);
+
+  return '#' + ('0' + r).slice(-2) + ('0' + g).slice(-2) + ('0' + b).slice(-2);
+}
+
+export function lighten(color, amt) {
+  let r = parseInt(color.substring(1, 3), 16);
+  let g = parseInt(color.substring(3, 5), 16);
+  let b = parseInt(color.substring(5, 7), 16);
+
+  r = Math.min(Math.round(r + (255 * amt)), 255).toString(16);
+  g = Math.min(Math.round(g + (255 * amt)), 255).toString(16);
+  b = Math.min(Math.round(b + (255 * amt)), 255).toString(16);
 
   return '#' + ('0' + r).slice(-2) + ('0' + g).slice(-2) + ('0' + b).slice(-2);
 }

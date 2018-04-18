@@ -102,7 +102,7 @@ export const acceptFixtureResult = id => ({
 });
 
 const defaultState = {
-  data: {},
+  data: null,
   meta: {},
   dates: {},
 };
@@ -304,13 +304,9 @@ export default function reducer(state = defaultState, action) {
 
 /* selectors */
 const get = state => state.fixtures;
-export const getFixture = (state, id) => get(state).data[id] || {};
+export const getFixture = (state, id) => get(state).data[id];
 export const getFixtureModus = (state, id) =>
-  get(state).meta[id]
-    ? get(state).meta[id].modus
-    : {
-        lineUp: {},
-      };
+  get(state).meta[id] ? get(state).meta[id].modus : null;
 export const getFixtureGames = (state, id) => get(state).meta[id].games || {};
 export const getFixtureDefaultLineUp = (state, id) =>
   get(state).meta[id] &&
@@ -347,6 +343,9 @@ export const getFixturePlayerList = (state, id, key) =>
     : [];
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
 export const getFixtureByFilter = (state, filter) => {
+  if (get(state).data === null) {
+    return null;
+  }
   const sections = {};
   const today = moment();
   for (let id in get(state).data) {
@@ -405,6 +404,24 @@ export const getFixtureByTeam = (state, teamGoupId) => {
     }
   }
   return fixtures.sort(fixtureSort);
+};
+
+export const getNextFixturesByTeam = (state, teamGroupId) => {
+  const fixtures = getFixtureByTeam(state, teamGroupId);
+  if (fixtures.length === 0) {
+    // not loaded yet
+    return null;
+  }
+
+  return _.filter(fixtures, f => f.status !== STATUS_CONFIRMED);
+};
+
+export const getPlayedFixturesByTeam = (state, teamGoupId) => {
+  const fixtures = getFixtureByTeam(state, teamGoupId);
+  if (fixtures.length === 0) {
+    return null;
+  }
+  return _.filter(fixtures, f => f.status === STATUS_CONFIRMED);
 };
 
 export const getFixturesByCompetition = (state, competitionId) => {

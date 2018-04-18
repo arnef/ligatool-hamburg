@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
-  Container,
+  Content,
   ListItem,
   Text,
   Switch,
@@ -197,7 +197,7 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Content>
         <ListItem.Group>
           <ListItem.Header title={S.USER_DATA} />
           {this.renderUser()}
@@ -206,7 +206,7 @@ class Settings extends React.Component {
         {this.renderNotifications()}
         <Separator group />
         {this.renderInformation()}
-      </Container>
+      </Content>
     );
   }
 }

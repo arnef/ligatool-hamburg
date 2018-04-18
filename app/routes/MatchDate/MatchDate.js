@@ -6,7 +6,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {
   Text,
   Button,
-  Container,
+  Content,
   ListItem,
   Touchable,
   Icon,
@@ -89,7 +89,7 @@ class MatchDate extends React.Component {
       : 0;
 
     return (
-      <Container onRefresh={() => {}} refreshing={this.props.loading}>
+      <Content>
         <ListItem.Group>
           <ListItem.Header title={S.DATETIME_SUGGESTIONS} />
           {range(countDates).map(index => (
@@ -152,7 +152,7 @@ class MatchDate extends React.Component {
           onCancel={this.onCancel}
           onConfirm={this.onConfirm}
         />
-      </Container>
+      </Content>
     );
   }
 }

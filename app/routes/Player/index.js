@@ -5,12 +5,12 @@ import moment from 'moment';
 import * as PlayerActions from '../../redux/modules/player';
 import { DATE_FORMAT } from '../../config/settings';
 import {
-  Container,
   Text,
   Image,
   ListItem,
   Separator,
   Score,
+  Content,
 } from '../../components';
 import S from '../../lib/strings';
 import { getNavigationStateParams } from '../../redux/modules/navigation';
@@ -111,9 +111,9 @@ function Doubles(props) {
 
 class PlayerDetails extends Component {
   render() {
-    const { player, getPlayer, loading } = this.props;
+    const { player, getPlayer } = this.props;
     return (
-      <Container onRefresh={getPlayer} refreshing={!player || loading}>
+      <Content onRefresh={getPlayer}>
         {player &&
           player.data &&
           player.meta && (
@@ -144,12 +144,20 @@ class PlayerDetails extends Component {
                     player.meta.teams[0] ? player.meta.teams[0].name : null
                   }
                 />
-                <Item name={S.CLUB} value={player.meta.clubs.join(', ')} />
-                <Item
-                  name={S.ASSOCIATION}
-                  value={player.meta.associations.join(', ')}
-                  last
-                />
+                {player.meta.clubs && (
+                  <Item
+                    name={S.CLUB}
+                    value={player.meta.clubs.join(', ')}
+                    last={!player.meta.associations}
+                  />
+                )}
+                {player.meta.associations && (
+                  <Item
+                    name={S.ASSOCIATION}
+                    value={player.meta.associations.join(', ')}
+                    last
+                  />
+                )}
               </ListItem.Group>
               <Separator group />
 
@@ -309,15 +317,13 @@ class PlayerDetails extends Component {
               <Separator group />
             </View>
           )}
-      </Container>
+      </Content>
     );
   }
 }
 
 export default connect(
   (state, props) => ({
-    loading: state.loading.list,
-    error: state.loading.error,
     players: state.players,
     player: state.players[getNavigationStateParams(props.navigation).id],
   }),

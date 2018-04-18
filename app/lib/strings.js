@@ -110,6 +110,9 @@ const strings = {
   DOT_SET: '. Satz',
   SEARCH: 'Suche',
   SEARCH_PLACEHOLDER: 'Spieler, Team',
+  NO_FIXTURES: 'Keine Begegnungen',
+  NO_STANDING: 'Keine Tabelle',
+  NO_PLAYER_STATS: 'Keine Spielerstatistiken',
 };
 
 export default strings;

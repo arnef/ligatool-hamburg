@@ -6,24 +6,34 @@ import Text from '../Text';
 
 import styles from './styles';
 import { getColor } from '../../redux/modules/user';
+import { lighten } from '../../Helper';
 
 function Switch(props) {
-  const { title, onValueChange, disabled, color, ...rest } = props;
+  const { title, onValueChange, disabled, color, value, ...rest } = props;
 
   if (Platform.OS === 'android') {
     const Container = disabled ? View : Touchable;
     return (
       <Container style={styles.container} onPress={onValueChange}>
         <Text style={styles.title}>{title}</Text>
-        <RNSwitch {...rest} disabled={disabled} onValueChange={onValueChange} />
+        <RNSwitch
+          {...rest}
+          value={value}
+          disabled={disabled}
+          onTintColor={lighten(color, 0.3)}
+          tintColor={'#b2b2b2'}
+          thumbTintColor={value ? color : '#ececec'}
+          onValueChange={onValueChange}
+        />
       </Container>
-    ); // onTintColor='#ccc' thumbTintColor={color} />
+    ); //  />
   } else {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
         <RNSwitch
           {...rest}
+          value={value}
           disabled={disabled}
           onValueChange={onValueChange}
           onTintColor={color}

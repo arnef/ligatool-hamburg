@@ -7,11 +7,10 @@ import * as MyTeamActions from '../../redux/modules/myteam';
 import Routes from '../../config/routes';
 import S from '../../lib/strings';
 import {
-  getFixtureByTeam,
-  STATUS_CONFIRMED,
+  getNextFixturesByTeam,
+  getPlayedFixturesByTeam,
 } from '../../redux/modules/fixtures';
 import { getActiveTeamGroup } from '../../redux/modules/user';
-import { filter } from 'lodash';
 
 function MyTeam(props) {
   return <MatchList matches={props.matches} onRefresh={props.getMatches} />;
@@ -19,10 +18,7 @@ function MyTeam(props) {
 
 const NextMatches = connect(
   state => ({
-    matches: filter(
-      getFixtureByTeam(state, getActiveTeamGroup(state)),
-      f => f.status !== STATUS_CONFIRMED,
-    ),
+    matches: getNextFixturesByTeam(state, getActiveTeamGroup(state)),
   }),
   dispatch => ({
     getMatches: () => dispatch(MyTeamActions.getMatches()),
@@ -30,10 +26,7 @@ const NextMatches = connect(
 )(MyTeam);
 const PlayedMatches = connect(
   state => ({
-    matches: filter(
-      getFixtureByTeam(state, getActiveTeamGroup(state)),
-      f => f.status === STATUS_CONFIRMED,
-    ),
+    matches: getPlayedFixturesByTeam(state, getActiveTeamGroup(state)),
   }),
   dispatch => ({
     getMatches: () => dispatch(MyTeamActions.getMatches()),

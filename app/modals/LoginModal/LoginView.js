@@ -7,7 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, ListItem, Button, Text, Separator } from '../../components';
+import { Content, ListItem, Button, Text, Separator } from '../../components';
 import S from '../../lib/strings';
 import {
   navigate,
@@ -38,7 +38,7 @@ class LoginView extends Component {
 
     const isIOS = Platform.OS === 'ios';
     return (
-      <Container>
+      <Content>
         <ListItem.Group>
           <View style={{ padding: 12 }}>
             <Text>{S.LOGIN_INFO}</Text>
@@ -125,7 +125,7 @@ class LoginView extends Component {
               </Text>
             </View>
           )}
-      </Container>
+      </Content>
     );
   }
 

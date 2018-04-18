@@ -6,7 +6,7 @@ import { MatchList, PlayerStatsList } from '../../components';
 
 export default TabNavigator(
   {
-    [Routes.TAB_MATCHES]: {
+    [Routes.TAB_LEAGUE_MATCHES]: {
       screen: MatchList.Selectable,
       navigationOptions: { title: S.MATCHES },
     },

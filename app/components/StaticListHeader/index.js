@@ -7,7 +7,10 @@ import styles from './styles';
 import { getColor } from '../../redux/modules/user';
 
 function StaticListHeader(props) {
-  const headerStyle = [styles.row, { backgroundColor: darken(props.color, 5) }];
+  const headerStyle = [
+    styles.row,
+    { backgroundColor: darken(props.color, 0.05) },
+  ];
 
   if (props.style) {
     headerStyle.push(props.style);

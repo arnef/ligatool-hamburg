@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Separator, ListItem, Text } from '../../components';
+import { Separator, ListItem, Text, Content } from '../../components';
 import * as TeamsActions from '../../redux/modules/teams';
 import {
   navigate,
@@ -21,11 +21,7 @@ function Team(props) {
   const team = props.teams[teamId];
 
   return (
-    <Container
-      error={props.error}
-      refreshing={props.loading}
-      onRefresh={() => props.getTeam(teamId)}
-    >
+    <Content>
       {team && (
         <View>
           <TeamInfo team={team} />
@@ -55,7 +51,7 @@ function Team(props) {
           {team.player.length > 0 && <Separator group />}
         </View>
       )}
-    </Container>
+    </Content>
   );
 }
 

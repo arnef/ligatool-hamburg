@@ -9,7 +9,7 @@ import {
   hidePlayer,
   getNavigationStateParams,
 } from '../redux/modules/navigation';
-import { Container, ListItem, Text, Separator } from '../components';
+import { ListItem, Text, Separator, Content } from '../components';
 import NavHeader from '../Nav/NavHeader';
 import NavCloseIcon from '../Nav/NavCloseIcon';
 
@@ -29,8 +29,6 @@ class SelectPlayer extends Component {
       selected: [],
       disabled: this.validate(),
     };
-    this.onPress = this.onPress.bind(this);
-    this.renderItem = this.renderItem.bind(this);
   }
 
   validate = (selectedPlayer = null) => {
@@ -111,16 +109,15 @@ class SelectPlayer extends Component {
     const { player } = this.props;
 
     return (
-      <Container
-        dataSource={player}
-        renderRow={this.renderItem}
-        ItemSeparatorComponent={() => <Separator image />}
-        keyExtractor={player => `${player.id}`}
+      <Content
+        data={player}
+        renderItem={this.renderItem}
+        renderSeparatpr={() => <Separator image />}
       />
     );
   }
 
-  renderItem({ item, index }) {
+  renderItem = ({ item, index }) => {
     const disabled = this.state.disabled.indexOf(item.id) !== -1;
     return (
       <ListItem
@@ -143,9 +140,9 @@ class SelectPlayer extends Component {
         />
       </ListItem>
     );
-  }
+  };
 
-  onPress(idx) {
+  onPress = idx => {
     const { state } = this.props.navigation;
     const { navigate, setPlayer, player, closeModal } = this.props;
     const { selected } = this.state;
@@ -185,7 +182,7 @@ class SelectPlayer extends Component {
         }, 10);
       }
     });
-  }
+  };
 }
 
 SelectPlayer.navigationOptions = NavCloseIcon(null, hidePlayer());

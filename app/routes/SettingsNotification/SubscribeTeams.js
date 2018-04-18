@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  Container,
   ListItem,
   Separator,
   TeamLogo,
   Switch,
+  Content,
 } from '../../components';
 import {
   notificationSubscribedForTeam,
@@ -38,11 +38,10 @@ class SubscribeTeam extends Component {
   render() {
     const { teams } = this.props;
     return (
-      <Container
-        dataSource={teams}
-        renderRow={this.renderRow}
-        keyExtractor={item => `team-notif-${item.id}`}
-        ItemSeparatorComponent={Separator}
+      <Content
+        data={teams}
+        renderItem={this.renderRow}
+        renderSeparator={Separator}
       />
     );
   }
