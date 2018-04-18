@@ -1,4 +1,4 @@
-x/**
+/**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -8,10 +8,6 @@ x/**
  */
 
 #import "AppDelegate.h"
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "Firebase.h"
