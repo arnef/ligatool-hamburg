@@ -30,6 +30,7 @@
     "react-native": "0.54.2",
     "react-native-android-taskdescription": "^1.0.3",
     "react-native-fcm": "^14.1.0",
+    "react-native-localization": "^1.0.7",
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "1.5.2",

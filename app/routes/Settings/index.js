@@ -162,7 +162,7 @@ class Settings extends React.Component {
         )}
         <Separator />
         <ListItem onPress={this.onSelectGroups} disabled={!notificationEnabled}>
-          <Text style={{ flex: 1 }}>Teams wählen</Text>
+          <Text style={{ flex: 1 }}>{S.SELECT_TEAMS}</Text>
           <ListItem.Icon right name="caret-forward" />
         </ListItem>
       </ListItem.Group>

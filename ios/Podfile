@@ -12,4 +12,6 @@ target 'arnefeilligatool' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'ReactNativeLocalization', :path => '../node_modules/react-native-localization'
+
 end

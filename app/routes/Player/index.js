@@ -165,13 +165,13 @@ class PlayerDetails extends Component {
                 player.meta.rankings.length > 0 && (
                   <ListItem.Group>
                     <ListItem.Header
-                      title={`Ranglistenplatzierung ${
+                      title={`${S.RANKING_POSITIONS} ${
                         player.meta.rankings[0].season
                       }`}
                     />
                     <ListItem multiline>
                       <Text bold small numberOfLines={1} style={{ flex: 6 }}>
-                        Rangliste
+                        {S.RANKING}
                       </Text>
                       <Text
                         bold
@@ -179,7 +179,7 @@ class PlayerDetails extends Component {
                         numberOfLines={1}
                         style={{ flex: 1, textAlign: 'right' }}
                       >
-                        Platz
+                        {S.POSITION}
                       </Text>
                       <Text
                         bold
@@ -187,7 +187,7 @@ class PlayerDetails extends Component {
                         numberOfLines={1}
                         style={{ flex: 3, textAlign: 'right' }}
                       >
-                        Meldungen
+                        {S.PARTICIPANTS}
                       </Text>
                     </ListItem>
                     <Separator full />
@@ -213,10 +213,10 @@ class PlayerDetails extends Component {
               {player.meta.tournaments &&
                 player.meta.tournaments.length > 0 && (
                   <ListItem.Group>
-                    <ListItem.Header title="Turniermeldungen" />
+                    <ListItem.Header title={S.TOURNAMENT_PARTICIPATIONS} />
                     <ListItem multiline>
                       <Text bold small numberOfLines={1} style={{ flex: 6 }}>
-                        Turnier
+                        {S.TOURNAMENT}
                       </Text>
                       <Text
                         bold
@@ -224,7 +224,7 @@ class PlayerDetails extends Component {
                         numberOfLines={1}
                         style={{ flex: 1, textAlign: 'right' }}
                       >
-                        Platz
+                        {S.POSITION}
                       </Text>
                       <Text
                         bold
@@ -232,7 +232,7 @@ class PlayerDetails extends Component {
                         numberOfLines={1}
                         style={{ flex: 3, textAlign: 'right' }}
                       >
-                        Meldungen
+                        {S.PARTICIPANTS}
                       </Text>
                     </ListItem>
                     <Separator full />
@@ -260,7 +260,7 @@ class PlayerDetails extends Component {
                 player.meta.tournaments.length > 0 && <Separator group />}
 
               <ListItem.Group>
-                <ListItem.Header title="Letzte Einzel" />
+                <ListItem.Header title={S.LAST_SINGLES} />
                 {player.meta.lastSingles.map((s, i) => (
                   <View key={`singles-${i}`}>
                     <Singles data={s} id={player.data.id} />
@@ -272,7 +272,7 @@ class PlayerDetails extends Component {
               </ListItem.Group>
               <Separator group />
               <ListItem.Group>
-                <ListItem.Header title="Letzte Doppel" />
+                <ListItem.Header title={S.LAST_DOUBLES} />
                 {player.meta.lastDoubles.map((d, i) => (
                   <View key={`doubles-${i}`}>
                     <Doubles
@@ -289,16 +289,16 @@ class PlayerDetails extends Component {
 
               <Separator group />
               <ListItem.Group>
-                <ListItem.Header title="Teams" />
+                <ListItem.Header title={S.TEAMS} />
                 <ListItem multiline>
                   <Text bold small numberOfLines={1} style={{ flex: 2 }}>
-                    Saison
+                    {S.SEASON}
                   </Text>
                   <Text bold small numberOfLines={1} style={{ flex: 4 }}>
-                    Name
+                    {S.NAME}
                   </Text>
                   <Text bold small numberOfLines={1} style={{ flex: 4 }}>
-                    Wettbewerbe
+                    {S.COMPETITIONS}
                   </Text>
                 </ListItem>
                 <Separator full />

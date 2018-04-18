@@ -3,6 +3,7 @@ package com.arnefeildtfb;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
 import com.jwarby.reactnativeandroidtaskdescription.TaskDescriptionPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeLocalizationPackage(),
           new TaskDescriptionPackage(),
           new FIRMessagingPackage(),
           new VectorIconsPackage()

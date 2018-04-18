@@ -1,7 +1,6 @@
-const pkg = require('../../package.json');
+const pkg = require('../../../package.json');
 
 const strings = {
-  // ASSOCIATION: 'Verband',
   ASSOCIATION: 'Organisation',
   CONFIRM: 'Bestätigen',
   AWAY: 'Gast',
@@ -73,10 +72,7 @@ const strings = {
   LOST: 'Niederlage',
   LOST_POSTFIX: 'n',
   APP_VERSION: 'App-Version ' + pkg.version,
-  CACHE_INFORMATION:
-    'Teamlogos und Spielerbilder werden Lokal gespeichert, um das Datenvolumen zu schonen. Sollten mal nicht die aktuellsten Bilder angezeigt werden, kann hier der Speicher gelöscht werden und die Bilder werden neu geladen.',
   INFORMATION: 'Informationen',
-  CLEAR_IMAGE_CACHE: 'Bilder-Cache leeren',
   COMPETITIVE_INDEX: 'Leistungsindex',
   COMPETITIVE_INDEX_SHORT: 'LI',
   GAMES: 'Spiele',
@@ -108,11 +104,23 @@ const strings = {
   TODAY: 'Heute',
   RESULT: 'Ergebnis',
   DOT_SET: '. Satz',
-  SEARCH: 'Suche',
-  SEARCH_PLACEHOLDER: 'Spieler, Team',
   NO_FIXTURES: 'Keine Begegnungen',
   NO_STANDING: 'Keine Tabelle',
   NO_PLAYER_STATS: 'Keine Spielerstatistiken',
+  SET_UP: 'Einrichten',
+  WELCOME_TEXT:
+    'Im Folgenden kannst du nun die App einrichten. Wähle in den nächsten Schritten dein Teams aus, um alle Informationen auf einen Blick zu haben.',
+  PARTICIPANTS: 'Meldungen',
+  RANKING: 'Rangliste',
+  RANKINGS: 'Ranglisten',
+  RANKING_POSITIONS: 'Ranglistenplatzierungen',
+  TOURNAMENT_PARTICIPATIONS: 'Turniermeldungen',
+  TOURNAMENT: 'Turnier',
+  LAST_SINGLES: 'Letzte Einzel',
+  LAST_DOUBLES: 'Letzte Doppel',
+  TEAMS: 'Teams',
+  SEASON: 'Saison',
+  COMPETITIONS: 'Wettbewerbe',
 };
 
 export default strings;
