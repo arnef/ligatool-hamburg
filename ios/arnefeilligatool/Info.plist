@@ -25,7 +25,7 @@
 	<key>CodePushDeploymentKey</key>
 	<string>xWUs7biuDFsOe00bTovtyFnKtGzNe185911e-7d82-47d0-bf4e-82934d53536e</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
-	<true/>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -40,7 +40,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

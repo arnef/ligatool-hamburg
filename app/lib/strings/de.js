@@ -121,6 +121,8 @@ const strings = {
   TEAMS: 'Teams',
   SEASON: 'Saison',
   COMPETITIONS: 'Wettbewerbe',
+  UNCONFIRMED: 'Unbestätigt',
+  LIVE: 'LIVE',
 };
 
 export default strings;

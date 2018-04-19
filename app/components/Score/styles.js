@@ -6,7 +6,7 @@ export default StyleSheet.create({
     borderRadius: 2,
     marginHorizontal: 4,
     padding: 6,
-    width: 56,
+    width: 60,
   },
   scoreText: {
     color: '#FFF',

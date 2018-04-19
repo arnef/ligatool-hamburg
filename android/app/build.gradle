@@ -94,14 +94,14 @@ def enableSeparateBuildPerCPUArchitecture = true
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
 
     defaultConfig {
         // applicationId "com.arnefeilligatool"
         applicationId "com.arnefeildtfb"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 22
         versionCode 14
         versionName "0.14"
         ndk {
@@ -157,7 +157,7 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-fcm')
     compile 'com.google.firebase:firebase-core:10.0.1'
-    compile "com.android.support:appcompat-v7:26.0.2"
+    compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
 
