@@ -1,6 +1,6 @@
 {
   "name": "arnefeilligatool",
-  "version": "0.14.7",
+  "version": "0.15.0",
   "private": true,
   "scripts": {
     "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
