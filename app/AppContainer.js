@@ -11,7 +11,7 @@ import NotificationManager from './lib/NotificationManager';
 import * as LoadingActions from './redux/modules/loading';
 import { getColor } from './redux/modules/user';
 import { colors } from './config/styles';
-import TaskDescriptionAndroid from 'react-native-android-taskdescription';
+// import TaskDescriptionAndroid from 'react-native-android-taskdescription';
 
 const addListener = createReduxBoundAddListener('root');
 
@@ -23,6 +23,7 @@ class AppContainer extends Component {
 
   componentDidMount() {
     NotificationManager.requestPermissions();
+    NotificationManager.getToken();
     this.notificationListener = NotificationManager.notificationListener();
     this.refreshTokenListener = NotificationManager.refreshTokenListener();
     AppState.addEventListener('change', this.appStateChanged);
@@ -45,16 +46,16 @@ class AppContainer extends Component {
   }
 
   appStateChanged(nextState) {
-    this.props.dispatch(LoadingActions.appState(nextState));
+    // this.props.dispatch(LoadingActions.appState(nextState));
   }
 
   render() {
     const { dispatch, nav } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
-        {Platform.OS === 'android' && (
+        {/* {Platform.OS === 'android' && (
           <TaskDescriptionAndroid backgroundColor={this.props.color} />
-        )}
+        )} */}
         <ActionSheet
           ref={c => {
             ActionSheet.actionsheetInstance = c;

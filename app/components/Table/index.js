@@ -35,17 +35,17 @@ function Table(props) {
             <Text style={styles.position} />
             <View style={styles.teamLogo} />
             <View style={styles.teamName} />
-            <Text small color="#fff" style={styles.matches}>
+            <Text small color="#fff" style={styles.matches} numberOfLines={1}>
               {S.GAMES_SHORT}
             </Text>
-            <Text small color="#fff" style={styles.setPoints}>
+            <Text small color="#fff" style={styles.setPoints} numberOfLines={1}>
               {S.SETS}
             </Text>
-            <Text small color="#fff" style={styles.goals}>
+            <Text small color="#fff" style={styles.goals} numberOfLines={1}>
               {/* {S.GOALS} */}
               {S.GAMES}
             </Text>
-            <Text small color="#fff" style={styles.points}>
+            <Text small color="#fff" style={styles.points} numberOfLines={1}>
               {S.POINTS_SHORT}
             </Text>
           </View>

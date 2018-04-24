@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component} from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import NavTabBarTop from '../../Nav/NavTabBarTop';
@@ -12,6 +12,7 @@ import {
   getFixtureByFilter,
   FILTER_PASSED,
   FILTER_UPCOMMING,
+  getFixture,
 } from '../../redux/modules/fixtures';
 import { queryFixtureOverview } from '../../redux/actions';
 
@@ -32,11 +33,12 @@ function SectionHeader(props) {
   );
 }
 
+
 function Overview(props) {
   const { matches, queryMatches } = props;
   return (
     <Content
-      renderItem={({ item }) => <MatchItem data={item} />}
+      renderItem={({ item }) => <MatchItem data={props.getFixutre(item)} />}
       renderSectionHeader={({ section }) =>
         matches && matches.length > 1 ? (
           <SectionHeader title={section.title} />
@@ -49,10 +51,12 @@ function Overview(props) {
   );
 }
 
+
 function createTab(keyName) {
   return connect(
     state => ({
-      matches: getFixtureByFilter(state, keyName),
+        matches: getFixtureByFilter(state, keyName),
+        getFixutre: (id) => getFixture(state, id),
     }),
     dispatch => ({
       queryMatches: () => dispatch(queryFixtureOverview()),

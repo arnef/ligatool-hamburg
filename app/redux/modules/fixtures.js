@@ -1,8 +1,9 @@
 import moment from 'moment';
 import { DATE_FORMAT, DATETIME_DB } from '../../config/settings';
+
 const FETCH_FIXTURES = 'fixtures/FETCH';
-const SET_FIXTURES = 'fixtures/SET';
-const SET_FIXTURE_DATA = 'fixtures/SET_DATA';
+export const SET_FIXTURES = 'fixtures/SET';
+export const SET_FIXTURE_DATA = 'fixtures/SET_DATA';
 const SET_FIXTURE_META = 'fixtures/SET_META';
 const SET_FIXTURE_STATUS_IN_PLAY = 'fixtures/SET_STATUS_IN_PLAY';
 const SET_FIXTURE_MODUS = 'fixture/SET_FIXTURE_MODUS';
@@ -17,10 +18,13 @@ export const ACCEPT_FIXTURE_DATE = 'fixture/ACCEPT_DATE';
 export const SUGGEST_FIXTURE_RESULT = 'fixture/SUGGEST_RESULT';
 export const ACCEPT_FIXTURE_RESULT = 'fixture/ACCEPT_RESULT';
 import _ from 'lodash';
-
+const SET_OVERVIEW = 'fixture/overview';
 // notif actions
 const FIXTURE_RESULT_CHANGED = 'FIXTURE_RESULT_CHANGED';
-
+export const setOverview = overview => ({
+  type: SET_OVERVIEW,
+  payload: { overview },
+});
 export const fetchFixtures = assoc => ({
   type: FETCH_FIXTURES,
   payload: { assoc },
@@ -102,7 +106,8 @@ export const acceptFixtureResult = id => ({
 });
 
 const defaultState = {
-  data: null,
+  data: {},
+  overview: null,
   meta: {},
   dates: {},
 };
@@ -111,6 +116,8 @@ export default function reducer(state = defaultState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case SET_OVERVIEW:
+      return { ...state, overview: payload.overview };
     case SET_FIXTURES:
       return {
         ...state,
@@ -342,10 +349,17 @@ export const getFixturePlayerList = (state, id, key) =>
     ? _.sortBy(get(state).meta[id].player[key], 'name')
     : [];
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
+
 export const getFixtureByFilter = (state, filter) => {
+  if (!get(state).overview) return null;
+  return get(state).overview[filter];
+// return null;
   if (get(state).data === null) {
     return null;
   }
+
+  // return [{data: [], title: 'test'}];
+
   const sections = {};
   const today = moment();
   for (let id in get(state).data) {
@@ -381,6 +395,7 @@ export const getFixtureByFilter = (state, filter) => {
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
         }
+        
         sections[key].data.push(fixture);
       }
     }
@@ -457,7 +472,7 @@ function mergeGames(state, payload) {
     games: { ...state.games, ...payload.games },
   };
 }
-const fixtureSort = (a, b) => {
+export const fixtureSort = (a, b) => {
   let sort = statusValue(b.status) - statusValue(a.status);
   if (sort === 0) {
     if (

@@ -1,42 +1,17 @@
-import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import { persistStore } from 'redux-persist';
-
+import { PersistGate } from 'redux-persist/integration/react'
 import AppContainer from './AppContainer';
 import LaunchScreen from './components/LaunchScreen';
-import store from './config/store';
+import { store, persistor } from './config/store';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rehydrated: false,
-    };
-  }
-
-  componentDidMount() {
-    const config = {
-      storage: AsyncStorage,
-      whitelist: ['app', 'settings', 'drawer', 'user'],
-      // whitelist: ['app', 'settings', 'user'],
-    };
-    persistStore(store, config, () => {
-      this.setState({ rehydrated: true });
-    });
-  }
-
-  render() {
-    if (this.state.rehydrated) {
+export default function App () {
       return (
         <Provider store={store}>
+          <PersistGate loading={<LaunchScreen />} persistor={persistor}>
           <AppContainer />
+          </PersistGate>
         </Provider>
       );
-    } else {
-      return <LaunchScreen />;
-    }
-  }
 }
-
-export default App;

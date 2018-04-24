@@ -16,6 +16,7 @@ function DrawerItemLeague(props) {
       maxHeight={48}
       active={active}
       onPress={
+        
         active
           ? () => {
               props.hideDrawer();

@@ -1,7 +1,8 @@
+import moment from 'moment';
 import { StatusBar } from 'react-native';
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import _ from 'lodash';
-import { REHYDRATE } from 'redux-persist/constants';
+import { REHYDRATE } from 'redux-persist';
 import * as api from '../lib/api';
 import * as NotificationManager from '../lib/NotificationManager';
 import {
@@ -32,6 +33,7 @@ import * as SettingsActions from './modules/settings';
 import Routes from '../config/routes';
 import { getMatchDays } from '../Helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
+import { DATE_FORMAT, DATETIME_DB } from '../config/settings';
 
 import {
   setFixtures,
@@ -50,6 +52,18 @@ import {
   SET_FIXTURE_GAME_AWAY_PLAYER,
   getFixtureGames,
   getFixtureDefaultLineUp,
+  FILTER_PASSED,
+  FILTER_TODAY,
+  FILTER_UPCOMMING,
+  STATUS_CONFIRMED,
+  STATUS_FINISHED,
+  STATUS_IN_PLAY,
+  STATUS_POSTPONED,
+  STATUS_SCHEDUELED,
+  fixtureSort,
+  setOverview,
+  SET_FIXTURES,
+  SET_FIXTURE_DATA
 } from './modules/fixtures';
 import {
   userAddTeam,
@@ -74,6 +88,8 @@ function* queryOverviewSaga() {
       }
     }
     yield put(setFixtures(_.keyBy(matchesData.data, 'id')));
+    // yield put(setOverview(overview));
+    // yield overviewWrapper();
     yield put(LoadingActions.hide());
     NotificationManager.removeAllNotifications();
     if (updateDrawer) {
@@ -85,6 +101,63 @@ function* queryOverviewSaga() {
     yield put(LoadingActions.hide());
     yield put(LoadingActions.error(ex.message));
   }
+}
+function * overviewWrapper() {
+  const state = yield select();
+  const fixtures = _.values(state.fixtures.data);
+  yield put(setOverview({
+    [FILTER_PASSED]: buildOverview(fixtures, FILTER_PASSED),
+    [FILTER_TODAY]: buildOverview(fixtures, FILTER_TODAY),
+    [FILTER_UPCOMMING]: buildOverview(fixtures, FILTER_UPCOMMING),
+  }));
+}
+function buildOverview(data, filter) {
+  const sections = {};
+  const today = moment();
+  // for (let id in get(state).data) {
+  for (let fixture of data) {
+    // const fixture = getFixture(state, id);
+    const diff =
+      parseInt(today.format('YYYYMMDD')) -
+      parseInt(moment(fixture.date, DATETIME_DB).format('YYYYMMDD'));
+    const key = moment(fixture.date, DATETIME_DB).format(DATE_FORMAT);
+    if (filter === FILTER_TODAY) {
+      if (fixture.status === STATUS_IN_PLAY || diff === 0) {
+        if (!sections[key]) {
+          sections[key] = { data: [], title: key };
+        }
+        sections[key].data.push(fixture);
+      }
+    } else if (filter === FILTER_PASSED) {
+      if (
+        (fixture.status === STATUS_CONFIRMED && diff > 0 && diff < 15) ||
+        fixture.status === STATUS_FINISHED
+      ) {
+        if (!sections[key]) {
+          sections[key] = { data: [], title: key };
+        }
+        sections[key].data.push(fixture);
+      }
+    } else if (filter === FILTER_UPCOMMING) {
+      if (
+        (fixture.status === STATUS_SCHEDUELED ||
+          fixture.status === STATUS_POSTPONED) &&
+        diff < 0 &&
+        diff > -15
+      ) {
+        if (!sections[key]) {
+          sections[key] = { data: [], title: key };
+        }
+        
+        sections[key].data.push(fixture);
+      }
+    }
+  }
+  for (let key in sections) {
+    sections[key].data.sort(fixtureSort);
+    sections[key].data = sections[key].data.map(f => f.id);
+  }
+  return _.values(sections);
 }
 
 function* myTeam() {
@@ -861,4 +934,8 @@ export default function* sagas() {
   yield takeEvery('SELECT_USER_TEAM', fetchUserTeam);
   yield takeEvery(SET_FIXTURE_GAME_AWAY_PLAYER, setPlayerAwaySaga);
   yield takeEvery(USER_REMOVE_TEAM, removeTeamSaga);
+  
+  // update overview
+  yield takeEvery(SET_FIXTURES, overviewWrapper);
+  yield takeEvery(SET_FIXTURE_DATA, overviewWrapper);
 }

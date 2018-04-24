@@ -1,54 +1,38 @@
 {
-  "name": "arnefeilligatool",
-  "version": "0.15.0",
+  "name": "arnefeildtfb",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3000 tcp:80 && adb reverse tcp:9090 tcp:9090 && react-native start",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "flow": "flow --show-all-errors",
-    "lint": "eslint app/ index.android.js index.ios.js",
-    "fmt": "prettier --write --single-quote --trailing-comma=all --bracket-spacing 'app/**/*.js' 'index.*.js'",
-    "precommit": "lint-staged",
-    "push-android": "rm -rf build/android && mkdir -p build/android && code-push release-react ligatool-hamburg-android android -o build/android && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-android android build/android",
-    "push-ios": "rm -rf build/ios && mkdir -p build/ios && code-push release-react ligatool-hamburg-ios ios -o build/ios && node_modules/sentry-cli-binary/sentry-cli react-native codepush ligatool-hamburg-ios ios build/ios",
-    "ls-android": "code-push deployment ls ligatool-hamburg-android",
-    "ls-ios": "code-push deployment ls ligatool-hamburg-ios"
-  },
-  "lint-staged": {
-    "{index.{android,ios},app/**/*}.js": [
-      "prettier --write --single-quote --trailing-comma=all --bracket-spacing",
-      "eslint --fix",
-      "git add"
-    ]
+    "test": "jest"
   },
   "dependencies": {
+    "appcenter": "^1.4.0",
+    "appcenter-analytics": "^1.4.0",
+    "appcenter-crashes": "^1.4.0",
     "axios": "^0.18.0",
     "json_": "^1.0.0",
-    "lodash": "^4.17.5",
-    "moment": "^2.21.0",
-    "react": "^16.3.0-alpha.1",
-    "react-native": "0.54.2",
-    "react-native-android-taskdescription": "^1.0.3",
-    "react-native-fcm": "^14.1.0",
+    "moment": "^2.22.1",
+    "react": "16.3.1",
+    "react-native": "0.55.3",
+    "react-native-firebase": "^4.0.5",
     "react-native-localization": "^1.0.7",
-    "react-native-modal-datetime-picker": "^4.13.0",
-    "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "1.5.2",
-    "react-navigation-redux-helpers": "^1.0.3",
+    "react-native-modal-datetime-picker": "^5.1.0",
+    "react-native-vector-icons": "^4.6.0",
+    "react-navigation": "^1.5.11",
+    "react-navigation-redux-helpers": "^1.0.5",
     "react-redux": "^5.0.7",
-    "redux": "^3.7.2",
-    "redux-persist": "^4.9.1",
-    "redux-persist-migrate": "^5.0.0",
+    "redux": "^4.0.0",
+    "redux-persist": "^5.9.1",
     "redux-saga": "^0.16.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.2",
-    "eslint": "^4.18.2",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-react-native": "^3.2.1",
-    "husky": "^0.14.3",
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1"
+    "babel-jest": "22.4.3",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "22.4.3",
+    "react-test-renderer": "16.3.1"
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }
