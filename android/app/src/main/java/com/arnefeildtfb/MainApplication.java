@@ -3,6 +3,7 @@ package com.arnefeildtfb;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.jwarby.reactnativeandroidtaskdescription.TaskDescriptionPackage;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new TaskDescriptionPackage(),
           new ReactNativeLocalizationPackage(),
           new RNFirebasePackage(),
           new RNFirebaseMessagingPackage(),

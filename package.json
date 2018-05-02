@@ -1,9 +1,9 @@
 {
   "name": "arnefeildtfb",
-  "version": "0.0.1",
+  "version": "0.17.0",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "node node_modules/react-native/local-cli/cli.js start --config ../../../../rn-cli.config.js",
     "test": "jest"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
     "moment": "^2.22.1",
     "react": "16.3.1",
     "react-native": "0.55.3",
+    "react-native-android-taskdescription": "^1.0.3",
     "react-native-firebase": "^4.0.5",
     "react-native-localization": "^1.0.7",
     "react-native-modal-datetime-picker": "^5.1.0",
@@ -27,10 +28,19 @@
     "redux-saga": "^0.16.0"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/lodash": "^4.14.108",
+    "@types/react": "^16.3.12",
+    "@types/react-native": "^0.55.4",
+    "@types/react-navigation": "^1.5.7",
+    "@types/react-redux": "^5.0.16",
     "babel-jest": "22.4.3",
     "babel-preset-react-native": "4.0.0",
     "jest": "22.4.3",
-    "react-test-renderer": "16.3.1"
+    "react-native-typescript-transformer": "^1.2.4",
+    "react-test-renderer": "16.3.1",
+    "tslib": "^1.9.0",
+    "typescript": "^2.8.3"
   },
   "jest": {
     "preset": "react-native"
