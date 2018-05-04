@@ -9,7 +9,7 @@ import Score from '../Score';
 import ActionSheet from '../ActionSheet';
 import styles from './styles';
 
-import S from '../../lib/strings';
+import { Strings as S } from '../../lib/strings';
 import { connect } from 'react-redux';
 import { getFixtureGame } from '../../redux/modules/fixtures';
 
@@ -20,7 +20,9 @@ function PlayerHome(props) {
         {`${
           props.player
             ? `${props.player.name} ${props.player.surname}`
-            : props.editable ? S.SELECT : ''
+            : props.editable
+              ? S.SELECT
+              : ''
         }`}
       </Text>
       {props.player && <Image url={props.player.image} size={32} />}
@@ -36,7 +38,9 @@ function PlayerAway(props) {
         {`${
           props.player
             ? `${props.player.name} ${props.player.surname}`
-            : props.editable ? S.SELECT : ''
+            : props.editable
+              ? S.SELECT
+              : ''
         }`}
       </Text>
     </View>
@@ -53,7 +57,7 @@ function SetItem(props) {
       },
       val => {
         if (val < 3) {
-          props.onSelect(props.index, props.data, val);
+          props.onSelect(props.index, props.data, val)();
         }
       },
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { darken } from '../../Helper';
+import { darken } from '../../helper';
 
 import styles from './styles';
 import { getColor } from '../../redux/modules/user';

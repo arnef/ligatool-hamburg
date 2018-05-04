@@ -9,11 +9,10 @@ moment.locale('de');
 export const URL = 'http://localhost:9001';
 // theme and assoc
 export const ASSOC = 'tfvhh-test';
-// export const ASSOC = 'dtfb';
+// export const ASSOC = 'dtfb-test';
 export const defaultColor = '#006600';
 
 // date format
 export const DATETIME_DB = 'YYYY-MM-DD HH:mm:ss';
 export const DATETIME_FORMAT = 'dd. DD.MM.YY HH:mm';
 export const DATE_FORMAT = 'dd. DD.MM.YY';
-

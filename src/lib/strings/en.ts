@@ -1,4 +1,4 @@
-import { StringsObject } from ".";
+import { StringsObject } from '.';
 
 const pkg = require('../../../package.json');
 
@@ -128,6 +128,8 @@ const strings: StringsObject = {
   ADD_TEAM: 'Add a team',
   YES: 'Yes',
   NO: 'No',
+  PRESS_ON: 'Click on ',
+  CHANGE_DATE_INFO: ' to accept a date suggestion.',
 };
 
 export default strings;

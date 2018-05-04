@@ -1,26 +1,32 @@
 /**
  * Copyright (C) 2018 Arne Feil
- * 
+ *
  * This file is part of DTFB App.
- * 
+ *
  * DTFB App is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * DTFB App is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 import * as React from 'react';
 import { View } from 'react-native';
-import { Content, ListItem, Image, Separator, Text } from '../../../../components';
+import {
+  Content,
+  ListItem,
+  Image,
+  Separator,
+  Text,
+} from '../../../../components';
 import { Strings } from 'src/lib/strings';
 import { Item } from './components/item';
 import { default as moment } from 'moment';
@@ -35,12 +41,11 @@ import { getPlayer } from '../../../../redux/modules/player';
 interface Props extends StateProps, DispatchProps {}
 
 class Player extends React.PureComponent<Props> {
-
   public render() {
     const { getPlayer, player } = this.props;
     return (
       <Content onRefresh={getPlayer}>
-      {player &&
+        {player &&
           player.data &&
           player.meta && (
             <View>
@@ -139,7 +144,9 @@ class Player extends React.PureComponent<Props> {
               {player.meta.tournaments &&
                 player.meta.tournaments.length > 0 && (
                   <ListItem.Group>
-                    <ListItem.Header title={Strings.TOURNAMENT_PARTICIPATIONS} />
+                    <ListItem.Header
+                      title={Strings.TOURNAMENT_PARTICIPATIONS}
+                    />
                     <ListItem multiline>
                       <Text bold small numberOfLines={1} style={{ flex: 6 }}>
                         {Strings.TOURNAMENT}
@@ -244,28 +251,34 @@ class Player extends React.PureComponent<Props> {
             </View>
           )}
       </Content>
-    )
+    );
   }
 }
 
 interface StateProps {
-  player: any
+  player: any;
 }
 
 interface DispatchProps {
-  getPlayer: Function
+  getPlayer: Function;
 }
 
 function mapStateToProps(state: any, props: any): StateProps {
   return {
-    player: state.players[getNavigationStateParams(props.navigation).id]
+    player: state.players[getNavigationStateParams(props.navigation).id],
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>, props: any): DispatchProps {
+function mapDispatchToProps(
+  dispatch: Dispatch<any>,
+  props: any,
+): DispatchProps {
   return {
-    getPlayer: () => dispatch(getPlayer(getNavigationStateParams(props.navigation).id))
+    getPlayer: () =>
+      dispatch(getPlayer(getNavigationStateParams(props.navigation).id)),
   };
 }
 
-export const PlayerDetails = connect(mapStateToProps, mapDispatchToProps)(Player);
+export const PlayerDetails = connect(mapStateToProps, mapDispatchToProps)(
+  Player,
+);

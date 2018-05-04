@@ -1,10 +1,10 @@
 import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
-import {store} from '../config/store';
+import { store } from '../config/store';
 import * as SettingsActions from '../redux/modules/settings';
 import * as MatchesActions from '../redux/modules/matches';
-import Routes from '../config/routes';
+import { Routes } from 'src/scenes/routes';
 import { currentRoute } from './NavUtils';
 import { getFixture } from '../redux/modules/fixtures';
 
@@ -25,7 +25,10 @@ function refreshTokenListener() {
 }
 
 function getToken() {
-  firebase.messaging().getToken().then(refreshToken);
+  firebase
+    .messaging()
+    .getToken()
+    .then(refreshToken);
 }
 
 /**
@@ -40,7 +43,6 @@ function receiveNotification(notif) {
   //       route.routeName === Routes.MATCH_DATE) &&
   //     route.params &&
   //     route.params.id === id;
-
   //   if (Platform.OS === 'ios') {
   //     switch (notif._notificationType) {
   //       case NotificationType.Remote:
@@ -69,7 +71,6 @@ function receiveNotification(notif) {
   //       });
   //     }
   //   }
-
   //   if (notif.type && !notif.local_notification) {
   //     store.dispatch({
   //       type: notif.type,
@@ -79,7 +80,6 @@ function receiveNotification(notif) {
   //       store.dispatch(MatchesActions.getMatch(id));
   //     }
   //   }
-
   //   if (notif.opened_from_tray && !matchOpen && id) {
   //     if (Platform.OS === 'ios') {
   //       store.dispatch(
@@ -88,9 +88,7 @@ function receiveNotification(notif) {
   //         }),
   //       );
   //     }
-
   //     const match = getFixture(store.getState(), id);
-
   //     store.dispatch(
   //       NavigationActions.navigate({
   //         routeName: Routes.MATCH,

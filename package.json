@@ -3,8 +3,14 @@
   "version": "0.17.0",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start --config ../../../../rn-cli.config.js",
-    "test": "jest"
+    "start":
+      "node node_modules/react-native/local-cli/cli.js start --config ../../../../rn-cli.config.js",
+    "test": "jest",
+    "fmt": "prettier --write 'src/**/*.{js,ts,tsx,json}' 'index.js'",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,json}": ["prettier --write", "git add"]
   },
   "dependencies": {
     "appcenter": "^1.4.0",
@@ -25,7 +31,8 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-persist": "^5.9.1",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "tcomb-form-native": "^0.6.11"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
@@ -36,11 +43,19 @@
     "@types/react-redux": "^5.0.16",
     "babel-jest": "22.4.3",
     "babel-preset-react-native": "4.0.0",
+    "husky": "^0.14.3",
     "jest": "22.4.3",
+    "lint-staged": "^7.0.5",
+    "prettier": "^1.12.1",
     "react-native-typescript-transformer": "^1.2.4",
     "react-test-renderer": "16.3.1",
     "tslib": "^1.9.0",
     "typescript": "^2.8.3"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "bracketSpacing": true
   },
   "jest": {
     "preset": "react-native"

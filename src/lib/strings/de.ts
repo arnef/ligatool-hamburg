@@ -1,4 +1,4 @@
-import { StringsObject } from ".";
+import { StringsObject } from '.';
 
 const pkg = require('../../../package.json');
 
@@ -127,10 +127,13 @@ const strings: StringsObject = {
   UNCONFIRMED: 'Unbestätigt',
   LIVE: 'LIVE',
   CONFIRM_DELETE_TEAM_TITLE: 'Team löschen?',
-  CONFIRM_DELETE_TEAM_MESSAGE: 'Soll das Team "{{team}}" aus deiner Liste entfernt werden?',
+  CONFIRM_DELETE_TEAM_MESSAGE:
+    'Soll das Team "{{team}}" aus deiner Liste entfernt werden?',
   ADD_TEAM: 'Weiteres Team hinzufügen',
   YES: 'Ja',
   NO: 'Nein',
+  PRESS_ON: 'Klicke auf ',
+  CHANGE_DATE_INFO: ' um einen Termin zu akzeptieren.',
 };
 
 export default strings;

@@ -62,7 +62,7 @@ class Content extends Component {
       return (
         <SectionList
           sections={sections}
-          // removeClippedSubviews 
+          // removeClippedSubviews
           // disableVirtualization
           renderItem={renderItem}
           renderSectionHeader={renderSectionHeader}
@@ -70,7 +70,6 @@ class Content extends Component {
           // stickySectionHeadersEnabled={true}
           keyExtractor={keyExtractor}
           ListEmptyComponent={ListEmpty}
-          
           refreshControl={Refresh}
           ref={list => (this.list = list)}
         />
@@ -85,6 +84,7 @@ class Content extends Component {
           keyExtractor={keyExtractor}
           ListEmptyComponent={ListEmpty}
           refreshControl={Refresh}
+          extraData={this.props.extraData}
           ref={list => (this.list = list)}
         />
       );

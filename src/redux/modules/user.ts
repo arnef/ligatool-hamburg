@@ -101,7 +101,9 @@ export default function reducer(state = defaultState, action) {
         active:
           payload.index == state.active
             ? 0
-            : payload.index < state.active ? state.active - 1 : state.active,
+            : payload.index < state.active
+              ? state.active - 1
+              : state.active,
       };
 
     case SET_ACTIVE_TEAM:

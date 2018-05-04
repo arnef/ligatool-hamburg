@@ -6,7 +6,7 @@ import Text from '../Text';
 
 import styles from './styles';
 import { getColor } from '../../redux/modules/user';
-import { lighten } from '../../Helper';
+import { lighten } from '../../helper';
 
 function Switch(props) {
   const { title, onValueChange, disabled, color, value, ...rest } = props;

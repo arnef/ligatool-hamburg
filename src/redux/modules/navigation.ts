@@ -1,15 +1,14 @@
 import { NavigationActions } from 'react-navigation';
-// import { Root } from '../../router';
-import RoutesOld from '../../config/routes';
 import { currentRoute } from '../../lib/NavUtils';
 import { Screens } from 'src/scenes';
 import { Routes } from 'src/scenes/routes';
+import { HeaderCloseIcon } from '../../containers/navigation';
 const routes = [
-  RoutesOld.OVERVIEW,
-  RoutesOld.MY_TEAM,
-  RoutesOld.LEAGUE,
-  RoutesOld.LEAGUE_CUP,
-  RoutesOld.SETTINGS,
+  Routes.overview,
+  Routes.myTeam,
+  Routes.competition,
+  Routes.cup,
+  Routes.settings,
 ];
 
 // Actions
@@ -23,7 +22,7 @@ const HIDE_SEARCH = 'ligatool/navigation/HIDE_SEARCH';
 export const HIDE_START_MODAL = 'ligatool/navigation/HIDE_START_MODAL';
 export const OPEN_MY_TEAM = 'ligatool/navigation/OPEN_MY_TEAM';
 
-const defaultState = { navigation: null, activeItem: RoutesOld.OVERVIEW };
+const defaultState = { navigation: null, activeItem: Routes.overview };
 // Reducer
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
@@ -42,7 +41,7 @@ export default function reducer(state = defaultState, action) {
         ...state,
         navigation: Screens.router.getStateForAction(
           NavigationActions.navigate({
-            routeName: RoutesOld.MODAL_SELECT_PLAYER,
+            routeName: Routes.selectPlayer,
             params: {
               ...action.payload,
               title: `${action.payload.data.name} Heim`,
@@ -58,18 +57,7 @@ export default function reducer(state = defaultState, action) {
         ...state,
         navigation: Screens.router.getStateForAction(
           NavigationActions.back({
-            key: findRouteKey(state.navigation, RoutesOld.MODAL_SELECT_PLAYER),
-          }),
-          state.navigation,
-        ),
-      };
-      break;
-    case HIDE_SEARCH:
-      state = {
-        ...state,
-        navigation: Screens.router.getStateForAction(
-          NavigationActions.back({
-            key: findRouteKey(state.navigation, RoutesOld.SEARCH),
+            key: findRouteKey(state.navigation, Routes.selectPlayer),
           }),
           state.navigation,
         ),
@@ -80,36 +68,24 @@ export default function reducer(state = defaultState, action) {
         ...state,
         navigation: Screens.router.getStateForAction(
           NavigationActions.back({
-            key: findRouteKey(state.navigation, RoutesOld.MODAL_FIRST_START),
+            key: findRouteKey(state.navigation, Routes.welcome),
           }),
           state.navigation,
         ),
       };
       break;
-    case OPEN_MY_TEAM:
+    case NavigationActions.NAVIGATE:
       state = {
         ...state,
-        activeItem: RoutesOld.MY_TEAM,
-        navigation: Screens.router.getStateForAction(
-          { type: NavigationActions.NAVIGATE, routeName: RoutesOld.MY_TEAM },
-          state.navigation,
-        ),
+        navigation: Screens.router.getStateForAction(action, state.navigation),
       };
-      break;
-    case NavigationActions.NAVIGATE:
-      if (action.routeName !== RoutesOld.MY_TEAM) {
-        state = {
-          ...state,
-          navigation: Screens.router.getStateForAction(action, state.navigation),
-        };
-        if (routes.indexOf(action.routeName) !== -1 && action.routeName) {
-          state.activeItem = action.routeName;
-          if (
-            action.routeName === RoutesOld.LEAGUE ||
-            action.routeName === RoutesOld.LEAGUE_CUP
-          ) {
-            state.activeItem = `${action.routeName}_${action.params.id}`;
-          }
+      if (routes.indexOf(action.routeName) !== -1 && action.routeName) {
+        state.activeItem = action.routeName;
+        if (
+          action.routeName === Routes.competition ||
+          action.routeName === Routes.cup
+        ) {
+          state.activeItem = `${action.routeName}_${action.params.id}`;
         }
       }
       break;
@@ -117,13 +93,16 @@ export default function reducer(state = defaultState, action) {
       {
         state = {
           ...state,
-          navigation: Screens.router.getStateForAction(action, state.navigation),
+          navigation: Screens.router.getStateForAction(
+            action,
+            state.navigation,
+          ),
         };
         const route = currentRoute(state.navigation);
         if (routes.indexOf(route.routeName) !== -1) {
           state.activeItem =
-            route.routeName === RoutesOld.LEAGUE ||
-            route.routeName === RoutesOld.LEAGUE_CUP
+            route.routeName === Routes.competition ||
+            route.routeName === Routes.cup
               ? `${route.routeName}_${route.params.id}`
               : route.routeName;
         }

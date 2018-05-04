@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, TextInput, Platform } from 'react-native';
+import { View, TextInput, Platform, ActivityIndicator } from 'react-native';
 import Card from '../Card';
 import Touchable from '../Touchable';
 import Text from '../Text';
 import Icon from '../Icon';
 import styles from './styles';
-import S from '../../lib/strings';
+import { Strings as S } from '../../lib/strings';
 
 export default class ScoreInput extends React.Component {
   constructor(props) {
@@ -93,12 +93,13 @@ export default class ScoreInput extends React.Component {
 
   render() {
     const { getSet, data } = this.props;
+
     const playerHome1 = getSet(data.gameNumbers[0]).homePlayer1;
     const playerAway1 = getSet(data.gameNumbers[0]).awayPlayer1;
     const playerHome2 = getSet(data.gameNumbers[0]).homePlayer2;
     const playerAway2 = getSet(data.gameNumbers[0]).awayPlayer2;
     return (
-      <Card style={{ flex: 0 }}>
+      <View>
         <View style={styles.containerSet}>
           <Text bold secondary>{`${this.props.data.name} ${
             this.props.data.gameNumbers.length > 1
@@ -169,7 +170,7 @@ export default class ScoreInput extends React.Component {
             </View>
           )}
         </View>
-      </Card>
+      </View>
     );
   }
 }

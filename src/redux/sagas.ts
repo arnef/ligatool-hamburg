@@ -32,7 +32,7 @@ import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import RoutesOld from '../config/routes';
 import { Routes } from 'src/scenes/routes';
-import { getMatchDays } from '../Helper';
+import { getMatchDays } from '../helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 import { DATE_FORMAT, DATETIME_DB } from '../config/settings';
 
@@ -64,7 +64,7 @@ import {
   fixtureSort,
   setOverview,
   SET_FIXTURES,
-  SET_FIXTURE_DATA
+  SET_FIXTURE_DATA,
 } from './modules/fixtures';
 import {
   userAddTeam,
@@ -74,6 +74,7 @@ import {
   USER_REMOVE_TEAM,
 } from './modules/user';
 import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
+import { headerCloseIcon } from '../containers/navigation';
 
 function* queryOverviewSaga() {
   try {
@@ -103,14 +104,16 @@ function* queryOverviewSaga() {
     yield put(LoadingActions.error(ex.message));
   }
 }
-function * overviewWrapper() {
+function* overviewWrapper() {
   const state = yield select();
   const fixtures = _.values(state.fixtures.data);
-  yield put(setOverview({
-    [FILTER_PASSED]: buildOverview(fixtures, FILTER_PASSED),
-    [FILTER_TODAY]: buildOverview(fixtures, FILTER_TODAY),
-    [FILTER_UPCOMMING]: buildOverview(fixtures, FILTER_UPCOMMING),
-  }));
+  yield put(
+    setOverview({
+      [FILTER_PASSED]: buildOverview(fixtures, FILTER_PASSED),
+      [FILTER_TODAY]: buildOverview(fixtures, FILTER_TODAY),
+      [FILTER_UPCOMMING]: buildOverview(fixtures, FILTER_UPCOMMING),
+    }),
+  );
 }
 function buildOverview(data, filter) {
   const sections = {};
@@ -149,7 +152,7 @@ function buildOverview(data, filter) {
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
         }
-        
+
         sections[key].data.push(fixture);
       }
     }
@@ -163,16 +166,13 @@ function buildOverview(data, filter) {
 
 function* myTeam() {
   try {
-    yield put(LoadingActions.show());
+    console.log('query my tram data');
     const state = yield select();
     const team = getActiveTeam(state);
     const { data } = yield call(api.getTeamMatches, team.id);
     yield put(setFixtures(_.keyBy(data, 'id')));
   } catch (ex) {
     console.warn(ex);
-    yield put(LoadingActions.error(ex.message));
-  } finally {
-    yield put(LoadingActions.hide());
   }
 }
 
@@ -303,6 +303,7 @@ function* login(action) {
     const apiKey = data.token;
     yield put(userSetApiKey(apiKey));
     const { data: token } = yield call(api.refreshAuthentication, apiKey);
+    console.log(token);
     yield put(userSetToken(token.token, token.accessForTeams, token.expires));
     api.setAuthorization(token.token);
     yield put(NavigationActions.hideLogin(action.next));
@@ -316,6 +317,7 @@ function* login(action) {
 
 function* hideLogin() {
   try {
+    StatusBar.setBarStyle('light-content');
     const state = yield select();
     const modal =
       state.nav.navigation.routes[state.nav.navigation.index].routeName;
@@ -323,7 +325,7 @@ function* hideLogin() {
       type: NavigationActions.BACK,
       key: findRouteKey(state.nav.navigation, modal),
     });
-    if (modal === RoutesOld.MODAL_FIRST_START) {
+    if (modal === Routes.welcome) {
       yield queryOverviewSaga();
     }
   } catch (ex) {
@@ -409,22 +411,11 @@ function* navigate(action) {
         if (!getActiveTeam(state)) {
           yield put(NavigationActions.showLogin());
         } else {
-          yield put({ type: NavigationActions.OPEN_MY_TEAM });
-          if (
-            state.myTeam.next.length === 0 &&
-            state.myTeam.played.length === 0
-          ) {
-            yield myTeam();
-          }
+          yield myTeam();
         }
         break;
       case Routes.cup:
-        // if (
-        //   !state.leagues[`${action.params.id}`] ||
-        //   !state.leagues[`${action.params.id}`].match_days
-        // ) {
         yield getLeagueMatches({ payload: { id: action.params.id } });
-        // }
         break;
       case Routes.competition:
         {
@@ -470,12 +461,10 @@ function* navigate(action) {
           const id = action.params
             ? action.params.team.id
             : currentRoute(state.nav.navigation).params.team.id;
-          // if (!state.teams[`${id}`] || getFixtureByTeam(state, id).length == 0) {
           yield getTeamMatches({ payload: { id } });
-          // }
         }
         break;
-      case RoutesOld.TAB_MY_TEAM_INFO:
+      case Routes.myTeamDetails:
         {
           const team = getActiveTeam(state);
           if (!state.teams[`${team.id}`]) {
@@ -483,7 +472,6 @@ function* navigate(action) {
           }
         }
         break;
-      // case RoutesOld.PLAYER:
       case Routes.playerDetails:
         {
           const id = action.params.id;
@@ -492,7 +480,7 @@ function* navigate(action) {
           }
         }
         break;
-      case RoutesOld.MATCH_DATE:
+      case Routes.fixtureDetailsChangeDate:
         {
           const id = action.params.id;
           yield getFixtureDatesSaga({ payload: { id } });
@@ -552,9 +540,7 @@ function* rehydrate() {
   try {
     const state = yield select();
     if (_.size(state.drawer) === 0) {
-      yield put(
-        NavigationActions.navigate({ routeName: RoutesOld.MODAL_FIRST_START }),
-      );
+      yield put(NavigationActions.navigate({ routeName: Routes.welcome }));
       const leagues = yield call(api.getLeagues);
       yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
     } else {
@@ -676,7 +662,7 @@ function* fetchUserTeam(action) {
     const { data } = yield call(api.getTeam, id);
     yield put(userAddTeam(data));
     yield subscribeTeamSaga({ payload: { id: data.groupId || data.id } });
-    yield put(NavigationActions.navigate({ routeName: 'LoginView' }));
+    yield put(NavigationActions.navigate({ routeName: Routes.login }));
   } catch (ex) {
     console.warn(ex);
   } finally {
@@ -936,7 +922,7 @@ export default function* sagas() {
   yield takeEvery('SELECT_USER_TEAM', fetchUserTeam);
   yield takeEvery(SET_FIXTURE_GAME_AWAY_PLAYER, setPlayerAwaySaga);
   yield takeEvery(USER_REMOVE_TEAM, removeTeamSaga);
-  
+
   // update overview
   yield takeEvery(SET_FIXTURES, overviewWrapper);
   yield takeEvery(SET_FIXTURE_DATA, overviewWrapper);

@@ -3,26 +3,20 @@ import { View, BackHandler, AppState, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
-
-import Loading from './modals/LoadingModal';
-// import { Root } from './router';
 import { Screens } from './scenes';
 import { ActionSheet } from './components';
 import NotificationManager from './lib/NotificationManager';
-import * as LoadingActions from './redux/modules/loading';
 import { getColor } from './redux/modules/user';
 import { colors } from './config/styles';
 import TaskDescriptionAndroid from 'react-native-android-taskdescription';
 
 const addListener = createReduxBoundAddListener('root');
 
-interface Props extends StateProps {
-  
-};
+interface Props extends StateProps {}
 interface AppContainer {
-  refreshTokenListener: any
-  notificationListener: any
-};
+  refreshTokenListener: any;
+  notificationListener: any;
+}
 
 class AppContainer extends React.Component<Props> {
   constructor(props: Props) {
@@ -77,28 +71,26 @@ class AppContainer extends React.Component<Props> {
             addListener,
           })}
         />
-        <Loading loading={this.props.loading} />
       </View>
     );
   }
 }
 
 interface StateProps {
-  loading: boolean
-  team: any
-  auth: any
-  nav: any
-  color: string
+  loading: boolean;
+  team: any;
+  auth: any;
+  nav: any;
+  color: string;
 }
 
 function mapStateToProps(state: any): StateProps {
   return {
-    loading: state.loading.modal,
     team: state.settings.team,
     auth: state.auth,
     nav: state.nav.navigation,
     color: getColor(state),
-  }
+  };
 }
 
 export default connect(mapStateToProps)(AppContainer);

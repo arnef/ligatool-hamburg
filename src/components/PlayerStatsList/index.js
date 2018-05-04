@@ -27,7 +27,12 @@ function PlayerStatsList(props) {
             <View style={styles.header}>
               <View style={styles.position} />
               <View style={styles.playerImage} />
-              <Text small color="#fff" style={styles.playerName} numberOfLines={1}>
+              <Text
+                small
+                color="#fff"
+                style={styles.playerName}
+                numberOfLines={1}
+              >
                 {S.NAME}
               </Text>
               <Text small color="#fff" style={styles.rate} numberOfLines={1}>
@@ -37,12 +42,22 @@ function PlayerStatsList(props) {
                 {S.GAMES}
               </Text>
               {!!dataSource[0].competitiveIndex && (
-                <Text small color="#fff" style={styles.competitiveIndex} numberOfLines={1}>
+                <Text
+                  small
+                  color="#fff"
+                  style={styles.competitiveIndex}
+                  numberOfLines={1}
+                >
                   {S.COMPETITIVE_INDEX_SHORT}
                 </Text>
               )}
               {!dataSource[0].competitiveIndex && (
-                <Text small color="#fff" style={styles.competitiveIndex} numberOfLines={1}>
+                <Text
+                  small
+                  color="#fff"
+                  style={styles.competitiveIndex}
+                  numberOfLines={1}
+                >
                   {S.GAME_POINTS_POSITIV}
                 </Text>
               )}

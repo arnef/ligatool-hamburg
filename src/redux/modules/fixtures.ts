@@ -351,11 +351,12 @@ export const getFixturePlayerList = (state, id, key) =>
 export const getFixtureDates = (state, id) => get(state).dates[id] || null;
 
 export const getFixtureByFilter = (state, filter) => {
-  console.log('filter', filter);
-  if (!get(state).overview) { return null };
-  
+  if (!get(state).overview) {
+    return null;
+  }
+
   return get(state).overview[filter];
-// return null;
+  // return null;
   if (get(state).data === null) {
     return null;
   }
@@ -397,7 +398,7 @@ export const getFixtureByFilter = (state, filter) => {
   //       if (!sections[key]) {
   //         sections[key] = { data: [], title: key };
   //       }
-        
+
   //       sections[key].data.push(fixture);
   //     }
   //   }

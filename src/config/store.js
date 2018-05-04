@@ -16,15 +16,13 @@ const config = {
   key: 'root',
   storage,
   whitelist: ['app', 'settings', 'drawer', 'user'],
-}
+};
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-
 export const store = createStore(
   persistReducer(config, reducer),
-  composeEnhancers(
-    applyMiddleware(...middleware)),
+  composeEnhancers(applyMiddleware(...middleware)),
 );
 sagaMiddleware.run(sagas);
 

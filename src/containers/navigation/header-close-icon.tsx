@@ -19,30 +19,33 @@
  */
 
 import * as React from 'react';
-import { View } from 'react-native';
-import { Image, Text } from '../../../../../components';
+import { StyleSheet, Platform } from 'react-native';
+import {
+  getNavigationStateParams,
+  hideLogin,
+} from '../../redux/modules/navigation';
+import { Touchable, Icon } from 'src/components';
 
-interface Props {
-  reverse?: boolean;
-  player: any;
-}
-export class Player extends React.PureComponent<Props> {
-  public render() {
-    const { player } = this.props;
-    return (
-      <View
-        style={{
-          flexDirection: this.props.reverse ? 'row-reverse' : 'row',
-          flex: 2,
-          margin: 3,
-          alignItems: 'center',
-        }}
-      >
-        <Image url={player.image} size={32} />
-        <Text center style={{ flex: 1 }}>
-          {`${player.name} ${player.surname}`}
-        </Text>
-      </View>
-    );
-  }
-}
+export default (navigation, action) => (
+  <Touchable
+    borderless
+    pressColor={'rgba(255, 255, 255, .8)'}
+    style={styles.container}
+    onPress={() => {
+      navigation.dispatch(action);
+    }}
+  >
+    <Icon name="close" color="#fff" style={styles.icon} size={iconSize} />
+  </Touchable>
+);
+
+const iconSize = Platform.OS === 'android' ? 24 : 20;
+const styles = StyleSheet.create({
+  container: {
+    marginLeft: Platform.OS === 'android' ? 16 : 12,
+  },
+  icon: {
+    height: iconSize,
+    width: iconSize,
+  },
+});
