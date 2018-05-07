@@ -25,15 +25,15 @@ import {
   TabNavigator,
   NavigationRouteConfigMap,
 } from 'react-navigation';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import {
   TabBarIcon,
   TabBarBottom,
   headerNavigationOptions,
-} from 'src/containers/navigation';
+} from '@app/containers/navigation';
 
-import { Overview } from 'src/scenes/app/scenes/overview';
-import { Strings } from 'src/lib/strings';
+import { Overview } from '@app/scenes/app/scenes/overview';
+import { Strings } from '@app/lib/strings';
 import { MyTeam } from './scenes/my-team';
 import { Competitions } from './scenes/competitions';
 import { Settings } from './scenes/settings';

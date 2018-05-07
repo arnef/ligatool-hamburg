@@ -21,11 +21,11 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import styles from '../styles';
-import { Text, Button } from 'src/components';
+import { Text, Button } from '@app/components';
 import { Strings } from '../../../lib/strings';
 import { connect, Dispatch } from 'react-redux';
 import { hideStart, navigate } from '../../../redux/modules/navigation';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 
 interface Props extends DispatchProps {}
 class WelcomeScene extends React.PureComponent<Props> {

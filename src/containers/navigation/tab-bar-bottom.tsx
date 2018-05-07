@@ -24,7 +24,7 @@ import {
   TabBarBottom as RNTabBarBottom,
   TabBarBottomProps,
 } from 'react-navigation';
-import { getColor } from 'src/redux/modules/user';
+import { getColor } from '@app/redux/modules/user';
 
 interface Props extends TabBarBottomProps, StateProps {}
 

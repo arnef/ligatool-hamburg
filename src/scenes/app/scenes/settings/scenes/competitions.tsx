@@ -21,10 +21,10 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { sortBy } from 'lodash';
-import { sortCompetition } from 'src/helper';
-import { navigate } from 'src/redux/modules/navigation';
+import { sortCompetition } from '@app/helper';
+import { navigate } from '@app/redux/modules/navigation';
 import { ListItem, Text, Content, Separator } from '../../../../../components';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 
 interface Props extends StateProps, DispatchProps {}
 

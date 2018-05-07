@@ -36,23 +36,22 @@ interface Props {
   color: string;
   loading: boolean;
   getSet: Function;
-  onCancel: Function;
+  onCancel: () => void;
   onSave: Function;
 }
 
 export default class ScoreInputDialog extends React.PureComponent<Props> {
   public render() {
     const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-
+    const props = Platform.OS === 'ios' ? { behavior: 'height' } : {};
     return (
       <Modal
         animationType="fade"
         onRequestClose={this.props.onCancel}
         transparent={true}
         visible={!!this.props.data || this.props.loading}
-        // visible={true}
       >
-        <Container behavior="height" style={styles.container}>
+        <Container {...props} style={styles.container}>
           {this.props.loading && (
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Card style={{ flex: 0, padding: 20 }}>

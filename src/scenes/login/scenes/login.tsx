@@ -23,7 +23,7 @@ import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect, Dispatch } from 'react-redux';
 import { Content, ListItem, Button, Text } from '../../../components';
 import t from 'tcomb-form-native';
-import { Strings } from 'src/lib/strings';
+import { Strings } from '@app/lib/strings';
 import { login } from '../../../redux/modules/auth';
 import { getColor } from '../../../redux/modules/user';
 import { hideLogin } from '../../../redux/modules/navigation';

@@ -24,7 +24,7 @@ import {
   getNavigationStateParams,
   hideLogin,
 } from '../../redux/modules/navigation';
-import { Touchable, Icon } from 'src/components';
+import { Touchable, Icon } from '@app/components';
 
 export default (navigation, action) => (
   <Touchable

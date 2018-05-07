@@ -20,12 +20,12 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { MatchList, Team } from 'src/components';
-import { getMatches } from 'src/redux/modules/myteam';
+import { MatchList, Team } from '@app/components';
+import { getMatches } from '@app/redux/modules/myteam';
 import { TabNavigator } from 'react-navigation';
-import { topTabBarNavigationOptions } from 'src/containers/navigation';
-import { Routes } from 'src/scenes/routes';
-import { Strings } from 'src/lib/strings';
+import { topTabBarNavigationOptions } from '@app/containers/navigation';
+import { Routes } from '@app/scenes/routes';
+import { Strings } from '@app/lib/strings';
 import { getActiveTeam } from '../../../../redux/modules/user';
 import {
   getPlayedFixturesByTeam,

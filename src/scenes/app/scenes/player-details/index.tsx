@@ -27,10 +27,10 @@ import {
   Separator,
   Text,
 } from '../../../../components';
-import { Strings } from 'src/lib/strings';
+import { Strings } from '@app/lib/strings';
 import { Item } from './components/item';
 import { default as moment } from 'moment';
-import { DATE_FORMAT } from 'src/config/settings';
+import { DATE_FORMAT } from '@app/config/settings';
 
 import { Singles } from './components/singles';
 import { Doubles } from './components/doubles';

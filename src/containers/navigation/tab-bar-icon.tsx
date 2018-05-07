@@ -19,7 +19,7 @@
  */
 
 import * as React from 'react';
-import { Icon } from 'src/components';
+import { Icon } from '@app/components';
 
 interface Props {
   name: string;

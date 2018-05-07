@@ -19,7 +19,7 @@
  */
 
 import { TabNavigator } from 'react-navigation';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import { MatchList, PlayerStatsList } from '../../../../../components';
 import { Strings } from '../../../../../lib/strings';
 import { topTabBarNavigationOptions } from '../../../../../containers/navigation';

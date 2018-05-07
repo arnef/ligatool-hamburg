@@ -19,7 +19,7 @@
  */
 import * as React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { Strings } from 'src/lib/strings';
+import { Strings } from '@app/lib/strings';
 
 import { Routes } from './routes';
 import { AppScenes } from './app';

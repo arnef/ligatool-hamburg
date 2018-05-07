@@ -33,15 +33,15 @@ import {
   Switch,
   Content,
 } from '../../../../components';
-import { Strings } from 'src/lib/strings';
+import { Strings } from '@app/lib/strings';
 import {
   getColor,
   getUserTeams,
   userRemoveTeam,
   userSetActiveTeam,
-} from 'src/redux/modules/user';
-import * as SettingsActions from 'src/redux/modules/settings';
-import { showLogin, navigate } from 'src/redux/modules/navigation';
+} from '@app/redux/modules/user';
+import * as SettingsActions from '@app/redux/modules/settings';
+import { showLogin, navigate } from '@app/redux/modules/navigation';
 
 import { SettingsNotificationCompetitions } from './scenes/competitions';
 import { SettingsNotiticationTeams } from './scenes/teams';

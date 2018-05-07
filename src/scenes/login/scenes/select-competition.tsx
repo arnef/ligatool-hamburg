@@ -20,10 +20,10 @@
 
 import * as React from 'react';
 import { Content, Separator, ListItem, Text } from '../../../components';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import { connect, Dispatch } from 'react-redux';
 import { sortBy } from 'lodash';
-import { sortCompetition } from 'src/helper';
+import { sortCompetition } from '@app/helper';
 import { getLeagues } from '../../../redux/modules/leagues';
 import { navigate } from '../../../redux/modules/navigation';
 

@@ -31,7 +31,7 @@ import * as MatchUtils from '../lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
 import RoutesOld from '../config/routes';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import { getMatchDays } from '../helper';
 import { currentRoute, findRouteKey } from '../lib/NavUtils';
 import { DATE_FORMAT, DATETIME_DB } from '../config/settings';

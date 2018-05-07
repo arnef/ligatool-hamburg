@@ -4,7 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import { store } from '../config/store';
 import * as SettingsActions from '../redux/modules/settings';
 import * as MatchesActions from '../redux/modules/matches';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import { currentRoute } from './NavUtils';
 import { getFixture } from '../redux/modules/fixtures';
 

@@ -20,14 +20,14 @@
 
 import * as React from 'react';
 import { TabNavigator } from 'react-navigation';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import { getFixtureByTeam } from '../../../../redux/modules/fixtures';
 import { getNavigationStateParams } from '../../../../redux/modules/navigation';
 import { connect, Dispatch } from 'react-redux';
 import { getMatches } from '../../../../redux/modules/teams';
 import { MatchList } from '../../../../components';
 import { Strings } from '../../../../lib/strings';
-import { Team } from 'src/components';
+import { Team } from '@app/components';
 import { topTabBarNavigationOptions } from '../../../../containers/navigation';
 
 function mapStateToProps(state: any, props: any) {

@@ -8,7 +8,7 @@ import {
   navigate,
 } from '../../redux/modules/navigation';
 // import Routes from '../../config/routes';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import { Strings as S } from '../../lib/strings';
 import TableItem from './TableItem';
 import styles from './styles';

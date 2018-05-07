@@ -1,7 +1,7 @@
 import { NavigationActions } from 'react-navigation';
 import { currentRoute } from '../../lib/NavUtils';
-import { Screens } from 'src/scenes';
-import { Routes } from 'src/scenes/routes';
+import { Screens } from '@app/scenes';
+import { Routes } from '@app/scenes/routes';
 import { HeaderCloseIcon } from '../../containers/navigation';
 const routes = [
   Routes.overview,

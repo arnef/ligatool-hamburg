@@ -26,7 +26,7 @@ import {
   TabBarTopProps,
   TabNavigatorConfig,
 } from 'react-navigation';
-import { getColor } from 'src/redux/modules/user';
+import { getColor } from '@app/redux/modules/user';
 
 const white = '#fff';
 const white9 = 'rgba(255,255,255,.8 )';

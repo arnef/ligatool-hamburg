@@ -27,12 +27,12 @@ import {
   Text,
   Icon,
   Button,
-} from 'src/components';
-import { Strings } from 'src/lib/strings';
+} from '@app/components';
+import { Strings } from '@app/lib/strings';
 import { range } from 'lodash';
 import styles from './styles';
 import { default as moment } from 'moment';
-import { DATETIME_DB, DATETIME_FORMAT } from 'src/config/settings';
+import { DATETIME_DB, DATETIME_FORMAT } from '@app/config/settings';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { suggestDatetime } from '../../../../../../redux/modules/matches';
 import { getNavigationStateParams } from '../../../../../../redux/modules/navigation';

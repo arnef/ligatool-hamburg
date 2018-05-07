@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
-import Card from '../Card';
+import { Card } from '../Card';
 import Touchable from '../Touchable';
 import Text from '../Text';
-import Icon from '../Icon';
-import Image from '../Image';
+import { Icon } from '../Icon';
+import { Image } from '../Image';
 import Score from '../Score';
-import ActionSheet from '../ActionSheet';
+import { ActionSheet } from '../ActionSheet';
 import styles from './styles';
 
 import { Strings as S } from '../../lib/strings';

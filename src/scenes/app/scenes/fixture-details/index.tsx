@@ -44,14 +44,14 @@ import {
   setFixtureStatusInPlay,
   getFixtureGame,
   setFixtureGameResult,
-} from 'src/redux/modules/fixtures';
+} from '@app/redux/modules/fixtures';
 import {
   getNavigationStateParams,
   showPlayer,
   navigate,
-} from 'src/redux/modules/navigation';
-import { accessForTeams, getColor } from 'src/redux/modules/user';
-import { Routes } from 'src/scenes/routes';
+} from '@app/redux/modules/navigation';
+import { accessForTeams, getColor } from '@app/redux/modules/user';
+import { Routes } from '@app/scenes/routes';
 import { NoSets } from './components/no-sets';
 import { getMatch } from '../../../../redux/modules/matches';
 

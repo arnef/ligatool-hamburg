@@ -21,11 +21,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { sortBy } from 'lodash';
-import { Content, ListItem, Text, Separator } from 'src/components';
-import { sortCompetition } from 'src/helper';
-import { getLeagues } from 'src/redux/modules/leagues';
-import { navigate as navigationAction } from 'src/redux/modules/navigation';
-import { Routes } from 'src/scenes/routes';
+import { Content, ListItem, Text, Separator } from '@app/components';
+import { sortCompetition } from '@app/helper';
+import { getLeagues } from '@app/redux/modules/leagues';
+import { navigate as navigationAction } from '@app/redux/modules/navigation';
+import { Routes } from '@app/scenes/routes';
 
 interface Props {
   navigate: Function;

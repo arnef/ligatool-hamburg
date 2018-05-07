@@ -35,7 +35,7 @@ const headerStyle = {
   height: Platform.OS === 'android' && Platform.Version >= 21 ? 76 : 56,
 };
 
-const navigationOptions = title => ({ navigation }) => ({
+const navigationOptions = (title: string) => ({ navigation }: any) => ({
   title,
   gesturesEnabled: false,
   headerStyle,

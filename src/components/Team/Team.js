@@ -12,7 +12,7 @@ import TeamInfo from './TeamInfo';
 import TeamVenue from './TeamVenue';
 import TeamContact from './TeamContact';
 import { getActiveTeam, getColor } from '../../redux/modules/user';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 
 function Team(props) {
   const teamId = getNavigationStateParams(props.navigation)

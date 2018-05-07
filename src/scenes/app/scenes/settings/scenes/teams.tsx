@@ -27,12 +27,12 @@ import {
   Content,
   Separator,
 } from '../../../../../components';
-import { getNavigationStateParams } from 'src/redux/modules/navigation';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
 import {
   notificationSubscribedForTeam,
   subscribeTeam,
   unsubscribeTeam,
-} from 'src/redux/modules/settings';
+} from '@app/redux/modules/settings';
 import { Dispatch } from 'react-redux';
 
 interface Props extends StateProps, DispatchProps {

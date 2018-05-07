@@ -36,12 +36,12 @@ import {
   navigate,
   hidePlayer,
 } from '../../redux/modules/navigation';
-import { Routes } from 'src/scenes/routes';
+import { Routes } from '@app/scenes/routes';
 import {
   headerNavigationOptions,
   HeaderCloseIcon,
 } from '../../containers/navigation';
-import { Strings } from 'src/lib/strings';
+import { Strings } from '@app/lib/strings';
 
 interface Props extends StateProps, DispatchProps {
   navigation: any;

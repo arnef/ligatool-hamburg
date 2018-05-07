@@ -27,7 +27,7 @@ import {
   HeaderProps,
 } from 'react-navigation';
 import { connect } from 'react-redux';
-import { getColor } from 'src/redux/modules/user';
+import { getColor } from '@app/redux/modules/user';
 
 const pressColor = 'rgba(255,255,255,.8)';
 

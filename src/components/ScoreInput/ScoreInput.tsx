@@ -1,26 +1,57 @@
-import React from 'react';
-import { View, TextInput, Platform, ActivityIndicator } from 'react-native';
-import Card from '../Card';
-import Touchable from '../Touchable';
-import Text from '../Text';
-import Icon from '../Icon';
-import styles from './styles';
-import { Strings as S } from '../../lib/strings';
+/**
+ * Copyright (C) 2018 Arne Feil
+ *
+ * This file is part of DTFB App.
+ *
+ * DTFB App is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * DTFB App is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
-export default class ScoreInput extends React.Component {
-  constructor(props) {
+import * as React from 'react';
+import { View, TextInput, Platform, ActivityIndicator } from 'react-native';
+import { Card, Touchable, Text, Icon } from '@app/components';
+import { Strings } from '@app/lib/strings';
+import { IS_ANDROID } from '@app/consts';
+import styles from './styles';
+
+interface Props {
+  data: any;
+  modus: any;
+  getSet: (gameNumber: string) => any;
+  onSave: (data: any, result: any) => void;
+  onCancel: () => void;
+}
+
+interface State {
+  goalsHome?: string;
+  goalsAway?: string;
+  set: number;
+}
+
+export default class ScoreInput extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      goals_home: null,
-      goals_away: null,
+      goalsHome: null,
+      goalsAway: null,
       set: 0,
     };
 
-    this.onSave = this.onSave.bind(this);
     this.onPressBack = this.onPressBack.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     let idx = 0;
     const { gameNumbers } = this.props.data;
 
@@ -35,34 +66,38 @@ export default class ScoreInput extends React.Component {
     });
   }
 
-  onSave() {
+  onSave = (): void => {
     this.props.onSave(this.props.data, {
-      goalsHome: parseInt(this.state.goals_home, 10),
-      goalsAway: parseInt(this.state.goals_away, 10),
+      goalsHome: parseInt(this.state.goalsHome, 10),
+      goalsAway: parseInt(this.state.goalsAway, 10),
       gameNumber: this.props.data.gameNumbers[this.state.set],
     });
-  }
+  };
 
-  onPressBack() {
+  onPressBack = (): void => {
     this.setState({ set: this.state.set - 1 });
-  }
+  };
 
-  onTextChange(value, key, otherKey) {
+  onTextChange = (
+    key: 'goalsHome' | 'goalsAway',
+    otherKey: 'goalsHome' | 'goalsAway',
+  ) => (value: string): void => {
     const { type } = this.props.data;
     const { doubles, singles } = this.props.modus;
     const winGoals = Math.abs(type === 'DOUBLES' ? doubles : singles);
     const withDraw = (type === 'DOUBLES' ? doubles : singles) < 0;
     const goals = parseInt(value, 10);
-    this.setState({ [key]: value });
+    this.setState<'goalsHome' | 'goalsAway'>({ [key]: value });
+
     if (!this.state[otherKey] && goals == 2 && winGoals == 2) {
-      this.setState(
+      this.setState<'goalsHome' | 'goalsAway'>(
         {
           [otherKey]: `0`,
         },
         this.onSave,
       );
     } else if (!this.state[otherKey] && goals < winGoals) {
-      this.setState(
+      this.setState<'goalsHome' | 'goalsAway'>(
         {
           [otherKey]:
             withDraw && goals === winGoals - 1
@@ -72,10 +107,11 @@ export default class ScoreInput extends React.Component {
         this.onSave,
       );
     }
-  }
+  };
 
-  renderInput(key) {
-    const otherKey = key === 'goals_away' ? 'goals_home' : 'goals_away';
+  renderInput(key: 'goalsHome' | 'goalsAway') {
+    const otherKey: 'goalsHome' | 'goalsAway' =
+      key === 'goalsAway' ? 'goalsHome' : 'goalsAway';
 
     return (
       <TextInput
@@ -85,7 +121,7 @@ export default class ScoreInput extends React.Component {
         keyboardAppearance="dark"
         selectionColor="#fff"
         underlineColorAndroid="#666"
-        onChangeText={value => this.onTextChange(value, key, otherKey)}
+        onChangeText={this.onTextChange(key, otherKey)}
         style={styles.input}
       />
     );
@@ -103,8 +139,8 @@ export default class ScoreInput extends React.Component {
         <View style={styles.containerSet}>
           <Text bold secondary>{`${this.props.data.name} ${
             this.props.data.gameNumbers.length > 1
-              ? `- ${S.RESULT} ${this.state.set + 1}${S.DOT_SET}`
-              : `- ${S.RESULT}`
+              ? `- ${Strings.RESULT} ${this.state.set + 1}${Strings.DOT_SET}`
+              : `- ${Strings.RESULT}`
           }`}</Text>
         </View>
         <View style={styles.containerPlayers}>
@@ -128,8 +164,8 @@ export default class ScoreInput extends React.Component {
           </View>
         </View>
         <View style={styles.containerScore}>
-          <View style={styles.score}>{this.renderInput('goals_home')}</View>
-          <View style={styles.score}>{this.renderInput('goals_away')}</View>
+          <View style={styles.score}>{this.renderInput('goalsHome')}</View>
+          <View style={styles.score}>{this.renderInput('goalsAway')}</View>
         </View>
         <View style={styles.buttonRow}>
           <View style={styles.button}>
@@ -138,9 +174,7 @@ export default class ScoreInput extends React.Component {
                 <Icon name="arrow-back" size={20} style={styles.iconButton} />
                 <Text style={styles.buttonText}>
                   {`${this.state.set}${
-                    Platform.OS === 'android'
-                      ? S.DOT_SET.toUpperCase()
-                      : S.DOT_SET
+                    IS_ANDROID ? Strings.DOT_SET.toUpperCase() : Strings.DOT_SET
                   }`}
                 </Text>
               </Touchable>
@@ -149,23 +183,22 @@ export default class ScoreInput extends React.Component {
           <View style={styles.vSeparator}>
             <Touchable style={styles.button} onPress={this.props.onCancel}>
               <Text style={styles.buttonText}>
-                {Platform.OS === 'android' ? S.CANCEL.toUpperCase() : S.CANCEL}
+                {IS_ANDROID ? Strings.CANCEL.toUpperCase() : Strings.CANCEL}
               </Text>
             </Touchable>
           </View>
-          {this.state.goals_home !== null &&
-            this.state.goals_away !== null && (
+          {this.state.goalsHome !== null &&
+            this.state.goalsAway !== null && (
               <Touchable onPress={this.onSave} style={styles.button}>
                 <Text style={styles.buttonText}>
-                  {Platform.OS === 'android' ? S.SAVE.toUpperCase() : S.SAVE}
+                  {IS_ANDROID ? Strings.SAVE.toUpperCase() : Strings.SAVE}
                 </Text>
               </Touchable>
             )}
-          {(this.state.goals_home === null ||
-            this.state.goals_away === null) && (
+          {(this.state.goalsHome === null || this.state.goalsAway === null) && (
             <View style={styles.buttonDisabled}>
               <Text style={styles.buttonText}>
-                {Platform.OS === 'android' ? S.SAVE.toUpperCase() : S.SAVE}
+                {IS_ANDROID ? Strings.SAVE.toUpperCase() : Strings.SAVE}
               </Text>
             </View>
           )}

@@ -30,7 +30,7 @@ import {
   Image,
 } from '../../../../../components';
 import { Strings } from '../../../../../lib/strings';
-import { ASSOC, DATETIME_DB } from 'src/config/settings';
+import { ASSOC, DATETIME_DB } from '@app/config/settings';
 import { default as moment } from 'moment';
 import { Routes } from '../../../../routes';
 

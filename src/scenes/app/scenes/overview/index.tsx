@@ -21,19 +21,19 @@
 import * as React from 'react';
 import { TabNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Content, MatchItem, Text } from 'src/components';
-import { Routes } from 'src/scenes/routes';
-import { Strings } from 'src/lib/strings';
+import { Content, MatchItem, Text } from '@app/components';
+import { Routes } from '@app/scenes/routes';
+import { Strings } from '@app/lib/strings';
 import {
   getFixtureByFilter,
   FILTER_PASSED,
   FILTER_TODAY,
   FILTER_UPCOMMING,
   getFixture,
-} from 'src/redux/modules/fixtures';
+} from '@app/redux/modules/fixtures';
 import { Dispatch } from 'redux';
-import { topTabBarNavigationOptions } from 'src/containers/navigation';
-import { queryFixtureOverview } from 'src/redux/actions';
+import { topTabBarNavigationOptions } from '@app/containers/navigation';
+import { queryFixtureOverview } from '@app/redux/actions';
 import { SectionHeader } from './components/section-header';
 
 interface Props extends StateProps, DispatchProps {}

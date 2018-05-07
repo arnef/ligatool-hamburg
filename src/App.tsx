@@ -22,9 +22,9 @@ import React, { Component } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import AppContainer from './AppContainer';
-import LaunchScreen from './components/LaunchScreen';
-import { store, persistor } from './config/store';
+import AppContainer from '@app/AppContainer';
+import { LaunchScreen } from '@app/components';
+import { store, persistor } from '@app/config/store';
 
 interface Props {}
 export default class App extends Component<Props> {
