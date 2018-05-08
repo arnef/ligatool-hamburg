@@ -20,7 +20,7 @@
 
 import * as React from 'react';
 import { View, Platform, Linking, Alert } from 'react-native';
-import styles from '../styles';
+import styles from '@app/scenes/app/scenes/fixture-details/styles';
 import {
   Text,
   TeamLogo,
@@ -28,11 +28,11 @@ import {
   Separator,
   Card,
   Image,
-} from '../../../../../components';
-import { Strings } from '../../../../../lib/strings';
+} from '@app/components';
+import { Strings } from '@app/lib/strings';
 import { ASSOC, DATETIME_DB } from '@app/config/settings';
 import { default as moment } from 'moment';
-import { Routes } from '../../../../routes';
+import { Routes } from '@app/scenes/routes';
 
 interface Props {
   match: any;

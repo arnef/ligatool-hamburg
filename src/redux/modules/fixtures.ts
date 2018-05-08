@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DATE_FORMAT, DATETIME_DB } from '../../config/settings';
+import { DATE_FORMAT, DATETIME_DB } from '@app/config/settings';
 
 const FETCH_FIXTURES = 'fixtures/FETCH';
 export const SET_FIXTURES = 'fixtures/SET';

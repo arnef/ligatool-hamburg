@@ -20,7 +20,7 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
-import { Image, Text } from '../../../../../components';
+import { Image, Text } from '@app/components';
 
 interface Props {
   reverse?: boolean;

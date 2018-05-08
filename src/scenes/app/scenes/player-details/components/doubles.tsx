@@ -20,7 +20,7 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
-import { ListItem, Text, Score } from '../../../../../components';
+import { ListItem, Text, Score } from '@app/components';
 import { Player } from './player';
 
 interface Props {

@@ -22,7 +22,7 @@ import * as React from 'react';
 import { View, Alert } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Routes } from '../../../routes';
+import { Routes } from '@app/scenes/routes';
 import {
   ListItem,
   TeamLogo,
@@ -32,7 +32,7 @@ import {
   Separator,
   Switch,
   Content,
-} from '../../../../components';
+} from '@app/components';
 import { Strings } from '@app/lib/strings';
 import {
   getColor,
@@ -45,7 +45,7 @@ import { showLogin, navigate } from '@app/redux/modules/navigation';
 
 import { SettingsNotificationCompetitions } from './scenes/competitions';
 import { SettingsNotiticationTeams } from './scenes/teams';
-import { headerNavigationOptions } from '../../../../containers/navigation';
+import { headerNavigationOptions } from '@app/containers/navigation';
 
 interface SettingsProps extends StateProps, DispatchProps {}
 class SettingsScene extends React.Component<SettingsProps> {

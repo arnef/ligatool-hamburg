@@ -29,8 +29,8 @@ import {
   SetItem,
   Button,
   ScoreInput,
-} from '../../../../components';
-import { Strings } from '../../../../lib/strings';
+} from '@app/components';
+import { Strings } from '@app/lib/strings';
 import {
   getFixture,
   getFixtureModus,
@@ -53,7 +53,7 @@ import {
 import { accessForTeams, getColor } from '@app/redux/modules/user';
 import { Routes } from '@app/scenes/routes';
 import { NoSets } from './components/no-sets';
-import { getMatch } from '../../../../redux/modules/matches';
+import { getMatch } from '@app/redux/modules/matches';
 
 interface Props extends StateProps, DispatchProps {
   navigation: any;

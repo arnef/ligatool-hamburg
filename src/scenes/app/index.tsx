@@ -44,7 +44,7 @@ import { Cup } from './scenes/competitions/scenes/cup';
 import { TeamDetails } from './scenes/team-details';
 import { PlayerDetails } from './scenes/player-details';
 import { ChangeDate } from './scenes/fixture-details/scenes/change-date';
-import { getNavigationStateParams } from '../../redux/modules/navigation';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
 
 function createTabStackNavigator(
   key: string,

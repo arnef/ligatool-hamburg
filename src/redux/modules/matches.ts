@@ -1,4 +1,4 @@
-import * as MatchUtils from '../../lib/MatchUtils';
+import * as MatchUtils from '@app/lib/MatchUtils';
 
 // Actions
 export const GET_MATCHES = 'GET_MATCHES';

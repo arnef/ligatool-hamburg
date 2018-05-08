@@ -1,4 +1,4 @@
-import { defaultColor } from '../../config/settings';
+import { defaultColor } from '@app/config/settings';
 
 const SET_API_KEY = 'user/ADD_API_KEY';
 const SET_TOKEN = 'user/SET_TOKEN';

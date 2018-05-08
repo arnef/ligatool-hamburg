@@ -19,16 +19,10 @@
  */
 
 import * as React from 'react';
-import {
-  Content,
-  Separator,
-  ListItem,
-  TeamLogo,
-  Text,
-} from '../../../components';
+import { Content, Separator, ListItem, TeamLogo, Text } from '@app/components';
 import { connect, Dispatch } from 'react-redux';
 import { sortBy } from 'lodash';
-import { getNavigationStateParams } from '../../../redux/modules/navigation';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
 interface Props extends StateProps, DispatchProps {}
 
 class SelectTeamScene extends React.PureComponent<Props> {

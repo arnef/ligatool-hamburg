@@ -19,13 +19,13 @@
  */
 
 import * as React from 'react';
-import { Content, Separator, ListItem, Text } from '../../../components';
+import { Content, Separator, ListItem, Text } from '@app/components';
 import { Routes } from '@app/scenes/routes';
 import { connect, Dispatch } from 'react-redux';
 import { sortBy } from 'lodash';
 import { sortCompetition } from '@app/helper';
-import { getLeagues } from '../../../redux/modules/leagues';
-import { navigate } from '../../../redux/modules/navigation';
+import { getLeagues } from '@app/redux/modules/leagues';
+import { navigate } from '@app/redux/modules/navigation';
 
 interface Props extends StateProps, DispatchProps {}
 

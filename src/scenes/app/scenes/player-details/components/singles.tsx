@@ -19,7 +19,7 @@
  */
 
 import * as React from 'react';
-import { ListItem, Text, Score } from '../../../../../components';
+import { ListItem, Text, Score } from '@app/components';
 import { View } from 'react-native';
 import { Player } from './player';
 

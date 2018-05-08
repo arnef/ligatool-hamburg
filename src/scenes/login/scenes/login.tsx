@@ -21,12 +21,12 @@
 import * as React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect, Dispatch } from 'react-redux';
-import { Content, ListItem, Button, Text } from '../../../components';
+import { Content, ListItem, Button, Text } from '@app/components';
 import t from 'tcomb-form-native';
 import { Strings } from '@app/lib/strings';
-import { login } from '../../../redux/modules/auth';
-import { getColor } from '../../../redux/modules/user';
-import { hideLogin } from '../../../redux/modules/navigation';
+import { login } from '@app/redux/modules/auth';
+import { getColor } from '@app/redux/modules/user';
+import { hideLogin } from '@app/redux/modules/navigation';
 
 const Form = t.form.Form;
 

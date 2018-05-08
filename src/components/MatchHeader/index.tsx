@@ -46,7 +46,6 @@ class MatchHeader extends React.PureComponent<Props> {
       <View style={[styles.container, { backgroundColor: this.props.color }]}>
         <Touchable
           light
-          borderless
           style={styles.containerTeam}
           onPress={this.onPress('home')}
         >
@@ -76,7 +75,6 @@ class MatchHeader extends React.PureComponent<Props> {
         </View>
         <Touchable
           light
-          borderless
           style={styles.containerTeam}
           onPress={this.onPress('away')}
         >

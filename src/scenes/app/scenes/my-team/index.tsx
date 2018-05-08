@@ -26,11 +26,11 @@ import { TabNavigator } from 'react-navigation';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
 import { Routes } from '@app/scenes/routes';
 import { Strings } from '@app/lib/strings';
-import { getActiveTeam } from '../../../../redux/modules/user';
+import { getActiveTeam } from '@app/redux/modules/user';
 import {
   getPlayedFixturesByTeam,
   getNextFixturesByTeam,
-} from '../../../../redux/modules/fixtures';
+} from '@app/redux/modules/fixtures';
 
 export const MyTeam = TabNavigator(
   {

@@ -20,9 +20,9 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Content, MatchItem } from '../../components';
+import { Content, MatchItem } from '@app/components';
 
-import { Strings } from '../../lib/strings';
+import { Strings } from '@app/lib/strings';
 
 interface Props {
   matches: Array<any>;

@@ -26,7 +26,7 @@ import {
   Switch,
   Content,
   Separator,
-} from '../../../../../components';
+} from '@app/components';
 import { getNavigationStateParams } from '@app/redux/modules/navigation';
 import {
   notificationSubscribedForTeam,

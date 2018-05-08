@@ -20,7 +20,7 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
-import { ListItem, Text, Separator } from '../../../../../components';
+import { ListItem, Text, Separator } from '@app/components';
 
 interface Props {
   name: string;

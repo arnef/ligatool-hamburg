@@ -23,7 +23,7 @@ import { StyleSheet, Platform } from 'react-native';
 import {
   getNavigationStateParams,
   hideLogin,
-} from '../../redux/modules/navigation';
+} from '@app/redux/modules/navigation';
 import { Touchable, Icon } from '@app/components';
 
 export default (navigation, action) => (

@@ -1,8 +1,6 @@
 import { LOGOUT_DONE } from './auth';
-import { defaultColor } from '../../config/settings';
+import { defaultColor } from '@app/config/settings';
 
-// const defaultColor = '#ef473a';
-// const defaultColor = '#060060'; //dtfb green
 // Actions
 export const FETCH_USER_TEAM = 'ligatool/modules/FETCH_USER_TEAM';
 const SET_TEAM = 'ligatool/modules/SET_TEAM';

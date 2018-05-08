@@ -3,8 +3,8 @@ import { StatusBar } from 'react-native';
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist';
-import * as api from '../lib/api';
-import * as NotificationManager from '../lib/NotificationManager';
+import * as api from '@app/lib/api';
+import * as NotificationManager from '@app/lib/NotificationManager';
 import {
   SUGGEST_SCORE,
   INSERT_RESULTS,
@@ -27,14 +27,14 @@ import { GET_TEAM, GET_TEAM_DONE, GET_TEAM_MATCHES } from './modules/teams';
 import * as AuthActions from './modules/auth';
 import * as NavigationActions from './modules/navigation';
 import * as PlayerActions from './modules/player';
-import * as MatchUtils from '../lib/MatchUtils';
+import * as MatchUtils from '@app/lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
-import RoutesOld from '../config/routes';
+import RoutesOld from '@app/config/routes';
 import { Routes } from '@app/scenes/routes';
-import { getMatchDays } from '../helper';
-import { currentRoute, findRouteKey } from '../lib/NavUtils';
-import { DATE_FORMAT, DATETIME_DB } from '../config/settings';
+import { getMatchDays } from '@app/helper';
+import { currentRoute, findRouteKey } from '@app/lib/NavUtils';
+import { DATE_FORMAT, DATETIME_DB } from '@app/config/settings';
 
 import {
   setFixtures,
@@ -74,7 +74,6 @@ import {
   USER_REMOVE_TEAM,
 } from './modules/user';
 import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
-import { headerCloseIcon } from '../containers/navigation';
 
 function* queryOverviewSaga() {
   try {

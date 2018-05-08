@@ -19,7 +19,7 @@
  */
 
 import * as React from 'react';
-import { Content, Separator, ListItem, Text, Icon } from '../../components';
+import { Content, Separator, ListItem, Text, Icon } from '@app/components';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { connect, Dispatch } from 'react-redux';
@@ -30,17 +30,17 @@ import {
   getFixtureGames,
   setFixtureGameHomePlayer,
   setFixtureGameAwayPlayer,
-} from '../../redux/modules/fixtures';
+} from '@app/redux/modules/fixtures';
 import {
   getNavigationStateParams,
   navigate,
   hidePlayer,
-} from '../../redux/modules/navigation';
+} from '@app/redux/modules/navigation';
 import { Routes } from '@app/scenes/routes';
 import {
   headerNavigationOptions,
   HeaderCloseIcon,
-} from '../../containers/navigation';
+} from '@app/containers/navigation';
 import { Strings } from '@app/lib/strings';
 
 interface Props extends StateProps, DispatchProps {

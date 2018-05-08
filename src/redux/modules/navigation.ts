@@ -1,8 +1,8 @@
 import { NavigationActions } from 'react-navigation';
-import { currentRoute } from '../../lib/NavUtils';
+import { currentRoute } from '@app/lib/NavUtils';
 import { Screens } from '@app/scenes';
 import { Routes } from '@app/scenes/routes';
-import { HeaderCloseIcon } from '../../containers/navigation';
+import { HeaderCloseIcon } from '@app/containers/navigation';
 const routes = [
   Routes.overview,
   Routes.myTeam,

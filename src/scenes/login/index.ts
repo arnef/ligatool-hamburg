@@ -19,14 +19,14 @@
  */
 
 import { StackNavigator } from 'react-navigation';
-import { Routes } from '../routes';
+import { Routes } from '@app/scenes/routes';
 import { Welcome } from './scenes/welcome';
 import { SelectCompetition } from './scenes/select-competition';
-import { Strings } from '../../lib/strings';
+import { Strings } from '@app/lib/strings';
 import { SelectTeam } from './scenes/select-team';
 import { Login } from './scenes/login';
 import { Platform } from 'react-native';
-import { getNavigationStateParams } from '../../redux/modules/navigation';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
 
 const headerStyle = {
   backgroundColor: '#fff',

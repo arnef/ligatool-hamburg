@@ -20,13 +20,7 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
-import {
-  Content,
-  ListItem,
-  Image,
-  Separator,
-  Text,
-} from '../../../../components';
+import { Content, ListItem, Image, Separator, Text } from '@app/components';
 import { Strings } from '@app/lib/strings';
 import { Item } from './components/item';
 import { default as moment } from 'moment';
@@ -34,9 +28,9 @@ import { DATE_FORMAT } from '@app/config/settings';
 
 import { Singles } from './components/singles';
 import { Doubles } from './components/doubles';
-import { getNavigationStateParams } from '../../../../redux/modules/navigation';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
 import { Dispatch, connect } from 'react-redux';
-import { getPlayer } from '../../../../redux/modules/player';
+import { getPlayer } from '@app/redux/modules/player';
 
 interface Props extends StateProps, DispatchProps {}
 

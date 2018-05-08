@@ -34,17 +34,17 @@ import styles from './styles';
 import { default as moment } from 'moment';
 import { DATETIME_DB, DATETIME_FORMAT } from '@app/config/settings';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { suggestDatetime } from '../../../../../../redux/modules/matches';
-import { getNavigationStateParams } from '../../../../../../redux/modules/navigation';
+import { suggestDatetime } from '@app/redux/modules/matches';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
 import { connect, Dispatch } from 'react-redux';
-import { getColor } from '../../../../../../redux/modules/user';
+import { getColor } from '@app/redux/modules/user';
 import {
   getFixtureDates,
   setFixtureDate,
   removeFixtureDate,
   suggestFixtureDates,
   acceptFixtureDate,
-} from '../../../../../../redux/modules/fixtures';
+} from '@app/redux/modules/fixtures';
 
 interface Props extends StateProps, DispatchProps {
   navigation: any;
