@@ -7,7 +7,6 @@ import { Screens } from './scenes';
 import { ActionSheet } from './components';
 import NotificationManager from './lib/NotificationManager';
 import { getColor } from './redux/modules/user';
-import { colors } from './config/styles';
 import TaskDescriptionAndroid from 'react-native-android-taskdescription';
 
 const addListener = createReduxBoundAddListener('root');
@@ -55,7 +54,7 @@ class AppContainer extends React.Component<Props> {
   render() {
     const { dispatch, nav } = this.props;
     return (
-      <View style={{ flex: 1, backgroundColor: colors.BACKGROUND }}>
+      <View style={{ flex: 1, backgroundColor: '#dedede' }}>
         {Platform.OS === 'android' && (
           <TaskDescriptionAndroid backgroundColor={this.props.color} />
         )}

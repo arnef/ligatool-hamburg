@@ -1,5 +1,4 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colors } from '@app/config/styles';
 
 export default StyleSheet.create({
   container: {
@@ -52,7 +51,7 @@ export default StyleSheet.create({
     padding: 6,
     borderRadius: 6,
     alignItems: 'center',
-    backgroundColor: colors.TEXT_SECONDARY,
+    backgroundColor: '#909009',
   },
   textFirstMatchResult: {
     color: '#fff',

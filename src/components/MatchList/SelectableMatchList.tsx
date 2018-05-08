@@ -21,11 +21,11 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { connect, Dispatch } from 'react-redux';
-import { getMatches } from '../../redux/modules/leagues';
+import { getMatches } from '@app/redux/modules/leagues';
 import {
   navigate,
   getNavigationStateParams,
-} from '../../redux/modules/navigation';
+} from '@app/redux/modules/navigation';
 import {
   ActionSheet,
   StaticListHeader,
@@ -34,12 +34,12 @@ import {
   Icon,
   MatchItem,
   Content,
-} from '../../components';
+} from '@app/components';
 import styles from './styles';
-import { getColor } from '../../redux/modules/user';
-import { getFixturesByCompetition } from '../../redux/modules/fixtures';
+import { getColor } from '@app/redux/modules/user';
+import { getFixturesByCompetition } from '@app/redux/modules/fixtures';
 import { sortBy } from 'lodash';
-import { Strings as S } from '../../lib/strings';
+import { Strings } from '@app/lib/strings';
 
 interface Props extends StateProps, DispatchProps {
   navigation: any;
@@ -62,7 +62,7 @@ class SelectableMatchList extends React.Component<Props, State> {
       {
         options: matchDays,
       },
-      (index: number) => this.onSelectMatchDay(matchDays[index]),
+      (index: number) => this.onSelectMatchDay(matchDays[index])(),
     );
   };
 
@@ -102,7 +102,7 @@ class SelectableMatchList extends React.Component<Props, State> {
         <Content
           onRefresh={this.props.getMatches}
           renderItem={this.renderItem}
-          listEmptyText={S.NO_FIXTURES}
+          listEmptyText={Strings.NO_FIXTURES}
           data={matchList}
           reference={container => {
             this.container = container;
@@ -148,7 +148,7 @@ interface StateProps {
   loading?: boolean;
   matchdays: Array<string>;
   selected?: string;
-  data: any; //Map<string, any>
+  data: any;
 }
 interface DispatchProps {
   getMatches: () => void;
@@ -156,10 +156,11 @@ interface DispatchProps {
 
 function mapStateToProps(state: any, props: Props): StateProps {
   const data = fixturesByMatchDate(state, props);
+
   return {
     matchdays: data.matchdays,
     selected: data.selected,
-    data: state.fixtures.data,
+    data: data.data,
     color: getColor(state),
   };
 }
@@ -178,21 +179,3 @@ export const ConnectedSelectableMatchList = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(SelectableMatchList);
-
-// export default connect(
-//   (state, props) => ({
-//     ...fixturesByMatchDate(state, props),
-//     // leagues: state.leagues,
-//     matches: state.fixtures.data,
-//     color: getColor(state),
-//   }),
-//   (dispatch, props) => ({
-//     getMatches: () =>
-//       dispatch(
-//         LeaguesActions.getMatches(
-//           getNavigationStateParams(props.navigation).id,
-//         ),
-//       ),
-//     navigate: (routeName, params) => dispatch(navigate((routeName, params))),
-//   }),
-// )(SelectableMatchList);

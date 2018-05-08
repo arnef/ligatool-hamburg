@@ -38,6 +38,10 @@ interface Props extends StateProps, DispatchProps {
   navigation: any;
 }
 class Team extends React.PureComponent<Props> {
+  private onRefresh = () => {
+    this.props.getTeam(this.props.teamId);
+  };
+
   private onOpenPlayer = (player: any) => () => {
     this.props.openPlayer(player);
   };
@@ -45,7 +49,7 @@ class Team extends React.PureComponent<Props> {
   public render() {
     const { team, color } = this.props;
     return (
-      <Content onRefresh={this.props.getTeam}>
+      <Content onRefresh={this.onRefresh}>
         {team && (
           <View>
             <TeamInfo team={team} color={color} />
@@ -80,20 +84,25 @@ class Team extends React.PureComponent<Props> {
 interface StateProps {
   team?: any;
   color?: any;
-  myTeamId?: string;
+  teamId?: string;
 }
 
 interface DispatchProps {
-  getTeam: () => void;
+  getTeam: (teamId: string) => void;
   openPlayer: (player: any) => void;
 }
 
 function mapStateToProps(state: any, props: Props): StateProps {
-  const id = getNavigationStateParams(props.navigation).team.id;
+  const teamId = getNavigationStateParams(props.navigation)
+    ? getNavigationStateParams(props.navigation).team.id
+    : getActiveTeam(state)
+      ? getActiveTeam(state).id
+      : null;
 
   return {
-    team: state.teams[id],
+    team: state.teams[teamId],
     color: getColor(state),
+    teamId: teamId,
   };
 }
 
@@ -101,9 +110,8 @@ function mapDispatchToProps(
   dispatch: Dispatch<any>,
   props: Props,
 ): DispatchProps {
-  const id = getNavigationStateParams(props.navigation).team.id;
   return {
-    getTeam: () => dispatch(getTeam(id)),
+    getTeam: (teamId: string) => dispatch(getTeam(teamId)),
     openPlayer: (player: any) =>
       dispatch(
         navigate({

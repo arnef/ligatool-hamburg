@@ -48,8 +48,6 @@ interface Props extends StateProps, DispatchProps {
 }
 
 class MatchItem extends React.PureComponent<Props> {
-  private onPress = () => {};
-
   public render() {
     const { data } = this.props;
     const date = moment(data.date, DATETIME_DB);
@@ -122,5 +120,6 @@ function mapDispatchToProps(
   };
 }
 
-export const ConnectedMatchItem = connect(mapStateToProps)(MatchItem);
-// export const ITEM_HEIGHT = 152;
+export const ConnectedMatchItem = connect(mapStateToProps, mapDispatchToProps)(
+  MatchItem,
+);

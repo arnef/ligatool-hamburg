@@ -51,6 +51,12 @@ export class Icon extends React.PureComponent<Props> {
     let name: string = IS_ANDROID
       ? `md-${this.props.name}`
       : `ios-${this.props.name}`;
+
+    if (this.props.name === 'caret-forward') {
+      name = 'ios-arrow-forward-outline';
+    } else if (this.props.name === 'close') {
+      name = 'md-close';
+    }
     const style: Array<TextStyle> = [
       styles.icon,
       { height: this.props.size, width: this.props.size },

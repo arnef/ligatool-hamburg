@@ -47,7 +47,7 @@ class Table extends React.PureComponent<Props> {
       <TableItem
         details={this.props.showDetails}
         data={item}
-        onPress={this.onPress}
+        onPress={this.onPress(item)}
       />
     );
   };

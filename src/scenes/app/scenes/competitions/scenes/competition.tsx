@@ -22,8 +22,9 @@ import * as React from 'react';
 import { TabNavigator } from 'react-navigation';
 import { MatchList, Table, PlayerStatsList } from '@app/components';
 import { Strings } from '@app/lib/strings';
-import { topTabBarNavigationOptions } from '../../../../../containers/navigation';
+import { topTabBarNavigationOptions } from '@app/containers/navigation';
 import { Routes } from '@app/scenes/routes';
+
 export const Competition = TabNavigator(
   {
     [Routes.competitionFixtures]: {

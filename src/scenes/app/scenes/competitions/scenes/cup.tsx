@@ -20,9 +20,9 @@
 
 import { TabNavigator } from 'react-navigation';
 import { Routes } from '@app/scenes/routes';
-import { MatchList, PlayerStatsList } from '../../../../../components';
-import { Strings } from '../../../../../lib/strings';
-import { topTabBarNavigationOptions } from '../../../../../containers/navigation';
+import { MatchList, PlayerStatsList } from '@app/components';
+import { Strings } from '@app/lib/strings';
+import { topTabBarNavigationOptions } from '@app/containers/navigation';
 
 export const Cup = TabNavigator(
   {
