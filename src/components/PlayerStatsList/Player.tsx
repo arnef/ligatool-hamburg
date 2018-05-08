@@ -30,6 +30,7 @@ interface Props {
   overallLost: number;
   overallDraw: number;
   rank: number;
+  rate: string;
   competitiveIndex?: string;
   pointsWin?: number;
   onPress?: (player: any) => void;

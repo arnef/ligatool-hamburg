@@ -38,7 +38,7 @@ interface Props {
     goalsHome: number;
     goalsAway: number;
   };
-  status: string;
+  status?: string;
   style?: ViewStyle;
 }
 

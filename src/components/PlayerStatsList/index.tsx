@@ -27,7 +27,7 @@ import {
   getNavigationStateParams,
 } from '@app/redux/modules/navigation';
 import { Routes } from '@app/scenes/routes';
-import { Strings as S } from '@app/lib/strings';
+import { Strings } from '@app/lib/strings';
 import { queryPlayerStats } from '@app/redux/actions';
 import { Player } from './Player';
 import styles from './styles';
@@ -62,10 +62,10 @@ class PlayerStatsList extends React.PureComponent<Props> {
                   style={styles.playerName}
                   numberOfLines={1}
                 >
-                  {S.NAME}
+                  {Strings.NAME}
                 </Text>
                 <Text small color="#fff" style={styles.rate} numberOfLines={1}>
-                  {S.RATE_SHORT}
+                  {Strings.RATE_SHORT}
                 </Text>
                 <Text
                   small
@@ -73,7 +73,7 @@ class PlayerStatsList extends React.PureComponent<Props> {
                   style={styles.matches}
                   numberOfLines={1}
                 >
-                  {S.GAMES}
+                  {Strings.GAMES}
                 </Text>
                 {!!stats[0].competitiveIndex && (
                   <Text
@@ -82,7 +82,7 @@ class PlayerStatsList extends React.PureComponent<Props> {
                     style={styles.competitiveIndex}
                     numberOfLines={1}
                   >
-                    {S.COMPETITIVE_INDEX_SHORT}
+                    {Strings.COMPETITIVE_INDEX_SHORT}
                   </Text>
                 )}
                 {!stats[0].competitiveIndex && (
@@ -92,7 +92,7 @@ class PlayerStatsList extends React.PureComponent<Props> {
                     style={styles.competitiveIndex}
                     numberOfLines={1}
                   >
-                    {S.GAME_POINTS_POSITIV}
+                    {Strings.GAME_POINTS_POSITIV}
                   </Text>
                 )}
               </View>
@@ -102,7 +102,7 @@ class PlayerStatsList extends React.PureComponent<Props> {
           onRefresh={this.props.queryPlayerStats}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
-          listEmptyText={S.NO_PLAYER_STATS}
+          listEmptyText={Strings.NO_PLAYER_STATS}
           data={stats}
         />
       </View>

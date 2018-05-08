@@ -35,12 +35,12 @@ interface Props {
   modus: any;
   color: string;
   loading: boolean;
-  getSet: Function;
+  getSet: (gameNumber: string) => any;
   onCancel: () => void;
-  onSave: Function;
+  onSave: (data: any, result: any) => void;
 }
 
-export default class ScoreInputDialog extends React.PureComponent<Props> {
+export class ScoreInputDialog extends React.PureComponent<Props> {
   public render() {
     const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
     const props = Platform.OS === 'ios' ? { behavior: 'height' } : {};
