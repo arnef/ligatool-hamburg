@@ -1,4 +1,5 @@
 import { defaultColor } from '@app/config/settings';
+import { hex2hsl } from '@app/helper';
 
 const SET_API_KEY = 'user/ADD_API_KEY';
 const SET_TOKEN = 'user/SET_TOKEN';
@@ -126,12 +127,18 @@ export const accessForTeams = state =>
     ? get(state).teams[get(state).active].access.ids
     : [];
 
-export const getColor = state =>
-  get(state).active > -1 &&
-  get(state).teams[get(state).active] &&
-  get(state).teams[get(state).active].color
-    ? get(state).teams[get(state).active].color
-    : defaultColor;
+export const getColor = state => {
+  const color =
+    get(state).active > -1 &&
+    get(state).teams[get(state).active] &&
+    get(state).teams[get(state).active].color
+      ? get(state).teams[get(state).active].color
+      : defaultColor;
+  if (color[0] === '#') {
+    return hex2hsl(color);
+  }
+  return color;
+};
 
 export const getUserTeams = state => (get(state) ? get(state).teams : null);
 
