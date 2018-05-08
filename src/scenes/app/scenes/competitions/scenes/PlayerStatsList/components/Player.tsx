@@ -22,7 +22,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { ListItem, Text, Image, MatchStatsBar } from '@app/components';
 
-import styles from './styles';
+import styles from '../styles';
 
 interface Props {
   player: any;

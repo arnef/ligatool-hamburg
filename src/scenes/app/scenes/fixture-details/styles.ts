@@ -51,7 +51,7 @@ export default StyleSheet.create({
     padding: 6,
     borderRadius: 6,
     alignItems: 'center',
-    backgroundColor: '#909009',
+    backgroundColor: '#909090',
   },
   textFirstMatchResult: {
     color: '#fff',

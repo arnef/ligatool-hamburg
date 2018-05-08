@@ -19,137 +19,15 @@
  */
 
 import * as React from 'react';
-import {
-  FlatList,
-  SectionList,
-  ScrollView,
-  View,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { Text } from '@app/components';
-import { getColor } from '@app/redux/modules/user';
-import styles from './styles';
+import { ThemeContext } from '@app/theme';
+import { Content, ContentProps } from './content';
 
-interface Props extends StateProps {
-  sections?: Array<any>;
-  data?: Array<any>;
-  extraData?: Array<any>;
-  listEmptyText?: string;
-  ListEmptyComponent?: React.ReactElement<any>;
-  renderItem?: (data: any) => React.ReactElement<any>;
-  renderSectionHeader?: () => React.ReactElement<any>;
-  renderSeparator?: () => React.ReactElement<any>;
-  reference?: (content: Content) => void;
-  onRefresh?: () => void;
-}
-
-class Content extends React.PureComponent<Props> {
-  list: any;
-
-  constructor(props: Props) {
-    super(props);
-    if (this.props.reference) {
-      this.props.reference(this);
-    }
-  }
-
-  private keyExtractor = (item: any, index: number) => {
-    return item.id ? `${item.id}` : `content-${index}`;
-  };
-
-  private renderEmptyComponent = (text: string) => {
-    return (
-      <Text secondary style={styles.emptyListText}>
-        {`${text}`}
-      </Text>
-    );
-  };
-
+export class ThemeContent extends React.PureComponent<ContentProps> {
   public render() {
-    const {
-      onRefresh,
-      color,
-      listEmptyText,
-      sections,
-      renderItem,
-      renderSectionHeader,
-      renderSeparator,
-      data,
-      children,
-    } = this.props;
-    const Refresh = onRefresh ? (
-      <RefreshControl
-        colors={[color]}
-        refreshing={false}
-        onRefresh={onRefresh}
-      />
-    ) : null;
-    const ListEmpty = listEmptyText
-      ? this.renderEmptyComponent(listEmptyText)
-      : this.props.ListEmptyComponent
-        ? this.props.ListEmptyComponent
-        : null;
-
-    if (sections) {
-      // section list view
-      return (
-        <SectionList
-          sections={sections}
-          renderItem={renderItem}
-          renderSectionHeader={renderSectionHeader}
-          ItemSeparatorComponent={renderSeparator}
-          stickySectionHeadersEnabled={true}
-          keyExtractor={this.keyExtractor}
-          ListEmptyComponent={ListEmpty}
-          refreshControl={Refresh}
-          ref={list => (this.list = list)}
-        />
-      );
-    } else if (data) {
-      // flat list view
-      return (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          ItemSeparatorComponent={renderSeparator}
-          keyExtractor={this.keyExtractor}
-          ListEmptyComponent={ListEmpty}
-          refreshControl={Refresh}
-          extraData={this.props.extraData}
-          ref={list => (this.list = list)}
-        />
-      );
-    } else if (children) {
-      // scroll list with children
-      return <ScrollView refreshControl={Refresh}>{children}</ScrollView>;
-    } else {
-      // no data available show loading indicator
-      return (
-        <View style={styles.activityIndicator}>
-          <ActivityIndicator color={color} size="large" />
-        </View>
-      );
-    }
+    return (
+      <ThemeContext.Consumer>
+        {theme => <Content {...this.props} color={theme.primaryColor} />}
+      </ThemeContext.Consumer>
+    );
   }
-
-  public scrollToOffset = (params: {
-    x: number;
-    y: number;
-    animated?: boolean;
-  }) => {
-    if (this.list && this.list.scrollToOffset) {
-      setTimeout(() => {
-        this.list.scrollToOffset(params);
-      }, 100);
-    }
-  };
 }
-
-interface StateProps {
-  color: string;
-}
-export const ConnectedContent = connect(state => ({
-  color: getColor(state),
-}))(Content);

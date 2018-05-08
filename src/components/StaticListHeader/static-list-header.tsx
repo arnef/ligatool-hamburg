@@ -19,29 +19,29 @@
  */
 
 import * as React from 'react';
+import { View, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
-import { Content, MatchItem } from '@app/components';
+import { darken } from '@app/helper';
+import styles from './styles';
 
-import { Strings } from '@app/lib/strings';
-
-interface Props {
-  matches: Array<any>;
-  onRefresh: () => void;
+export interface StaticListHeaderProps {
+  style?: ViewStyle;
+  color?: string;
 }
 
-export class MatchList extends React.PureComponent<Props> {
-  static Selectable: any;
-  private renderItem = ({ item }: any): React.ReactElement<any> => {
-    return <MatchItem data={item} />;
-  };
+export class StaticListHeader extends React.PureComponent<
+  StaticListHeaderProps
+> {
   public render() {
-    return (
-      <Content
-        onRefresh={this.props.onRefresh}
-        renderItem={this.renderItem}
-        data={this.props.matches}
-        listEmptyText={Strings.NO_FIXTURES}
-      />
-    );
+    const headerStyle: Array<ViewStyle> = [
+      styles.row,
+      { backgroundColor: darken(this.props.color, 0.05) },
+    ];
+
+    if (this.props.style) {
+      headerStyle.push(this.props.style);
+    }
+
+    return <View style={headerStyle}>{this.props.children}</View>;
   }
 }

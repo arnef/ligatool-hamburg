@@ -8,6 +8,8 @@ import { ActionSheet } from './components';
 import NotificationManager from './lib/NotificationManager';
 import { getColor } from './redux/modules/user';
 import TaskDescriptionAndroid from 'react-native-android-taskdescription';
+import { ThemeContext, theme } from '@app/theme';
+import { hex2hsl } from '@app/helper';
 
 const addListener = createReduxBoundAddListener('root');
 
@@ -52,25 +54,30 @@ class AppContainer extends React.Component<Props> {
   }
 
   render() {
+    console.log(this.props.color);
     const { dispatch, nav } = this.props;
     return (
-      <View style={{ flex: 1, backgroundColor: '#dedede' }}>
-        {Platform.OS === 'android' && (
-          <TaskDescriptionAndroid backgroundColor={this.props.color} />
-        )}
-        <ActionSheet
-          ref={c => {
-            ActionSheet.actionsheetInstance = c;
-          }}
-        />
-        <Screens
-          navigation={addNavigationHelpers({
-            dispatch,
-            state: nav,
-            addListener,
-          })}
-        />
-      </View>
+      <ThemeContext.Provider
+        value={{ ...theme, primaryColor: this.props.color }}
+      >
+        <View style={{ flex: 1, backgroundColor: '#dedede' }}>
+          {Platform.OS === 'android' && (
+            <TaskDescriptionAndroid backgroundColor={this.props.color} />
+          )}
+          <ActionSheet
+            ref={c => {
+              ActionSheet.actionsheetInstance = c;
+            }}
+          />
+          <Screens
+            navigation={addNavigationHelpers({
+              dispatch,
+              state: nav,
+              addListener,
+            })}
+          />
+        </View>
+      </ThemeContext.Provider>
     );
   }
 }

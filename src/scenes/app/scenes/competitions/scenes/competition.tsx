@@ -20,27 +20,29 @@
 
 import * as React from 'react';
 import { TabNavigator } from 'react-navigation';
-import { MatchList, Table, PlayerStatsList } from '@app/components';
+
 import { Strings } from '@app/lib/strings';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
 import { Routes } from '@app/scenes/routes';
-
+import { ConnectedSelectableMatchList } from './SelectableMatchList';
+import { ConnectedPlayerStatsList } from './PlayerStatsList';
+import { ConnectedTable } from './Table';
 export const Competition = TabNavigator(
   {
     [Routes.competitionFixtures]: {
-      screen: MatchList.Selectable,
+      screen: ConnectedSelectableMatchList,
       navigationOptions: {
         title: Strings.MATCHES,
       },
     },
     [Routes.competition]: {
-      screen: Table,
+      screen: ConnectedTable,
       navigationOptions: {
         title: Strings.TABLE,
       },
     },
     [Routes.competitionStats]: {
-      screen: PlayerStatsList,
+      screen: ConnectedPlayerStatsList,
       navigationOptions: {
         title: Strings.STATISTICS,
       },

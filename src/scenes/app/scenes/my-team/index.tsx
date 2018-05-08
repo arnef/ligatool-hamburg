@@ -20,7 +20,7 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { MatchList, Team } from '@app/components';
+import { MatchList } from '@app/components';
 import { getMatches } from '@app/redux/modules/myteam';
 import { TabNavigator } from 'react-navigation';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
@@ -31,6 +31,8 @@ import {
   getPlayedFixturesByTeam,
   getNextFixturesByTeam,
 } from '@app/redux/modules/fixtures';
+import { navigate } from '@app/redux/modules/navigation';
+import { ConnectedTeam } from '../Team';
 
 export const MyTeam = TabNavigator(
   {
@@ -46,6 +48,14 @@ export const MyTeam = TabNavigator(
         },
         dispatch => ({
           onRefresh: () => dispatch(getMatches()),
+          onPress: (fixture: any): void => {
+            dispatch(
+              navigate({
+                routeName: Routes.fixtureDetails,
+                params: { id: fixture.id, title: fixture.competitionName },
+              }),
+            );
+          },
         }),
       )(MatchList),
       navigationOptions: { title: Strings.PAST_MATCHES },
@@ -63,12 +73,20 @@ export const MyTeam = TabNavigator(
         },
         dispatch => ({
           onRefresh: () => dispatch(getMatches()),
+          onPress: (fixture: any): void => {
+            dispatch(
+              navigate({
+                routeName: Routes.fixtureDetails,
+                params: { id: fixture.id, title: fixture.competitionName },
+              }),
+            );
+          },
         }),
       )(MatchList),
       navigationOptions: { title: Strings.NEXT_MATCHES },
     },
     [Routes.myTeamDetails]: {
-      screen: Team,
+      screen: ConnectedTeam,
       navigationOptions: { title: Strings.TEAM_INFO },
     },
   },

@@ -27,7 +27,7 @@ import { connect, Dispatch } from 'react-redux';
 import { getMatches } from '@app/redux/modules/teams';
 import { MatchList } from '@app/components';
 import { Strings } from '@app/lib/strings';
-import { Team } from '@app/components';
+import { ConnectedTeam } from '../Team';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
 
 function mapStateToProps(state: any, props: any) {
@@ -56,7 +56,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>, props: any) {
 export const TeamDetails = TabNavigator(
   {
     [Routes.teamDetails]: {
-      screen: Team,
+      screen: ConnectedTeam,
       navigationOptions: { title: Strings.TEAM_INFO },
     },
     [Routes.teamFixtures]: {

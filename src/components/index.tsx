@@ -19,28 +19,23 @@
  */
 
 export { ActionSheet } from './ActionSheet';
-export { ConnectedButton as Button } from './Button';
+export { ThemedButton as Button } from './Button';
 export { Card } from './Card';
-export { ConnectedContent as Content } from './Content';
+export { ThemeContent as Content } from './Content';
 export { Icon } from './Icon';
 export { Image } from './Image';
 export { LaunchScreen } from './LaunchScreen';
 export { default as ListItem } from './ListItem';
-export { ConnectedMatchHeader as MatchHeader } from './MatchHeader';
-export { ConnectedMatchItem as MatchItem } from './MatchItem';
-export { default as MatchList } from './MatchList';
+export { ThemedMatchHeader as MatchHeader } from './MatchHeader';
+export { ThemedMatchItem as MatchItem } from './MatchItem';
+export { MatchList } from './MatchList';
 export { MatchStatsBar } from './MatchStatsBar';
-export { ConnectedPlayerStatsList as PlayerStatsList } from './PlayerStatsList';
 export { Score } from './Score';
 export { ScoreInputDialog as ScoreInput } from './ScoreInput';
 export { Separator } from './Separator';
 export { ConnectedSetItem as SetItem } from './SetItem';
-export {
-  ConnectedStaticListHeader as StaticListHeader,
-} from './StaticListHeader';
-export { ConnectedSwitch as Switch } from './Switch';
-export { ConnectedTable as Table } from './Table';
-export { ConnectedTeam as Team } from './Team';
+export { ThemedStaticListHeader as StaticListHeader } from './StaticListHeader';
+export { ThemedSwitch as Switch } from './Switch';
 export { TeamLogo } from './TeamLogo';
 export { Text } from './Text';
 export { Touchable } from './Touchable';

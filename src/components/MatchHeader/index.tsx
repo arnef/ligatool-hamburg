@@ -19,82 +19,15 @@
  */
 
 import * as React from 'react';
-import { View } from 'react-native';
-import { connect } from 'react-redux';
-import { Text, Touchable } from '@app/components';
-import { getColor } from '@app/redux/modules/user';
-import styles from './styles';
+import { ThemeContext } from '@app/theme';
+import { MatchHeader, MatchHeaderProps } from './match-header';
 
-interface Props extends StateProps {
-  home: string;
-  away: string;
-  result?: {
-    setPointsHomeTeam: number;
-    setPointsAwayTeam: number;
-    goalsHomeTeam: number;
-    goalsAwayTeam: number;
-  };
-  onPress: (team: string) => void;
-}
-class MatchHeader extends React.PureComponent<Props> {
-  private onPress = (team: string) => () => {
-    this.props.onPress(team);
-  };
-
+export class ThemedMatchHeader extends React.PureComponent<MatchHeaderProps> {
   public render() {
     return (
-      <View style={[styles.container, { backgroundColor: this.props.color }]}>
-        <Touchable
-          light
-          style={styles.containerTeam}
-          onPress={this.onPress('home')}
-        >
-          <Text style={styles.textTeam} numberOfLines={2}>
-            {`${this.props.home}`}
-          </Text>
-        </Touchable>
-        <View style={styles.containerScore}>
-          <Text style={styles.textScore}>
-            {`${
-              this.props.result
-                ? `${this.props.result.setPointsHomeTeam}:${
-                    this.props.result.setPointsAwayTeam
-                  }`
-                : '-:-'
-            }`}
-          </Text>
-          <Text small style={styles.textScore}>
-            {`(${
-              this.props.result
-                ? `${this.props.result.goalsHomeTeam}:${
-                    this.props.result.goalsAwayTeam
-                  }`
-                : '-:-'
-            })`}
-          </Text>
-        </View>
-        <Touchable
-          light
-          style={styles.containerTeam}
-          onPress={this.onPress('away')}
-        >
-          <Text style={styles.textTeam} numberOfLines={2}>
-            {`${this.props.away}`}
-          </Text>
-        </Touchable>
-      </View>
+      <ThemeContext.Consumer>
+        {theme => <MatchHeader {...this.props} color={theme.primaryColor} />}
+      </ThemeContext.Consumer>
     );
   }
 }
-
-interface StateProps {
-  color: string;
-}
-
-function mapStateToProps(state: any): StateProps {
-  return {
-    color: getColor(state),
-  };
-}
-
-export const ConnectedMatchHeader = connect(mapStateToProps)(MatchHeader);

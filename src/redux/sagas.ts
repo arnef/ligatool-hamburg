@@ -30,7 +30,6 @@ import * as PlayerActions from './modules/player';
 import * as MatchUtils from '@app/lib/MatchUtils';
 import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
-import RoutesOld from '@app/config/routes';
 import { Routes } from '@app/scenes/routes';
 import { getMatchDays } from '@app/helper';
 import { currentRoute, findRouteKey } from '@app/lib/NavUtils';
@@ -72,6 +71,7 @@ import {
   userSetToken,
   getActiveTeam,
   USER_REMOVE_TEAM,
+  getColor,
 } from './modules/user';
 import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
 

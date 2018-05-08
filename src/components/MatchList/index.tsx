@@ -19,15 +19,35 @@
  */
 
 import * as React from 'react';
-import { MatchItem, MatchItemProps } from './match-item';
-import { ThemeContext } from '@app/theme';
+import { connect } from 'react-redux';
+import { Content, MatchItem } from '@app/components';
 
-export class ThemedMatchItem extends React.PureComponent<MatchItemProps> {
+import { Strings } from '@app/lib/strings';
+
+interface Props {
+  matches: Array<any>;
+  onPress?: (fixture: any) => void;
+  onRefresh?: () => void;
+}
+
+export class MatchList extends React.PureComponent<Props> {
+  static Selectable: any;
+  private onPress = (fixture: any) => (): void => {
+    if (this.props.onPress) {
+      this.props.onPress(fixture);
+    }
+  };
+  private renderItem = ({ item }: any): React.ReactElement<any> => {
+    return <MatchItem data={item} onPress={this.onPress(item)} />;
+  };
   public render() {
     return (
-      <ThemeContext.Consumer>
-        {theme => <MatchItem {...this.props} color={theme.primaryColor} />}
-      </ThemeContext.Consumer>
+      <Content
+        onRefresh={this.props.onRefresh}
+        renderItem={this.renderItem}
+        data={this.props.matches}
+        listEmptyText={Strings.NO_FIXTURES}
+      />
     );
   }
 }

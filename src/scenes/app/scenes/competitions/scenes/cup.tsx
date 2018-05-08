@@ -20,18 +20,18 @@
 
 import { TabNavigator } from 'react-navigation';
 import { Routes } from '@app/scenes/routes';
-import { MatchList, PlayerStatsList } from '@app/components';
 import { Strings } from '@app/lib/strings';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
-
+import { ConnectedSelectableMatchList } from './SelectableMatchList';
+import { ConnectedPlayerStatsList } from './PlayerStatsList';
 export const Cup = TabNavigator(
   {
     [Routes.competitionFixtures]: {
-      screen: MatchList.Selectable,
+      screen: ConnectedSelectableMatchList,
       navigationOptions: { title: Strings.MATCHES },
     },
     [Routes.competitionStats]: {
-      screen: PlayerStatsList,
+      screen: ConnectedPlayerStatsList,
       navigationOptions: { title: Strings.STATISTICS },
     },
   },

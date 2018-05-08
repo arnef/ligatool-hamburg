@@ -19,41 +19,19 @@
  */
 
 import * as React from 'react';
-import { View, ViewStyle } from 'react-native';
-import { connect } from 'react-redux';
-import { darken } from '@app/helper';
-import { getColor } from '@app/redux/modules/user';
-import styles from './styles';
+import { ThemeContext } from '@app/theme';
+import { StaticListHeader, StaticListHeaderProps } from './static-list-header';
 
-interface Props extends StateProps {
-  style?: ViewStyle;
-}
-
-class StaticListHeader extends React.PureComponent<Props> {
+export class ThemedStaticListHeader extends React.PureComponent<
+  StaticListHeaderProps
+> {
   public render() {
-    const headerStyle: Array<ViewStyle> = [
-      styles.row,
-      { backgroundColor: darken(this.props.color, 0.05) },
-    ];
-
-    if (this.props.style) {
-      headerStyle.push(this.props.style);
-    }
-
-    return <View style={headerStyle}>{this.props.children}</View>;
+    return (
+      <ThemeContext.Consumer>
+        {theme => (
+          <StaticListHeader {...this.props} color={theme.primaryColor} />
+        )}
+      </ThemeContext.Consumer>
+    );
   }
 }
-
-interface StateProps {
-  color?: string;
-}
-
-function mapStateToProps(state: any): StateProps {
-  return {
-    color: getColor(state),
-  };
-}
-
-export const ConnectedStaticListHeader = connect(mapStateToProps, null)(
-  StaticListHeader,
-);

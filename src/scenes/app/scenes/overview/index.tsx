@@ -35,16 +35,21 @@ import { Dispatch } from 'redux';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
 import { queryFixtureOverview } from '@app/redux/actions';
 import { SectionHeader } from './components/section-header';
+import { navigate } from '@app/redux/modules/navigation';
 
 interface Props extends StateProps, DispatchProps {}
 
 class MatchList extends React.PureComponent<Props> {
-  private renderSectionHeader = ({ section }: any) => {
+  private onPress = (match: any) => (): void => {
+    this.props.openMatch(match);
+  };
+  private renderSectionHeader = ({ section }: any): React.ReactElement<any> => {
     return <SectionHeader title={section.title} />;
   };
 
-  private renderItem = ({ item }: any) => {
-    return <MatchItem data={this.props.getFixture(item)} />;
+  private renderItem = ({ item }: any): React.ReactElement<any> => {
+    const fixture = this.props.getFixture(item);
+    return <MatchItem data={fixture} onPress={this.onPress(fixture)} />;
   };
 
   public render() {
@@ -66,8 +71,8 @@ function connectMatchList(key: string) {
 }
 
 interface StateProps {
-  matches: any;
-  getFixture: any;
+  matches: Array<any>;
+  getFixture: (id: string) => any;
 }
 
 function mapStateToProps(key: string) {
@@ -81,10 +86,18 @@ function mapStateToProps(key: string) {
 
 interface DispatchProps {
   queryMatches: () => any;
+  openMatch: (match: any) => void;
 }
 function mapDispatchToProps(dispatch: Dispatch<any>): any {
   return {
     queryMatches: () => dispatch(queryFixtureOverview()),
+    openMatch: (match: any) =>
+      dispatch(
+        navigate({
+          routeName: Routes.fixtureDetails,
+          params: { id: match.id, title: match.competitionName },
+        }),
+      ),
   };
 }
 

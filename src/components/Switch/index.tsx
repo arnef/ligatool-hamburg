@@ -19,74 +19,15 @@
  */
 
 import * as React from 'react';
-import {
-  Switch as RNSwitch,
-  SwitchProperties,
-  Platform,
-  View,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { Touchable, Text } from '@app/components';
-import { getColor } from '@app/redux/modules/user';
-import { lighten } from '@app/helper';
-import styles from './styles';
+import { Switch, SwitchProps } from './switch';
+import { ThemeContext } from '@app/theme';
 
-interface Props extends SwitchProperties, StateProps {
-  title: string;
-}
-
-class Switch extends React.PureComponent<Props> {
+export class ThemedSwitch extends React.PureComponent<SwitchProps> {
   public render() {
-    const {
-      title,
-      onValueChange,
-      disabled,
-      color,
-      value,
-      ...rest
-    } = this.props;
-
-    if (Platform.OS === 'android') {
-      const Container = disabled ? View : Touchable;
-      return (
-        <Container style={styles.container} onPress={onValueChange}>
-          <Text style={styles.title}>{title}</Text>
-          <RNSwitch
-            {...rest}
-            value={value}
-            disabled={disabled}
-            onTintColor={lighten(color, 0.3)}
-            tintColor={'#b2b2b2'}
-            thumbTintColor={value ? color : '#ececec'}
-            onValueChange={onValueChange}
-          />
-        </Container>
-      );
-    } else {
-      return (
-        <View style={styles.container}>
-          <Text style={styles.title}>{title}</Text>
-          <RNSwitch
-            {...rest}
-            value={value}
-            disabled={disabled}
-            onValueChange={onValueChange}
-            onTintColor={color}
-          />
-        </View>
-      );
-    }
+    return (
+      <ThemeContext.Consumer>
+        {theme => <Switch {...this.props} color={theme.primaryColor} />}
+      </ThemeContext.Consumer>
+    );
   }
 }
-
-interface StateProps {
-  color: string;
-}
-
-function mapStateToProps(state: any): StateProps {
-  return {
-    color: getColor(state),
-  };
-}
-
-export const ConnectedSwitch = connect(mapStateToProps, null)(Switch);

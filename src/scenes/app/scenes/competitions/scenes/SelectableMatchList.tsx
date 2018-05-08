@@ -40,6 +40,7 @@ import { getColor } from '@app/redux/modules/user';
 import { getFixturesByCompetition } from '@app/redux/modules/fixtures';
 import { sortBy } from 'lodash';
 import { Strings } from '@app/lib/strings';
+import { Routes } from '@app/scenes/routes';
 
 interface Props extends StateProps, DispatchProps {
   navigation: any;
@@ -73,8 +74,12 @@ class SelectableMatchList extends React.Component<Props, State> {
     }
   };
 
+  onPress = (fixture: any) => (): void => {
+    this.props.openFixture(fixture);
+  };
+
   renderItem = ({ item }: any): React.ReactElement<any> => {
-    return <MatchItem data={item} />;
+    return <MatchItem data={item} onPress={this.onPress(item)} />;
   };
 
   render() {
@@ -152,6 +157,7 @@ interface StateProps {
 }
 interface DispatchProps {
   getMatches: () => void;
+  openFixture: (fixture: any) => void;
 }
 
 function mapStateToProps(state: any, props: Props): StateProps {
@@ -172,6 +178,14 @@ function mapDispatchToProps(
   return {
     getMatches: () =>
       dispatch(getMatches(getNavigationStateParams(props.navigation).id)),
+    openFixture: (fixture: any) => {
+      dispatch(
+        navigate({
+          routeName: Routes.fixtureDetails,
+          params: { id: fixture.id, title: fixture.competitionName },
+        }),
+      );
+    },
   };
 }
 

@@ -17,17 +17,10 @@
  * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 import * as React from 'react';
-import { MatchItem, MatchItemProps } from './match-item';
-import { ThemeContext } from '@app/theme';
 
-export class ThemedMatchItem extends React.PureComponent<MatchItemProps> {
-  public render() {
-    return (
-      <ThemeContext.Consumer>
-        {theme => <MatchItem {...this.props} color={theme.primaryColor} />}
-      </ThemeContext.Consumer>
-    );
-  }
-}
+export const theme = {
+  primaryColor: 'hsl(120,100%,20%)', // #006600
+};
+
+export const ThemeContext = React.createContext(theme);

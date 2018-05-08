@@ -29,7 +29,7 @@ import {
 import { Routes } from '@app/scenes/routes';
 import { Strings } from '@app/lib/strings';
 import { queryPlayerStats } from '@app/redux/actions';
-import { Player } from './Player';
+import { Player } from './components/Player';
 import styles from './styles';
 import { Dispatch } from 'redux';
 
