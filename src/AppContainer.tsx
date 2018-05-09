@@ -13,7 +13,7 @@ import { Screens } from './scenes';
 
 const addListener = createReduxBoundAddListener('root');
 
-interface IAppContainerProps extends IIStateProps {
+interface IAppContainerProps extends IStateProps {
   dispatch: (action: any) => void;
 }
 
