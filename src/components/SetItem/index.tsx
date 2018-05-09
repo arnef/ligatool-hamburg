@@ -121,14 +121,23 @@ export class SetItem extends React.PureComponent<IProps> {
   };
 
   private onPress = () => {
-    const { homePlayer1, homePlayer2 } = this.props.getSet(
-      this.props.data.gameNumbers[0],
-    );
-    if (homePlayer1 && homePlayer2) {
-      this.props.onSelect(this.props.index, this.props.data, 1)();
-    } else {
-      this.props.onSelect(this.props.index, this.props.data, 0)();
-    }
+    const { type } = this.props.data;
+    const {
+      homePlayer1,
+      homePlayer2,
+      awayPlayer1,
+      awayPlayer2,
+    } = this.props.getSet(this.props.data.gameNumbers[0]);
+
+    this.props.onSelect(
+      this.props.index,
+      this.props.data,
+      !homePlayer1 ||
+      !awayPlayer1 ||
+      (type === 'DOUBLES' && (!homePlayer2 || !awayPlayer2))
+        ? 0
+        : 1,
+    )();
   };
 
   private onOpenPlayer = (player: any) => () => {
