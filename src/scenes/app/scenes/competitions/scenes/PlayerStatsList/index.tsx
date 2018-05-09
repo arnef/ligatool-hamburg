@@ -18,34 +18,26 @@
  *
  */
 
-import * as React from 'react';
-import { View } from 'react-native';
-import { connect } from 'react-redux';
-import { StaticListHeader, Text, Separator, Content } from '@app/components';
-import {
-  navigate,
-  getNavigationStateParams,
-} from '@app/redux/modules/navigation';
-import { Routes } from '@app/scenes/routes';
+import { Content, Separator, StaticListHeader, Text } from '@app/components';
 import { Strings } from '@app/lib/strings';
 import { queryPlayerStats } from '@app/redux/actions';
+import {
+  getNavigationStateParams,
+  navigate,
+} from '@app/redux/modules/navigation';
+import { Routes } from '@app/scenes/routes';
+import * as React from 'react';
+import { View } from 'react-native';
+import { connect, Dispatch } from 'react-redux';
+
 import { Player } from './components/Player';
 import styles from './styles';
-import { Dispatch } from 'redux';
 
-interface Props extends StateProps, DispatchProps {
+interface IProps extends IStateProps, IDispatchProps {
   navigation: any;
 }
 
-class PlayerStatsList extends React.PureComponent<Props> {
-  private renderItem = ({ item }: any): React.ReactElement<any> => {
-    return <Player {...item} onPress={this.props.openPlayer} />;
-  };
-
-  private renderSeparator = () => {
-    return <Separator table image />;
-  };
-
+class PlayerStatsList extends React.PureComponent<IProps> {
   public render() {
     const { stats } = this.props;
     return (
@@ -108,17 +100,25 @@ class PlayerStatsList extends React.PureComponent<Props> {
       </View>
     );
   }
+
+  private renderItem = ({ item }: any): React.ReactElement<any> => {
+    return <Player {...item} onPress={this.props.openPlayer} />;
+  };
+
+  private renderSeparator = () => {
+    return <Separator table image />;
+  };
 }
 
-interface StateProps {
-  stats: Array<any>;
+interface IStateProps {
+  stats: any[];
 }
-interface DispatchProps {
+interface IDispatchProps {
   queryPlayerStats: () => void;
   openPlayer: (player: any) => void;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, props: IProps): IStateProps {
   const id = getNavigationStateParams(props.navigation).id;
   return {
     stats:
@@ -130,16 +130,17 @@ function mapStateToProps(state: any, props: Props): StateProps {
 
 function mapDispatchToProps(
   dispatch: Dispatch<any>,
-  props: Props,
-): DispatchProps {
+  props: IProps,
+): IDispatchProps {
   const id = getNavigationStateParams(props.navigation);
   return {
-    queryPlayerStats: () => dispatch(queryPlayerStats(id)),
     openPlayer: (player: any) =>
       dispatch(navigate({ routeName: Routes.playerDetails, params: player })),
+    queryPlayerStats: () => dispatch(queryPlayerStats(id)),
   };
 }
 
-export const ConnectedPlayerStatsList = connect(mapStateToProps, null)(
-  PlayerStatsList,
-);
+export const ConnectedPlayerStatsList = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PlayerStatsList);

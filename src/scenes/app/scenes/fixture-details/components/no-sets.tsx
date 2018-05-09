@@ -18,102 +18,34 @@
  *
  */
 
-import * as React from 'react';
-import { View, Platform, Linking, Alert } from 'react-native';
-import styles from '@app/scenes/app/scenes/fixture-details/styles';
 import {
-  Text,
-  TeamLogo,
-  ListItem,
-  Separator,
   Card,
   Image,
+  ListItem,
+  Separator,
+  TeamLogo,
+  Text,
 } from '@app/components';
-import { Strings } from '@app/lib/strings';
 import { ASSOC, DATETIME_DB } from '@app/config/settings';
-import { default as moment } from 'moment';
+import { Strings } from '@app/lib/strings';
+import styles from '@app/scenes/app/scenes/fixture-details/styles';
 import { Routes } from '@app/scenes/routes';
+import { default as moment } from 'moment';
+import * as React from 'react';
+import { Alert, Linking, Platform, View } from 'react-native';
 
-interface Props {
+interface IProps {
   match: any;
   isAdmin: boolean;
   firstFixture: any;
   player: any;
   venue: any;
   color: string;
-  insertResult: Function;
-  navigate: Function;
+  insertResult: (fixtureId: string) => void;
+  navigate: (routeName: string, params: any) => void;
 }
 
-export class NoSets extends React.PureComponent<Props> {
-  private onOpenVenue = () => {
-    const { venue } = this.props;
-    const uri =
-      Platform.OS === 'ios'
-        ? 'http://maps.apple.com/?address='
-        : 'geo:53.5586526,9.6476386?q=';
-    const address = encodeURI(
-      `${venue.street}, ${venue.zipCode} ${venue.city}`,
-    );
-
-    Linking.openURL(uri + address).catch(() => {
-      Alert.alert(Strings.MAPS_APP_NOT_FOUND);
-    });
-  };
-
-  private onDateChange = () => {
-    this.props.navigate(Routes.fixtureDetailsChangeDate, {
-      id: this.props.match.id,
-    });
-  };
-
-  private onInsertResult = () => {
-    this.props.insertResult(this.props.match.id);
-  };
-
-  private onOpenPlayer = player => () => {
-    this.props.navigate(Routes.playerDetails, player);
-  };
-
-  private renderPlayerCard = (player: any) => {
-    return (
-      <Card onPress={this.onOpenPlayer(player)}>
-        <View style={styles.playerContainer}>
-          <Image url={player.image} size={90} />
-          <Text style={styles.playerText}>{`${player.name} ${
-            player.surname
-          }`}</Text>
-        </View>
-      </Card>
-    );
-  };
-
-  private renderPlayer = () => {
-    const { player } = this.props;
-    const length = player.home
-      ? Math.max(player.home.length, player.away.length)
-      : 0;
-
-    const childs = [];
-    for (let i = 0; i < length; i++) {
-      const playerHome = i < player.home.length ? player.home[i] : null;
-      const playerAway = i < player.away.length ? player.away[i] : null;
-
-      childs.push(
-        <View style={styles.playerRow} key={`player-${i}`}>
-          <View style={styles.player}>
-            {playerHome && this.renderPlayerCard(playerHome)}
-          </View>
-          <View style={styles.player}>
-            {playerAway && this.renderPlayerCard(playerAway)}
-          </View>
-        </View>,
-      );
-    }
-
-    return childs;
-  };
-
+export class NoSets extends React.PureComponent<IProps> {
   public render() {
     const { firstFixture, match, venue, color, isAdmin } = this.props;
     const date = moment(match.date, DATETIME_DB);
@@ -195,4 +127,72 @@ export class NoSets extends React.PureComponent<Props> {
       </View>
     );
   }
+
+  private onOpenVenue = () => {
+    const { venue } = this.props;
+    const uri =
+      Platform.OS === 'ios'
+        ? 'http://maps.apple.com/?address='
+        : 'geo:53.5586526,9.6476386?q=';
+    const address = encodeURI(
+      `${venue.street}, ${venue.zipCode} ${venue.city}`,
+    );
+
+    Linking.openURL(uri + address).catch(() => {
+      Alert.alert(Strings.MAPS_APP_NOT_FOUND);
+    });
+  };
+
+  private onDateChange = () => {
+    this.props.navigate(Routes.fixtureDetailsChangeDate, {
+      id: this.props.match.id,
+    });
+  };
+
+  private onInsertResult = () => {
+    this.props.insertResult(this.props.match.id);
+  };
+
+  private onOpenPlayer = (player: any) => () => {
+    this.props.navigate(Routes.playerDetails, player);
+  };
+
+  private renderPlayerCard = (player: any) => {
+    return (
+      <Card onPress={this.onOpenPlayer(player)}>
+        <View style={styles.playerContainer}>
+          <Image url={player.image} size={90} />
+          <Text style={styles.playerText}>{`${player.name} ${
+            player.surname
+          }`}</Text>
+        </View>
+      </Card>
+    );
+  };
+
+  private renderPlayer = () => {
+    const { player } = this.props;
+    const length = player.home
+      ? Math.max(player.home.length, player.away.length)
+      : 0;
+
+    const childs = [];
+    for (let i = 0; i < length; i++) {
+      const playerHome = i < player.home.length ? player.home[i] : null;
+      const playerAway = i < player.away.length ? player.away[i] : null;
+
+      childs.push(
+        <View style={styles.playerRow} key={`player-${i}`}>
+          <View style={styles.player}>
+            {playerHome && this.renderPlayerCard(playerHome)}
+          </View>
+          <View style={styles.player}>
+            {playerAway && this.renderPlayerCard(playerAway)}
+          </View>
+        </View>,
+      );
+    }
+
+    return childs;
+  };
 }

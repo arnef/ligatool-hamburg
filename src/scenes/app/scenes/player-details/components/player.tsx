@@ -18,24 +18,24 @@
  *
  */
 
+import { Image, Text } from '@app/components';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Image, Text } from '@app/components';
 
-interface Props {
+interface IProps {
   reverse?: boolean;
   player: any;
 }
-export class Player extends React.PureComponent<Props> {
+export class Player extends React.PureComponent<IProps> {
   public render() {
     const { player } = this.props;
     return (
       <View
         style={{
-          flexDirection: this.props.reverse ? 'row-reverse' : 'row',
-          flex: 2,
-          margin: 3,
           alignItems: 'center',
+          flex: 2,
+          flexDirection: this.props.reverse ? 'row-reverse' : 'row',
+          margin: 3,
         }}
       >
         <Image url={player.image} size={32} />

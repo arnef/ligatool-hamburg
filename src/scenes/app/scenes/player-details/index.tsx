@@ -18,27 +18,27 @@
  *
  */
 
+import { Content, Image, ListItem, Separator, Text } from '@app/components';
+import { DATE_FORMAT } from '@app/config/settings';
+import { Strings } from '@app/lib/strings';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
+import { getPlayer } from '@app/redux/modules/player';
+import { default as moment } from 'moment';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Content, ListItem, Image, Separator, Text } from '@app/components';
-import { Strings } from '@app/lib/strings';
-import { Item } from './components/item';
-import { default as moment } from 'moment';
-import { DATE_FORMAT } from '@app/config/settings';
+import { connect, Dispatch } from 'react-redux';
 
-import { Singles } from './components/singles';
 import { Doubles } from './components/doubles';
-import { getNavigationStateParams } from '@app/redux/modules/navigation';
-import { Dispatch, connect } from 'react-redux';
-import { getPlayer } from '@app/redux/modules/player';
+import { Item } from './components/item';
+import { Singles } from './components/singles';
 
-interface Props extends StateProps, DispatchProps {}
+interface IProps extends IStateProps, IDispatchProps {}
 
-class Player extends React.PureComponent<Props> {
+class Player extends React.PureComponent<IProps> {
   public render() {
-    const { getPlayer, player } = this.props;
+    const { player } = this.props;
     return (
-      <Content onRefresh={getPlayer}>
+      <Content onRefresh={this.props.getPlayer}>
         {player &&
           player.data &&
           player.meta && (
@@ -116,7 +116,7 @@ class Player extends React.PureComponent<Props> {
                       </Text>
                     </ListItem>
                     <Separator full />
-                    {player.meta.rankings.map((r, i) => (
+                    {player.meta.rankings.map((r: any, i: number) => (
                       <View key={`ranking-${i}`}>
                         <ListItem multiline>
                           <Text style={{ flex: 6 }}>{`${r.name}`}</Text>
@@ -163,7 +163,7 @@ class Player extends React.PureComponent<Props> {
                       </Text>
                     </ListItem>
                     <Separator full />
-                    {player.meta.tournaments.map((t, i) => (
+                    {player.meta.tournaments.map((t: any, i: number) => (
                       <View key={`tournament-${i}`}>
                         <ListItem multiline>
                           <View style={{ flex: 6 }}>
@@ -188,7 +188,7 @@ class Player extends React.PureComponent<Props> {
 
               <ListItem.Group>
                 <ListItem.Header title={Strings.LAST_SINGLES} />
-                {player.meta.lastSingles.map((s, i) => (
+                {player.meta.lastSingles.map((s: any, i: number) => (
                   <View key={`singles-${i}`}>
                     <Singles data={s} id={player.data.id} />
                     {i < player.meta.lastSingles.length - 1 && (
@@ -200,7 +200,7 @@ class Player extends React.PureComponent<Props> {
               <Separator group />
               <ListItem.Group>
                 <ListItem.Header title={Strings.LAST_DOUBLES} />
-                {player.meta.lastDoubles.map((d, i) => (
+                {player.meta.lastDoubles.map((d: any, i: number) => (
                   <View key={`doubles-${i}`}>
                     <Doubles
                       data={d}
@@ -229,7 +229,7 @@ class Player extends React.PureComponent<Props> {
                   </Text>
                 </ListItem>
                 <Separator full />
-                {player.meta.teams.map((t, i) => (
+                {player.meta.teams.map((t: any, i: number) => (
                   <View key={`team-${i}`}>
                     <ListItem multiline>
                       <Text style={{ flex: 2 }}>{`${t.season}`}</Text>
@@ -249,15 +249,15 @@ class Player extends React.PureComponent<Props> {
   }
 }
 
-interface StateProps {
+interface IStateProps {
   player: any;
 }
 
-interface DispatchProps {
-  getPlayer: Function;
+interface IDispatchProps {
+  getPlayer: () => void;
 }
 
-function mapStateToProps(state: any, props: any): StateProps {
+function mapStateToProps(state: any, props: any): IStateProps {
   return {
     player: state.players[getNavigationStateParams(props.navigation).id],
   };
@@ -266,7 +266,7 @@ function mapStateToProps(state: any, props: any): StateProps {
 function mapDispatchToProps(
   dispatch: Dispatch<any>,
   props: any,
-): DispatchProps {
+): IDispatchProps {
   return {
     getPlayer: () =>
       dispatch(getPlayer(getNavigationStateParams(props.navigation).id)),

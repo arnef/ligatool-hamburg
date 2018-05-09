@@ -18,72 +18,67 @@
  *
  */
 
-import * as React from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { connect, Dispatch } from 'react-redux';
-import { Content, ListItem, Button, Text } from '@app/components';
-import t from 'tcomb-form-native';
+import { Button, Content, ListItem, Text } from '@app/components';
 import { Strings } from '@app/lib/strings';
 import { login } from '@app/redux/modules/auth';
-import { getColor } from '@app/redux/modules/user';
 import { hideLogin } from '@app/redux/modules/navigation';
+import { getColor } from '@app/redux/modules/user';
+import * as React from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { connect, Dispatch } from 'react-redux';
+import t from 'tcomb-form-native';
 
 const Form = t.form.Form;
 
 const LoginForm = t.struct({
-  username: t.String,
   password: t.String,
+  username: t.String,
 });
 
 const formStyles = {
   ...Form.stylesheet,
   controlLabel: {
+    error: {
+      color: '#a94442',
+    },
     normal: {
       color: '#474747',
       fontSize: 14,
-    },
-    error: {
-      color: '#a94442',
     },
   },
 };
 
 const options = {
   fields: {
-    username: {
-      label: Strings.USERNAME,
-      autoCapitalize: 'none',
-      autoCorrect: false,
-    },
     password: {
       label: Strings.PASSWORD,
       secureTextEntry: true,
     },
+    username: {
+      autoCapitalize: 'none',
+      autoCorrect: false,
+      label: Strings.USERNAME,
+    },
   },
+  order: ['username', 'password'],
   stylesheet: formStyles,
 };
 
-interface Props extends StateProps, DispatchProps {}
+interface IProps extends IStateProps, IDispatchProps {}
 
-export class LoginScene extends React.Component<Props> {
-  _form: any;
+export class LoginScene extends React.Component<
+  IProps,
+  { value: string; options: any }
+> {
+  private form: any;
 
-  constructor(props: Props) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      value: null,
       options,
+      value: null,
     };
   }
-
-  private handleSubmit = () => {
-    const value = this._form.getValue();
-    console.log(value);
-    if (value) {
-      this.setState({ value });
-      this.props.login(value);
-    }
-  };
 
   public render() {
     return (
@@ -105,18 +100,18 @@ export class LoginScene extends React.Component<Props> {
                 ...options,
                 fields: {
                   ...options.fields,
-                  username: {
-                    ...options.fields.username,
-                    editable: !this.props.loading,
-                  },
                   password: {
                     ...options.fields.password,
+                    editable: !this.props.loading,
+                  },
+                  username: {
+                    ...options.fields.username,
                     editable: !this.props.loading,
                   },
                 },
               }}
               value={this.state.value}
-              ref={c => (this._form = c)}
+              ref={(c: any) => (this.form = c)}
             />
           </View>
 
@@ -146,50 +141,58 @@ export class LoginScene extends React.Component<Props> {
       </Content>
     );
   }
+
+  private handleSubmit = () => {
+    const value = this.form.getValue();
+    if (value) {
+      this.setState({ value });
+      this.props.login(value);
+    }
+  };
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  buttons: {
-    paddingBottom: 20,
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-  },
   button: {
     flex: 1,
     marginHorizontal: 10,
   },
-  errorMessage: {
-    paddingHorizontal: 20,
+  buttons: {
+    flexDirection: 'row',
     paddingBottom: 20,
+    paddingHorizontal: 10,
+  },
+  container: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  errorMessage: {
+    paddingBottom: 20,
+    paddingHorizontal: 20,
   },
 });
 
-interface StateProps {
+interface IStateProps {
   loading: boolean;
   error: string | null;
   color: string;
 }
-interface DispatchProps {
-  login: Function;
-  close: Function;
+interface IDispatchProps {
+  login: (user: any) => void;
+  close: () => void;
 }
 
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state: any): IStateProps {
   return {
-    loading: state.loading.list,
-    error: state.loading.error,
     color: getColor(state),
+    error: state.loading.error,
+    loading: state.loading.list,
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): IDispatchProps {
   return {
-    login: (user: any) => dispatch(login(user, null)),
     close: () => dispatch(hideLogin(null)),
+    login: (user: any) => dispatch(login(user, null)),
   };
 }
 export const Login = connect(mapStateToProps, mapDispatchToProps)(LoginScene);

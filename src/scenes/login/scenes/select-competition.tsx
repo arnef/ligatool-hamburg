@@ -18,33 +18,18 @@
  *
  */
 
-import * as React from 'react';
-import { Content, Separator, ListItem, Text } from '@app/components';
-import { Routes } from '@app/scenes/routes';
-import { connect, Dispatch } from 'react-redux';
-import { sortBy } from 'lodash';
+import { Content, ListItem, Separator, Text } from '@app/components';
 import { sortCompetition } from '@app/helper';
 import { getLeagues } from '@app/redux/modules/leagues';
 import { navigate } from '@app/redux/modules/navigation';
+import { Routes } from '@app/scenes/routes';
+import { sortBy } from 'lodash';
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
 
-interface Props extends StateProps, DispatchProps {}
+interface IProps extends IIStateProps, IIDispatchProps {}
 
-class SelectCompetitionScene extends React.PureComponent<Props> {
-  private onSelectCompetition = (item: any) => () => {
-    this.props.navigate({
-      routeName: Routes.selectTeam,
-      params: { id: item.id },
-    });
-  };
-
-  private renderItem = ({ item }: any) => {
-    return (
-      <ListItem onPress={this.onSelectCompetition(item)}>
-        <Text>{`${item.name}`}</Text>
-      </ListItem>
-    );
-  };
-
+class SelectCompetitionScene extends React.PureComponent<IProps> {
   public render() {
     return (
       <Content
@@ -55,22 +40,37 @@ class SelectCompetitionScene extends React.PureComponent<Props> {
       />
     );
   }
+
+  private onSelectCompetition = (item: any) => () => {
+    this.props.navigate({
+      params: { id: item.id },
+      routeName: Routes.selectTeam,
+    });
+  };
+
+  private renderItem = ({ item }: any): React.ReactElement<any> => {
+    return (
+      <ListItem onPress={this.onSelectCompetition(item)}>
+        <Text>{`${item.name}`}</Text>
+      </ListItem>
+    );
+  };
 }
 
-interface StateProps {
-  leagues: Array<any>;
+interface IIStateProps {
+  leagues: any[];
 }
-interface DispatchProps {
-  getRankings: Function;
-  navigate: Function;
+interface IIDispatchProps {
+  getRankings: () => void;
+  navigate: (route: any) => void;
 }
 
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state: any): IIStateProps {
   return {
     leagues: sortBy(state.drawer, sortCompetition),
   };
 }
-function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): IIDispatchProps {
   return {
     getRankings: () => dispatch(getLeagues()),
     navigate: (route: any) => dispatch(navigate(route)),

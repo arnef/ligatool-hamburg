@@ -18,15 +18,16 @@
  *
  */
 
-import { StackNavigator } from 'react-navigation';
-import { Routes } from '@app/scenes/routes';
-import { Welcome } from './scenes/welcome';
-import { SelectCompetition } from './scenes/select-competition';
 import { Strings } from '@app/lib/strings';
-import { SelectTeam } from './scenes/select-team';
-import { Login } from './scenes/login';
-import { Platform } from 'react-native';
 import { getNavigationStateParams } from '@app/redux/modules/navigation';
+import { Routes } from '@app/scenes/routes';
+import { Platform } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+
+import { Login } from './scenes/login';
+import { SelectCompetition } from './scenes/select-competition';
+import { SelectTeam } from './scenes/select-team';
+import { Welcome } from './scenes/welcome';
 
 const headerStyle = {
   backgroundColor: '#fff',
@@ -36,27 +37,27 @@ const headerStyle = {
 };
 
 const navigationOptions = (title: string) => ({ navigation }: any) => ({
-  title,
   gesturesEnabled: false,
-  headerStyle,
   headerLeft: (getNavigationStateParams(navigation) || {}).headerLeft,
+  headerStyle,
+  title,
 });
 
 export const LoginScenes = StackNavigator({
   [Routes.welcome]: {
-    screen: Welcome,
     navigationOptions: { header: null, gesturesEnabled: false },
+    screen: Welcome,
   },
   [Routes.selectCompetition]: {
-    screen: SelectCompetition,
     navigationOptions: navigationOptions(Strings.SELECT_GROUP),
+    screen: SelectCompetition,
   },
   [Routes.selectTeam]: {
-    screen: SelectTeam,
     navigationOptions: navigationOptions(Strings.SELECT_TEAM),
+    screen: SelectTeam,
   },
   [Routes.login]: {
-    screen: Login,
     navigationOptions: navigationOptions(Strings.LOGIN),
+    screen: Login,
   },
 });

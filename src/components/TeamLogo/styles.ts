@@ -21,11 +21,11 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  image: {
-    marginHorizontal: 8,
-  },
   icon: {
     color: '#909090',
+    marginHorizontal: 8,
+  },
+  image: {
     marginHorizontal: 8,
   },
 });

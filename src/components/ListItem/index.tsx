@@ -18,11 +18,12 @@
  *
  */
 
+import { Icon, Image } from '@app/components';
 import * as React from 'react';
-import { ListItem } from './Item';
+
 import { Group } from './Group';
 import { ConnectedHeader } from './Header';
-import { Icon, Image } from '@app/components';
+import { ListItem } from './Item';
 
 const iconSize = 32;
 

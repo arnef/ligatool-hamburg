@@ -18,11 +18,12 @@
  *
  */
 
-import * as React from 'react';
-import { Switch, SwitchProps } from './switch';
 import { ThemeContext } from '@app/theme';
+import * as React from 'react';
 
-export class ThemedSwitch extends React.PureComponent<SwitchProps> {
+import { ISwitchProps, Switch } from './switch';
+
+export class ThemedSwitch extends React.PureComponent<ISwitchProps> {
   public render() {
     return (
       <ThemeContext.Consumer>

@@ -1,5 +1,25 @@
+/**
+ * Copyright (C) 2018 Arne Feil
+ *
+ * This file is part of DTFB App.
+ *
+ * DTFB App is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * DTFB App is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+import { DATETIME_DB } from '@app/config/settings';
 import moment from 'moment';
-import { DATE_FORMAT, DATETIME_DB } from '@app/config/settings';
 
 const FETCH_FIXTURES = 'fixtures/FETCH';
 export const SET_FIXTURES = 'fixtures/SET';
@@ -21,98 +41,129 @@ import _ from 'lodash';
 const SET_OVERVIEW = 'fixture/overview';
 // notif actions
 const FIXTURE_RESULT_CHANGED = 'FIXTURE_RESULT_CHANGED';
-export const setOverview = overview => ({
-  type: SET_OVERVIEW,
+
+export const GET_MATCH = 'ligatool/modules/GET_MATCH';
+export const GET_MATCH_DONE = 'ligatool/modules/GET_MATCH_DONE';
+export const SUGGEST_DATETIME = 'ligatool/matches/SUGGEST_DATETIME';
+
+export const setOverview = (overview: any) => ({
   payload: { overview },
+  type: SET_OVERVIEW,
 });
-export const fetchFixtures = assoc => ({
-  type: FETCH_FIXTURES,
+export const fetchFixtures = (assoc: string) => ({
   payload: { assoc },
+  type: FETCH_FIXTURES,
 });
 
-export const setFixtures = fixtures => ({
-  type: SET_FIXTURES,
+export const setFixtures = (fixtures: any) => ({
   payload: { fixtures },
+  type: SET_FIXTURES,
 });
 
-export const setFixtureData = fixture => ({
-  type: SET_FIXTURE_DATA,
+export const setFixtureData = (fixture: any) => ({
   payload: { fixture },
+  type: SET_FIXTURE_DATA,
 });
 
-export const setFixtureMeta = (id, meta) => ({
-  type: SET_FIXTURE_META,
+export const setFixtureMeta = (id: string, meta: any) => ({
   payload: { id, meta },
+  type: SET_FIXTURE_META,
 });
 
-export const setFixtureStatusInPlay = id => ({
+export const setFixtureStatusInPlay = (id: string) => ({
+  payload: { id },
   type: SET_FIXTURE_STATUS_IN_PLAY,
-  payload: { id },
 });
 
-export const setFixtureModus = (id, modus, resetGameNumbers) => ({
-  type: SET_FIXTURE_MODUS,
+export const setFixtureModus = (
+  id: string,
+  modus: any,
+  resetGameNumbers: string[],
+) => ({
   payload: { id, modus, resetGameNumbers },
+  type: SET_FIXTURE_MODUS,
 });
 
-export const setFixtureGameHomePlayer = (id, gameNumbers, player) => ({
+export const setFixtureGameHomePlayer = (
+  id: string,
+  gameNumbers: string[],
+  player: any,
+) => ({
+  payload: { id, gameNumbers, player },
   type: SET_FIXTURE_GAME_HOME_PLAYER,
-  payload: { id, gameNumbers, player },
 });
 
-export const setFixtureGameAwayPlayer = (id, gameNumbers, player) => ({
+export const setFixtureGameAwayPlayer = (
+  id: string,
+  gameNumbers: string[],
+  player: any,
+) => ({
+  payload: { id, gameNumbers, player },
   type: SET_FIXTURE_GAME_AWAY_PLAYER,
-  payload: { id, gameNumbers, player },
 });
 
-export const setFixtureGameResult = (id, gameNumber, result) => ({
-  type: SET_FIXTURE_GAME_RESULT,
+export const setFixtureGameResult = (
+  id: string,
+  gameNumber: string,
+  result: any,
+) => ({
   payload: { id, gameNumber, result },
+  type: SET_FIXTURE_GAME_RESULT,
 });
 
-export const setFixtureDates = (id, dates) => ({
-  type: SET_FIXTURE_DATES,
+export const setFixtureDates = (id: string, dates: any) => ({
   payload: { id, dates },
+  type: SET_FIXTURE_DATES,
 });
 
-export const setFixtureDate = (id, index, date) => ({
-  type: SET_FIXTURE_DATE,
+export const setFixtureDate = (id: string, index: number, date: string) => ({
   payload: { id, index, date },
+  type: SET_FIXTURE_DATE,
 });
 
-export const removeFixtureDate = (id, index) => ({
-  type: REMOVE_FIXTURE_DATE,
+export const removeFixtureDate = (id: string, index: number) => ({
   payload: { id, index },
+  type: REMOVE_FIXTURE_DATE,
 });
 
-export const suggestFixtureDates = id => ({
+export const suggestFixtureDates = (id: string) => ({
+  payload: { id },
   type: SUGGEST_FIXTURE_DATES,
-  payload: { id },
 });
 
-export const acceptFixtureDate = (fixtureId, datetimeId) => ({
-  type: ACCEPT_FIXTURE_DATE,
+export const acceptFixtureDate = (fixtureId: string, datetimeId: string) => ({
   payload: { fixtureId, datetimeId },
+  type: ACCEPT_FIXTURE_DATE,
 });
 
-export const suggestFixtureResult = id => ({
+export const suggestFixtureResult = (id: string) => ({
+  payload: { id },
   type: SUGGEST_FIXTURE_RESULT,
-  payload: { id },
 });
 
-export const acceptFixtureResult = id => ({
+export const acceptFixtureResult = (id: string) => ({
+  payload: { id },
   type: ACCEPT_FIXTURE_RESULT,
-  payload: { id },
 });
 
-const defaultState = {
+export interface IFixtureState {
+  data: { [id: string]: any };
+  overview: any;
+  meta: { [id: string]: any };
+  dates: { [id: string]: any };
+}
+
+const defaultState: IFixtureState = {
   data: {},
-  overview: null,
-  meta: {},
   dates: {},
+  meta: {},
+  overview: null,
 };
 
-export default function reducer(state = defaultState, action) {
+export default function reducer(
+  state: IFixtureState = defaultState,
+  action: any,
+) {
   const { type, payload } = action;
 
   switch (type) {
@@ -147,7 +198,7 @@ export default function reducer(state = defaultState, action) {
         },
       };
     case SET_FIXTURE_GAME_HOME_PLAYER:
-      for (let gameNumber of payload.gameNumbers) {
+      for (const gameNumber of payload.gameNumbers) {
         state = {
           ...state,
           meta: {
@@ -169,7 +220,7 @@ export default function reducer(state = defaultState, action) {
       }
       return state;
     case SET_FIXTURE_GAME_AWAY_PLAYER:
-      for (let gameNumber of payload.gameNumbers) {
+      for (const gameNumber of payload.gameNumbers) {
         state = {
           ...state,
           meta: {
@@ -180,9 +231,9 @@ export default function reducer(state = defaultState, action) {
                 ...state.meta[payload.id].games,
                 [gameNumber]: {
                   ...state.meta[payload.id].games[gameNumber],
-                  gameNumber,
                   awayPlayer1: payload.player[0],
                   awayPlayer2: payload.player[1],
+                  gameNumber,
                 },
               },
             },
@@ -224,7 +275,7 @@ export default function reducer(state = defaultState, action) {
           },
         },
       };
-      for (let gameNumber of payload.resetGameNumbers) {
+      for (const gameNumber of payload.resetGameNumbers) {
         state = {
           ...state,
           meta: {
@@ -249,10 +300,10 @@ export default function reducer(state = defaultState, action) {
           [payload.fixture_id]: {
             ...state.data[payload.fixture_id],
             result: {
-              setPointsHomeTeam: parseInt(payload.set_points_home_team),
-              setPointsAwayTeam: parseInt(payload.set_points_away_team),
-              goalsHomeTeam: parseInt(payload.goals_home_team),
-              goalsAwayTeam: parseInt(payload.goals_away_team),
+              goalsAwayTeam: parseInt(payload.goals_away_team, 10),
+              goalsHomeTeam: parseInt(payload.goals_home_team, 10),
+              setPointsAwayTeam: parseInt(payload.set_points_away_team, 10),
+              setPointsHomeTeam: parseInt(payload.set_points_home_team, 10),
             },
           },
         },
@@ -310,131 +361,83 @@ export default function reducer(state = defaultState, action) {
 }
 
 /* selectors */
-const get = state => state.fixtures;
-export const getFixture = (state, id) => get(state).data[id];
-export const getFixtureModus = (state, id) =>
+const get = (state: any) => state.fixtures;
+export const getFixture = (state: any, id: string) => get(state).data[id];
+export const getFixtureModus = (state: any, id: string) =>
   get(state).meta[id] ? get(state).meta[id].modus : null;
-export const getFixtureGames = (state, id) => get(state).meta[id].games || {};
-export const getFixtureDefaultLineUp = (state, id) =>
+export const getFixtureGames = (state: any, id: string) =>
+  get(state).meta[id].games || {};
+export const getFixtureDefaultLineUp = (state: any, id: string) =>
   get(state).meta[id] &&
   get(state).meta[id].modus.lineUp &&
   get(state).meta[id].modus.lineUp.default
     ? get(state).meta[id].modus.lineUp.default
     : [];
-export const getFixtureGame = (state, id, gameNumber) =>
+export const getFixtureGame = (state: any, id: string, gameNumber: string) =>
   getFixtureGames(state, id)[gameNumber] || {
+    awayPlayer1: null,
+    awayPlayer2: null,
     gameNumber,
     homePlayer1: null,
     homePlayer2: null,
-    awayPlayer1: null,
-    awayPlayer2: null,
     result: null,
   };
-export const getFixturePlayerHomeList = (state, id) =>
+export const getFixturePlayerHomeList = (state: any, id: string) =>
   getFixturePlayerList(state, id, 'home');
-export const getFixturePlayerAwayList = (state, id) =>
+export const getFixturePlayerAwayList = (state: any, id: string) =>
   getFixturePlayerList(state, id, 'away');
-export const getFixtureVenue = (state, id) =>
+export const getFixtureVenue = (state: any, id: string) =>
   get(state).meta[id] && get(state).meta[id].venue
     ? get(state).meta[id].venue
     : null;
-export const getFirstFixture = (state, id) =>
+export const getFirstFixture = (state: any, id: string) =>
   get(state).meta[id] && get(state).meta[id].firstFixture
     ? get(state).meta[id].firstFixture
     : null;
-export const getFixturePlayerList = (state, id, key) =>
+export const getFixturePlayerList = (state: any, id: string, key: string) =>
   get(state).meta[id] &&
   get(state).meta[id].player &&
   get(state).meta[id].player[key]
     ? _.sortBy(get(state).meta[id].player[key], 'name')
     : [];
-export const getFixtureDates = (state, id) => get(state).dates[id] || null;
+export const getFixtureDates = (state: any, id: string) =>
+  get(state).dates[id] || null;
 
-export const getFixtureByFilter = (state, filter) => {
+export const getFixtureByFilter = (state: any, filter: string) => {
   if (!get(state).overview) {
     return null;
   }
 
   return get(state).overview[filter];
-  // return null;
-  if (get(state).data === null) {
-    return null;
-  }
-
-  // return [{data: [], title: 'test'}];
-
-  // const sections = {};
-  // const today = moment();
-  // for (let id in get(state).data) {
-  //   const fixture = getFixture(state, id);
-  //   const diff =
-  //     parseInt(today.format('YYYYMMDD')) -
-  //     parseInt(moment(fixture.date, DATETIME_DB).format('YYYYMMDD'));
-  //   const key = moment(fixture.date, DATETIME_DB).format(DATE_FORMAT);
-  //   if (filter === FILTER_TODAY) {
-  //     if (fixture.status === STATUS_IN_PLAY || diff === 0) {
-  //       if (!sections[key]) {
-  //         sections[key] = { data: [], title: key };
-  //       }
-  //       sections[key].data.push(fixture);
-  //     }
-  //   } else if (filter === FILTER_PASSED) {
-  //     if (
-  //       (fixture.status === STATUS_CONFIRMED && diff > 0 && diff < 15) ||
-  //       fixture.status === STATUS_FINISHED
-  //     ) {
-  //       if (!sections[key]) {
-  //         sections[key] = { data: [], title: key };
-  //       }
-  //       sections[key].data.push(fixture);
-  //     }
-  //   } else if (filter === FILTER_UPCOMMING) {
-  //     if (
-  //       (fixture.status === STATUS_SCHEDUELED ||
-  //         fixture.status === STATUS_POSTPONED) &&
-  //       diff < 0 &&
-  //       diff > -15
-  //     ) {
-  //       if (!sections[key]) {
-  //         sections[key] = { data: [], title: key };
-  //       }
-
-  //       sections[key].data.push(fixture);
-  //     }
-  //   }
-  // }
-  // for (let key in sections) {
-  //   sections[key].data.sort(fixtureSort);
-  // }
-  // return _.values(sections);
 };
-export const getFixtureByTeam = (state, teamGoupId) => {
+export const getFixtureByTeam = (state: string, teamGoupId: string) => {
   const fixtures = [];
-  for (let id in get(state).data) {
-    const fixture = getFixture(state, id);
-    if (
-      teamGoupId === fixture.homeTeamGroupId ||
-      teamGoupId === fixture.awayTeamGroupId ||
-      teamGoupId === fixture.homeTeamId ||
-      teamGoupId === fixture.awayTeamId
-    ) {
-      fixtures.push(fixture);
+  for (const id in get(state).data) {
+    if (id) {
+      const fixture = getFixture(state, id);
+      if (
+        teamGoupId === fixture.homeTeamGroupId ||
+        teamGoupId === fixture.awayTeamGroupId ||
+        teamGoupId === fixture.homeTeamId ||
+        teamGoupId === fixture.awayTeamId
+      ) {
+        fixtures.push(fixture);
+      }
     }
   }
   return fixtures.sort(fixtureSort);
 };
 
-export const getNextFixturesByTeam = (state, teamGroupId) => {
+export const getNextFixturesByTeam = (state: any, teamGroupId: string) => {
   const fixtures = getFixtureByTeam(state, teamGroupId);
   if (fixtures.length === 0) {
-    // not loaded yet
     return null;
   }
 
   return _.filter(fixtures, f => f.status !== STATUS_CONFIRMED);
 };
 
-export const getPlayedFixturesByTeam = (state, teamGoupId) => {
+export const getPlayedFixturesByTeam = (state: any, teamGoupId: string) => {
   const fixtures = getFixtureByTeam(state, teamGoupId);
   if (fixtures.length === 0) {
     return null;
@@ -442,12 +445,14 @@ export const getPlayedFixturesByTeam = (state, teamGoupId) => {
   return _.filter(fixtures, f => f.status === STATUS_CONFIRMED);
 };
 
-export const getFixturesByCompetition = (state, competitionId) => {
+export const getFixturesByCompetition = (state: any, competitionId: string) => {
   const fixtures = [];
-  for (let id in get(state).data) {
-    const fixture = getFixture(state, id);
-    if (fixture.competitionId === competitionId) {
-      fixtures.push(fixture);
+  for (const id in get(state).data) {
+    if (id) {
+      const fixture = getFixture(state, id);
+      if (fixture.competitionId === competitionId) {
+        fixtures.push(fixture);
+      }
     }
   }
   return fixtures.sort(fixtureSort);
@@ -465,7 +470,7 @@ export const STATUS_FINISHED = 'FINISHED';
 export const STATUS_CONFIRMED = 'CONFIRMED';
 
 /* helper */
-function mergeGames(state, payload) {
+function mergeGames(state: any, payload: any) {
   if (!state) {
     return payload;
   }
@@ -475,7 +480,7 @@ function mergeGames(state, payload) {
     games: { ...state.games, ...payload.games },
   };
 }
-export const fixtureSort = (a, b) => {
+export const fixtureSort = (a: any, b: any) => {
   let sort = statusValue(b.status) - statusValue(a.status);
   if (sort === 0) {
     if (
@@ -493,7 +498,7 @@ export const fixtureSort = (a, b) => {
   return sort;
 };
 
-const statusValue = status => {
+const statusValue = (status: string) => {
   switch (status) {
     case STATUS_IN_PLAY:
       return 5;

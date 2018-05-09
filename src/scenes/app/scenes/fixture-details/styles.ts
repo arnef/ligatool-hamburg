@@ -1,65 +1,37 @@
-import { StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerHalftime: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingBottom: 12,
+    paddingHorizontal: 12,
+    paddingTop: 24,
+  },
   containerToggle: {
+    alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 12,
     paddingTop: 8,
-    alignItems: 'center',
-  },
-  containerHalftime: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingTop: 24,
-    paddingBottom: 12,
-  },
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#ccc',
-  },
-  halftime: {
-    marginHorizontal: 12,
-    textAlign: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  teamInfo: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 12,
-  },
-  option: {
-    flex: 1,
-  },
-  teamVs: {
-    fontSize: 24,
-    textAlignVertical: 'center',
   },
   firstMatch: {
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   firstMatchResult: {
-    padding: 6,
-    borderRadius: 6,
     alignItems: 'center',
     backgroundColor: '#909090',
+    borderRadius: 6,
+    padding: 6,
   },
-  textFirstMatchResult: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+  halftime: {
+    marginHorizontal: 12,
+    textAlign: 'center',
   },
-  playerRow: {
-    flexDirection: 'row',
+  option: {
     flex: 1,
   },
   player: {
@@ -69,7 +41,35 @@ export default StyleSheet.create({
     alignItems: 'center',
     padding: 6,
   },
+  playerRow: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   playerText: {
     textAlign: 'center',
+  },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  separator: {
+    backgroundColor: '#ccc',
+    flex: 1,
+    height: 1,
+  },
+  teamInfo: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 12,
+  },
+  teamVs: {
+    fontSize: 24,
+    textAlignVertical: 'center',
+  },
+  textFirstMatchResult: {
+    color: '#fff',
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+    fontWeight: 'bold',
   },
 });

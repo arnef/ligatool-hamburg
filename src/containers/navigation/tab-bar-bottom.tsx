@@ -18,17 +18,17 @@
  *
  */
 
+import { getColor } from '@app/redux/modules/user';
 import * as React from 'react';
-import { connect } from 'react-redux';
 import {
   TabBarBottom as RNTabBarBottom,
   TabBarBottomProps,
 } from 'react-navigation';
-import { getColor } from '@app/redux/modules/user';
+import { connect } from 'react-redux';
 
-interface Props extends TabBarBottomProps, StateProps {}
+interface IProps extends TabBarBottomProps, IStateProps {}
 
-class TabBarBottom extends React.PureComponent<Props> {
+class TabBarBottom extends React.PureComponent<IProps> {
   public render() {
     return (
       <RNTabBarBottom {...this.props} activeTintColor={this.props.color} />
@@ -36,10 +36,10 @@ class TabBarBottom extends React.PureComponent<Props> {
   }
 }
 
-interface StateProps {
+interface IStateProps {
   color: string;
 }
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state: any): IStateProps {
   return { color: getColor(state) };
 }
 

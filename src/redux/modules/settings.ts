@@ -1,5 +1,26 @@
-import { LOGOUT_DONE } from './auth';
+/**
+ * Copyright (C) 2018 Arne Feil
+ *
+ * This file is part of DTFB App.
+ *
+ * DTFB App is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * DTFB App is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 import { defaultColor } from '@app/config/settings';
+
+import { LOGOUT_DONE } from './auth';
 
 // Actions
 export const FETCH_USER_TEAM = 'ligatool/modules/FETCH_USER_TEAM';
@@ -19,24 +40,44 @@ export const DISABLE_NOTIFICATION_FIXTURE =
 export const ENABLE_NOTIFICATION_FOR_FIXTURE =
   'settings/ENABLE_NOTIFICATION_FOR_FIXTURE';
 
-const defaultState = {
+const defaultState: ISettingsState = {
   changed: false,
   color: defaultColor,
+  fcm_token: null,
   notification: {
+    disabledFixtures: [],
     enabled: true,
-    sound: true,
-    interimResults: true,
     finalResults: true,
     fixtures: [],
+    interimResults: true,
+    sound: true,
     teams: [],
-    disabledFixtures: [],
   },
-  fcm_token: null,
   team: null,
 };
 
+export interface ISettingsState {
+  color: string;
+  changed: boolean;
+  notification: {
+    disabledFixtures: string[];
+    enabled: boolean;
+    finalResults: boolean;
+    fixtures: string[];
+    interimResults: boolean;
+    sound: boolean;
+    teams: string[];
+    [key: string]: any; // TODO: quickfix
+  };
+  fcm_token?: string;
+  team?: any;
+}
+
 // Reducer
-export default function reducer(state = defaultState, action) {
+export default function reducer(
+  state: ISettingsState = defaultState,
+  action: any,
+) {
   const { type, payload } = action;
   switch (type) {
     case LOGOUT_DONE:
@@ -175,19 +216,19 @@ export default function reducer(state = defaultState, action) {
 }
 
 // Action Creators
-export function fetchUserTeam(teamId) {
+export function fetchUserTeam(teamId: any) {
   return { type: FETCH_USER_TEAM, payload: { teamId } };
 }
 
-export function setTeam(team) {
+export function setTeam(team: any) {
   return { type: SET_TEAM, payload: team };
 }
 
-export function toggleNotification(key) {
+export function toggleNotification(key: string) {
   return { type: TOGGLE_NOTIFICATION, payload: { key: `${key}` } };
 }
 
-export function toggleGroupNotification(key) {
+export function toggleGroupNotification(key: string) {
   return { type: TOGGLE_GROUP_NOTIFICATION, payload: { key: `${key}` } };
 }
 
@@ -195,82 +236,91 @@ export function synchronized() {
   return { type: SYNCHRONIZED };
 }
 
-export function setFCMToken(fcmToken) {
-  return { type: SET_FCM_TOKEN, payload: { fcm_token: fcmToken } };
+export function setFCMToken(fcmToken: string) {
+  return {
+    payload: { fcm_token: fcmToken },
+    type: SET_FCM_TOKEN,
+  };
 }
 
 export function completeSetup() {
   return { type: COMPLETE_SETUP };
 }
 
-export function setNotification(payload) {
+export function setNotification(payload: any) {
   return { type: SET_NOTIFICATION, payload };
 }
 
-export const subscribeFixture = fixtureId => ({
+export const subscribeFixture = (fixtureId: string) => ({
+  payload: { fixtureId },
   type: SUBSCRIBE_FIXTURE,
-  payload: { fixtureId },
 });
 
-export const unsubscribeFixture = fixtureId => ({
+export const unsubscribeFixture = (fixtureId: string) => ({
+  payload: { fixtureId },
   type: UNSUBSCRIBE_FIXTURE,
-  payload: { fixtureId },
 });
 
-export const disableNotificationFixture = fixtureId => ({
+export const disableNotificationFixture = (fixtureId: string) => ({
+  payload: { fixtureId },
   type: DISABLE_NOTIFICATION_FIXTURE,
-  payload: { fixtureId },
 });
 
-export const enableNotificationFixture = fixtureId => ({
+export const enableNotificationFixture = (fixtureId: string) => ({
+  payload: { fixtureId },
   type: ENABLE_NOTIFICATION_FOR_FIXTURE,
-  payload: { fixtureId },
 });
 
-export const subscribeTeam = team => ({
+export const subscribeTeam = (team: any) => ({
+  payload: { id: team.groupId || team.id },
   type: SUBSCRIBE_TEAM,
-  payload: { id: team.groupId || team.id },
 });
 
-export const unsubscribeTeam = team => ({
-  type: UNSUBSCRIBE_TEAM,
+export const unsubscribeTeam = (team: any) => ({
   payload: { id: team.groupId || team.id },
+  type: UNSUBSCRIBE_TEAM,
 });
 
 /* Selectors */
-const get = state => state.settings;
-export const getFCMToken = state => get(state).fcm_token;
+const get = (state: any) => state.settings;
+export const getFCMToken = (state: any) => get(state).fcm_token;
 
-export const notificationEnabled = state =>
+export const notificationEnabled = (state: any) =>
   get(state).fcm_token && get(state).notification.enabled;
 
-export const notificationSound = state => get(state).notification.sound;
+export const notificationSound = (state: any) => get(state).notification.sound;
 
-export const notificationInterimResults = state =>
+export const notificationInterimResults = (state: any) =>
   get(state).notification.interimResults;
 
-export const notificationFinalResults = state =>
+export const notificationFinalResults = (state: any) =>
   get(state).notification.finalResults;
 
-export const notificationSubscribedForFixtureByFixture = (state, fixture) =>
+export const notificationSubscribedForFixtureByFixture = (
+  state: any,
+  fixture: any,
+) =>
   get(state).notification.fixtures &&
   get(state).notification.fixtures.indexOf(fixture.id) !== -1;
 
-export const notificationDisabledFixture = (state, fixtureId) =>
+export const notificationDisabledFixture = (state: any, fixtureId: string) =>
   get(state).notification.disabledFixtures &&
   get(state).notification.disabledFixtures.indexOf(fixtureId) !== -1;
 
-export const notificationSubscribedForFixture = (state, fixture) =>
+export const notificationSubscribedForFixture = (state: any, fixture: any) =>
   (notificationSubscribedForFixtureByFixture(state, fixture) ||
     notificationSubscribedForFixtureByTeam(state, fixture)) &&
   !notificationDisabledFixture(state, fixture.id);
 
-export const notificationSubscribedForFixtureByTeam = (state, fixture) =>
+export const notificationSubscribedForFixtureByTeam = (
+  state: any,
+  fixture: any,
+) =>
   get(state).notification.teams &&
   (get(state).notification.teams.indexOf(fixture.homeTeamId) !== -1 ||
     get(state).notification.teams.indexOf(fixture.awayTeamId) !== -1 ||
     get(state).notification.teams.indexOf(fixture.homeTeamGroupId) !== -1 ||
     get(state).notification.teams.indexOf(fixture.awayTeamGroupId) !== -1);
 
-export const notificationSubscribedForTeam = (state, team) =>
+export const notificationSubscribedForTeam = (state: any, team: any) =>
   get(state).notification.teams.indexOf(team.groupId || team.id) !== -1;

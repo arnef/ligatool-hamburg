@@ -33,7 +33,7 @@ export { MatchStatsBar } from './MatchStatsBar';
 export { Score } from './Score';
 export { ScoreInputDialog as ScoreInput } from './ScoreInput';
 export { Separator } from './Separator';
-export { ConnectedSetItem as SetItem } from './SetItem';
+export { SetItem } from './SetItem';
 export { ThemedStaticListHeader as StaticListHeader } from './StaticListHeader';
 export { ThemedSwitch as Switch } from './Switch';
 export { TeamLogo } from './TeamLogo';

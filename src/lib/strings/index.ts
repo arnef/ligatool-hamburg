@@ -1,13 +1,14 @@
 import LocalizedStrings from 'react-native-localization';
-import en from './en';
-import de from './de';
 
-export const Strings = new LocalizedStrings<StringsObject>({
+import de from './de';
+import en from './en';
+
+export const Strings = new LocalizedStrings<IStringsObject>({
   de,
   en,
 });
 
-export interface StringsObject {
+export interface IStringsObject {
   ASSOCIATION: string;
   CONFIRM: string;
   AWAY: string;
@@ -31,8 +32,8 @@ export interface StringsObject {
   GROUP: string;
   GROUPS: string;
   LEAGUES: string;
-  WEEKDAYS: Array<string>;
-  SCORE_BUTTON_TEXT: Array<string>;
+  WEEKDAYS: string[];
+  SCORE_BUTTON_TEXT: string[];
   TIME_AT: string;
   DOT_POSITION: string;
   POSITION: string;

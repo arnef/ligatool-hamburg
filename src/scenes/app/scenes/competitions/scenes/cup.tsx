@@ -18,21 +18,22 @@
  *
  */
 
-import { TabNavigator } from 'react-navigation';
-import { Routes } from '@app/scenes/routes';
-import { Strings } from '@app/lib/strings';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
-import { ConnectedSelectableMatchList } from './SelectableMatchList';
+import { Strings } from '@app/lib/strings';
+import { Routes } from '@app/scenes/routes';
+import { TabNavigator } from 'react-navigation';
+
 import { ConnectedPlayerStatsList } from './PlayerStatsList';
+import { ConnectedSelectableMatchList } from './SelectableMatchList';
 export const Cup = TabNavigator(
   {
     [Routes.competitionFixtures]: {
-      screen: ConnectedSelectableMatchList,
       navigationOptions: { title: Strings.MATCHES },
+      screen: ConnectedSelectableMatchList,
     },
     [Routes.competitionStats]: {
-      screen: ConnectedPlayerStatsList,
       navigationOptions: { title: Strings.STATISTICS },
+      screen: ConnectedPlayerStatsList,
     },
   },
   { ...topTabBarNavigationOptions },

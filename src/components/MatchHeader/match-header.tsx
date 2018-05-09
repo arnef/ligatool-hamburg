@@ -18,12 +18,13 @@
  *
  */
 
+import { Text, Touchable } from '@app/components';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Text, Touchable } from '@app/components';
+
 import styles from './styles';
 
-export interface MatchHeaderProps {
+export interface IMatchHeaderProps {
   home: string;
   away: string;
   result?: {
@@ -36,11 +37,7 @@ export interface MatchHeaderProps {
   onPress: (team: string) => void;
 }
 
-export class MatchHeader extends React.PureComponent<MatchHeaderProps> {
-  private onPress = (team: string) => () => {
-    this.props.onPress(team);
-  };
-
+export class MatchHeader extends React.PureComponent<IMatchHeaderProps> {
   public render() {
     return (
       <View style={[styles.container, { backgroundColor: this.props.color }]}>
@@ -85,4 +82,8 @@ export class MatchHeader extends React.PureComponent<MatchHeaderProps> {
       </View>
     );
   }
+
+  private onPress = (team: string) => () => {
+    this.props.onPress(team);
+  };
 }

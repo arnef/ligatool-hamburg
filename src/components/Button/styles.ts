@@ -24,9 +24,9 @@ export default StyleSheet.create({
   button: {
     alignItems: 'center',
     borderRadius: 4,
-    padding: 8,
-    justifyContent: 'center',
     borderWidth: 1,
+    justifyContent: 'center',
+    padding: 8,
   },
   disabled: {
     opacity: 0.5,

@@ -18,11 +18,12 @@
  *
  */
 
-import * as React from 'react';
 import { ThemeContext } from '@app/theme';
-import { Content, ContentProps } from './content';
+import * as React from 'react';
 
-export class ThemeContent extends React.PureComponent<ContentProps> {
+import { Content, IContentProps } from './content';
+
+export class ThemeContent extends React.PureComponent<IContentProps> {
   public render() {
     return (
       <ThemeContext.Consumer>

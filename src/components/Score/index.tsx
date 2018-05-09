@@ -18,16 +18,15 @@
  *
  */
 
+import { Text } from '@app/components';
+import { Strings } from '@app/lib/strings';
+import { STATUS_FINISHED, STATUS_IN_PLAY } from '@app/redux/modules/fixtures';
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
-import { Text } from '@app/components';
 
 import styles from './styles';
 
-import { STATUS_FINISHED, STATUS_IN_PLAY } from '@app/redux/modules/fixtures';
-import { Strings } from '@app/lib/strings';
-
-interface Props {
+interface IProps {
   setPoints?: {
     result: {
       setPointsHomeTeam: number;
@@ -42,7 +41,7 @@ interface Props {
   style?: ViewStyle;
 }
 
-export class Score extends React.PureComponent<Props> {
+export class Score extends React.PureComponent<IProps> {
   public render() {
     if (this.props.setPoints) {
       return (

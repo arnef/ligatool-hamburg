@@ -18,14 +18,25 @@
  *
  */
 
-import * as React from 'react';
-import { Content, Separator, ListItem, TeamLogo, Text } from '@app/components';
-import { connect, Dispatch } from 'react-redux';
-import { sortBy } from 'lodash';
+import { Content, ListItem, Separator, TeamLogo, Text } from '@app/components';
 import { getNavigationStateParams } from '@app/redux/modules/navigation';
-interface Props extends StateProps, DispatchProps {}
+import { sortBy } from 'lodash';
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
 
-class SelectTeamScene extends React.PureComponent<Props> {
+interface IProps extends IIStateProps, IIDispatchProps {}
+
+class SelectTeamScene extends React.PureComponent<IProps> {
+  public render() {
+    return (
+      <Content
+        renderItem={this.renderItem}
+        renderSeparator={this.renderSeparator}
+        data={this.props.teams}
+      />
+    );
+  }
+
   private onSelectTeam = (team: any) => () => {
     this.props.setUserTeam(team);
   };
@@ -42,26 +53,16 @@ class SelectTeamScene extends React.PureComponent<Props> {
   private renderSeparator = () => {
     return <Separator image />;
   };
-
-  public render() {
-    return (
-      <Content
-        renderItem={this.renderItem}
-        renderSeparator={this.renderSeparator}
-        data={this.props.teams}
-      />
-    );
-  }
 }
 
-interface StateProps {
-  teams: Array<any>;
+interface IIStateProps {
+  teams: any[];
 }
-interface DispatchProps {
-  setUserTeam: Function;
+interface IIDispatchProps {
+  setUserTeam: (team: any) => void;
 }
 
-function mapStateToProps(state: any, props: any): StateProps {
+function mapStateToProps(state: any, props: any): IIStateProps {
   return {
     teams: sortBy(
       state.drawer[getNavigationStateParams(props.navigation).id]
@@ -72,7 +73,7 @@ function mapStateToProps(state: any, props: any): StateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): IIDispatchProps {
   return {
     setUserTeam: (team: any) =>
       dispatch({ type: 'SELECT_USER_TEAM', payload: { id: team.id } }),

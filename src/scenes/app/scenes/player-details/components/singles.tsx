@@ -18,16 +18,17 @@
  *
  */
 
+import { ListItem, Score, Text } from '@app/components';
 import * as React from 'react';
-import { ListItem, Text, Score } from '@app/components';
 import { View } from 'react-native';
+
 import { Player } from './player';
 
-interface Props {
+interface IProps {
   data: any;
   id: string;
 }
-export class Singles extends React.PureComponent<Props> {
+export class Singles extends React.PureComponent<IProps> {
   public render() {
     const { data, id } = this.props;
     const result =

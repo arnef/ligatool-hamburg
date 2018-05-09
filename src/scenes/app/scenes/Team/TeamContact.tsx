@@ -18,37 +18,17 @@
  *
  */
 
-import * as React from 'react';
-import { View, Linking, Alert } from 'react-native';
-import { ListItem, Touchable, Icon, Text, Separator } from '@app/components';
+import { Icon, ListItem, Separator, Text, Touchable } from '@app/components';
 import { Strings } from '@app/lib/strings';
+import * as React from 'react';
+import { Alert, Linking, View } from 'react-native';
 
-interface Props {
+interface IProps {
   color: string;
-  contacts: Array<any>;
+  contacts: any[];
 }
 
-export class TeamContact extends React.PureComponent<Props> {
-  private call = (number: string) => {
-    Linking.openURL('tel:' + number).catch(() =>
-      Alert.alert(Strings.PHONE_APP_NOT_FOUND),
-    );
-  };
-
-  private mail = (email: string) => () => {
-    Linking.openURL('mailto:' + email).catch(() =>
-      Alert.alert(Strings.MAIL_APP_NOT_FOUND),
-    );
-  };
-
-  private onPress = (contact: any) => () => {
-    if (contact.phoneNumber) {
-      this.call(contact.phoneNumber);
-    } else {
-      this.mail(contact.email)();
-    }
-  };
-
+export class TeamContact extends React.PureComponent<IProps> {
   public render() {
     return (
       <ListItem.Group>
@@ -59,9 +39,9 @@ export class TeamContact extends React.PureComponent<Props> {
               <Touchable style={{ flex: 1 }} onPress={this.onPress(contact)}>
                 <View
                   style={{
-                    flexDirection: 'row',
                     alignItems: 'center',
                     flex: 0,
+                    flexDirection: 'row',
                   }}
                 >
                   <Text style={{ flex: 1 }}>{`${contact.name} ${
@@ -89,4 +69,24 @@ export class TeamContact extends React.PureComponent<Props> {
       </ListItem.Group>
     );
   }
+
+  private call = (phoneNumber: string) => {
+    Linking.openURL('tel:' + phoneNumber).catch(() =>
+      Alert.alert(Strings.PHONE_APP_NOT_FOUND),
+    );
+  };
+
+  private mail = (email: string) => () => {
+    Linking.openURL('mailto:' + email).catch(() =>
+      Alert.alert(Strings.MAIL_APP_NOT_FOUND),
+    );
+  };
+
+  private onPress = (contact: any) => () => {
+    if (contact.phoneNumber) {
+      this.call(contact.phoneNumber);
+    } else {
+      this.mail(contact.email)();
+    }
+  };
 }

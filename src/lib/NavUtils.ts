@@ -1,5 +1,25 @@
-export function currentRoute(navigation) {
-  const recursiveFindRoute = nav => {
+// /**
+//  * Copyright (C) 2018 Arne Feil
+//  *
+//  * This file is part of DTFB App.
+//  *
+//  * DTFB App is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * DTFB App is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  * GNU General Public License for more details.
+//  *
+//  * You should have received a copy of the GNU General Public License
+//  * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
+//  *
+//  */
+
+export function currentRoute(navigation: any) {
+  const rfr = (nav: any): any => {
     const subState =
       nav.routes[nav.index].routeName === 'DrawerOpen'
         ? nav.routes[0]
@@ -11,13 +31,13 @@ export function currentRoute(navigation) {
     ) {
       return subState;
     }
-    return recursiveFindRoute(subState);
+    return rfr(subState);
   };
 
-  return recursiveFindRoute(navigation); // || store.getState().nav.navigation);
+  return rfr(navigation); // || store.getState().nav.navigation);
 }
 
-const recursiveFindRoute = (route, name) => {
+const recursiveFindRoute = (route: any, name: string) => {
   if (!route) {
     return null;
   } else if (route.routeName === name) {
@@ -25,8 +45,8 @@ const recursiveFindRoute = (route, name) => {
   } else if (!route.routes) {
     return null;
   } else {
-    for (let i = 0; i < route.routes.length; i++) {
-      const found = recursiveFindRoute(route.routes[i], name);
+    for (const r of route.routes) {
+      const found: any = recursiveFindRoute(r, name);
       if (found) {
         return found;
       }
@@ -36,7 +56,7 @@ const recursiveFindRoute = (route, name) => {
   return null;
 };
 
-export const findRouteKey = (state, name) => {
+export const findRouteKey = (state: any, name: string) => {
   const found = recursiveFindRoute(state, name);
   if (found) {
     return found.key;

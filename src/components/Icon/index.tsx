@@ -18,20 +18,14 @@
  *
  */
 
-import * as React from 'react';
-import {
-  Platform,
-  Text,
-  TextStyle,
-  ViewStyle,
-  StyleSheet,
-  View,
-} from 'react-native';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 import { IS_ANDROID } from '@app/consts';
+import * as React from 'react';
+import { Text, TextStyle } from 'react-native';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+
 import styles from './styles';
 
-interface Props {
+interface IProps {
   /**
    * Name of the icon
    */
@@ -44,9 +38,9 @@ interface Props {
    * Color of the icon
    */
   color?: string;
-  style?: TextStyle | Array<TextStyle>;
+  style?: TextStyle | TextStyle[];
 }
-export class Icon extends React.PureComponent<Props> {
+export class Icon extends React.PureComponent<IProps> {
   public render() {
     let name: string = IS_ANDROID
       ? `md-${this.props.name}`
@@ -57,7 +51,7 @@ export class Icon extends React.PureComponent<Props> {
     } else if (this.props.name === 'close') {
       name = 'md-close';
     }
-    const style: Array<TextStyle> = [
+    const style: TextStyle[] = [
       styles.icon,
       { height: this.props.size, width: this.props.size },
     ];

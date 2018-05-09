@@ -18,17 +18,17 @@
  *
  */
 
+import { ListItem, Separator, Text } from '@app/components';
 import * as React from 'react';
 import { View } from 'react-native';
-import { ListItem, Text, Separator } from '@app/components';
 
-interface Props {
+interface IProps {
   name: string;
   value: string;
   last?: boolean;
 }
 
-export class Item extends React.PureComponent<Props> {
+export class Item extends React.PureComponent<IProps> {
   public render() {
     const { name, value, last = false } = this.props;
 

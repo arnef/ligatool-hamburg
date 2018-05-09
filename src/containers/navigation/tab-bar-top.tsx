@@ -18,30 +18,34 @@
  *
  */
 
+import { getColor } from '@app/redux/modules/user';
 import * as React from 'react';
-import { Platform, Dimensions, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
+import { Dimensions, Platform, StyleSheet, ViewStyle } from 'react-native';
 import {
   TabBarTop as RNTabBarTop,
   TabBarTopProps,
   TabNavigatorConfig,
 } from 'react-navigation';
-import { getColor } from '@app/redux/modules/user';
+import { connect } from 'react-redux';
 
 const white = '#fff';
 const white9 = 'rgba(255,255,255,.8 )';
 
-interface Props extends TabBarTopProps, StateProps {}
+interface IProps extends TabBarTopProps, IStateProps {}
 
-export class TabBarTop extends React.PureComponent<Props> {
+export class TabBarTop extends React.PureComponent<IProps> {
   public render() {
+    const style: ViewStyle[] = [
+      styles.container,
+      { backgroundColor: this.props.color },
+    ];
     return (
       <RNTabBarTop
         {...this.props}
         activeTintColor={white}
         inactiveTintColor={white9}
         indicatorStyle={{ backgroundColor: white9 }}
-        style={[styles.container, { backgroundColor: this.props.color }]}
+        style={style} // TODO: check react-navigation
         labelStyle={styles.label}
       />
     );
@@ -50,38 +54,38 @@ export class TabBarTop extends React.PureComponent<Props> {
 
 const styles = StyleSheet.create({
   container: Platform.select({
+    android: {
+      elevation: 4,
+    },
     ios: {
       shadowColor: 'black',
       shadowOpacity: 0.1,
       shadowRadius: StyleSheet.hairlineWidth,
     },
-    android: {
-      elevation: 4,
-    },
   }),
   label: {
+    fontWeight: Platform.OS === 'android' ? '500' : '600',
     marginHorizontal: 0,
     marginVertical: 4,
-    fontWeight: Platform.OS === 'android' ? '500' : '600',
   },
 });
 
-interface StateProps {
+interface IStateProps {
   color: string;
 }
 
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state: any): IStateProps {
   return { color: getColor(state) };
 }
 
 export const topTabBarNavigationOptions: TabNavigatorConfig = {
-  tabBarComponent: connect(mapStateToProps)(TabBarTop),
-  tabBarPosition: 'top',
-  swipeEnabled: true,
   animationEnabled: true,
-  lazy: true,
   backBehavior: 'none',
+  lazy: true,
+  swipeEnabled: true,
+  tabBarComponent: connect(mapStateToProps)(TabBarTop),
   tabBarOptions: {
     scrollEnabled: Dimensions.get('window').width < 321,
   },
+  tabBarPosition: 'top',
 };

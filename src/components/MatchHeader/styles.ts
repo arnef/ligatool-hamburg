@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 const FONT_MONOSPACE = Platform.OS === 'ios' ? 'Courier New' : 'monospace';
 
@@ -7,13 +7,9 @@ export default StyleSheet.create({
     elevation: 4,
     flexDirection: 'row',
     height: 48,
-    // justifyContent: 'space-around',
-    // borderBottomWidth: Platform.OS === 'ios' ? StyleSheet.hairlineWidth : 0,
-    // borderBottomColor: 'rgba(0,0,0,.3)',
-    // shadowColor: 'black',
-    // shadowOffset: { height: StyleSheet.hairlineWidth },
-    // shadowOpacity: 0.1,
-    // shadowRadius: StyleSheet.hairlineWidth,
+  },
+  containerScore: {
+    justifyContent: 'center',
   },
   containerTeam: {
     alignItems: 'center',
@@ -21,18 +17,15 @@ export default StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 4,
   },
-  containerScore: {
-    justifyContent: 'center',
-  },
-  textTeam: {
-    textAlign: 'center',
-    fontWeight: Platform.OS === 'android' ? '600' : '400',
-    color: '#fff',
-  },
   textScore: {
-    textAlign: 'center',
+    color: '#fff',
     fontFamily: FONT_MONOSPACE,
     fontWeight: '600',
+    textAlign: 'center',
+  },
+  textTeam: {
     color: '#fff',
+    fontWeight: Platform.OS === 'android' ? '600' : '400',
+    textAlign: 'center',
   },
 });

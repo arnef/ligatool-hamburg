@@ -28,7 +28,7 @@ import {
 
 import styles from './styles';
 
-interface Props extends TextProperties {
+interface IProps extends TextProperties {
   color?: string;
   secondary?: boolean;
   bold?: boolean;
@@ -36,7 +36,7 @@ interface Props extends TextProperties {
   small?: boolean;
 }
 
-export class Text extends React.PureComponent<Props> {
+export class Text extends React.PureComponent<IProps> {
   public render() {
     const {
       color,
@@ -47,7 +47,7 @@ export class Text extends React.PureComponent<Props> {
       children,
       ...rest
     } = this.props;
-    const style: Array<TextStyle> = [styles.text];
+    const style: TextStyle[] = [styles.text];
     if (color) {
       style.push({ color });
     }

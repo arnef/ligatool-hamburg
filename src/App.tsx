@@ -18,17 +18,16 @@
  *
  */
 
-import React, { Component } from 'react';
+import AppContainer from '@app/AppContainer';
+import { LaunchScreen } from '@app/components';
+import { persistor, store } from '@app/config/store';
+import React from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import AppContainer from '@app/AppContainer';
-import { LaunchScreen } from '@app/components';
-import { store, persistor } from '@app/config/store';
 
-interface Props {}
-export default class App extends Component<Props> {
-  componentDidMount() {
+export default class App extends React.PureComponent<null> {
+  public componentDidMount() {
     if (Platform.OS === 'android' && Platform.Version >= 21) {
       StatusBar.setTranslucent(true);
       StatusBar.setBackgroundColor('rgba(0,0,0,.3)');
@@ -37,7 +36,7 @@ export default class App extends Component<Props> {
     }
   }
 
-  render() {
+  public render() {
     return (
       <Provider store={store}>
         <PersistGate loading={<LaunchScreen />} persistor={persistor}>

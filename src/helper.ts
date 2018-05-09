@@ -21,39 +21,13 @@
 import { ASSOC } from './config/settings';
 
 export function darken(color: string, amt: number): string {
-  if (color[0] === '#') {
-    let r = parseInt(color.substring(1, 3), 16);
-    let g = parseInt(color.substring(3, 5), 16);
-    let b = parseInt(color.substring(5, 7), 16);
-
-    r = Math.max(Math.round(r - 255 * amt), 0).toString(16);
-    g = Math.max(Math.round(g - 255 * amt), 0).toString(16);
-    b = Math.max(Math.round(b - 255 * amt), 0).toString(16);
-
-    return (
-      '#' + ('0' + r).slice(-2) + ('0' + g).slice(-2) + ('0' + b).slice(-2)
-    );
-  }
-  const hsl: Array<number> = color.match(/\d+/g).map(i => parseInt(i, 10));
+  const hsl: number[] = color.match(/\d+/g).map(i => parseInt(i, 10));
 
   return `hsl(${hsl[0]},${hsl[1]}%,${hsl[2] - amt * 100}%)`;
 }
 
 export function lighten(color: string, amt: number): string {
-  if (color[0] === '#') {
-    let r = parseInt(color.substring(1, 3), 16);
-    let g = parseInt(color.substring(3, 5), 16);
-    let b = parseInt(color.substring(5, 7), 16);
-
-    r = Math.min(Math.round(r + 255 * amt), 255).toString(16);
-    g = Math.min(Math.round(g + 255 * amt), 255).toString(16);
-    b = Math.min(Math.round(b + 255 * amt), 255).toString(16);
-
-    return (
-      '#' + ('0' + r).slice(-2) + ('0' + g).slice(-2) + ('0' + b).slice(-2)
-    );
-  }
-  const hsl: Array<number> = color.match(/\d+/g).map(i => parseInt(i, 10));
+  const hsl: number[] = color.match(/\d+/g).map(i => parseInt(i, 10));
   return `hsl(${hsl[0]},${hsl[1]}%,${hsl[2] + amt * 100}%)`;
 }
 
@@ -64,9 +38,10 @@ export function hex2hsl(color: string): string {
 
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h,
-    s,
-    l = (max + min) / 2;
+  let h = (max + min) / 2;
+  let s = h;
+  let l = h;
+
   if (max === min) {
     h = s = 0;
   } else {
@@ -91,13 +66,16 @@ export function hex2hsl(color: string): string {
   return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
-export function getMatchDays(matches: Array<any>): any {
-  const matchDays = {
+export function getMatchDays(matches: any[]): any {
+  const matchDays: {
+    matchdays: { [key: string]: string[] };
+    selected?: string;
+  } = {
     matchdays: {},
     selected: null,
   };
   if (matches.length > 0) {
-    for (let match of matches) {
+    for (const match of matches) {
       if (!matchDays.matchdays[match.matchday]) {
         matchDays.matchdays[match.matchday] = [];
       }

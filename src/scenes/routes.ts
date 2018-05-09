@@ -19,42 +19,31 @@
  */
 
 export const Routes = {
-  // main stack
   app: '/app',
-  overview: '/app/overview',
-  myTeam: '/app/myteam',
-  competitions: '/app/competitions',
-  settings: '/app/settings',
-
-  fixtureDetails: '/app/fixtureDetails',
-  fixtureDetailsChangeDate: '/app/fixtureDetails/changeDate',
-
   competition: '/app/competitions/competition',
   competitionFixtures: '/app/competitions/fixtures',
   competitionStats: '/app/competitions/stats',
+  competitions: '/app/competitions',
   cup: '/app/competitions/cup',
-
-  teamDetails: '/app/team/details',
-  teamFixtures: '/app/team/fixtures',
-
-  playerDetails: '/app/player/details',
-
-  // tabs
-  overviewPastFixtures: '/app/overview/past',
-  overviewCurrentFixtures: '/app/overview/current',
-  overviewUpcommingFixtures: '/app/overview/upcomming',
-
+  fixtureDetails: '/app/fixtureDetails',
+  fixtureDetailsChangeDate: '/app/fixtureDetails/changeDate',
+  login: '/login/login',
+  myTeam: '/app/myteam',
+  myTeamDetails: '/app/myteam/details',
   myTeamPlayed: '/app/myteam/played',
   myTeamUpcomming: '/app/myteam/upcomming',
-  myTeamDetails: '/app/myteam/details',
-
+  overview: '/app/overview',
+  overviewCurrentFixtures: '/app/overview/current',
+  overviewPastFixtures: '/app/overview/past',
+  overviewUpcommingFixtures: '/app/overview/upcomming',
+  playerDetails: '/app/player/details',
+  selectCompetition: '/login/competition',
+  selectPlayer: '/selectPlayer',
+  selectTeam: '/login/team',
+  settings: '/app/settings',
   settingsNotifications: '/app/settings/notifications',
   settingsNotificationsTeams: '/app/settings/notifications/teams',
-
+  teamDetails: '/app/team/details',
+  teamFixtures: '/app/team/fixtures',
   welcome: '/login/welcome',
-  selectCompetition: '/login/competition',
-  selectTeam: '/login/team',
-  login: '/login/login',
-
-  selectPlayer: '/selectPlayer',
 };

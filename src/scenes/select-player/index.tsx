@@ -17,41 +17,39 @@
  * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-import * as React from 'react';
-import { Content, Separator, ListItem, Text, Icon } from '@app/components';
-import { View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { connect, Dispatch } from 'react-redux';
+import { Content, ListItem, Separator, Text } from '@app/components';
 import {
-  getFixturePlayerList,
-  getFixtureModus,
-  getFixtureGame,
+  HeaderCloseIcon,
+  headerNavigationOptions,
+} from '@app/containers/navigation';
+import { Strings } from '@app/lib/strings';
+import {
   getFixtureGames,
-  setFixtureGameHomePlayer,
+  getFixtureModus,
+  getFixturePlayerList,
   setFixtureGameAwayPlayer,
+  setFixtureGameHomePlayer,
 } from '@app/redux/modules/fixtures';
 import {
   getNavigationStateParams,
-  navigate,
   hidePlayer,
+  navigate,
 } from '@app/redux/modules/navigation';
 import { Routes } from '@app/scenes/routes';
-import {
-  headerNavigationOptions,
-  HeaderCloseIcon,
-} from '@app/containers/navigation';
-import { Strings } from '@app/lib/strings';
+import * as React from 'react';
+import { View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import { connect, Dispatch } from 'react-redux';
 
-interface Props extends StateProps, DispatchProps {
+interface IProps extends IIStateProps, IIDispatchProps {
   navigation: any;
 }
-interface State {
-  disabled: Array<string>;
-  selected: Array<number>;
+interface IState {
+  disabled: string[];
+  selected: number[];
 }
-class SelectPlayerScene extends React.Component<Props, State> {
-  constructor(props: Props) {
+class SelectPlayerScene extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       disabled: this.validate(),
@@ -59,17 +57,21 @@ class SelectPlayerScene extends React.Component<Props, State> {
     };
   }
 
-  private validate = (selectedPlayer: any = null): Array<string> => {
+  public render() {
+    return (
+      <Content
+        data={this.props.player}
+        renderItem={this.renderItem}
+        extraData={this.state.selected}
+        renderSeparator={this.renderSeparator}
+      />
+    );
+  }
+
+  private validate = (selectedPlayer: any = null): string[] => {
     const { modus, sets } = this.props;
     const { data, team } = getNavigationStateParams(this.props.navigation);
-    console.log(
-      'val?',
-      modus.validator,
-      modus.lineUp[modus.fixtureModus],
-      data.gameNumbers[0],
-      modus.validator.ignoreAfter,
-    );
-    const disabled: Array<string> = [];
+    const disabled: string[] = [];
     if (
       modus.validator &&
       modus.lineUp &&
@@ -77,17 +79,15 @@ class SelectPlayerScene extends React.Component<Props, State> {
       parseInt(data.gameNumbers[0], 10) <=
         parseInt(modus.validator.ignoreAfter, 10)
     ) {
-      console.log('validate');
       const lineUp = modus.lineUp[modus.fixtureModus];
       const count: Map<string, number> = new Map();
       const playedDoubles: Map<string, number> = new Map();
-      for (let set of lineUp) {
-        for (let gameNumber of set.gameNumbers) {
+      for (const set of lineUp) {
+        for (const gameNumber of set.gameNumbers) {
           if (
             gameNumber < data.gameNumbers[0] ||
             gameNumber > data.gameNumbers[data.gameNumbers.length - 1]
           ) {
-            console.log(set.type, data.type, sets[gameNumber]);
             if (
               set.type === data.type &&
               sets[gameNumber] &&
@@ -142,7 +142,6 @@ class SelectPlayerScene extends React.Component<Props, State> {
               ) {
                 disabled.push(doublesKey.replace(selectedPlayer, ''));
               }
-              console.log(count, playedDoubles);
             }
           }
         }
@@ -168,7 +167,7 @@ class SelectPlayerScene extends React.Component<Props, State> {
     this.setState({ selected, disabled: this.validate(playerId) }, () => {
       if (selected.length === (params.data.type === 'DOUBLES' ? 2 : 1)) {
         const result = [];
-        for (let itemIdx of selected) {
+        for (const itemIdx of selected) {
           result.push(player[itemIdx]);
         }
         this.props.setPlayer(result);
@@ -203,57 +202,47 @@ class SelectPlayerScene extends React.Component<Props, State> {
   private renderSeparator = () => {
     return <Separator image />;
   };
-
-  public render() {
-    return (
-      <Content
-        data={this.props.player}
-        renderItem={this.renderItem}
-        extraData={this.state.selected}
-        renderSeparator={this.renderSeparator}
-      />
-    );
-  }
 }
 
-interface StateProps {
-  player: Array<any>;
+interface IIStateProps {
+  player: any[];
   modus: any;
   sets: any;
 }
-interface DispatchProps {
-  next: Function;
-  close: Function;
-  setPlayer: Function;
+interface IIDispatchProps {
+  next: () => void;
+  close: () => void;
+  setPlayer: (player: any) => void;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, props: IProps): IIStateProps {
   const { matchId, team } = getNavigationStateParams(props.navigation);
   return {
-    player: getFixturePlayerList(state, matchId, team),
     modus: getFixtureModus(state, matchId),
+    player: getFixturePlayerList(state, matchId, team),
     sets: getFixtureGames(state, matchId),
   };
 }
 
 function mapDispatchToProps(
   dispatch: Dispatch<any>,
-  props: Props,
-): DispatchProps {
+  props: IProps,
+): IIDispatchProps {
   const params = getNavigationStateParams(props.navigation);
   return {
+    close: () => dispatch(hidePlayer()),
     next: () =>
       dispatch(
         navigate({
-          routeName: Routes.selectPlayer,
           params: {
             ...params,
             team: 'away',
             title: `${params.data.name} ${Strings.AWAY}`,
           },
+          routeName: Routes.selectPlayer,
         }),
       ),
-    close: () => dispatch(hidePlayer()),
+
     setPlayer: (player: any) =>
       dispatch(
         params.team === 'home'
@@ -278,14 +267,14 @@ const SelectPlayer = connect(mapStateToProps, mapDispatchToProps)(
 export const SelectPlayerScenes = StackNavigator(
   {
     [Routes.selectPlayer]: {
-      screen: SelectPlayer,
-      navigationOptions: ({ navigation }) => ({
-        title: getNavigationStateParams(navigation).title,
+      navigationOptions: ({ navigation }: any) => ({
         headerLeft:
           getNavigationStateParams(navigation).team === 'away'
             ? undefined
             : HeaderCloseIcon(navigation, hidePlayer()),
+        title: getNavigationStateParams(navigation).title,
       }),
+      screen: SelectPlayer,
     },
   },
   headerNavigationOptions,

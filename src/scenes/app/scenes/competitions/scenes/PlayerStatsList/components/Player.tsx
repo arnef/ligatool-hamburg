@@ -18,13 +18,13 @@
  *
  */
 
+import { Image, ListItem, MatchStatsBar, Text } from '@app/components';
 import * as React from 'react';
 import { View } from 'react-native';
-import { ListItem, Text, Image, MatchStatsBar } from '@app/components';
 
 import styles from '../styles';
 
-interface Props {
+interface IProps {
   player: any;
   overallWin: number;
   overallLost: number;
@@ -36,12 +36,7 @@ interface Props {
   onPress?: (player: any) => void;
 }
 
-export class Player extends React.PureComponent<Props> {
-  private onPress = (player: any) => () => {
-    if (this.props.onPress) {
-      this.props.onPress(player);
-    }
-  };
+export class Player extends React.PureComponent<IProps> {
   public render() {
     return (
       <ListItem onPress={this.onPress(this.props.player)}>
@@ -76,13 +71,13 @@ export class Player extends React.PureComponent<Props> {
           <View style={styles.row}>
             <MatchStatsBar
               stats={{
-                wins: this.props.overallWin,
-                lost: this.props.overallLost,
                 draws: this.props.overallDraw,
+                lost: this.props.overallLost,
                 matches:
                   this.props.overallWin +
                   this.props.overallLost +
                   this.props.overallDraw,
+                wins: this.props.overallWin,
               }}
             />
           </View>
@@ -90,4 +85,10 @@ export class Player extends React.PureComponent<Props> {
       </ListItem>
     );
   }
+
+  private onPress = (player: any) => () => {
+    if (this.props.onPress) {
+      this.props.onPress(player);
+    }
+  };
 }

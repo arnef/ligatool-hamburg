@@ -17,13 +17,11 @@
  * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import * as React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { Strings } from '@app/lib/strings';
 
-import { Routes } from './routes';
 import { AppScenes } from './app';
 import { LoginScenes } from './login';
+import { Routes } from './routes';
 import { SelectPlayerScenes } from './select-player';
 
 export const Screens = StackNavigator(
@@ -34,7 +32,7 @@ export const Screens = StackNavigator(
   },
   {
     headerMode: 'none',
-    mode: 'modal',
     initialRouteName: Routes.app,
+    mode: 'modal',
   },
 );

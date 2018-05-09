@@ -18,22 +18,22 @@
  *
  */
 
+import { darken } from '@app/helper';
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
-import { connect } from 'react-redux';
-import { darken } from '@app/helper';
+
 import styles from './styles';
 
-export interface StaticListHeaderProps {
+export interface IStaticListHeaderProps {
   style?: ViewStyle;
   color?: string;
 }
 
 export class StaticListHeader extends React.PureComponent<
-  StaticListHeaderProps
+  IStaticListHeaderProps
 > {
   public render() {
-    const headerStyle: Array<ViewStyle> = [
+    const headerStyle: ViewStyle[] = [
       styles.row,
       { backgroundColor: darken(this.props.color, 0.05) },
     ];

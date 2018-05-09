@@ -18,15 +18,15 @@
  *
  */
 
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  container: {
+    marginTop: Math.round(Dimensions.get('window').height * 0.25),
+  },
   outside: {
     backgroundColor: 'rgba(0,0,0,0.2)',
     flex: 1,
     justifyContent: 'flex-end',
-  },
-  container: {
-    marginTop: Math.round(Dimensions.get('window').height * 0.25),
   },
 });

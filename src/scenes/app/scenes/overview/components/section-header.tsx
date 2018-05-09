@@ -18,24 +18,24 @@
  *
  */
 
+import { Text } from '@app/components';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Text } from '@app/components';
 
-interface SectionHeaderProps {
+interface ISectionHeaderProps {
   title: string;
 }
 
-export class SectionHeader extends React.PureComponent<SectionHeaderProps> {
+export class SectionHeader extends React.PureComponent<ISectionHeaderProps> {
   public render() {
     return (
       <View style={{ paddingTop: 4, elevation: 5, alignItems: 'center' }}>
         <View
           style={{
-            paddingVertical: 4,
-            paddingHorizontal: 8,
-            borderRadius: 6,
             backgroundColor: '#dedede',
+            borderRadius: 6,
+            paddingHorizontal: 8,
+            paddingVertical: 4,
           }}
         >
           <Text bold>{`${this.props.title}`}</Text>

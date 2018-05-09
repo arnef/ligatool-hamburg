@@ -19,15 +19,16 @@
  */
 
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
+
 import styles from './styles';
 
-interface Props {
+interface IProps {
   noPadding?: boolean;
 }
-export class Group extends React.PureComponent<Props> {
+export class Group extends React.PureComponent<IProps> {
   public render() {
-    const style: Array<ViewStyle> = [styles.group];
+    const style: ViewStyle[] = [styles.group];
     if (this.props.noPadding) {
       style.push({ paddingTop: 0 });
     }

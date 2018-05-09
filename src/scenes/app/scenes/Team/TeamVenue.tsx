@@ -18,29 +18,17 @@
  *
  */
 
-import * as React from 'react';
-import { Platform, Linking, Alert } from 'react-native';
 import { ListItem, Text } from '@app/components';
-import { Strings } from '@app/lib/strings';
 import { IS_IOS } from '@app/consts';
+import { Strings } from '@app/lib/strings';
+import * as React from 'react';
+import { Alert, Linking } from 'react-native';
 
-interface Props {
+interface IProps {
   venue: any;
   color: string;
 }
-export class TeamVenue extends React.PureComponent<Props> {
-  private onPress = () => {
-    const address = `${this.props.venue.street}, ${this.props.venue.zipCode} ${
-      this.props.venue.city
-    }`;
-    const uri = IS_IOS
-      ? 'http://maps.apple.com/?address='
-      : 'geo:53.5586526,9.6476386?q=';
-
-    Linking.openURL(uri + encodeURI(address)).catch(() => {
-      Alert.alert(Strings.MAPS_APP_NOT_FOUND);
-    });
-  };
+export class TeamVenue extends React.PureComponent<IProps> {
   public render() {
     return (
       <ListItem.Group>
@@ -56,4 +44,17 @@ export class TeamVenue extends React.PureComponent<Props> {
       </ListItem.Group>
     );
   }
+
+  private onPress = () => {
+    const address = `${this.props.venue.street}, ${this.props.venue.zipCode} ${
+      this.props.venue.city
+    }`;
+    const uri = IS_IOS
+      ? 'http://maps.apple.com/?address='
+      : 'geo:53.5586526,9.6476386?q=';
+
+    Linking.openURL(uri + encodeURI(address)).catch(() => {
+      Alert.alert(Strings.MAPS_APP_NOT_FOUND);
+    });
+  };
 }

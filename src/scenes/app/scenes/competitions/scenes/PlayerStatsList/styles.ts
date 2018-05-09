@@ -21,38 +21,38 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  competitiveIndex: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    width: 38,
+  },
   container: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    marginVertical: 8,
+  },
+  matches: {
+    textAlign: 'center',
+    width: 38,
+  },
+  playerImage: {
+    marginHorizontal: 8,
+    width: 24,
+  },
+  playerName: {
     flex: 1,
   },
   position: {
     alignItems: 'center',
     width: 20,
   },
-  playerImage: {
-    marginHorizontal: 8,
-    width: 24,
+  rate: {
+    textAlign: 'center',
+    width: 42,
   },
   row: {
     flexDirection: 'row',
-  },
-  playerName: {
-    flex: 1,
-  },
-  rate: {
-    width: 42,
-    textAlign: 'center',
-  },
-  matches: {
-    width: 38,
-    textAlign: 'center',
-  },
-  competitiveIndex: {
-    width: 38,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  header: {
-    flexDirection: 'row',
-    marginVertical: 8,
   },
 });

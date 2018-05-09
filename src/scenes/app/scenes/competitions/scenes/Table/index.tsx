@@ -18,44 +18,26 @@
  *
  */
 
-import * as React from 'react';
-import { View } from 'react-native';
-import { connect, Dispatch } from 'react-redux';
-import { StaticListHeader, Text, Separator, Content } from '@app/components';
+import { Content, Separator, StaticListHeader, Text } from '@app/components';
+import { Strings } from '@app/lib/strings';
 import { getLeague } from '@app/redux/modules/leagues';
 import {
   getNavigationStateParams,
   navigate,
 } from '@app/redux/modules/navigation';
 import { Routes } from '@app/scenes/routes';
-import { Strings } from '@app/lib/strings';
+import * as React from 'react';
+import { View } from 'react-native';
+import { connect, Dispatch } from 'react-redux';
 
-import { TableItem } from './TableItem';
 import styles from './styles';
+import { TableItem } from './TableItem';
 
-interface Props extends StateProps, DispatchProps {
+interface IProps extends IStateProps, IDispatchProps {
   navigation: any;
 }
 
-class Table extends React.PureComponent<Props> {
-  private onPress = (team: any) => () => {
-    this.props.openTeam(team);
-  };
-
-  private renderItem = ({ item }: any): React.ReactElement<any> => {
-    return (
-      <TableItem
-        details={this.props.showDetails}
-        data={item}
-        onPress={this.onPress(item)}
-      />
-    );
-  };
-
-  private renderSeparator = () => {
-    return <Separator table image />;
-  };
-
+class Table extends React.PureComponent<IProps> {
   public render() {
     return (
       <View style={styles.container}>
@@ -96,40 +78,58 @@ class Table extends React.PureComponent<Props> {
       </View>
     );
   }
+
+  private onPress = (team: any) => () => {
+    this.props.openTeam(team);
+  };
+
+  private renderItem = ({ item }: any): React.ReactElement<any> => {
+    return (
+      <TableItem
+        details={this.props.showDetails}
+        data={item}
+        onPress={this.onPress(item)}
+      />
+    );
+  };
+
+  private renderSeparator = () => {
+    return <Separator table image />;
+  };
 }
 
-interface StateProps {
-  table: Array<any>;
+interface IStateProps {
+  table: any[];
   showDetails: boolean;
 }
-interface DispatchProps {
+interface IDispatchProps {
   getTable: () => void;
   openTeam: (team: any) => void;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, props: IProps): IStateProps {
   const lid = getNavigationStateParams(props.navigation).id;
   const league = state.leagues[lid];
   return {
-    table: league ? league.table : null,
     showDetails: league ? league.standing > 0 : false,
+    table: league ? league.table : null,
   };
 }
 function mapDispatchToProps(
   dispatch: Dispatch<any>,
-  props: Props,
-): DispatchProps {
+  props: IProps,
+): IDispatchProps {
   return {
     getTable: () =>
       dispatch(getLeague(getNavigationStateParams(props.navigation).id)),
     openTeam: (team: any) =>
       dispatch(
         navigate({
-          routeName: Routes.teamDetails,
           params: {
             team: { id: team.teamId, groupId: team.groupId },
             title: team.teamName,
           },
+          routeName: Routes.teamDetails,
         }),
       ),
   };

@@ -18,27 +18,36 @@
  *
  */
 
-import * as React from 'react';
-import { connect } from 'react-redux';
 import { MatchList } from '@app/components';
-import { getMatches } from '@app/redux/modules/myteam';
-import { TabNavigator } from 'react-navigation';
 import { topTabBarNavigationOptions } from '@app/containers/navigation';
-import { Routes } from '@app/scenes/routes';
 import { Strings } from '@app/lib/strings';
-import { getActiveTeam } from '@app/redux/modules/user';
 import {
-  getPlayedFixturesByTeam,
   getNextFixturesByTeam,
+  getPlayedFixturesByTeam,
 } from '@app/redux/modules/fixtures';
+import { getMatches } from '@app/redux/modules/myteam';
 import { navigate } from '@app/redux/modules/navigation';
+import { getActiveTeam } from '@app/redux/modules/user';
+import { Routes } from '@app/scenes/routes';
+import { TabNavigator } from 'react-navigation';
+import { connect, Dispatch } from 'react-redux';
+
 import { ConnectedTeam } from '../Team';
+
+interface IStateProps {
+  matches: any[];
+}
+interface IDispatchProps {
+  onPress: (fixture: any) => void;
+  onRefresh: () => void;
+}
 
 export const MyTeam = TabNavigator(
   {
     [Routes.myTeamPlayed]: {
-      screen: connect(
-        (state, props) => {
+      navigationOptions: { title: Strings.PAST_MATCHES },
+      screen: connect<IStateProps, IDispatchProps, any>(
+        (state: any): IStateProps => {
           const team = getActiveTeam(state);
           return {
             matches: team
@@ -46,23 +55,23 @@ export const MyTeam = TabNavigator(
               : [],
           };
         },
-        dispatch => ({
-          onRefresh: () => dispatch(getMatches()),
+        (dispatch: Dispatch<any>): IDispatchProps => ({
           onPress: (fixture: any): void => {
             dispatch(
               navigate({
-                routeName: Routes.fixtureDetails,
                 params: { id: fixture.id, title: fixture.competitionName },
+                routeName: Routes.fixtureDetails,
               }),
             );
           },
+          onRefresh: () => dispatch(getMatches()),
         }),
       )(MatchList),
-      navigationOptions: { title: Strings.PAST_MATCHES },
     },
     [Routes.myTeamUpcomming]: {
-      screen: connect(
-        state => {
+      navigationOptions: { title: Strings.NEXT_MATCHES },
+      screen: connect<IStateProps, IDispatchProps, any>(
+        (state: any): IStateProps => {
           const team = getActiveTeam(state);
 
           return {
@@ -71,23 +80,22 @@ export const MyTeam = TabNavigator(
               : [],
           };
         },
-        dispatch => ({
-          onRefresh: () => dispatch(getMatches()),
+        (dispatch: Dispatch<any>): IDispatchProps => ({
           onPress: (fixture: any): void => {
             dispatch(
               navigate({
-                routeName: Routes.fixtureDetails,
                 params: { id: fixture.id, title: fixture.competitionName },
+                routeName: Routes.fixtureDetails,
               }),
             );
           },
+          onRefresh: () => dispatch(getMatches()),
         }),
       )(MatchList),
-      navigationOptions: { title: Strings.NEXT_MATCHES },
     },
     [Routes.myTeamDetails]: {
-      screen: ConnectedTeam,
       navigationOptions: { title: Strings.TEAM_INFO },
+      screen: ConnectedTeam,
     },
   },
   {

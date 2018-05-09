@@ -1,29 +1,29 @@
 import { combineReducers } from 'redux';
-import nav from './modules/navigation';
-import settings from './modules/settings';
+
 import auth from './modules/auth';
-import myTeam from './modules/myteam';
+import drawer from './modules/drawer';
+import fixtures from './modules/fixtures';
 import leagues from './modules/leagues';
 import loading from './modules/loading';
-import teams from './modules/teams';
+import myTeam from './modules/myteam';
+import nav from './modules/navigation';
 import players from './modules/player';
-import drawer from './modules/drawer';
 import search from './modules/search';
-import fixtures from './modules/fixtures';
+import settings from './modules/settings';
+import teams from './modules/teams';
 import user from './modules/user';
 
 export default combineReducers({
-  app: (state = {}) => state,
-  nav,
-  settings,
   auth,
-  myTeam,
+  drawer,
+  fixtures,
   leagues,
   loading,
-  teams,
+  myTeam,
+  nav,
   players,
-  drawer,
   search,
-  fixtures,
+  settings,
+  teams,
   user,
 });

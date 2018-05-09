@@ -19,25 +19,25 @@
  */
 
 import * as React from 'react';
-import { Image as RNImage, ViewStyle, ImageURISource } from 'react-native';
+import { Image as RNImage, ImageURISource, ViewStyle } from 'react-native';
 
 import styles from './styles';
 
-interface Props {
+interface IProps {
   url?: string;
   source?: any;
   size?: number;
   width?: number;
   height?: number;
-  style?: ViewStyle | Array<ViewStyle>;
+  style?: ViewStyle | ViewStyle[];
 }
 
-export class Image extends React.PureComponent<Props> {
+export class Image extends React.PureComponent<IProps> {
   public render() {
     const source: ImageURISource = this.props.url
       ? { uri: this.props.url }
       : this.props.source;
-    const style: Array<ViewStyle> = [styles.image];
+    const style: ViewStyle[] = [styles.image];
     if (this.props.size) {
       style.push({ height: this.props.size, width: this.props.size });
     }

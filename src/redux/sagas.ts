@@ -1,79 +1,93 @@
+/**
+ * Copyright (C) 2018 Arne Feil
+ *
+ * This file is part of DTFB App.
+ *
+ * DTFB App is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * DTFB App is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+import { DATE_FORMAT, DATETIME_DB } from '@app/config/settings';
+import { getMatchDays } from '@app/helper';
+import * as api from '@app/lib/api';
+import { currentRoute, findRouteKey } from '@app/lib/NavUtils';
+import * as NotificationManager from '@app/lib/NotificationManager';
+import { Routes } from '@app/scenes/routes';
+import _ from 'lodash';
 import moment from 'moment';
 import { StatusBar } from 'react-native';
-import { takeEvery, put, call, select } from 'redux-saga/effects';
-import _ from 'lodash';
 import { REHYDRATE } from 'redux-persist';
-import * as api from '@app/lib/api';
-import * as NotificationManager from '@app/lib/NotificationManager';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
+
+import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
+import * as AuthActions from './modules/auth';
+import * as DrawerActions from './modules/drawer';
 import {
-  SUGGEST_SCORE,
-  INSERT_RESULTS,
+  ACCEPT_FIXTURE_DATE,
+  ACCEPT_FIXTURE_RESULT,
+  FILTER_PASSED,
+  FILTER_TODAY,
+  FILTER_UPCOMMING,
+  fixtureSort,
   GET_MATCH,
   GET_MATCH_DONE,
+  getFixture,
+  getFixtureDates,
+  getFixtureDefaultLineUp,
+  getFixtureGame,
+  getFixtureGames,
+  getFixtureModus,
+  SET_FIXTURE_DATA,
+  SET_FIXTURE_GAME_AWAY_PLAYER,
+  SET_FIXTURE_GAME_RESULT,
+  SET_FIXTURES,
+  setFixtureData,
+  setFixtureDates,
+  setFixtureMeta,
+  setFixtures,
+  setOverview,
+  STATUS_CONFIRMED,
+  STATUS_FINISHED,
+  STATUS_IN_PLAY,
+  STATUS_POSTPONED,
+  STATUS_SCHEDUELED,
   SUGGEST_DATETIME,
-} from './modules/matches';
-import { GET_MY_TEAM_MATCHES } from './modules/myteam';
+  SUGGEST_FIXTURE_DATES,
+  SUGGEST_FIXTURE_RESULT,
+} from './modules/fixtures';
 import {
-  GET_LEAGUES,
   GET_LEAGUE,
   GET_LEAGUE_DONE,
   GET_LEAGUE_MATCHES,
   GET_LEAGUE_MATCHES_DONE,
   GET_LEAGUE_PLAYER_STATS,
   GET_LEAGUE_PLAYER_STATS_DONE,
+  GET_LEAGUES,
 } from './modules/leagues';
 import * as LoadingActions from './modules/loading';
-import { GET_TEAM, GET_TEAM_DONE, GET_TEAM_MATCHES } from './modules/teams';
-import * as AuthActions from './modules/auth';
+import { GET_MY_TEAM_MATCHES } from './modules/myteam';
 import * as NavigationActions from './modules/navigation';
 import * as PlayerActions from './modules/player';
-import * as MatchUtils from '@app/lib/MatchUtils';
-import * as DrawerActions from './modules/drawer';
 import * as SettingsActions from './modules/settings';
-import { Routes } from '@app/scenes/routes';
-import { getMatchDays } from '@app/helper';
-import { currentRoute, findRouteKey } from '@app/lib/NavUtils';
-import { DATE_FORMAT, DATETIME_DB } from '@app/config/settings';
-
+import { GET_TEAM, GET_TEAM_DONE, GET_TEAM_MATCHES } from './modules/teams';
 import {
-  setFixtures,
-  setFixtureData,
-  setFixtureMeta,
-  SET_FIXTURE_GAME_RESULT,
-  getFixtureModus,
-  getFixtureGame,
-  getFixture,
-  setFixtureDates,
-  getFixtureDates,
-  SUGGEST_FIXTURE_DATES,
-  ACCEPT_FIXTURE_DATE,
-  SUGGEST_FIXTURE_RESULT,
-  ACCEPT_FIXTURE_RESULT,
-  SET_FIXTURE_GAME_AWAY_PLAYER,
-  getFixtureGames,
-  getFixtureDefaultLineUp,
-  FILTER_PASSED,
-  FILTER_TODAY,
-  FILTER_UPCOMMING,
-  STATUS_CONFIRMED,
-  STATUS_FINISHED,
-  STATUS_IN_PLAY,
-  STATUS_POSTPONED,
-  STATUS_SCHEDUELED,
-  fixtureSort,
-  setOverview,
-  SET_FIXTURES,
-  SET_FIXTURE_DATA,
-} from './modules/fixtures';
-import {
+  getActiveTeam,
+  USER_REMOVE_TEAM,
   userAddTeam,
   userSetApiKey,
   userSetToken,
-  getActiveTeam,
-  USER_REMOVE_TEAM,
-  getColor,
 } from './modules/user';
-import { QUERY_FIXTURE_OVERVIEW, QUERY_PLAYER_STATS } from './actions';
 
 function* queryOverviewSaga() {
   try {
@@ -82,20 +96,19 @@ function* queryOverviewSaga() {
     const state = yield select();
     let updateDrawer = false;
 
-    for (let match of matchesData.data) {
+    for (const match of matchesData.data) {
       if (!state.drawer[match.competitionId]) {
         updateDrawer = true;
         break;
       }
     }
     yield put(setFixtures(_.keyBy(matchesData.data, 'id')));
-    // yield put(setOverview(overview));
-    // yield overviewWrapper();
+    yield overviewWrapper();
     yield put(LoadingActions.hide());
     NotificationManager.removeAllNotifications();
     if (updateDrawer) {
-      const leagues = yield call(api.getLeagues);
-      yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
+      const competitions = yield call(api.getLeagues);
+      yield put(DrawerActions.setLeagues(_.keyBy(competitions.data, 'id')));
     }
   } catch (ex) {
     console.warn(ex);
@@ -114,22 +127,22 @@ function* overviewWrapper() {
     }),
   );
 }
-function buildOverview(data, filter) {
-  const sections = {};
+function buildOverview(data: any, filter: string) {
+  const sections: { [key: string]: any } = {};
   const today = moment();
   // for (let id in get(state).data) {
-  for (let fixture of data) {
+  for (const fixture of data) {
     // const fixture = getFixture(state, id);
     const diff =
-      parseInt(today.format('YYYYMMDD')) -
-      parseInt(moment(fixture.date, DATETIME_DB).format('YYYYMMDD'));
+      parseInt(today.format('YYYYMMDD'), 10) -
+      parseInt(moment(fixture.date, DATETIME_DB).format('YYYYMMDD'), 10);
     const key = moment(fixture.date, DATETIME_DB).format(DATE_FORMAT);
     if (filter === FILTER_TODAY) {
       if (fixture.status === STATUS_IN_PLAY || diff === 0) {
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
         }
-        sections[key].data.push(fixture);
+        sections[key].data.push(fixture.id);
       }
     } else if (filter === FILTER_PASSED) {
       if (
@@ -139,7 +152,7 @@ function buildOverview(data, filter) {
         if (!sections[key]) {
           sections[key] = { data: [], title: key };
         }
-        sections[key].data.push(fixture);
+        sections[key].data.push(fixture.id);
       }
     } else if (filter === FILTER_UPCOMMING) {
       if (
@@ -152,20 +165,21 @@ function buildOverview(data, filter) {
           sections[key] = { data: [], title: key };
         }
 
-        sections[key].data.push(fixture);
+        sections[key].data.push(fixture.id);
       }
     }
   }
-  for (let key in sections) {
-    sections[key].data.sort(fixtureSort);
-    sections[key].data = sections[key].data.map(f => f.id);
+  for (const key in sections.keys) {
+    if (key) {
+      sections[key].data.sort(fixtureSort);
+      sections[key].data = sections[key].data.map((f: any) => f.id);
+    }
   }
   return _.values(sections);
 }
 
 function* myTeam() {
   try {
-    console.log('query my tram data');
     const state = yield select();
     const team = getActiveTeam(state);
     const { data } = yield call(api.getTeamMatches, team.id);
@@ -178,8 +192,8 @@ function* myTeam() {
 function* leagues() {
   try {
     yield put(LoadingActions.show());
-    const leagues = yield call(api.getLeagues);
-    yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
+    const competitions = yield call(api.getLeagues);
+    yield put(DrawerActions.setLeagues(_.keyBy(competitions.data, 'id')));
   } catch (ex) {
     console.warn(ex);
     yield put(LoadingActions.error(ex.message));
@@ -188,7 +202,7 @@ function* leagues() {
   }
 }
 
-function* getMatch(action) {
+function* getMatch(action: any) {
   try {
     yield refreshToken();
     yield put(LoadingActions.show());
@@ -204,13 +218,13 @@ function* getMatch(action) {
   }
 }
 
-function* getLeague(action) {
+function* getLeague(action: any) {
   try {
     yield put(LoadingActions.show());
     const league = yield call(api.getLeague, action.payload.id);
     yield put({
-      type: GET_LEAGUE_DONE,
       payload: { ...league.data, table: league.meta.leagueTable },
+      type: GET_LEAGUE_DONE,
     });
   } catch (ex) {
     console.warn(ex);
@@ -220,18 +234,17 @@ function* getLeague(action) {
   }
 }
 
-function* getLeagueMatches(action) {
+function* getLeagueMatches(action: any) {
   try {
     yield put(LoadingActions.show());
     const matches = yield call(api.getLeagueMatches, action.payload.id);
-    // yield put({ type: GET_MATCHES, payload: matches.meta.fixtures });
     yield put(setFixtures(_.keyBy(matches.meta.fixtures, 'id')));
     yield put({
-      type: GET_LEAGUE_MATCHES_DONE,
       payload: {
         ...getMatchDays(matches.meta.fixtures),
         id: `${action.payload.id}`,
       },
+      type: GET_LEAGUE_MATCHES_DONE,
     });
   } catch (ex) {
     console.warn(ex);
@@ -241,14 +254,14 @@ function* getLeagueMatches(action) {
   }
 }
 
-function* getLeaguePlayerStats(action) {
+function* getLeaguePlayerStats(action: any) {
   const id = action.payload.id || action.payload.competitionId;
   try {
     yield put(LoadingActions.show());
     const player = yield call(api.getLeaguePlayers, id);
     yield put({
-      type: GET_LEAGUE_PLAYER_STATS_DONE,
       payload: { id: `${action.payload.id}`, players: player.data },
+      type: GET_LEAGUE_PLAYER_STATS_DONE,
     });
   } catch (ex) {
     console.warn(ex);
@@ -258,21 +271,21 @@ function* getLeaguePlayerStats(action) {
   }
 }
 
-function* getTeam(action) {
+function* getTeam(action: any) {
   try {
     yield put(LoadingActions.show());
     const { data, meta } = yield call(api.getTeam, action.payload.id);
     yield put({
-      type: GET_TEAM_DONE,
       payload: {
         ...data,
-        venue: meta.venue,
-        player: meta.player,
-        contact: meta.contact,
         club: meta.club,
-        standing: meta.standing,
+        contact: meta.contact,
         homeFixture: meta.homeFixture,
+        player: meta.player,
+        standing: meta.standing,
+        venue: meta.venue,
       },
+      type: GET_TEAM_DONE,
     });
   } catch (ex) {
     console.warn(ex);
@@ -282,7 +295,7 @@ function* getTeam(action) {
   }
 }
 
-function* getTeamMatches(action) {
+function* getTeamMatches(action: any) {
   try {
     yield put(LoadingActions.show());
     const { data } = yield call(api.getTeamMatches, action.payload.id);
@@ -295,14 +308,13 @@ function* getTeamMatches(action) {
   }
 }
 
-function* login(action) {
+function* login(action: any) {
   try {
     yield put(LoadingActions.show());
     const { data } = yield call(api.authenticate, action.payload);
     const apiKey = data.token;
     yield put(userSetApiKey(apiKey));
     const { data: token } = yield call(api.refreshAuthentication, apiKey);
-    console.log(token);
     yield put(userSetToken(token.token, token.accessForTeams, token.expires));
     api.setAuthorization(token.token);
     yield put(NavigationActions.hideLogin(action.next));
@@ -321,8 +333,8 @@ function* hideLogin() {
     const modal =
       state.nav.navigation.routes[state.nav.navigation.index].routeName;
     yield put({
-      type: NavigationActions.BACK,
       key: findRouteKey(state.nav.navigation, modal),
+      type: NavigationActions.BACK,
     });
     if (modal === Routes.welcome) {
       yield queryOverviewSaga();
@@ -332,7 +344,7 @@ function* hideLogin() {
   }
 }
 
-function* getPlayer(action) {
+function* getPlayer(action: any) {
   try {
     yield put(LoadingActions.show());
     const { data, meta } = yield call(api.getPlayer, action.payload.id);
@@ -345,57 +357,10 @@ function* getPlayer(action) {
   }
 }
 
-function* updateMatch(action) {
-  try {
-    const { id, sets } = action.payload;
-    const state = yield select();
-    const match = state.matches[id];
-    const payload = [];
-    for (let i in sets) {
-      const set = sets[i];
-      payload.push({
-        home_player_1_id: set.homePlayer1 ? set.homePlayer1.id : null,
-        home_player_2_id: set.homePlayer2 ? set.homePlayer2.id : null,
-        away_player_1_id: set.awayPlayer1 ? set.awayPlayer1.id : null,
-        away_player_2_id: set.awayPlayer2 ? set.awayPlayer2.id : null,
-        goals_home: set.result ? set.result.goalsHome : null,
-        goals_away: set.result ? set.result.goalsAway : null,
-        key: set.key,
-        game_number: set.gameNumber,
-      });
-    }
-
-    const { data, meta } = yield call(api.patchFixtureGames, match, payload);
-    let newMatch = {
-      ...data,
-      sets: _.keyBy(meta.games, 'gameNumber'),
-      modus: meta.modus,
-      teamHome: { player: meta.player.home },
-      teamAway: { player: meta.player.away },
-    };
-    newMatch.isAdmin = true;
-    newMatch = {
-      ...newMatch,
-      games: MatchUtils.sets(
-        match,
-        meta.modus.lineUp[meta.modus.fixtureModus || 'default'],
-      ),
-    };
-
-    yield put({ type: GET_MATCH_DONE, payload: newMatch });
-    // yield sortOverview();
-  } catch (ex) {
-    console.warn(ex);
-    yield put(LoadingActions.error(ex.message));
-  } finally {
-    yield put(LoadingActions.hideModal());
-  }
-}
-
-function* navigate(action) {
+function* navigate(action: any) {
   try {
     yield put(LoadingActions.hide());
-    let state = yield select();
+    const state = yield select();
     if (action.routeName === 'SelectGroup') {
       StatusBar.setBarStyle('light-content');
     }
@@ -491,7 +456,7 @@ function* navigate(action) {
   }
 }
 
-function* getFixtureDatesSaga(action) {
+function* getFixtureDatesSaga(action: any) {
   try {
     const { id } = action.payload;
     const state = yield select();
@@ -540,25 +505,29 @@ function* rehydrate() {
     const state = yield select();
     if (_.size(state.drawer) === 0) {
       yield put(NavigationActions.navigate({ routeName: Routes.welcome }));
-      const leagues = yield call(api.getLeagues);
-      yield put(DrawerActions.setLeagues(_.keyBy(leagues.data, 'id')));
+      const competitions = yield call(api.getLeagues);
+      yield put(DrawerActions.setLeagues(_.keyBy(competitions.data, 'id')));
     } else {
       StatusBar.setBarStyle('light-content');
-      //check teams has correct groupID
+      // check teams has correct groupID
       let update = false;
-      for (let cid in state.drawer) {
-        const c = state.drawer[cid];
-        for (let team of c.teams) {
-          if (team.groupId && team.groupId.indexOf('-') === -1) {
-            update = true;
+      for (const cid in state.drawer) {
+        if (cid) {
+          const c = state.drawer[cid];
+          for (const team of c.teams) {
+            if (team.groupId && team.groupId.indexOf('-') === -1) {
+              update = true;
+              break;
+            }
+          }
+          if (update) {
             break;
           }
         }
-        if (update) break;
       }
       if (update) {
         const { data } = yield call(api.getLeagues);
-        yield put(DrawerActions.setLeagues(_.keyBy(data), 'id'));
+        yield put(DrawerActions.setLeagues(_.keyBy(data, 'id')));
       }
       yield queryOverviewSaga();
       yield refreshToken();
@@ -577,8 +546,8 @@ function* showLogin() {
     if (team && !team.access) {
       yield put(
         NavigationActions.navigate({
-          routeName: 'LoginView',
           params: { init: true },
+          routeName: 'LoginView',
         }),
       );
     }
@@ -587,22 +556,7 @@ function* showLogin() {
   }
 }
 
-function* insertResults(action) {
-  try {
-    const state = yield select();
-    const match = state.matches[action.payload.id];
-    if (match) {
-      yield put({
-        type: GET_MATCH_DONE,
-        payload: { ...match, games: MatchUtils.sets(match) },
-      });
-    }
-  } catch (ex) {
-    console.warn(ex);
-  }
-}
-
-function* suggestDatetime(action) {
+function* suggestDatetime(action: any) {
   try {
     yield put(LoadingActions.showModal());
     const match = yield call(api.updateMatch, action.payload.id, {
@@ -629,32 +583,17 @@ function* completeSetup() {
   if (_.size(state.settings.notification.leagues) > 0) {
     yield put(
       SettingsActions.setNotification({
-        on: true,
-        live: true,
         ended: true,
+        live: true,
         matchdate: state.auth.api_key ? true : false,
+        on: true,
       }),
     );
   }
   yield put(NavigationActions.hideStart());
 }
 
-function* checkChange(/*action*/) {
-  // const { loading, overview: data, nav } = yield select();
-  // const today = moment().format(DATE_FORMAT);
-  // const route = currentRoute(nav.navigation);
-  //TODO check app change overview
-  // if (
-  //   route.routeName === RoutesOld.OVERVIEW &&
-  //   action.payload === 'active' &&
-  //   !loading.list &&
-  //   data.next[today]
-  // ) {
-  //   yield queryOverviewSaga();
-  // }
-}
-
-function* fetchUserTeam(action) {
+function* fetchUserTeam(action: any) {
   const { id } = action.payload;
   try {
     yield put(LoadingActions.showModal());
@@ -669,7 +608,7 @@ function* fetchUserTeam(action) {
   }
 }
 
-function* setFixtureGameResultSaga(action) {
+function* setFixtureGameResultSaga(action: any) {
   try {
     yield put(LoadingActions.showModal());
     const { payload } = action;
@@ -680,19 +619,19 @@ function* setFixtureGameResultSaga(action) {
     const match = getFixture(state, payload.id);
     if (defaultModus != null) {
       const body = [];
-      for (let item of defaultModus) {
-        for (let gameNumber of item.gameNumbers) {
+      for (const item of defaultModus) {
+        for (const gameNumber of item.gameNumbers) {
           const game = getFixtureGame(state, payload.id, gameNumber);
           if (game.result || (game.homePlayer1 && game.awayPlayer1)) {
             body.push({
-              home_player_1_id: game.homePlayer1 ? game.homePlayer1.id : null,
-              home_player_2_id: game.homePlayer2 ? game.homePlayer2.id : null,
               away_player_1_id: game.awayPlayer1 ? game.awayPlayer1.id : null,
               away_player_2_id: game.awayPlayer2 ? game.awayPlayer2.id : null,
-              goals_home: game.result ? game.result.goalsHome : null,
-              goals_away: game.result ? game.result.goalsAway : null,
-              key: item.key,
               game_number: gameNumber,
+              goals_away: game.result ? game.result.goalsAway : null,
+              goals_home: game.result ? game.result.goalsHome : null,
+              home_player_1_id: game.homePlayer1 ? game.homePlayer1.id : null,
+              home_player_2_id: game.homePlayer2 ? game.homePlayer2.id : null,
+              key: item.key,
             });
           }
         }
@@ -722,7 +661,7 @@ function* setFixtureGameResultSaga(action) {
   }
 }
 
-function delay(time) {
+function delay(time: number) {
   return new Promise(resolve => {
     setTimeout(resolve, time);
   });
@@ -749,7 +688,7 @@ function* toggleNotificationSaga() {
   }
 }
 
-function* subscribeTeamSaga(action) {
+function* subscribeTeamSaga(action: any) {
   try {
     const { id } = action.payload;
     yield call(api.postNotificationTeam, id);
@@ -758,7 +697,7 @@ function* subscribeTeamSaga(action) {
   }
 }
 
-function* subscribeFixtureSaga(action) {
+function* subscribeFixtureSaga(action: any) {
   const { fixtureId } = action.payload;
   const state = yield select();
   try {
@@ -771,7 +710,7 @@ function* subscribeFixtureSaga(action) {
   }
 }
 
-function* unsubscribeFixtureSaga(action) {
+function* unsubscribeFixtureSaga(action: any) {
   const { fixtureId } = action.payload;
   const state = yield select();
   const fixture = getFixture(state, fixtureId);
@@ -787,7 +726,7 @@ function* unsubscribeFixtureSaga(action) {
   }
 }
 
-function* suggestFixtureDatesSaga(action) {
+function* suggestFixtureDatesSaga(action: any) {
   try {
     yield put(LoadingActions.showModal());
     const { id } = action.payload;
@@ -810,7 +749,7 @@ function* suggestFixtureDatesSaga(action) {
   }
 }
 
-function* acceptFixtureDateSaga(action) {
+function* acceptFixtureDateSaga(action: any) {
   const { fixtureId, datetimeId } = action.payload;
   try {
     // yield put(Loading)
@@ -823,7 +762,7 @@ function* acceptFixtureDateSaga(action) {
   }
 }
 
-function* setPlayerAwaySaga(action) {
+function* setPlayerAwaySaga(action: any) {
   try {
     const { id } = action.payload;
     const state = yield select();
@@ -834,8 +773,8 @@ function* setPlayerAwaySaga(action) {
       const fixtureGames = getFixtureGames(state, id);
       const fixtureLineUp = getFixtureDefaultLineUp(state, id);
       let allPlayersSet = fixtureLineUp.length > 0;
-      for (let game of fixtureLineUp) {
-        for (let set of game.gameNumbers) {
+      for (const game of fixtureLineUp) {
+        for (const set of game.gameNumbers) {
           allPlayersSet =
             allPlayersSet &&
             (fixtureGames[set] &&
@@ -843,7 +782,7 @@ function* setPlayerAwaySaga(action) {
               fixtureGames[set].awayPlayer1)
               ? true
               : false;
-          if (game.type == 'DOUBLES') {
+          if (game.type === 'DOUBLES') {
             allPlayersSet =
               allPlayersSet &&
               (fixtureGames[set] &&
@@ -866,7 +805,7 @@ function* setPlayerAwaySaga(action) {
   }
 }
 
-function* unsubscribeTeamSaga(action) {
+function* unsubscribeTeamSaga(action: any) {
   try {
     const { id } = action.payload;
     yield call(api.deleteNotificationTeam, id);
@@ -880,7 +819,6 @@ function removeTeamSaga() {
 }
 
 export default function* sagas() {
-  yield takeEvery(LoadingActions.APP_STATE_CHANGED, checkChange);
   // yield takeEvery(GET_OVERVIEW_MATCHES, overview);
   yield takeEvery(GET_MY_TEAM_MATCHES, myTeam);
   yield takeEvery(GET_LEAGUES, leagues);
@@ -899,8 +837,6 @@ export default function* sagas() {
   yield takeEvery(NavigationActions.BACK, navigate);
   yield takeEvery(REHYDRATE, rehydrate);
   yield takeEvery(SettingsActions.SET_FCM_TOKEN, updateNotifications);
-  yield takeEvery(SUGGEST_SCORE, updateMatch);
-  yield takeEvery(INSERT_RESULTS, insertResults);
   yield takeEvery(SUGGEST_DATETIME, suggestDatetime);
   yield takeEvery(NavigationActions.HIDE_START_MODAL, hideStart);
   yield takeEvery(SettingsActions.COMPLETE_SETUP, completeSetup);

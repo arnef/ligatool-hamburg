@@ -1,15 +1,18 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
+import { applyMiddleware, compose, createStore } from 'redux';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 
-import sagas from '../redux/sagas';
 import reducer from '../redux/reducer';
+import sagas from '../redux/sagas';
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [
   sagaMiddleware,
-  createReactNavigationReduxMiddleware('root', state => state.nav.navigation),
+  createReactNavigationReduxMiddleware(
+    'root',
+    (state: any) => state.nav.navigation,
+  ),
 ];
 
 const config = {

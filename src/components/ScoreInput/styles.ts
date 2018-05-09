@@ -18,59 +18,59 @@
  *
  */
 
-import { StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  buttonRow: {
-    flexDirection: 'row',
-    borderTopColor: '#dedede',
-    borderTopWidth: 1,
-    paddingBottom: 0,
-    marginTop: 12,
-  },
-  containerSet: {
-    padding: 12,
-  },
-  containerPlayers: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  containerPlayer: {
-    alignItems: 'center',
-    flex: 1,
-    paddingTop: 8,
-  },
-  containerScore: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingBottom: 8,
-  },
   button: {
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-around',
   },
   buttonDisabled: {
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-around',
     opacity: 0.5,
   },
   buttonIcon: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
   },
-  iconButton: {
-    color: '#909090',
+  buttonRow: {
+    borderTopColor: '#dedede',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    marginTop: 12,
+    paddingBottom: 0,
   },
   buttonText: {
     color: '#909090',
     fontWeight: 'bold',
     marginVertical: 12,
     textAlign: 'center',
+  },
+  containerPlayer: {
+    alignItems: 'center',
+    flex: 1,
+    paddingTop: 8,
+  },
+  containerPlayers: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  containerScore: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingBottom: 8,
+  },
+  containerSet: {
+    padding: 12,
+  },
+  iconButton: {
+    color: '#909090',
   },
   input: Platform.select({
     android: {

@@ -19,7 +19,8 @@
  */
 
 import * as React from 'react';
-import { View, Image, Text } from 'react-native';
+import { Image, Text, View } from 'react-native';
+
 import styles from './styles';
 
 export class LaunchScreen extends React.PureComponent {

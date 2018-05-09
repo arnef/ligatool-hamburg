@@ -18,34 +18,27 @@
  *
  */
 
+import { Content, ListItem, Separator, Text } from '@app/components';
+import { Strings } from '@app/lib/strings';
+import {
+  getNavigationStateParams,
+  navigate,
+} from '@app/redux/modules/navigation';
+import { getTeam } from '@app/redux/modules/teams';
+import { getActiveTeam, getColor } from '@app/redux/modules/user';
+import { Routes } from '@app/scenes/routes';
 import * as React from 'react';
 import { View } from 'react-native';
 import { connect, Dispatch } from 'react-redux';
-import { Separator, ListItem, Text, Content } from '@app/components';
-import {
-  navigate,
-  getNavigationStateParams,
-} from '@app/redux/modules/navigation';
-import { Strings } from '@app/lib/strings';
-import { getActiveTeam, getColor } from '@app/redux/modules/user';
-import { Routes } from '@app/scenes/routes';
-import { getTeam } from '@app/redux/modules/teams';
+
+import { TeamContact } from './TeamContact';
 import { TeamInfo } from './TeamInfo';
 import { TeamVenue } from './TeamVenue';
-import { TeamContact } from './TeamContact';
 
-interface Props extends StateProps, DispatchProps {
+interface IProps extends IStateProps, IDispatchProps {
   navigation: any;
 }
-class Team extends React.PureComponent<Props> {
-  private onRefresh = () => {
-    this.props.getTeam(this.props.teamId);
-  };
-
-  private onOpenPlayer = (player: any) => () => {
-    this.props.openPlayer(player);
-  };
-
+class Team extends React.PureComponent<IProps> {
   public render() {
     const { team, color } = this.props;
     return (
@@ -79,20 +72,28 @@ class Team extends React.PureComponent<Props> {
       </Content>
     );
   }
+
+  private onRefresh = () => {
+    this.props.getTeam(this.props.teamId);
+  };
+
+  private onOpenPlayer = (player: any) => () => {
+    this.props.openPlayer(player);
+  };
 }
 
-interface StateProps {
+interface IStateProps {
   team?: any;
   color?: any;
   teamId?: string;
 }
 
-interface DispatchProps {
+interface IDispatchProps {
   getTeam: (teamId: string) => void;
   openPlayer: (player: any) => void;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, props: IProps): IStateProps {
   const teamId = getNavigationStateParams(props.navigation)
     ? getNavigationStateParams(props.navigation).team.id
     : getActiveTeam(state)
@@ -100,23 +101,20 @@ function mapStateToProps(state: any, props: Props): StateProps {
       : null;
 
   return {
-    team: state.teams[teamId],
     color: getColor(state),
-    teamId: teamId,
+    team: state.teams[teamId],
+    teamId,
   };
 }
 
-function mapDispatchToProps(
-  dispatch: Dispatch<any>,
-  props: Props,
-): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): IDispatchProps {
   return {
     getTeam: (teamId: string) => dispatch(getTeam(teamId)),
     openPlayer: (player: any) =>
       dispatch(
         navigate({
-          routeName: Routes.playerDetails,
           params: player,
+          routeName: Routes.playerDetails,
         }),
       ),
   };

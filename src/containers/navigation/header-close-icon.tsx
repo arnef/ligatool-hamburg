@@ -18,25 +18,34 @@
  *
  */
 
+import { Icon, Touchable } from '@app/components';
 import * as React from 'react';
-import { StyleSheet, Platform } from 'react-native';
-import {
-  getNavigationStateParams,
-  hideLogin,
-} from '@app/redux/modules/navigation';
-import { Touchable, Icon } from '@app/components';
+import { Platform, StyleSheet } from 'react-native';
 
-export default (navigation, action) => (
-  <Touchable
-    borderless
-    pressColor={'rgba(255, 255, 255, .8)'}
-    style={styles.container}
-    onPress={() => {
-      navigation.dispatch(action);
-    }}
-  >
-    <Icon name="close" color="#fff" style={styles.icon} size={iconSize} />
-  </Touchable>
+interface ICloseIcon {
+  action: any;
+  navigation: any;
+}
+class CloseIcon extends React.PureComponent<ICloseIcon> {
+  public render() {
+    return (
+      <Touchable
+        pressColor="rgba(255,255,255, .8)"
+        style={styles.container}
+        onPress={this.onPress}
+      >
+        <Icon name="close" color="#fff" style={styles.icon} size={iconSize} />
+      </Touchable>
+    );
+  }
+
+  private onPress = () => {
+    this.props.navigation.dispatch(this.props.action);
+  };
+}
+
+export default (navigation: any, action: any) => (
+  <CloseIcon navigation={navigation} action={action} />
 );
 
 const iconSize = Platform.OS === 'android' ? 24 : 20;

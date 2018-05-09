@@ -7,10 +7,12 @@
       "node node_modules/react-native/local-cli/cli.js start --config ../../../../rn-cli.config.js",
     "test": "jest",
     "fmt": "prettier --write 'src/**/*.{js,ts,tsx,json}' 'index.js'",
+    "lint": "tslint --fix 'src/**/*.{ts,tsx}'",
+    "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx,json}": ["prettier --write", "git add"]
+    "*.{ts,tsx}": ["prettier --write", "tslint --fix", "git add"]
   },
   "dependencies": {
     "appcenter": "^1.4.0",
@@ -39,6 +41,7 @@
     "@types/lodash": "^4.14.108",
     "@types/react": "^16.3.12",
     "@types/react-native": "^0.55.4",
+    "@types/react-native-android-taskdescription": "^1.0.0",
     "@types/react-native-vector-icons": "^4.6.1",
     "@types/react-navigation": "^1.5.7",
     "@types/react-redux": "^5.0.16",
@@ -51,12 +54,17 @@
     "react-native-typescript-transformer": "^1.2.4",
     "react-test-renderer": "16.3.1",
     "tslib": "^1.9.0",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.12.0",
+    "tslint-consistent-codestyle": "^1.13.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^2.8.3"
   },
   "prettier": {
     "trailingComma": "all",
     "singleQuote": true,
-    "bracketSpacing": true
+    "bracketSpacing": true,
+    "semi": true
   },
   "jest": {
     "preset": "react-native"

@@ -18,25 +18,25 @@
  *
  */
 
+import { Icon, Image } from '@app/components';
 import * as React from 'react';
 import { ViewStyle } from 'react-native';
-import { Icon, Image } from '@app/components';
+
 import styles from './styles';
-import { ViewStatic } from 'react-native';
 
 const iconSize: number = 32;
 const bigIconSize: number = 42;
 
-interface Props {
+interface IProps {
   team?: string;
   left?: boolean;
   size?: number;
   big?: boolean;
 }
 
-export class TeamLogo extends React.PureComponent<Props> {
+export class TeamLogo extends React.PureComponent<IProps> {
   public render() {
-    const style: Array<ViewStyle> = [styles.image];
+    const style: ViewStyle[] = [styles.image];
     if (this.props.left) {
       style.push({ marginHorizontal: 0, marginRight: 16 });
     }

@@ -18,37 +18,85 @@
  *
  */
 
-import * as React from 'react';
-import { View, Alert } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { connect } from 'react-redux';
-import { Routes } from '@app/scenes/routes';
 import {
-  ListItem,
-  TeamLogo,
-  Touchable,
+  Content,
   Icon,
-  Text,
+  ListItem,
   Separator,
   Switch,
-  Content,
+  TeamLogo,
+  Text,
+  Touchable,
 } from '@app/components';
+import { headerNavigationOptions } from '@app/containers/navigation';
 import { Strings } from '@app/lib/strings';
+import { navigate, showLogin } from '@app/redux/modules/navigation';
+import * as SettingsActions from '@app/redux/modules/settings';
 import {
   getColor,
   getUserTeams,
   userRemoveTeam,
   userSetActiveTeam,
 } from '@app/redux/modules/user';
-import * as SettingsActions from '@app/redux/modules/settings';
-import { showLogin, navigate } from '@app/redux/modules/navigation';
+import { Routes } from '@app/scenes/routes';
+import * as React from 'react';
+import { Alert, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import { connect, Dispatch } from 'react-redux';
 
 import { SettingsNotificationCompetitions } from './scenes/competitions';
 import { SettingsNotiticationTeams } from './scenes/teams';
-import { headerNavigationOptions } from '@app/containers/navigation';
 
-interface SettingsProps extends StateProps, DispatchProps {}
-class SettingsScene extends React.Component<SettingsProps> {
+interface ISettingsProps extends IStateProps, IDispatchProps {}
+
+class SettingsScene extends React.Component<ISettingsProps> {
+  public render() {
+    return (
+      <Content>
+        <ListItem.Group>
+          <ListItem.Header title={Strings.USER_DATA} />
+          {this.renderUser()}
+        </ListItem.Group>
+        <Separator group />
+        {this.renderNotifications()}
+        <Separator group />
+        {this.renderInformation()}
+      </Content>
+    );
+  }
+
+  private onToggleNotificaiton = (key: string) => () => {
+    this.props.toggleNotification(key);
+  };
+
+  private onPressTeam = (team: any, idx: number) => () => {
+    this.props.setActiveTeam(idx);
+    if (!team.access) {
+      this.props.navigate({
+        params: { headerLeft: null },
+        routeName: Routes.login,
+      });
+    }
+  };
+
+  private onPressDelete = (team: any, idx: number) => () => {
+    Alert.alert(
+      Strings.CONFIRM_DELETE_TEAM_TITLE,
+      Strings.CONFIRM_DELETE_TEAM_MESSAGE.replace('{{team}}', team.name),
+      [
+        { text: Strings.NO },
+        {
+          onPress: () => {
+            this.props.unsubscribeTeam(team);
+            this.props.removeTeam(idx);
+          },
+          text: Strings.YES,
+        },
+      ],
+      { cancelable: true },
+    );
+  };
+
   private onSelectGroups = () => {
     this.props.navigate({
       routeName: Routes.settingsNotifications,
@@ -56,15 +104,7 @@ class SettingsScene extends React.Component<SettingsProps> {
   };
 
   private renderUser() {
-    const {
-      teams,
-      color,
-      active,
-      setActiveTeam,
-      login,
-      unsubscribeTeam,
-      removeTeam,
-    } = this.props;
+    const { teams, color, active, login } = this.props;
     if (teams.length > 0) {
       return (
         <View>
@@ -73,15 +113,7 @@ class SettingsScene extends React.Component<SettingsProps> {
               <TeamLogo team={team.emblemUrl} left />
               <Touchable
                 style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
-                onPress={() => {
-                  setActiveTeam(idx);
-                  if (!team.access) {
-                    this.props.navigate({
-                      routeName: Routes.login,
-                      params: { headerLeft: null },
-                    });
-                  }
-                }}
+                onPress={this.onPressTeam(team, idx)}
               >
                 {active === idx && (
                   <Icon
@@ -95,28 +127,7 @@ class SettingsScene extends React.Component<SettingsProps> {
                   <ListItem.Icon name="key" color={team.color} />
                 )}
               </Touchable>
-              <Touchable
-                onPress={() => {
-                  Alert.alert(
-                    Strings.CONFIRM_DELETE_TEAM_TITLE,
-                    Strings.CONFIRM_DELETE_TEAM_MESSAGE.replace(
-                      '{{team}}',
-                      team.name,
-                    ),
-                    [
-                      { text: Strings.NO },
-                      {
-                        text: Strings.YES,
-                        onPress: () => {
-                          unsubscribeTeam(team);
-                          removeTeam(idx);
-                        },
-                      },
-                    ],
-                    { cancelable: true },
-                  );
-                }}
-              >
+              <Touchable onPress={this.onPressDelete(team, idx)}>
                 <ListItem.Icon name="trash" right color={team.color} />
               </Touchable>
             </ListItem>
@@ -153,7 +164,7 @@ class SettingsScene extends React.Component<SettingsProps> {
           title={title}
           value={value}
           disabled={disabled}
-          onValueChange={() => this.props.toggleNotification(key)}
+          onValueChange={this.onToggleNotificaiton(key)}
         />
       </ListItem>
     );
@@ -211,81 +222,65 @@ class SettingsScene extends React.Component<SettingsProps> {
       </ListItem.Group>
     );
   }
-
-  public render() {
-    return (
-      <Content>
-        <ListItem.Group>
-          <ListItem.Header title={Strings.USER_DATA} />
-          {this.renderUser()}
-        </ListItem.Group>
-        <Separator group />
-        {this.renderNotifications()}
-        <Separator group />
-        {this.renderInformation()}
-      </Content>
-    );
-  }
 }
 
-interface StateProps {
+interface IStateProps {
   color: string;
-  teams: Array<any>;
+  teams: any[];
   active: number;
   settings: any;
   notificationEnabled: boolean;
   notificationInterim: boolean;
   notificationFinal: boolean;
 }
-interface DispatchProps {
-  navigate: Function;
-  setActiveTeam: Function;
-  login: Function;
-  unsubscribeTeam: Function;
-  removeTeam: Function;
-  toggleNotification: Function;
+interface IDispatchProps {
+  navigate: (route: any) => void;
+  setActiveTeam: (index: number) => void;
+  login: () => void;
+  unsubscribeTeam: (team: any) => void;
+  removeTeam: (team: any) => void;
+  toggleNotification: (key: string) => void;
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any): IStateProps {
   return {
-    color: getColor(state),
-    teams: getUserTeams(state),
     active: state.user.active,
-    settings: state.settings,
+    color: getColor(state),
     notificationEnabled: SettingsActions.notificationEnabled(state),
-    notificationInterim: SettingsActions.notificationInterimResults(state),
     notificationFinal: SettingsActions.notificationFinalResults(state),
+    notificationInterim: SettingsActions.notificationInterimResults(state),
+    settings: state.settings,
+    teams: getUserTeams(state),
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<any>): IDispatchProps {
   return {
-    removeTeam: (index: number) => dispatch(userRemoveTeam(index)),
-    unsubscribeTeam: (team: any) =>
-      dispatch(SettingsActions.unsubscribeTeam(team)),
-    setActiveTeam: (index: number) => dispatch(userSetActiveTeam(index)),
     login: () => dispatch(showLogin()),
-    navigate: route => dispatch(navigate(route)),
+    navigate: (route: any) => dispatch(navigate(route)),
+    removeTeam: (index: number) => dispatch(userRemoveTeam(index)),
+    setActiveTeam: (index: number) => dispatch(userSetActiveTeam(index)),
     toggleNotification: (key: string) =>
       dispatch(SettingsActions.toggleNotification(key)),
+    unsubscribeTeam: (team: any) =>
+      dispatch(SettingsActions.unsubscribeTeam(team)),
   };
 }
 
 export const Settings = StackNavigator(
   {
     [Routes.settings]: {
-      screen: connect(mapStateToProps, mapDispatchToProps)(SettingsScene),
       navigationOptions: { title: Strings.SETTINGS },
+      screen: connect(mapStateToProps, mapDispatchToProps)(SettingsScene),
     },
     [Routes.settingsNotifications]: {
-      screen: SettingsNotificationCompetitions,
       navigationOptions: { title: Strings.NOTIFICATIONS },
+      screen: SettingsNotificationCompetitions,
     },
     [Routes.settingsNotificationsTeams]: {
-      screen: SettingsNotiticationTeams,
       navigationOptions: { title: Strings.SELECT_TEAMS },
+      screen: SettingsNotiticationTeams,
     },
   },
   headerNavigationOptions,
 );
-// export const Settings =

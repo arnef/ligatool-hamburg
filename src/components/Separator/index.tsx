@@ -20,18 +20,19 @@
 
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
+
 import styles from './styles';
 
-interface Props {
+interface IProps {
   image?: boolean;
   table?: boolean;
   full?: boolean;
   group?: boolean;
 }
 
-export class Separator extends React.PureComponent<Props> {
+export class Separator extends React.PureComponent<IProps> {
   public render() {
-    const style: Array<ViewStyle> = [styles.separator];
+    const style: ViewStyle[] = [styles.separator];
     let marginLeft = 16;
     if (this.props.image) {
       marginLeft += 48;

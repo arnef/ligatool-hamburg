@@ -21,12 +21,12 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  activityIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   emptyListText: {
     padding: 16,
     textAlign: 'center',
-  },
-  activityIndicator: {
-    justifyContent: 'center',
-    flex: 1,
   },
 });

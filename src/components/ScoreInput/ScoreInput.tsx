@@ -18,14 +18,15 @@
  *
  */
 
-import * as React from 'react';
-import { View, TextInput, Platform, ActivityIndicator } from 'react-native';
-import { Card, Touchable, Text, Icon } from '@app/components';
-import { Strings } from '@app/lib/strings';
+import { Icon, Text, Touchable } from '@app/components';
 import { IS_ANDROID } from '@app/consts';
+import { Strings } from '@app/lib/strings';
+import * as React from 'react';
+import { TextInput, View } from 'react-native';
+
 import styles from './styles';
 
-interface Props {
+interface IProps {
   data: any;
   modus: any;
   getSet: (gameNumber: string) => any;
@@ -33,25 +34,25 @@ interface Props {
   onCancel: () => void;
 }
 
-interface State {
+interface IState {
   goalsHome?: string;
   goalsAway?: string;
   set: number;
 }
 
-export default class ScoreInput extends React.Component<Props, State> {
-  constructor(props: Props) {
+export default class ScoreInput extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      goalsHome: null,
       goalsAway: null,
+      goalsHome: null,
       set: 0,
     };
 
     this.onPressBack = this.onPressBack.bind(this);
   }
 
-  componentDidMount(): void {
+  public componentDidMount(): void {
     let idx = 0;
     const { gameNumbers } = this.props.data;
 
@@ -66,19 +67,19 @@ export default class ScoreInput extends React.Component<Props, State> {
     });
   }
 
-  onSave = (): void => {
+  public onSave = (): void => {
     this.props.onSave(this.props.data, {
-      goalsHome: parseInt(this.state.goalsHome, 10),
-      goalsAway: parseInt(this.state.goalsAway, 10),
       gameNumber: this.props.data.gameNumbers[this.state.set],
+      goalsAway: parseInt(this.state.goalsAway, 10),
+      goalsHome: parseInt(this.state.goalsHome, 10),
     });
   };
 
-  onPressBack = (): void => {
+  public onPressBack = (): void => {
     this.setState({ set: this.state.set - 1 });
   };
 
-  onTextChange = (
+  public onTextChange = (
     key: 'goalsHome' | 'goalsAway',
     otherKey: 'goalsHome' | 'goalsAway',
   ) => (value: string): void => {
@@ -89,7 +90,7 @@ export default class ScoreInput extends React.Component<Props, State> {
     const goals = parseInt(value, 10);
     this.setState<'goalsHome' | 'goalsAway'>({ [key]: value });
 
-    if (!this.state[otherKey] && goals == 2 && winGoals == 2) {
+    if (!this.state[otherKey] && goals === 2 && winGoals === 2) {
       this.setState<'goalsHome' | 'goalsAway'>(
         {
           [otherKey]: `0`,
@@ -109,7 +110,7 @@ export default class ScoreInput extends React.Component<Props, State> {
     }
   };
 
-  renderInput(key: 'goalsHome' | 'goalsAway') {
+  public renderInput(key: 'goalsHome' | 'goalsAway') {
     const otherKey: 'goalsHome' | 'goalsAway' =
       key === 'goalsAway' ? 'goalsHome' : 'goalsAway';
 
@@ -127,7 +128,7 @@ export default class ScoreInput extends React.Component<Props, State> {
     );
   }
 
-  render() {
+  public render() {
     const { getSet, data } = this.props;
 
     const playerHome1 = getSet(data.gameNumbers[0]).homePlayer1;

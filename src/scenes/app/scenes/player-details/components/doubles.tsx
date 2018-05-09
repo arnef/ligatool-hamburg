@@ -18,17 +18,18 @@
  *
  */
 
+import { ListItem, Score, Text } from '@app/components';
 import * as React from 'react';
 import { View } from 'react-native';
-import { ListItem, Text, Score } from '@app/components';
+
 import { Player } from './player';
 
-interface Props {
+interface IProps {
   id: string;
   data: any;
 }
 
-export class Doubles extends React.PureComponent<Props> {
+export class Doubles extends React.PureComponent<IProps> {
   public render() {
     const { data } = this.props;
     const result =

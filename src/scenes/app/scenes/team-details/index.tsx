@@ -18,26 +18,26 @@
  *
  */
 
-import * as React from 'react';
-import { TabNavigator } from 'react-navigation';
-import { Routes } from '@app/scenes/routes';
+import { MatchList } from '@app/components';
+import { topTabBarNavigationOptions } from '@app/containers/navigation';
+import { Strings } from '@app/lib/strings';
 import { getFixtureByTeam } from '@app/redux/modules/fixtures';
 import { getNavigationStateParams } from '@app/redux/modules/navigation';
-import { connect, Dispatch } from 'react-redux';
 import { getMatches } from '@app/redux/modules/teams';
-import { MatchList } from '@app/components';
-import { Strings } from '@app/lib/strings';
+import { Routes } from '@app/scenes/routes';
+import { TabNavigator } from 'react-navigation';
+import { connect, Dispatch } from 'react-redux';
+
 import { ConnectedTeam } from '../Team';
-import { topTabBarNavigationOptions } from '@app/containers/navigation';
 
 function mapStateToProps(state: any, props: any) {
   return {
-    teams: state.teams,
     matches: getFixtureByTeam(
       state,
       getNavigationStateParams(props.navigation).team.groupId ||
         getNavigationStateParams(props.navigation).team.id,
     ),
+    teams: state.teams,
   };
 }
 
@@ -56,12 +56,12 @@ function mapDispatchToProps(dispatch: Dispatch<any>, props: any) {
 export const TeamDetails = TabNavigator(
   {
     [Routes.teamDetails]: {
-      screen: ConnectedTeam,
       navigationOptions: { title: Strings.TEAM_INFO },
+      screen: ConnectedTeam,
     },
     [Routes.teamFixtures]: {
-      screen: connect(mapStateToProps, mapDispatchToProps)(MatchList),
       navigationOptions: { title: Strings.MATCHES },
+      screen: connect(mapStateToProps, mapDispatchToProps)(MatchList),
     },
   },
   topTabBarNavigationOptions,

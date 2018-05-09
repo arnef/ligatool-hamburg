@@ -18,47 +18,48 @@
  *
  */
 
+import {
+  ActionSheet,
+  Content,
+  Icon,
+  MatchItem,
+  StaticListHeader,
+  Text,
+  Touchable,
+} from '@app/components';
+import { Strings } from '@app/lib/strings';
+import { getFixturesByCompetition } from '@app/redux/modules/fixtures';
+import { getMatches } from '@app/redux/modules/leagues';
+import {
+  getNavigationStateParams,
+  navigate,
+} from '@app/redux/modules/navigation';
+import { getColor } from '@app/redux/modules/user';
+import { Routes } from '@app/scenes/routes';
+import { sortBy } from 'lodash';
 import * as React from 'react';
 import { View } from 'react-native';
 import { connect, Dispatch } from 'react-redux';
-import { getMatches } from '@app/redux/modules/leagues';
-import {
-  navigate,
-  getNavigationStateParams,
-} from '@app/redux/modules/navigation';
-import {
-  ActionSheet,
-  StaticListHeader,
-  Touchable,
-  Text,
-  Icon,
-  MatchItem,
-  Content,
-} from '@app/components';
-import styles from './styles';
-import { getColor } from '@app/redux/modules/user';
-import { getFixturesByCompetition } from '@app/redux/modules/fixtures';
-import { sortBy } from 'lodash';
-import { Strings } from '@app/lib/strings';
-import { Routes } from '@app/scenes/routes';
 
-interface Props extends StateProps, DispatchProps {
+import styles from './styles';
+
+interface IProps extends IStateProps, IDispatchProps {
   navigation: any;
 }
-interface State {
+interface IState {
   selectedMatchDay?: string;
 }
-class SelectableMatchList extends React.Component<Props, State> {
-  container: any;
+class SelectableMatchList extends React.Component<IProps, IState> {
+  public container: any;
 
-  constructor(props: Props) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       selectedMatchDay: null,
     };
   }
 
-  onOpenMenu = (matchDays: Array<string>) => () => {
+  public onOpenMenu = (matchDays: string[]) => () => {
     ActionSheet.show(
       {
         options: matchDays,
@@ -67,22 +68,22 @@ class SelectableMatchList extends React.Component<Props, State> {
     );
   };
 
-  onSelectMatchDay = (matchDay: string) => () => {
+  public onSelectMatchDay = (matchDay: string) => () => {
     this.setState({ selectedMatchDay: matchDay });
     if (this.container && this.container.scrollToOffset) {
       this.container.scrollToOffset({ x: 0, y: 0, animated: true });
     }
   };
 
-  onPress = (fixture: any) => (): void => {
+  public onPress = (fixture: any) => (): void => {
     this.props.openFixture(fixture);
   };
 
-  renderItem = ({ item }: any): React.ReactElement<any> => {
+  public renderItem = ({ item }: any): React.ReactElement<any> => {
     return <MatchItem data={item} onPress={this.onPress(item)} />;
   };
 
-  render() {
+  public render() {
     const { matchdays, selected, data } = this.props;
 
     const matchList = data[this.state.selectedMatchDay || selected];
@@ -109,29 +110,31 @@ class SelectableMatchList extends React.Component<Props, State> {
           renderItem={this.renderItem}
           listEmptyText={Strings.NO_FIXTURES}
           data={matchList}
-          reference={container => {
-            this.container = container;
-          }}
+          reference={this.refContainer}
         />
       </View>
     );
   }
+
+  private refContainer = (container: any) => {
+    this.container = container;
+  };
 }
 
 const fixturesByMatchDate = (
   state: any,
-  props: Props,
-): { data: any; matchdays: Array<string>; selected?: string } => {
+  props: IProps,
+): { data: any; matchdays: string[]; selected?: string } => {
   const fixtures = getFixturesByCompetition(
     state,
     getNavigationStateParams(props.navigation).id,
   );
-  const data: { data: any; matchdays: Array<string>; selected?: string } = {
+  const data: { data: any; matchdays: string[]; selected?: string } = {
     data: {},
     matchdays: [],
     selected: null,
   };
-  for (let fixture of fixtures) {
+  for (const fixture of fixtures) {
     if (!data.data[fixture.matchday]) {
       data.data[fixture.matchday] = [];
       data.matchdays.push(fixture.matchday);
@@ -141,48 +144,48 @@ const fixturesByMatchDate = (
       data.selected = fixture.matchday;
     }
   }
-  data.matchdays = sortBy(data.matchdays, i => parseInt(i));
+  data.matchdays = sortBy(data.matchdays, i => parseInt(i, 10));
   if (!data.selected) {
     data.selected = data.matchdays[data.matchdays.length - 1];
   }
 
   return data;
 };
-interface StateProps {
+interface IStateProps {
   color?: string;
   loading?: boolean;
-  matchdays: Array<string>;
+  matchdays: string[];
   selected?: string;
   data: any;
 }
-interface DispatchProps {
+interface IDispatchProps {
   getMatches: () => void;
   openFixture: (fixture: any) => void;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, props: IProps): IStateProps {
   const data = fixturesByMatchDate(state, props);
 
   return {
+    color: getColor(state),
+    data: data.data,
     matchdays: data.matchdays,
     selected: data.selected,
-    data: data.data,
-    color: getColor(state),
   };
 }
 
 function mapDispatchToProps(
   dispatch: Dispatch<any>,
-  props: Props,
-): DispatchProps {
+  props: IProps,
+): IDispatchProps {
   return {
     getMatches: () =>
       dispatch(getMatches(getNavigationStateParams(props.navigation).id)),
     openFixture: (fixture: any) => {
       dispatch(
         navigate({
-          routeName: Routes.fixtureDetails,
           params: { id: fixture.id, title: fixture.competitionName },
+          routeName: Routes.fixtureDetails,
         }),
       );
     },

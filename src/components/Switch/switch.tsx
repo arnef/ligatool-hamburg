@@ -18,25 +18,24 @@
  *
  */
 
+import { Text, Touchable } from '@app/components';
+import { lighten } from '@app/helper';
 import * as React from 'react';
 import {
+  Platform,
   Switch as RNSwitch,
   SwitchProperties,
-  Platform,
   View,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { Touchable, Text } from '@app/components';
-import { getColor } from '@app/redux/modules/user';
-import { lighten } from '@app/helper';
+
 import styles from './styles';
 
-export interface SwitchProps extends SwitchProperties {
+export interface ISwitchProps extends SwitchProperties {
   title: string;
   color?: string;
 }
 
-export class Switch extends React.PureComponent<SwitchProps> {
+export class Switch extends React.PureComponent<ISwitchProps> {
   public render() {
     const {
       title,

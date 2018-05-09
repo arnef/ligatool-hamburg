@@ -21,21 +21,21 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  text: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#474747',
-  },
-  secondary: {
-    color: '#909090',
-  },
   bold: {
     fontWeight: 'bold',
   },
   center: {
     textAlign: 'center',
   },
+  secondary: {
+    color: '#909090',
+  },
   small: {
     fontSize: 12,
+  },
+  text: {
+    color: '#474747',
+    fontSize: 14,
+    fontWeight: '400',
   },
 });

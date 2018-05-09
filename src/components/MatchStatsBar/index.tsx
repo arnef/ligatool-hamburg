@@ -19,31 +19,32 @@
  */
 
 import * as React from 'react';
-import { View, Text, ViewStyle } from 'react-native';
+import { Text, View, ViewStyle } from 'react-native';
+
 import styles from './styles';
 
-interface Props {
+interface IProps {
   stats: { wins: number; matches: number; draws: number; lost: number };
 }
 const height = 14;
 
-export class MatchStatsBar extends React.PureComponent<Props> {
+export class MatchStatsBar extends React.PureComponent<IProps> {
   public render() {
-    const wins: Array<ViewStyle> = [
+    const wins: ViewStyle[] = [
       styles.wins,
       {
         flex: this.props.stats.wins / this.props.stats.matches,
         height,
       },
     ];
-    const draws: Array<ViewStyle> = [
+    const draws: ViewStyle[] = [
       styles.draws,
       {
         flex: this.props.stats.draws / this.props.stats.matches,
         height,
       },
     ];
-    const lost: Array<ViewStyle> = [
+    const lost: ViewStyle[] = [
       styles.lost,
       {
         flex: this.props.stats.lost / this.props.stats.matches,
@@ -53,26 +54,26 @@ export class MatchStatsBar extends React.PureComponent<Props> {
 
     if (this.props.stats.wins === 0) {
       draws.push({
-        borderTopLeftRadius: 8,
         borderBottomLeftRadius: 8,
+        borderTopLeftRadius: 8,
       });
       if (this.props.stats.draws === 0) {
         lost.push({
-          borderTopLeftRadius: 8,
           borderBottomLeftRadius: 8,
+          borderTopLeftRadius: 8,
         });
       }
     }
 
     if (this.props.stats.lost === 0) {
       draws.push({
-        borderTopRightRadius: 8,
         borderBottomRightRadius: 8,
+        borderTopRightRadius: 8,
       });
       if (this.props.stats.draws === 0) {
         wins.push({
-          borderTopRightRadius: 8,
           borderBottomRightRadius: 8,
+          borderTopRightRadius: 8,
         });
       }
     }

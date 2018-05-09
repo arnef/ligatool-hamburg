@@ -18,14 +18,12 @@
  *
  */
 
-import * as React from 'react';
-import { connect } from 'react-redux';
 import {
-  ListItem,
-  TeamLogo,
-  Switch,
   Content,
+  ListItem,
   Separator,
+  Switch,
+  TeamLogo,
 } from '@app/components';
 import { getNavigationStateParams } from '@app/redux/modules/navigation';
 import {
@@ -33,13 +31,25 @@ import {
   subscribeTeam,
   unsubscribeTeam,
 } from '@app/redux/modules/settings';
+import * as React from 'react';
+import { connect } from 'react-redux';
 import { Dispatch } from 'react-redux';
 
-interface Props extends StateProps, DispatchProps {
+interface IProps extends IStateProps, IDispatchProps {
   navigation: any;
 }
 
-class SettingsTeams extends React.PureComponent<Props> {
+class SettingsTeams extends React.PureComponent<IProps> {
+  public render() {
+    return (
+      <Content
+        data={this.props.teams}
+        renderItem={this.renderRow}
+        renderSeparator={Separator}
+      />
+    );
+  }
+
   private onToggleNotification = (team: any) => () => {
     if (team.subscribed) {
       this.props.unsubscribeTeam(team);
@@ -50,7 +60,7 @@ class SettingsTeams extends React.PureComponent<Props> {
 
   private renderRow = ({ item }: { item: any }) => {
     return (
-      <ListItem style={{ flex: 1 }}>
+      <ListItem>
         <TeamLogo team={item.emblemUrl} />
         <Switch
           title={item.name}
@@ -60,36 +70,26 @@ class SettingsTeams extends React.PureComponent<Props> {
       </ListItem>
     );
   };
-
-  public render() {
-    return (
-      <Content
-        data={this.props.teams}
-        renderItem={this.renderRow}
-        renderSeparator={Separator}
-      />
-    );
-  }
 }
 
-interface StateProps {
-  teams: Array<any>;
+interface IStateProps {
+  teams: any[];
 }
 
-interface DispatchProps {
-  subscribeTeam: Function;
-  unsubscribeTeam: Function;
+interface IDispatchProps {
+  subscribeTeam: (team: any) => void;
+  unsubscribeTeam: (team: any) => void;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, props: IProps): IStateProps {
   const teams = state.drawer[
     getNavigationStateParams(props.navigation).competitionId
   ]
     ? state.drawer[getNavigationStateParams(props.navigation).competitionId]
         .teams
     : [];
-  const mapedTeams: Array<any> = [];
-  for (let team of teams) {
+  const mapedTeams: any[] = [];
+  for (const team of teams) {
     const subscribed = notificationSubscribedForTeam(state, team);
     mapedTeams.push({
       ...team,
@@ -101,7 +101,7 @@ function mapStateToProps(state: any, props: Props): StateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): IDispatchProps {
   return {
     subscribeTeam: (team: any) => dispatch(subscribeTeam(team)),
     unsubscribeTeam: (team: any) => dispatch(unsubscribeTeam(team)),

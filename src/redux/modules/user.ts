@@ -1,3 +1,23 @@
+/**
+ * Copyright (C) 2018 Arne Feil
+ *
+ * This file is part of DTFB App.
+ *
+ * DTFB App is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * DTFB App is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 import { defaultColor } from '@app/config/settings';
 import { hex2hsl } from '@app/helper';
 
@@ -7,37 +27,46 @@ const USER_ADD_TEAM = 'user/ADD_TEAM';
 export const USER_REMOVE_TEAM = 'user/REMOVE_TEAM';
 const SET_ACTIVE_TEAM = 'user/SET_ACTIVE_TEAM';
 
-export const userSetApiKey = apiKey => ({
-  type: SET_API_KEY,
+export const userSetApiKey = (apiKey: string) => ({
   payload: { apiKey },
+  type: SET_API_KEY,
 });
 
-export const userSetToken = (token, ids, expires) => ({
-  type: SET_TOKEN,
+export const userSetToken = (
+  token: string,
+  ids: string[],
+  expires: string,
+) => ({
   payload: { token, ids, expires },
+  type: SET_TOKEN,
 });
 
-export const userAddTeam = team => ({
-  type: USER_ADD_TEAM,
+export const userAddTeam = (team: any) => ({
   payload: { team },
+  type: USER_ADD_TEAM,
 });
 
-export const userRemoveTeam = index => ({
+export const userRemoveTeam = (index: number) => ({
+  payload: { index },
   type: USER_REMOVE_TEAM,
-  payload: { index },
 });
 
-export const userSetActiveTeam = index => ({
+export const userSetActiveTeam = (index: number) => ({
+  payload: { index },
   type: SET_ACTIVE_TEAM,
-  payload: { index },
 });
 
-const defaultState = {
-  teams: [],
+export interface IUserState {
+  active: number;
+  teams: any[];
+}
+
+const defaultState: IUserState = {
   active: -1,
+  teams: [],
 };
 
-export default function reducer(state = defaultState, action) {
+export default function reducer(state = defaultState, action: any) {
   const { type, payload } = action;
 
   switch (type) {
@@ -66,9 +95,9 @@ export default function reducer(state = defaultState, action) {
             ...state.teams[state.active],
             access: {
               ...state.teams[state.active].access,
-              token: payload.token,
-              ids: payload.ids,
               expires: payload.expires,
+              ids: payload.ids,
+              token: payload.token,
             },
           },
           ...state.teams.slice(state.active + 1),
@@ -78,33 +107,33 @@ export default function reducer(state = defaultState, action) {
     case USER_ADD_TEAM:
       return {
         ...state,
+        active: state.teams.length,
         teams: [
           ...state.teams,
           {
-            id: payload.team.id,
-            groupId: payload.team.groupId,
-            name: payload.team.name,
-            emblemUrl: payload.team.emblemUrl,
-            color: payload.team.color,
             access: null,
+            color: payload.team.color,
+            emblemUrl: payload.team.emblemUrl,
+            groupId: payload.team.groupId,
+            id: payload.team.id,
+            name: payload.team.name,
           },
         ],
-        active: state.teams.length,
       };
 
     case USER_REMOVE_TEAM:
       return {
         ...state,
-        teams: [
-          ...state.teams.slice(0, payload.index),
-          ...state.teams.slice(payload.index + 1),
-        ],
         active:
-          payload.index == state.active
+          payload.index === state.active
             ? 0
             : payload.index < state.active
               ? state.active - 1
               : state.active,
+        teams: [
+          ...state.teams.slice(0, payload.index),
+          ...state.teams.slice(payload.index + 1),
+        ],
       };
 
     case SET_ACTIVE_TEAM:
@@ -118,8 +147,8 @@ export default function reducer(state = defaultState, action) {
 }
 
 /* selectors */
-const get = state => state.user;
-export const accessForTeams = state =>
+const get = (state: any) => state.user;
+export const accessForTeams = (state: any) =>
   get(state).active > -1 &&
   get(state).teams[get(state).active] &&
   get(state).teams[get(state).active].access &&
@@ -127,7 +156,7 @@ export const accessForTeams = state =>
     ? get(state).teams[get(state).active].access.ids
     : [];
 
-export const getColor = state => {
+export const getColor = (state: any) => {
   const color =
     get(state).active > -1 &&
     get(state).teams[get(state).active] &&
@@ -140,14 +169,15 @@ export const getColor = state => {
   return color;
 };
 
-export const getUserTeams = state => (get(state) ? get(state).teams : null);
+export const getUserTeams = (state: any) =>
+  get(state) ? get(state).teams : null;
 
-export const getActiveTeam = state =>
+export const getActiveTeam = (state: any) =>
   get(state).active > -1 && get(state).teams[get(state).active]
     ? get(state).teams[get(state).active]
     : null;
 
-export const getActiveTeamGroup = state => {
+export const getActiveTeamGroup = (state: any) => {
   if (get(state).active > -1 && get(state).teams[get(state).active]) {
     const team = get(state).teams[get(state).active];
     if (team.id && team.groupId && team.groupId.indexOf('-') === -1) {
@@ -160,6 +190,3 @@ export const getActiveTeamGroup = state => {
 
   return null;
 };
-// get(state).active > -1 && get(state).teams[get(state).active]
-//   ? (get(state).teams[get(state).active].groupId || get(state).teams[get(state).active].id)
-//   : null;

@@ -18,15 +18,15 @@
  *
  */
 
-import * as React from 'react';
 import { Icon } from '@app/components';
+import * as React from 'react';
 
-interface Props {
+interface IProps {
   name: string;
   color: string;
 }
 
-export class TabBarIcon extends React.PureComponent<Props> {
+export class TabBarIcon extends React.PureComponent<IProps> {
   public render() {
     const { name, color } = this.props;
     return <Icon name={name} color={color} size={32} />;

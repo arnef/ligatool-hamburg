@@ -1,8 +1,27 @@
-import { NavigationActions } from 'react-navigation';
+/**
+ * Copyright (C) 2018 Arne Feil
+ *
+ * This file is part of DTFB App.
+ *
+ * DTFB App is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * DTFB App is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 import { currentRoute } from '@app/lib/NavUtils';
 import { Screens } from '@app/scenes';
 import { Routes } from '@app/scenes/routes';
-import { HeaderCloseIcon } from '@app/containers/navigation';
+import { NavigationActions } from 'react-navigation';
 const routes = [
   Routes.overview,
   Routes.myTeam,
@@ -22,9 +41,19 @@ const HIDE_SEARCH = 'ligatool/navigation/HIDE_SEARCH';
 export const HIDE_START_MODAL = 'ligatool/navigation/HIDE_START_MODAL';
 export const OPEN_MY_TEAM = 'ligatool/navigation/OPEN_MY_TEAM';
 
-const defaultState = { navigation: null, activeItem: Routes.overview };
+export interface INavigationState {
+  navigation?: any;
+  activeItem: string;
+}
+const defaultState: INavigationState = {
+  activeItem: Routes.overview,
+  navigation: null,
+};
 // Reducer
-export default function reducer(state = defaultState, action) {
+export default function reducer(
+  state: INavigationState = defaultState,
+  action: any,
+) {
   switch (action.type) {
     case SHOW_LOG_IN_MODAL:
       state = {
@@ -41,12 +70,12 @@ export default function reducer(state = defaultState, action) {
         ...state,
         navigation: Screens.router.getStateForAction(
           NavigationActions.navigate({
-            routeName: Routes.selectPlayer,
             params: {
               ...action.payload,
-              title: `${action.payload.data.name} Heim`,
               team: 'home',
+              title: `${action.payload.data.name} Heim`,
             },
+            routeName: Routes.selectPlayer,
           }),
           state.navigation,
         ),
@@ -125,22 +154,22 @@ export function showLogin() {
   return { type: SHOW_LOG_IN_MODAL };
 }
 
-export function hideLogin(nextRoute) {
+export function hideLogin(nextRoute: any) {
   return { type: HIDE_LOG_IN_MODAL, next: nextRoute };
 }
 
-export function navigate(data) {
+export function navigate(data: any) {
   return NavigationActions.navigate(data);
 }
 
-export function setParams(options) {
+export function setParams(options: any) {
   return NavigationActions.setParams(options);
 }
 
-export function showPlayer(matchId, data) {
+export function showPlayer(matchId: string, data: any) {
   return {
-    type: SHOW_PLAYER_MODAL,
     payload: { matchId, data },
+    type: SHOW_PLAYER_MODAL,
   };
 }
 
@@ -161,11 +190,11 @@ export function hideStart() {
 }
 
 /* selectors */
-export const getNavigationStateParams = navigation =>
+export const getNavigationStateParams = (navigation: any) =>
   navigation.state && navigation.state.params ? navigation.state.params : null;
 
 // helper
-const recursiveFindRoute = (route, name) => {
+const recursiveFindRoute = (route: any, name: string) => {
   if (!route) {
     return null;
   } else if (route.routeName === name) {
@@ -173,8 +202,8 @@ const recursiveFindRoute = (route, name) => {
   } else if (!route.routes) {
     return null;
   } else {
-    for (let i = 0; i < route.routes.length; i++) {
-      const found = recursiveFindRoute(route.routes[i], name);
+    for (const r of route.routes) {
+      const found: string = recursiveFindRoute(r, name);
       if (found) {
         return found;
       }
@@ -184,7 +213,7 @@ const recursiveFindRoute = (route, name) => {
   return null;
 };
 
-const findRouteKey = (state, name) => {
+const findRouteKey = (state: any, name: string): string => {
   const found = recursiveFindRoute(state, name);
   if (found) {
     return found.key;

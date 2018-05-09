@@ -18,88 +18,49 @@
  *
  */
 
+import {
+  Button,
+  Content,
+  Icon,
+  ListItem,
+  Text,
+  Touchable,
+} from '@app/components';
+import { DATETIME_DB, DATETIME_FORMAT } from '@app/config/settings';
+import { Strings } from '@app/lib/strings';
+import {
+  acceptFixtureDate,
+  getFixtureDates,
+  removeFixtureDate,
+  setFixtureDate,
+  suggestFixtureDates,
+} from '@app/redux/modules/fixtures';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
+import { getColor } from '@app/redux/modules/user';
+import { range } from 'lodash';
+import { default as moment } from 'moment';
 import * as React from 'react';
 import { View } from 'react-native';
-import {
-  Content,
-  ListItem,
-  Touchable,
-  Text,
-  Icon,
-  Button,
-} from '@app/components';
-import { Strings } from '@app/lib/strings';
-import { range } from 'lodash';
-import styles from './styles';
-import { default as moment } from 'moment';
-import { DATETIME_DB, DATETIME_FORMAT } from '@app/config/settings';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { suggestDatetime } from '@app/redux/modules/matches';
-import { getNavigationStateParams } from '@app/redux/modules/navigation';
 import { connect, Dispatch } from 'react-redux';
-import { getColor } from '@app/redux/modules/user';
-import {
-  getFixtureDates,
-  setFixtureDate,
-  removeFixtureDate,
-  suggestFixtureDates,
-  acceptFixtureDate,
-} from '@app/redux/modules/fixtures';
 
-interface Props extends StateProps, DispatchProps {
+import styles from './styles';
+
+interface IProps extends IStateProps, IDispatchProps {
   navigation: any;
 }
-interface State {
+interface IState {
   index: number;
   defaultDate: Date;
 }
-class ChangeDateScene extends React.Component<Props, State> {
-  constructor(props: Props) {
+class ChangeDateScene extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      index: -1,
       defaultDate: undefined,
+      index: -1,
     };
   }
-
-  private onAcceptDate = (index: number) => () => {
-    const date = this.props.dates.dates[index];
-    if (date && date.id) {
-      this.props.acceptDate(date.id);
-    }
-  };
-
-  private onConfirm = d => {
-    const date = moment(d).seconds(0);
-    this.props.setFixtureDate(this.state.index, date.format(DATETIME_DB));
-    this.setState({ index: -1 });
-  };
-
-  private onCancel = () => {
-    this.setState({ index: -1 });
-  };
-
-  private onRemove = (index: number) => () => {
-    this.props.removeFixtureDate(index);
-  };
-
-  private onPressDate = (index: number) => () => {
-    const { dates } = this.props.dates;
-    const date = dates[index]
-      ? moment(dates[index], DATETIME_DB)
-      : moment()
-          .hour(20)
-          .minutes(0)
-          .seconds(0);
-    this.setState({
-      index,
-      defaultDate: date.toDate(),
-    });
-  };
-
-  private onSuggestDates = () => {
-    this.props.suggestDatetime();
-  };
 
   public render() {
     const data = this.props.dates;
@@ -140,7 +101,7 @@ class ChangeDateScene extends React.Component<Props, State> {
               {!data.meta.adminAccept &&
                 index < data.dates.length && (
                   <Touchable onPress={this.onRemove(index)}>
-                    <ListItem right color="red" name="remove-circle" />
+                    <ListItem.Icon right color="red" name="remove-circle" />
                   </Touchable>
                 )}
             </ListItem>
@@ -177,20 +138,58 @@ class ChangeDateScene extends React.Component<Props, State> {
       </Content>
     );
   }
+  private onAcceptDate = (index: number) => () => {
+    const date = this.props.dates.dates[index];
+    if (date && date.id) {
+      this.props.acceptDate(date.id);
+    }
+  };
+
+  private onConfirm = (d: Date) => {
+    const date = moment(d).seconds(0);
+    this.props.setFixtureDate(this.state.index, date.format(DATETIME_DB));
+    this.setState({ index: -1 });
+  };
+
+  private onCancel = () => {
+    this.setState({ index: -1 });
+  };
+
+  private onRemove = (index: number) => () => {
+    this.props.removeFixtureDate(index);
+  };
+
+  private onPressDate = (index: number) => () => {
+    const { dates } = this.props.dates;
+    const date = dates[index]
+      ? moment(dates[index], DATETIME_DB)
+      : moment()
+          .hour(20)
+          .minutes(0)
+          .seconds(0);
+    this.setState({
+      defaultDate: date.toDate(),
+      index,
+    });
+  };
+
+  private onSuggestDates = () => {
+    this.props.suggestDatetime();
+  };
 }
 
-interface StateProps {
+interface IStateProps {
   dates: any;
   color: string;
 }
-interface DispatchProps {
-  setFixtureDate: Function;
-  removeFixtureDate: Function;
-  suggestDatetime: Function;
-  acceptDate: Function;
+interface IDispatchProps {
+  setFixtureDate: (index: number, date: string) => void;
+  removeFixtureDate: (index: number) => void;
+  suggestDatetime: () => void;
+  acceptDate: (id: string) => void;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, props: IProps): IStateProps {
   return {
     color: getColor(state),
     dates: getFixtureDates(
@@ -202,16 +201,16 @@ function mapStateToProps(state: any, props: Props): StateProps {
 
 function mapDispatchToProps(
   dispatch: Dispatch<any>,
-  props: Props,
-): DispatchProps {
+  props: IProps,
+): IDispatchProps {
   const fixtureId = getNavigationStateParams(props.navigation).id;
   return {
-    setFixtureDate: (index: number, date: string) =>
-      dispatch(setFixtureDate(fixtureId, index, date)),
+    acceptDate: (id: string) => dispatch(acceptFixtureDate(fixtureId, id)),
     removeFixtureDate: (index: number) =>
       dispatch(removeFixtureDate(fixtureId, index)),
+    setFixtureDate: (index: number, date: string) =>
+      dispatch(setFixtureDate(fixtureId, index, date)),
     suggestDatetime: () => dispatch(suggestFixtureDates(fixtureId)),
-    acceptDate: (id: string) => dispatch(acceptFixtureDate(fixtureId, id)),
   };
 }
 

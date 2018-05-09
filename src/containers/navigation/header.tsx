@@ -18,27 +18,22 @@
  *
  */
 
+import { getColor } from '@app/redux/modules/user';
 import * as React from 'react';
 import { Platform } from 'react-native';
-import {
-  Header as RNHeader,
-  NavigationScreenProps,
-  StackNavigatorConfig,
-  HeaderProps,
-} from 'react-navigation';
+import { Header as RNHeader, HeaderProps } from 'react-navigation';
 import { connect } from 'react-redux';
-import { getColor } from '@app/redux/modules/user';
 
 const pressColor = 'rgba(255,255,255,.8)';
 
 export const Header = connect((state: any, props: HeaderProps): any => ({
-  getScreenDetails: scene => {
+  getScreenDetails: (scene: any) => {
     const details = props.getScreenDetails(scene);
     const border =
       Platform.OS === 'android' && Platform.Version >= 21
         ? {
-            borderTopWidth: 20,
             borderTopColor: getColor(state),
+            borderTopWidth: 20,
             height: 56 + 20,
           }
         : {};
@@ -60,12 +55,12 @@ export const headerNavigationOptions: any = {
   cardStyle: {
     backgroundColor: '#dedede',
   },
-  navigationOptions: ({ navigation }) => ({
-    header: function(props) {
+  navigationOptions: {
+    header(props: any) {
       return <Header {...props} />;
     },
-    headerTintColor: '#fff',
     headerBackTitle: null,
     headerPressColorAndroid: pressColor,
-  }),
+    headerTintColor: '#fff',
+  },
 };

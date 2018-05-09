@@ -18,17 +18,18 @@
  *
  */
 
+import { Text } from '@app/components';
+import { getColor } from '@app/redux/modules/user';
 import * as React from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Text } from '@app/components';
-import { getColor } from '@app/redux/modules/user';
+
 import styles from './styles';
 
-export interface Props extends StateProps {
+export interface IProps extends IIStateProps {
   title: string;
 }
-class ListItemHeader extends React.PureComponent<Props> {
+class ListItemHeader extends React.PureComponent<IProps> {
   public render() {
     return (
       <View style={styles.header}>
@@ -40,11 +41,11 @@ class ListItemHeader extends React.PureComponent<Props> {
   }
 }
 
-interface StateProps {
+interface IIStateProps {
   color: string;
 }
 
-function mapStateToProps(state: any): StateProps {
+function mapStateToProps(state: any): IIStateProps {
   return {
     color: getColor(state),
   };

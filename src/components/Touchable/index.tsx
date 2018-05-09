@@ -20,14 +20,14 @@
 
 import * as React from 'react';
 import {
-  View,
+  Platform,
   TouchableNativeFeedback,
   TouchableOpacity,
-  Platform,
+  View,
   ViewStyle,
 } from 'react-native';
 
-interface Props {
+interface IProps {
   style?: ViewStyle;
   pressColor?: string;
   light?: boolean;
@@ -35,7 +35,7 @@ interface Props {
   onPress?: () => void;
 }
 
-export class Touchable extends React.PureComponent<Props> {
+export class Touchable extends React.PureComponent<IProps> {
   public render() {
     const { style, pressColor, children, ...rest } = this.props;
 

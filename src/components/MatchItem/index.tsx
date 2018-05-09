@@ -18,9 +18,10 @@
  *
  */
 
-import * as React from 'react';
-import { MatchItem, MatchItemProps } from './match-item';
 import { ThemeContext } from '@app/theme';
+import * as React from 'react';
+
+import { MatchItem, MatchItemProps } from './match-item';
 
 export class ThemedMatchItem extends React.PureComponent<MatchItemProps> {
   public render() {

@@ -20,17 +20,19 @@
 
 import * as React from 'react';
 import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
   Modal,
   Platform,
-  KeyboardAvoidingView,
-  View,
   StyleSheet,
-  ActivityIndicator,
+  View,
 } from 'react-native';
-import { default as ScoreInput } from './ScoreInput';
+
 import { Card } from '..';
 
-interface Props {
+import { default as ScoreInput } from './ScoreInput';
+
+interface IProps {
   data: any;
   modus: any;
   color: string;
@@ -40,7 +42,7 @@ interface Props {
   onSave: (data: any, result: any) => void;
 }
 
-export class ScoreInputDialog extends React.PureComponent<Props> {
+export class ScoreInputDialog extends React.PureComponent<IProps> {
   public render() {
     const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
     const props = Platform.OS === 'ios' ? { behavior: 'height' } : {};
@@ -79,8 +81,8 @@ export class ScoreInputDialog extends React.PureComponent<Props> {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'rgba(0,0,0,.5)',
     flex: 1,
     justifyContent: 'space-around',
-    backgroundColor: 'rgba(0,0,0,.5)',
   },
 });

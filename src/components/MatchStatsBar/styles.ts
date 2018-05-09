@@ -22,8 +22,20 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   barContainer: {
-    flexDirection: 'row',
     flex: 1,
+    flexDirection: 'row',
+  },
+  draws: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(237, 140, 42, .7)',
+    justifyContent: 'center',
+  },
+  lost: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(207, 74, 48, .7)',
+    borderBottomRightRadius: 8,
+    borderTopRightRadius: 8,
+    justifyContent: 'center',
   },
   text: {
     color: '#fff',
@@ -31,21 +43,9 @@ export default StyleSheet.create({
   },
   wins: {
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'rgba(136, 168, 37, .7)',
-    borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
-  },
-  draws: {
-    alignItems: 'center',
+    borderTopLeftRadius: 8,
     justifyContent: 'center',
-    backgroundColor: 'rgba(237, 140, 42, .7)',
-  },
-  lost: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(207, 74, 48, .7)',
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
   },
 });

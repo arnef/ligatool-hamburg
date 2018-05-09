@@ -18,19 +18,14 @@
  *
  */
 
-import * as React from 'react';
-import {
-  View,
-  Platform,
-  StyleSheet,
-  ViewStyle,
-  ColorPropType,
-} from 'react-native';
 import { Touchable } from '@app/components';
 import { IS_IOS } from '@app/consts';
+import * as React from 'react';
+import { View, ViewStyle } from 'react-native';
+
 import styles from './styles';
 
-interface Props {
+interface IItemProps {
   /**
    *
    */
@@ -57,17 +52,17 @@ interface Props {
   onPress?: () => void;
 }
 
-export class ListItem extends React.PureComponent<Props> {
-  static ITEM_HEIGHT: number = IS_IOS ? 44 : 48;
-  static Image: any;
-  static Icon: any;
-  static Group: any;
-  static Header: any;
+export class ListItem extends React.PureComponent<IItemProps> {
+  public static ITEM_HEIGHT: number = IS_IOS ? 44 : 48;
+  public static Image: any;
+  public static Icon: any;
+  public static Group: any;
+  public static Header: any;
 
   public render() {
     const Container =
       this.props.onPress && !this.props.disabled ? Touchable : View;
-    const style: Array<ViewStyle> = [styles.item];
+    const style: ViewStyle[] = [styles.item];
     if (this.props.icon) {
       style.push({ marginLeft: 64 });
     }
@@ -76,9 +71,9 @@ export class ListItem extends React.PureComponent<Props> {
     }
     if (this.props.multiline) {
       style.push({
-        paddingVertical: IS_IOS ? 12 : 14,
-        height: undefined,
         alignItems: 'flex-start',
+        height: undefined,
+        paddingVertical: IS_IOS ? 12 : 14,
       });
     }
     if (this.props.center) {

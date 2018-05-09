@@ -18,94 +18,32 @@
  *
  */
 
-import * as React from 'react';
-import { View } from 'react-native';
-import { connect } from 'react-redux';
 import {
+  ActionSheet,
   Card,
-  Touchable,
-  Text,
   Icon,
   Image,
   Score,
-  ActionSheet,
+  Text,
+  Touchable,
 } from '@app/components';
 import { Strings } from '@app/lib/strings';
-import { getFixtureGame } from '@app/redux/modules/fixtures';
+import * as React from 'react';
+import { View } from 'react-native';
+
 import styles from './styles';
 
-interface Props extends StateProps {
+interface IProps {
   editable: boolean;
   index: number;
   data: any;
   fixtureId: string;
+  getSet: (gameNumber: string) => any;
   openPlayer: (player: any) => void;
   onSelect: (index: number, data: any, val: number) => () => void;
 }
 
-class SetItem extends React.PureComponent<Props> {
-  private onShowMenu = () => {
-    ActionSheet.show(
-      {
-        options: [Strings.SELECT_PLAYER, Strings.INSERT_SCORE],
-      },
-      (val: number) => {
-        if (val < 3) {
-          this.props.onSelect(this.props.index, this.props.data, val)();
-        }
-      },
-    );
-  };
-
-  private onPress = () => {
-    const { homePlayer1, homePlayer2 } = this.props.getSet(
-      this.props.data.gameNumbers[0],
-    );
-    if (homePlayer1 && homePlayer2) {
-      this.props.onSelect(this.props.index, this.props.data, 1)();
-    } else {
-      this.props.onSelect(this.props.index, this.props.data, 0)();
-    }
-  };
-
-  private onOpenPlayer = (player: any) => () => {
-    this.props.openPlayer(player);
-  };
-
-  private renderHomePlayer = (player: any) => {
-    return (
-      <View style={styles.containerPlayer}>
-        <Text center style={styles.textPlayer} numberOfLines={2}>
-          {`${
-            player
-              ? `${player.name} ${player.surname}`
-              : this.props.editable
-                ? Strings.SELECT
-                : ''
-          }`}
-        </Text>
-        {player && <Image url={player.image} size={32} />}
-      </View>
-    );
-  };
-
-  private renderAwayPlayer = (player: any) => {
-    return (
-      <View style={styles.containerPlayer}>
-        {player && <Image url={player.image} size={32} />}
-        <Text center style={styles.textPlayer} numberOfLines={2}>
-          {`${
-            player
-              ? `${player.name} ${player.surname}`
-              : this.props.editable
-                ? Strings.SELECT
-                : ''
-          }`}
-        </Text>
-      </View>
-    );
-  };
-
+export class SetItem extends React.PureComponent<IProps> {
   public render() {
     const Container = this.props.editable ? Touchable : View;
     const PlayerContianer = this.props.editable ? View : Touchable;
@@ -168,17 +106,66 @@ class SetItem extends React.PureComponent<Props> {
       </Card>
     );
   }
-}
 
-interface StateProps {
-  getSet: (gameNumber: string) => any;
-}
+  private onShowMenu = () => {
+    ActionSheet.show(
+      {
+        options: [Strings.SELECT_PLAYER, Strings.INSERT_SCORE],
+      },
+      (val: number) => {
+        if (val < 3) {
+          this.props.onSelect(this.props.index, this.props.data, val)();
+        }
+      },
+    );
+  };
 
-function mapStateToProps(state: any, props: Props): StateProps {
-  return {
-    getSet: (gameNumber: string) =>
-      getFixtureGame(state, props.fixtureId, gameNumber),
+  private onPress = () => {
+    const { homePlayer1, homePlayer2 } = this.props.getSet(
+      this.props.data.gameNumbers[0],
+    );
+    if (homePlayer1 && homePlayer2) {
+      this.props.onSelect(this.props.index, this.props.data, 1)();
+    } else {
+      this.props.onSelect(this.props.index, this.props.data, 0)();
+    }
+  };
+
+  private onOpenPlayer = (player: any) => () => {
+    this.props.openPlayer(player);
+  };
+
+  private renderHomePlayer = (player: any) => {
+    return (
+      <View style={styles.containerPlayer}>
+        <Text center style={styles.textPlayer} numberOfLines={2}>
+          {`${
+            player
+              ? `${player.name} ${player.surname}`
+              : this.props.editable
+                ? Strings.SELECT
+                : ''
+          }`}
+        </Text>
+        {player && <Image url={player.image} size={32} />}
+      </View>
+    );
+  };
+
+  private renderAwayPlayer = (player: any) => {
+    return (
+      <View style={styles.containerPlayer}>
+        {player && <Image url={player.image} size={32} />}
+        <Text center style={styles.textPlayer} numberOfLines={2}>
+          {`${
+            player
+              ? `${player.name} ${player.surname}`
+              : this.props.editable
+                ? Strings.SELECT
+                : ''
+          }`}
+        </Text>
+      </View>
+    );
   };
 }
-
-export const ConnectedSetItem = connect(mapStateToProps, null)(SetItem);

@@ -39,7 +39,7 @@ export function setToken(token) {
   return { type: SET_TOKEN, payload: token };
 }
 
-export const accessForTeams = state =>
+export const accessForTeams = (state: any) =>
   get(state).team && get(state).team.ids ? get(state).team.ids : [];
 
-const get = state => state.auth;
+const get = (state: any) => state.auth;

@@ -18,12 +18,13 @@
  *
  */
 
-import * as React from 'react';
 import { ThemeContext } from '@app/theme';
-import { StaticListHeader, StaticListHeaderProps } from './static-list-header';
+import * as React from 'react';
+
+import { IStaticListHeaderProps, StaticListHeader } from './static-list-header';
 
 export class ThemedStaticListHeader extends React.PureComponent<
-  StaticListHeaderProps
+  IStaticListHeaderProps
 > {
   public render() {
     return (

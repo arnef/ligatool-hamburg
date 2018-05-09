@@ -25,7 +25,7 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
   },
   separator: {
-    height: 1,
     backgroundColor: '#dedede',
+    height: 1,
   },
 });

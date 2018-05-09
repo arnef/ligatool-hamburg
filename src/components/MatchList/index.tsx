@@ -18,28 +18,18 @@
  *
  */
 
-import * as React from 'react';
-import { connect } from 'react-redux';
 import { Content, MatchItem } from '@app/components';
+import * as React from 'react';
 
 import { Strings } from '@app/lib/strings';
 
-interface Props {
-  matches: Array<any>;
+interface IProps {
+  matches: any[];
   onPress?: (fixture: any) => void;
   onRefresh?: () => void;
 }
 
-export class MatchList extends React.PureComponent<Props> {
-  static Selectable: any;
-  private onPress = (fixture: any) => (): void => {
-    if (this.props.onPress) {
-      this.props.onPress(fixture);
-    }
-  };
-  private renderItem = ({ item }: any): React.ReactElement<any> => {
-    return <MatchItem data={item} onPress={this.onPress(item)} />;
-  };
+export class MatchList extends React.PureComponent<IProps> {
   public render() {
     return (
       <Content
@@ -50,4 +40,14 @@ export class MatchList extends React.PureComponent<Props> {
       />
     );
   }
+
+  private onPress = (fixture: any) => (): void => {
+    if (this.props.onPress) {
+      this.props.onPress(fixture);
+    }
+  };
+
+  private renderItem = ({ item }: any): React.ReactElement<any> => {
+    return <MatchItem data={item} onPress={this.onPress(item)} />;
+  };
 }

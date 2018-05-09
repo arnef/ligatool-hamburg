@@ -18,21 +18,32 @@
  *
  */
 
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { sortBy } from 'lodash';
-import { Content, ListItem, Text, Separator } from '@app/components';
+import { Content, ListItem, Separator, Text } from '@app/components';
 import { sortCompetition } from '@app/helper';
 import { getLeagues } from '@app/redux/modules/leagues';
 import { navigate as navigationAction } from '@app/redux/modules/navigation';
 import { Routes } from '@app/scenes/routes';
+import { sortBy } from 'lodash';
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
 
-interface Props {
-  navigate: Function;
-  leagues: Array<any>;
-  getLeagues: Function;
+interface IProps {
+  navigate: (routeName: string, params: any) => void;
+  leagues: any[];
+  getLeagues: () => void;
 }
-class LeaguesList extends React.PureComponent<Props> {
+class LeaguesList extends React.PureComponent<IProps> {
+  public render() {
+    return (
+      <Content
+        onRefresh={this.props.getLeagues}
+        renderItem={this.renderItem}
+        renderSeparator={Separator}
+        data={this.props.leagues}
+      />
+    );
+  }
+
   private onOpenCompetition = (competition: any) => () => {
     this.props.navigate(
       competition.standing ? Routes.competition : Routes.cup,
@@ -47,25 +58,13 @@ class LeaguesList extends React.PureComponent<Props> {
       </ListItem>
     );
   };
-
-  public render() {
-    const { leagues, getLeagues } = this.props;
-    return (
-      <Content
-        onRefresh={getLeagues}
-        renderItem={this.renderItem}
-        renderSeparator={Separator}
-        data={leagues}
-      />
-    );
-  }
 }
 
-export const Competitions = connect(
-  state => ({
+export const Competitions = connect<any, any, any>(
+  (state: any) => ({
     leagues: sortBy(state.drawer, sortCompetition),
   }),
-  dispatch => ({
+  (dispatch: Dispatch<any>) => ({
     getLeagues: () => dispatch(getLeagues()),
     navigate: (routeName: string, params: any) =>
       dispatch(navigationAction({ routeName, params })),

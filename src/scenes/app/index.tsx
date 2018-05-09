@@ -18,33 +18,32 @@
  *
  */
 
+import {
+  headerNavigationOptions,
+  TabBarBottom,
+  TabBarIcon,
+} from '@app/containers/navigation';
+import { Strings } from '@app/lib/strings';
+import { getNavigationStateParams } from '@app/redux/modules/navigation';
+import { Overview } from '@app/scenes/app/scenes/overview';
+import { Routes } from '@app/scenes/routes';
 import * as React from 'react';
 import {
   NavigationContainer,
+  NavigationRouteConfigMap,
   StackNavigator,
   TabNavigator,
-  NavigationRouteConfigMap,
 } from 'react-navigation';
-import { Routes } from '@app/scenes/routes';
-import {
-  TabBarIcon,
-  TabBarBottom,
-  headerNavigationOptions,
-} from '@app/containers/navigation';
 
-import { Overview } from '@app/scenes/app/scenes/overview';
-import { Strings } from '@app/lib/strings';
-import { MyTeam } from './scenes/my-team';
 import { Competitions } from './scenes/competitions';
-import { Settings } from './scenes/settings';
-
-import { FixtureDetails } from './scenes/fixture-details';
 import { Competition } from './scenes/competitions/scenes/competition';
 import { Cup } from './scenes/competitions/scenes/cup';
-import { TeamDetails } from './scenes/team-details';
-import { PlayerDetails } from './scenes/player-details';
+import { FixtureDetails } from './scenes/fixture-details';
 import { ChangeDate } from './scenes/fixture-details/scenes/change-date';
-import { getNavigationStateParams } from '@app/redux/modules/navigation';
+import { MyTeam } from './scenes/my-team';
+import { PlayerDetails } from './scenes/player-details';
+import { Settings } from './scenes/settings';
+import { TeamDetails } from './scenes/team-details';
 
 function createTabStackNavigator(
   key: string,
@@ -54,11 +53,10 @@ function createTabStackNavigator(
 ) {
   const defaultScreens = {
     [key]: {
-      screen,
       navigationOptions: { title },
+      screen,
     },
     [Routes.fixtureDetails]: {
-      screen: FixtureDetails,
       navigationOptions: ({ navigation }: any) => ({
         title:
           getNavigationStateParams(navigation) &&
@@ -66,31 +64,29 @@ function createTabStackNavigator(
             ? getNavigationStateParams(navigation).title
             : Strings.MATCH,
       }),
+      screen: FixtureDetails,
     },
     [Routes.fixtureDetailsChangeDate]: {
-      screen: ChangeDate,
       navigationOptions: {
         title: Strings.CHANGE_MATCH_DATETIME,
       },
+      screen: ChangeDate,
     },
     [Routes.teamDetails]: {
-      screen: TeamDetails,
       navigationOptions: ({ navigation }: any) => ({
         title: getNavigationStateParams(navigation).title,
       }),
+      screen: TeamDetails,
     },
     [Routes.playerDetails]: {
-      screen: PlayerDetails,
       navigationOptions: ({ navigation }: any) => {
         const player = getNavigationStateParams(navigation);
         return {
           title: `${player.name} ${player.surname}`,
         };
       },
+      screen: PlayerDetails,
     },
-    // [Routes.competition]: {
-
-    // }
   };
 
   return StackNavigator(
@@ -99,7 +95,7 @@ function createTabStackNavigator(
   );
 }
 
-interface AppTab {
+interface IAppTab {
   route: string;
   title: string;
   screen: NavigationContainer | React.ComponentClass;
@@ -108,10 +104,16 @@ interface AppTab {
   screens?: any;
 }
 
-function createTabs(tabs: Array<AppTab>): NavigationRouteConfigMap {
+function createTabs(tabs: IAppTab[]): NavigationRouteConfigMap {
   const tabsMap: NavigationRouteConfigMap = {};
-  for (let tab of tabs) {
+  for (const tab of tabs) {
     tabsMap[tab.route] = {
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }: { tintColor: string }) => (
+          <TabBarIcon name={tab.icon} color={tintColor} />
+        ),
+        tabBarLabel: tab.title,
+      },
       screen: tab.customStack
         ? tab.screen
         : createTabStackNavigator(
@@ -120,12 +122,6 @@ function createTabs(tabs: Array<AppTab>): NavigationRouteConfigMap {
             tab.title,
             tab.screens,
           ),
-      navigationOptions: {
-        tabBarLabel: tab.title,
-        tabBarIcon: ({ tintColor }: { tintColor: string }) => (
-          <TabBarIcon name={tab.icon} color={tintColor} />
-        ),
-      },
     };
   }
   return tabsMap;
@@ -134,50 +130,50 @@ function createTabs(tabs: Array<AppTab>): NavigationRouteConfigMap {
 export const AppScenes = TabNavigator(
   createTabs([
     {
+      icon: 'football',
       route: Routes.overview,
       screen: Overview,
       title: Strings.OVERVIEW,
-      icon: 'football',
     },
     {
+      icon: 'shirt',
       route: Routes.myTeam,
       screen: MyTeam,
       title: Strings.MY_TEAM,
-      icon: 'shirt',
     },
     {
+      icon: 'trophy',
       route: Routes.competitions,
       screen: Competitions,
-      title: Strings.LEAGUES,
-      icon: 'trophy',
       screens: {
         [Routes.competition]: {
-          screen: Competition,
           navigationOptions: ({ navigation }: any) => ({
             title: getNavigationStateParams(navigation).title,
           }),
+          screen: Competition,
         },
         [Routes.cup]: {
-          screen: Cup,
           navigationOptions: ({ navigation }: any) => ({
             title: getNavigationStateParams(navigation).title,
           }),
+          screen: Cup,
         },
       },
+      title: Strings.LEAGUES,
     },
     {
+      customStack: true,
+      icon: 'settings',
       route: Routes.settings,
       screen: Settings,
       title: Strings.SETTINGS,
-      icon: 'settings',
-      customStack: true,
     },
   ]),
   {
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
-    swipeEnabled: false,
     animationEnabled: false,
     lazy: true,
+    swipeEnabled: false,
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
   },
 );

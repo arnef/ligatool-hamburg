@@ -18,16 +18,18 @@
  *
  */
 
+import { Touchable } from '@app/components';
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
-import { Touchable } from '@app/components';
+
 import styles from './styles';
 
-interface Props {
+interface IProps {
   style?: ViewStyle;
-  onPress?: Function;
+  onPress?: () => void;
 }
-export class Card extends React.PureComponent<Props> {
+
+export class Card extends React.PureComponent<IProps> {
   public render() {
     const Container = this.props.onPress ? Touchable : View;
     return (

@@ -18,56 +18,56 @@
  *
  */
 
+import { ListItem, Text } from '@app/components';
+import { Strings } from '@app/lib/strings';
 import * as React from 'react';
 import {
   ActionSheetIOS,
   Animated,
+  Dimensions,
+  FlatList,
   Modal,
   Platform,
   TouchableOpacity,
-  FlatList,
   View,
-  Dimensions,
 } from 'react-native';
-import { Strings } from '@app/lib/strings';
-import { ListItem, Text } from '@app/components';
 
 import styles from './styles';
 
 const DEVICE_HEIGHT: number = Math.round(Dimensions.get('window').height * 0.8);
 const DURATION: number = 250;
 
-interface Props {}
-interface State {
+interface IState {
   modalVisible: boolean;
-  items: Array<string>;
+  items: string[];
   y: Animated.Value;
-  callback: Function | null;
+  callback: (selection: number) => void | null;
 }
 
-interface config {
-  options: Array<string>;
+interface IConfig {
+  options: string[];
 }
 
-export class ActionSheet extends React.Component<Props, State> {
-  state: State = {
-    modalVisible: false,
-    items: [],
-    y: new Animated.Value(DEVICE_HEIGHT),
-    callback: null,
-  };
-  static actionsheetInstance: any;
+export class ActionSheet extends React.Component<null, IState> {
+  public static actionsheetInstance: any;
 
-  static show(config: config, callback: Function) {
+  public static show(config: IConfig, callback: (selection: number) => void) {
     this.actionsheetInstance.showActionSheet(config, callback);
   }
 
-  public showActionSheet(config: config, callback: Function) {
+  public state: IState = {
+    callback: null,
+    items: [],
+    modalVisible: false,
+    y: new Animated.Value(DEVICE_HEIGHT),
+  };
+
+  public showActionSheet(config: IConfig, callback: () => void) {
     if (Platform.OS === 'ios') {
-      let iosConfig = {
+      const iosConfig = {
         ...config,
-        options: [...config.options, Strings.CANCEL],
         cancelButtonIndex: config.options.length,
+        options: [...config.options, Strings.CANCEL],
       };
       ActionSheetIOS.showActionSheetWithOptions(
         iosConfig,
@@ -75,65 +75,13 @@ export class ActionSheet extends React.Component<Props, State> {
       );
     } else {
       this.setState({
+        callback,
         items: config.options,
         modalVisible: true,
-        callback,
       });
       this.slideIn();
     }
   }
-
-  private callbackWrapper(cancelIdx: number, callback: Function) {
-    return (val: number) => {
-      if (val < cancelIdx) {
-        callback(val);
-      }
-    };
-  }
-
-  private slideIn() {
-    Animated.sequence([
-      Animated.delay(100),
-      Animated.timing(this.state.y, {
-        duration: DURATION,
-        toValue: 0,
-      }),
-    ]).start();
-  }
-
-  private hide = () => {
-    Animated.timing(this.state.y, {
-      duration: DURATION,
-      toValue: DEVICE_HEIGHT,
-    }).start(() => this.setState({ modalVisible: false }));
-  };
-
-  private onPress = (index: number) => () => {
-    if (this.state.callback) {
-      this.state.callback(index);
-    }
-    this.hide();
-  };
-
-  private keyExtrator = (item: string, index: number) => {
-    return `${item}-${index}`;
-  };
-
-  private getItemLayout = (data: any, index: number) => {
-    return {
-      length: ListItem.ITEM_HEIGHT,
-      offset: ListItem.ITEM_HEIGHT * index,
-      index,
-    };
-  };
-
-  private renderItem = ({ item, index }: { item: string; index: number }) => {
-    return (
-      <ListItem onPress={this.onPress(index)}>
-        <Text>{`${item}`}</Text>
-      </ListItem>
-    );
-  };
 
   public render() {
     return (
@@ -174,4 +122,59 @@ export class ActionSheet extends React.Component<Props, State> {
       </Modal>
     );
   }
+
+  private callbackWrapper(
+    cancelIdx: number,
+    callback: (selection: number) => void,
+  ) {
+    return (val: number) => {
+      if (val < cancelIdx) {
+        callback(val);
+      }
+    };
+  }
+
+  private slideIn() {
+    Animated.sequence([
+      Animated.delay(100),
+      Animated.timing(this.state.y, {
+        duration: DURATION,
+        toValue: 0,
+      }),
+    ]).start();
+  }
+
+  private hide = () => {
+    Animated.timing(this.state.y, {
+      duration: DURATION,
+      toValue: DEVICE_HEIGHT,
+    }).start(() => this.setState({ modalVisible: false }));
+  };
+
+  private onPress = (index: number) => () => {
+    if (this.state.callback) {
+      this.state.callback(index);
+    }
+    this.hide();
+  };
+
+  private keyExtrator = (item: string, index: number) => {
+    return `${item}-${index}`;
+  };
+
+  private getItemLayout = (_: any, index: number) => {
+    return {
+      index,
+      length: ListItem.ITEM_HEIGHT,
+      offset: ListItem.ITEM_HEIGHT * index,
+    };
+  };
+
+  private renderItem = ({ item, index }: { item: string; index: number }) => {
+    return (
+      <ListItem onPress={this.onPress(index)}>
+        <Text>{`${item}`}</Text>
+      </ListItem>
+    );
+  };
 }

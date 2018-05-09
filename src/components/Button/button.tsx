@@ -18,29 +18,26 @@
  *
  */
 
-import * as React from 'react';
-import { View, Platform, StyleProp, ViewStyle } from 'react-native';
-import { connect } from 'react-redux';
 import { Text, Touchable } from '@app/components';
+import { IS_ANDROID } from '@app/consts';
+import * as React from 'react';
+import { View, ViewStyle } from 'react-native';
 
 import styles from './styles';
-import { getColor } from '@app/redux/modules/user';
-import { IS_ANDROID } from '@app/consts';
 
-export interface ButtonProps {
+export interface IButtonProps {
   title: string;
-  onPress: Function;
-  // style?: ViewStyle
+  onPress: () => void;
   color?: string;
   outline?: boolean;
   square?: boolean;
   disabled?: boolean;
 }
 
-export class Button extends React.PureComponent<ButtonProps> {
+export class Button extends React.PureComponent<IButtonProps> {
   public render() {
     const { color, outline } = this.props;
-    const style: Array<ViewStyle> = [
+    const style: ViewStyle[] = [
       styles.button,
       { borderColor: color, borderWidth: 1 },
     ];
@@ -65,14 +62,3 @@ export class Button extends React.PureComponent<ButtonProps> {
     );
   }
 }
-
-// interface StateProps {
-//   color: string;
-// }
-
-// function mapStateToProps(state: any) {
-//   return {
-//     color: getColor(state),
-//   };
-// }
-// export const ConnectedButton = connect(mapStateToProps)(Button);

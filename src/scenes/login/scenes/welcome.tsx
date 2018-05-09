@@ -18,17 +18,16 @@
  *
  */
 
+import { Button, Text } from '@app/components';
+import { Strings } from '@app/lib/strings';
+import { hideStart, navigate } from '@app/redux/modules/navigation';
+import styles from '@app/scenes/login/styles';
+import { Routes } from '@app/scenes/routes';
 import * as React from 'react';
 import { View } from 'react-native';
-import styles from '@app/scenes/login/styles';
-import { Text, Button } from '@app/components';
-import { Strings } from '@app/lib/strings';
 import { connect, Dispatch } from 'react-redux';
-import { hideStart, navigate } from '@app/redux/modules/navigation';
-import { Routes } from '@app/scenes/routes';
 
-interface Props extends DispatchProps {}
-class WelcomeScene extends React.PureComponent<Props> {
+class WelcomeScene extends React.PureComponent<IIDispatchProps> {
   public render() {
     return (
       <View style={styles.container}>
@@ -49,15 +48,15 @@ class WelcomeScene extends React.PureComponent<Props> {
   }
 }
 
-interface DispatchProps {
-  skip: Function;
-  next: Function;
+interface IIDispatchProps {
+  skip: () => void;
+  next: () => void;
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): IIDispatchProps {
   return {
-    skip: () => dispatch(hideStart()),
     next: () => dispatch(navigate({ routeName: Routes.selectCompetition })),
+    skip: () => dispatch(hideStart()),
   };
 }
 

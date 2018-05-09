@@ -18,16 +18,16 @@
  *
  */
 
+import { Card, Icon, Score, TeamLogo, Text } from '@app/components';
+import { DATETIME_DB, DATETIME_FORMAT } from '@app/config/settings';
+import { STATUS_POSTPONED } from '@app/redux/modules/fixtures';
+import { default as moment } from 'moment';
 import * as React from 'react';
 import { View } from 'react-native';
-import { connect, Dispatch } from 'react-redux';
-import { default as moment } from 'moment';
-import { Card, Text, Icon, TeamLogo, Score } from '@app/components';
-import { DATETIME_FORMAT, DATETIME_DB } from '@app/config/settings';
-import { STATUS_POSTPONED } from '@app/redux/modules/fixtures';
+
 import styles from './styles';
 
-export interface MatchItemProps {
+export interface IMatchItemProps {
   data:
     | {
         id: string;
@@ -46,9 +46,13 @@ export interface MatchItemProps {
   color?: string;
 }
 
-export class MatchItem extends React.PureComponent<MatchItemProps> {
+export class MatchItem extends React.PureComponent<IMatchItemProps> {
   public render() {
     const { data } = this.props;
+    if (!data) {
+      console.warn('no data');
+      return null;
+    }
     const date = moment(data.date, DATETIME_DB);
     return (
       <Card onPress={this.props.onPress}>

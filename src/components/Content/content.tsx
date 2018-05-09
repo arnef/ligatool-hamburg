@@ -18,62 +18,51 @@
  *
  */
 
+import { Text } from '@app/components';
 import * as React from 'react';
 import {
-  FlatList,
-  SectionList,
-  ScrollView,
-  View,
   ActivityIndicator,
+  FlatList,
   RefreshControl,
+  ScrollView,
+  SectionList,
+  View,
 } from 'react-native';
-import { Text } from '@app/components';
+
 import styles from './styles';
 
-export interface ContentProps {
+export interface IContentProps {
   /**
    *
    */
-  sections?: Array<any>;
+  sections?: any[];
   /**
    *
    */
-  data?: Array<any>;
+  data?: any[];
   /**
    *
    */
-  extraData?: Array<any>;
+  extraData?: any[];
   listEmptyText?: string;
   ListEmptyComponent?: React.ReactElement<any>;
   color?: string;
   renderItem?: (data: any) => React.ReactElement<any>;
   renderSectionHeader?: (section: any) => React.ReactElement<any>;
-  renderSeparator?: () => React.ReactElement<any>;
+  renderSeparator?: React.ComponentType<any>;
   reference?: (content: Content) => void;
   onRefresh?: () => void;
 }
 
-export class Content extends React.PureComponent<ContentProps> {
-  list: any;
+export class Content extends React.PureComponent<IContentProps> {
+  private list: any;
 
-  constructor(props: ContentProps) {
+  constructor(props: IContentProps) {
     super(props);
     if (this.props.reference) {
       this.props.reference(this);
     }
   }
-
-  private keyExtractor = (item: any, index: number) => {
-    return item.id ? `${item.id}` : `content-${index}`;
-  };
-
-  private renderEmptyComponent = (text: string) => {
-    return (
-      <Text secondary style={styles.emptyListText}>
-        {`${text}`}
-      </Text>
-    );
-  };
 
   public render() {
     const {
@@ -152,5 +141,17 @@ export class Content extends React.PureComponent<ContentProps> {
         this.list.scrollToOffset(params);
       }, 100);
     }
+  };
+
+  private keyExtractor = (item: any, index: number) => {
+    return item.id ? `${item.id}` : `content-${index}`;
+  };
+
+  private renderEmptyComponent = (text: string) => {
+    return (
+      <Text secondary style={styles.emptyListText}>
+        {`${text}`}
+      </Text>
+    );
   };
 }

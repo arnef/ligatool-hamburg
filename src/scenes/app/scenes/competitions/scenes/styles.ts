@@ -24,17 +24,17 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  emptyText: {
+    padding: 16,
+    textAlign: 'center',
+  },
   matchDayButton: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     marginVertical: 12,
   },
   matchDayText: {
     color: '#fff',
     flex: 1,
-  },
-  emptyText: {
-    padding: 16,
-    textAlign: 'center',
   },
 });

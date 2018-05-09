@@ -24,39 +24,39 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
+  goals: {
+    textAlign: 'center',
+    width: 35,
+  },
   header: {
     flexDirection: 'row',
     marginVertical: 8,
   },
-  position: {
-    width: 20,
+  matches: {
     textAlign: 'center',
+    width: 35,
+  },
+  points: {
     fontWeight: 'bold',
+    textAlign: 'center',
+    width: 35,
+  },
+  position: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    width: 20,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  setPoints: {
+    textAlign: 'center',
+    width: 40,
   },
   teamLogo: {
     width: 32 + 16,
   },
   teamName: {
     flex: 1,
-  },
-  matches: {
-    width: 35,
-    textAlign: 'center',
-  },
-  setPoints: {
-    width: 40,
-    textAlign: 'center',
-  },
-  goals: {
-    width: 35,
-    textAlign: 'center',
-  },
-  points: {
-    width: 35,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  row: {
-    flexDirection: 'row',
   },
 });

@@ -18,40 +18,29 @@
  *
  */
 
-import * as React from 'react';
-import { TabNavigator } from 'react-navigation';
-import { connect } from 'react-redux';
-import { Content, MatchItem, Text } from '@app/components';
-import { Routes } from '@app/scenes/routes';
+import { Content, MatchItem } from '@app/components';
+import { topTabBarNavigationOptions } from '@app/containers/navigation';
 import { Strings } from '@app/lib/strings';
+import { queryFixtureOverview } from '@app/redux/actions';
 import {
-  getFixtureByFilter,
   FILTER_PASSED,
   FILTER_TODAY,
   FILTER_UPCOMMING,
   getFixture,
+  getFixtureByFilter,
 } from '@app/redux/modules/fixtures';
-import { Dispatch } from 'redux';
-import { topTabBarNavigationOptions } from '@app/containers/navigation';
-import { queryFixtureOverview } from '@app/redux/actions';
-import { SectionHeader } from './components/section-header';
 import { navigate } from '@app/redux/modules/navigation';
+import { Routes } from '@app/scenes/routes';
+import * as React from 'react';
+import { TabNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
-interface Props extends StateProps, DispatchProps {}
+import { SectionHeader } from './components/section-header';
 
-class MatchList extends React.PureComponent<Props> {
-  private onPress = (match: any) => (): void => {
-    this.props.openMatch(match);
-  };
-  private renderSectionHeader = ({ section }: any): React.ReactElement<any> => {
-    return <SectionHeader title={section.title} />;
-  };
+interface IProps extends IStateProps, IDispatchProps {}
 
-  private renderItem = ({ item }: any): React.ReactElement<any> => {
-    const fixture = this.props.getFixture(item);
-    return <MatchItem data={fixture} onPress={this.onPress(fixture)} />;
-  };
-
+class MatchList extends React.PureComponent<IProps> {
   public render() {
     const { matches, queryMatches } = this.props;
     return (
@@ -64,61 +53,74 @@ class MatchList extends React.PureComponent<Props> {
       />
     );
   }
+
+  private onPress = (match: any) => (): void => {
+    this.props.openMatch(match);
+  };
+
+  private renderSectionHeader = ({ section }: any): React.ReactElement<any> => {
+    return <SectionHeader title={section.title} />;
+  };
+
+  private renderItem = ({ item }: any): React.ReactElement<any> => {
+    const fixture = this.props.getFixture(item);
+    return <MatchItem data={fixture} onPress={this.onPress(fixture)} />;
+  };
 }
 
 function connectMatchList(key: string) {
   return connect(mapStateToProps(key), mapDispatchToProps)(MatchList);
 }
 
-interface StateProps {
-  matches: Array<any>;
+interface IStateProps {
+  matches: any[];
   getFixture: (id: string) => any;
 }
 
 function mapStateToProps(key: string) {
   return (state: any) => {
     return {
-      matches: getFixtureByFilter(state, key),
       getFixture: (id: string) => getFixture(state, id),
+      matches: getFixtureByFilter(state, key),
     };
   };
 }
 
-interface DispatchProps {
+interface IDispatchProps {
   queryMatches: () => any;
   openMatch: (match: any) => void;
 }
 function mapDispatchToProps(dispatch: Dispatch<any>): any {
   return {
-    queryMatches: () => dispatch(queryFixtureOverview()),
     openMatch: (match: any) =>
       dispatch(
         navigate({
-          routeName: Routes.fixtureDetails,
           params: { id: match.id, title: match.competitionName },
+          routeName: Routes.fixtureDetails,
         }),
       ),
+    queryMatches: () => dispatch(queryFixtureOverview()),
   };
 }
 
 export const Overview = TabNavigator(
   {
     [Routes.overviewPastFixtures]: {
-      screen: connectMatchList(FILTER_PASSED),
       navigationOptions: { title: Strings.PAST_MATCHES },
+      screen: connectMatchList(FILTER_PASSED),
     },
     [Routes.overviewCurrentFixtures]: {
-      screen: connectMatchList(FILTER_TODAY),
       navigationOptions: { title: Strings.TODAY },
+      screen: connectMatchList(FILTER_TODAY),
     },
     [Routes.overviewUpcommingFixtures]: {
-      screen: connectMatchList(FILTER_UPCOMMING),
       navigationOptions: { title: Strings.NEXT_MATCHES },
+      screen: connectMatchList(FILTER_UPCOMMING),
     },
   },
   {
     ...topTabBarNavigationOptions,
-    lazy: false,
     initialRouteName: Routes.overviewCurrentFixtures,
+    lazy: false,
   },
 );

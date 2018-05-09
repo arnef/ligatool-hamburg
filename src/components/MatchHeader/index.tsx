@@ -18,8 +18,9 @@
  *
  */
 
-import * as React from 'react';
 import { ThemeContext } from '@app/theme';
+import * as React from 'react';
+
 import { MatchHeader, MatchHeaderProps } from './match-header';
 
 export class ThemedMatchHeader extends React.PureComponent<MatchHeaderProps> {

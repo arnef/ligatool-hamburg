@@ -18,17 +18,18 @@
  *
  */
 
-import * as React from 'react';
-import { View } from 'react-native';
 import { Image, ListItem, Separator, Text } from '@app/components';
 import { Strings } from '@app/lib/strings';
+import * as React from 'react';
+import { View } from 'react-native';
+
 import styles from './styles';
 
-interface Props {
+interface IProps {
   color: string;
   team: any;
 }
-export class TeamInfo extends React.PureComponent<Props> {
+export class TeamInfo extends React.PureComponent<IProps> {
   public render() {
     return (
       <ListItem.Group>

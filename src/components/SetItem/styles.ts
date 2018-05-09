@@ -25,28 +25,28 @@ export default StyleSheet.create({
     padding: 12,
     paddingBottom: 9,
   },
-  containerTitle: {
-    flexDirection: 'row',
+  containerPlayer: {
     alignItems: 'center',
+    flex: 2,
+    flexDirection: 'row',
+    marginVertical: 4,
+    paddingHorizontal: 8,
   },
   containerPlayers: {
     flex: 2,
     justifyContent: 'space-around',
   },
-  containerPlayer: {
-    flexDirection: 'row',
-    flex: 2,
-    marginVertical: 4,
-    paddingHorizontal: 8,
+  containerTitle: {
     alignItems: 'center',
+    flexDirection: 'row',
+  },
+  iconTitle: {
+    color: '#909090',
   },
   textPlayer: {
     flex: 1,
   },
   textTitle: {
     flex: 1,
-  },
-  iconTitle: {
-    color: '#909090',
   },
 });

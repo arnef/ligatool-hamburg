@@ -17,11 +17,29 @@
  * along with DTFB App.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-import { StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   disabled: {
     opacity: 0.5,
+  },
+  group: {
+    backgroundColor: '#fff',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1.5,
+    borderTopColor: '#fff',
+    borderTopWidth: 0,
+    paddingTop: 12,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingBottom: 12,
+  },
+  headerText: {
+    marginBottom: 0,
+    marginHorizontal: 16,
+    marginTop: 0,
   },
   item: {
     alignItems: 'center',
@@ -48,23 +66,5 @@ export default StyleSheet.create({
       android: 0,
       ios: 16,
     }),
-  },
-  header: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 12,
-  },
-  headerText: {
-    marginBottom: 0,
-    marginHorizontal: 16,
-    marginTop: 0,
-  },
-  group: {
-    backgroundColor: '#fff',
-    paddingTop: 12,
-    borderTopWidth: 0,
-    borderBottomWidth: 1.5,
-    borderTopColor: '#fff',
-    borderBottomColor: '#ccc',
   },
 });

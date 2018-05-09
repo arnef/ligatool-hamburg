@@ -18,7 +18,7 @@
  *
  */
 
-import { StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -28,16 +28,16 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  text: {
-    color: '#888',
-    fontSize: 14,
-    fontFamily: Platform.OS === 'android' ? 'monospace' : 'Courier New',
-  },
-  textBig: {
-    fontSize: 16,
-  },
   icon: {
     height: 64,
     width: 64,
+  },
+  text: {
+    color: '#888',
+    fontFamily: Platform.OS === 'android' ? 'monospace' : 'Courier New',
+    fontSize: 14,
+  },
+  textBig: {
+    fontSize: 16,
   },
 });

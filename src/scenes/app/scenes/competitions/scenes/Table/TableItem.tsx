@@ -18,23 +18,19 @@
  *
  */
 
+import { ListItem, MatchStatsBar, TeamLogo, Text } from '@app/components';
 import * as React from 'react';
 import { View } from 'react-native';
-import { ListItem, Text, TeamLogo, MatchStatsBar } from '@app/components';
 
 import styles from './styles';
 
-interface Props {
+interface IProps {
   details: boolean;
   data: any;
   onPress: (data: any) => void;
 }
 
-export class TableItem extends React.PureComponent<Props> {
-  private onPress = (data: any) => () => {
-    this.props.onPress(data);
-  };
-
+export class TableItem extends React.PureComponent<IProps> {
   public render() {
     return (
       <ListItem onPress={this.onPress(this.props.data)}>
@@ -70,10 +66,10 @@ export class TableItem extends React.PureComponent<Props> {
             <View style={styles.row}>
               <MatchStatsBar
                 stats={{
-                  wins: this.props.data.overallWin,
-                  lost: this.props.data.overallLost,
                   draws: this.props.data.overallDraw,
+                  lost: this.props.data.overallLost,
                   matches: this.props.data.playedGames,
+                  wins: this.props.data.overallWin,
                 }}
               />
             </View>
@@ -82,4 +78,8 @@ export class TableItem extends React.PureComponent<Props> {
       </ListItem>
     );
   }
+
+  private onPress = (data: any) => () => {
+    this.props.onPress(data);
+  };
 }
